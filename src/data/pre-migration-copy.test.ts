@@ -37,13 +37,14 @@ function plus(files: Record<string, string>): Migration[] {
   return [...real(), ...r.value];
 }
 
+// Invented migrations are numbered from 9001, so they never collide with a real one.
 const sampleTable = plus({
-  'm/0002-sample.sql': 'CREATE TABLE sample (id TEXT PRIMARY KEY, note TEXT NOT NULL) STRICT;',
+  'm/9001-sample.sql': 'CREATE TABLE sample (id TEXT PRIMARY KEY, note TEXT NOT NULL) STRICT;',
 });
 const broken = [
   ...sampleTable,
   ...plus({
-    'm/0003-broken.sql':
+    'm/9002-broken.sql':
       "ALTER TABLE sample ADD COLUMN extra TEXT; INSERT INTO no_such_table VALUES ('x');",
   }).slice(-1),
 ];
@@ -88,11 +89,14 @@ describe('pre-migration copy', () => {
     const result = openStore(books, broken, now);
     expect(result).toMatchObject({
       ok: false,
-      error: { code: 'migration-failed', message: expect.stringContaining('3-broken') as unknown },
+      error: {
+        code: 'migration-failed',
+        message: expect.stringContaining('9002-broken') as unknown,
+      },
     });
 
     expect(contents(books)).toEqual(before);
-    const copy = join(dir, PRE_MIGRATION_DIR, 'books-2-2026-11-22T06-30-43-292Z.db');
+    const copy = join(dir, PRE_MIGRATION_DIR, 'books-9001-2026-11-22T06-30-43-292Z.db');
     expect(existsSync(copy)).toBe(true);
     expect(contents(copy)).toEqual(before);
   });
@@ -140,7 +144,7 @@ describe('integrity check', () => {
 
   it('refuses books whose integrity check reports problems, even though they open', () => {
     const indexed = plus({
-      'm/0002-sample.sql':
+      'm/9001-sample.sql':
         'CREATE TABLE sample (id TEXT PRIMARY KEY, note TEXT NOT NULL) STRICT; CREATE INDEX sample_note ON sample (note);',
     });
     const store = openStore(books, indexed, now);

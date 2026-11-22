@@ -53,7 +53,7 @@ test('the packaged app opens new books and shows its version and integrity', asy
   const report = JSON.parse(readFileSync(join(dataDir, 'self-check.json'), 'utf8')) as unknown;
   expect(report).toEqual({
     appInfo: 'Version 0.0.0',
-    dataStatus: 'Schema version 1, integrity: ok',
+    dataStatus: expect.stringMatching(/^Schema version \d+, integrity: ok$/) as unknown,
     packaged: true,
   });
   expect(existsSync(join(dataDir, 'books.db'))).toBe(true);

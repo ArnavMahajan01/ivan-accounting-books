@@ -90,7 +90,9 @@ describe('app.getDataStatus', () => {
     const app = { getVersion: () => '1.0.0', isPackaged: true };
     expect(
       await createHandlers({ app, store: ok(createTestDatabase()) })['app.getDataStatus']({}),
-    ).toEqual(ok({ schemaVersion: 1, integrity: 'ok', problem: null }));
+    ).toEqual(
+      ok({ schemaVersion: createTestDatabase().schemaVersion, integrity: 'ok', problem: null }),
+    );
     const failed = createHandlers({
       app,
       store: err({ code: 'applied-migration-changed', message: 'x' }),

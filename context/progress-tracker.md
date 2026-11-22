@@ -7,7 +7,8 @@ Update this file whenever the current phase, the active spec or the implementati
 ## Current Phase
 
 - **Folder 00, foundations (2026-11-22): done.** Specs 001 to 014 on branch `feature/00-foundations`. The author committed 001 to 006. 007 to 014 are not committed yet. The packaged Mac app builds, passes the package contents check and its end-to-end test, and opens empty books at schema version 1. The author allowed folder 00 to start before wireframe sign-off. Screens (spec 020 onward) still wait for W11.
-- **Folder 01, agent skills:** next. It needs its own branch, `feature/01-agent-skills`, which the author creates.
+- **Folder 01, agent skills (2026-11-22): done.** Specs 015 to 019 on branch `feature/01-agent-skills`, not committed yet. Eleven skills in `.claude/skills/`: the three UI and wireframe skills, the kit's four workflow skills, and four technology skills (Electron, SQLite and migrations, Australian bookkeeping rules, React renderer).
+- **Next: folder 02 (Demo 1, the app opens).** Its specs are screens, so they wait for W11, the client's wireframe sign-off. It also needs its own branch, `feature/02-demo-1-the-app-opens`.
 - **Phase W, wireframes (2026-11-21):** the wireframes wait for the author to click through them, then for the meeting with the client (W10) and sign-off (W11).
 
 ## Current Goal
@@ -45,8 +46,7 @@ The next five specs.
 | W10 | [Client Review Pack](feature-specs/W-wireframes/W10-client-review-pack.md): the meeting | W |
 | W08 | [Wireframe: Invoices and Bills](feature-specs/W-wireframes/W08-wireframe-invoices-and-bills.md), if question 1 says so | W |
 | W11 | [Wireframe Sign-Off](feature-specs/W-wireframes/W11-wireframe-sign-off.md) | W |
-| 015 | [Skills Index and the Kit's Workflow Skills](feature-specs/01-agent-skills/015-skills-index.md), on a new branch `feature/01-agent-skills` | 01 |
-| 016 | [Skill: Electron](feature-specs/01-agent-skills/016-skill-electron.md) | 01 |
+| 020 | The first spec of folder 02 (Demo 1), after W11 and on branch `feature/02-demo-1-the-app-opens` | 02 |
 
 After folder 00: the first client demo is spec 029 (Demo 1: the app opens). Demos follow at 054, 067, 077, 088, 104, 121, 131 and 141, then go-live at 151.
 
@@ -56,6 +56,11 @@ Newest first.
 
 | # | Spec | What it does | Status | Date |
 |---|---|---|---|---|
+| 019 | [Skill: React Renderer](feature-specs/01-agent-skills/019-skill-react.md) | Screens: data through the bridge, `Result`, every state, where the look comes from | Done | 2026-11-22 |
+| 018 | [Skill: Australian Bookkeeping Rules](feature-specs/01-agent-skills/018-skill-bookkeeping.md) | Signed-cents double entry with 5 worked examples, GST, simpler BAS, periods, cash or accruals, each fact with its ATO page | Done (ATO pages read through search results; confirm in a browser) | 2026-11-22 |
+| 017 | [Skill: SQLite and Migrations](feature-specs/01-agent-skills/017-skill-sqlite.md) | Adding a table, column rules, repositories, transactions. Also made the migration tests hold for any number of real migrations | Done | 2026-11-22 |
+| 016 | [Skill: Electron](feature-specs/01-agent-skills/016-skill-electron.md) | The settings that stay on, adding a bridge function, build and packaging | Done | 2026-11-22 |
+| 015 | [Skills Index and the Kit's Workflow Skills](feature-specs/01-agent-skills/015-skills-index.md) | `next-spec`, `new-spec`, `check-invariants`, `done-check`, adapted to this project | Done (new-session check for the author) | 2026-11-22 |
 | 014 | [Package Contents Check and First End-to-End Test](feature-specs/00-foundations/014-package-checks.md) | Fails the package on private or development files; Playwright tests the packaged app in self-check mode | Done (self-check mode replaces direct Playwright control) | 2026-11-22 |
 | 013 | [Packaged Mac App and Fuses](feature-specs/00-foundations/013-package-app.md) | Ad-hoc signed arm64 `.app`, 6 fuses changed, debugging refused, 266 MB | Implemented, Finder look by the author pending | 2026-11-22 |
 | 012 | [Pre-Migration Copy and Integrity Check](feature-specs/00-foundations/012-migration-safety.md) | `VACUUM INTO` copy before migrating, last 5 kept; `integrity_check` on every open | Done | 2026-11-22 |
@@ -87,6 +92,8 @@ Things found during work that are not part of the current spec. Each has an owne
 | Decide the final product name and app id. "Accounting Books" and `app.accountingbooks.desktop` are placeholders. They set the data folder and Keychain access, so they must not change after go-live | 010, 013 | Folder 12 | Open |
 | Open the packaged app from Finder and confirm the page shows the version (no "development") and "Schema version 1, integrity: ok" | 013 | Demo 1 (spec 029) | Open, for the author |
 | `npm audit`: 6 moderate, one `minimatch` advisory inside electron-builder (build time only). Recheck when electron-builder updates | 013 | Folder 12 | Open |
+| Open the ATO pages linked in `.claude/skills/au-bookkeeping-rules/SKILL.md` in a browser and confirm each fact (ato.gov.au refuses automated fetches, so they were read through search results) | 018 | Spec 034 | Open, for the author or the accountant |
+| Start a new Claude Code session and type "next spec", to see `next-spec` picked up | 015 | Spec 020 | Open, for the author |
 | Move to TypeScript 7 once `typescript-eslint` supports it (8.73.0 allows below 6.1) | 001 | When supported | Open |
 | npm 12 blocks `fsevents`' install script (an optional file watcher). Approve or deny it by name if it ever matters | 001 | None | Done 2026-11-22: denied in `allowScripts` (011) |
 | `books.db` and its WAL files get default permissions (`-rw-r--r--`), readable by other user accounts on the Mac. Decide with encryption at rest | 011 | Folder 12 | Open |
@@ -131,6 +138,7 @@ Things a newcomer would trip over.
 
 One or two lines per working session, newest first: what was done, what was measured, what was deferred.
 
+- **2026-11-22 (agent skills 015 to 019):** On `feature/01-agent-skills`. Extended the W11 gate exception to folder 01 at the author's request. Adapted the kit's four workflow skills and wrote four technology skills, each checked by following it: a throwaway bridge function, a throwaway migration and repository, examples summed by script, ATO facts via search (ato.gov.au gives 403 to fetches), and an inline-style test in the built app. Following the SQLite skill found that 14 migration tests from 011 and 012 assumed schema version 1. Fixed: they now follow the real migration list. Added client question 27 (invoice GST rounding).
 - **2026-11-22 (foundations 007 to 014):** Built ids, the logger and env checks, the hardened Electron window on a private `app://` scheme, the bridge, the ` Dev` data folder and log file, the SQLite store with hashed migrations, the pre-migration copy and integrity check, the packaged app with fuses, and the package contents check with an end-to-end test. 225 unit tests and 2 end-to-end tests pass. Found and fixed: VS Code's `ELECTRON_RUN_AS_NODE=1`, an ESM preload that would need the sandbox off, a self-check refusal that wrote to the real data folder. Stopped before folder 01 for its branch.
 - **2026-11-22 (foundations 001 to 006):** The author ran `git init` and created `feature/00-foundations`. Checked current versions (Electron 45.4.1, TypeScript 6.0.3 because `typescript-eslint` does not yet support 7, Vitest 5.1.1, ESLint 10.15.0) and chose electron-vite. Built tooling, folders, boundary and purity lint, `Result`, kinds, money and dates. 130 tests pass. Each lint rule was proved with throwaway files. Nothing committed. Electron itself not yet run (008).
 
