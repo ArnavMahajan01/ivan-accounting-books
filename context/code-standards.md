@@ -47,7 +47,7 @@ The project's own implementation rules. The general rules are in `context/rules/
 
 ## Ids
 
-- Stable string ids with a kind prefix: `acc_`, `ent_`, `lin_`, `stl_`, `imp_`. They are built by `newId(kind)` in `src/shared/ids.ts`, which takes its random source as an argument so tests are repeatable.
+- Stable string ids with a kind prefix: `acc_`, `ent_`, `lin_`, `stl_`, `imp_`. They are built by `newId(kind)` in `src/shared/ids.ts`, which takes its random source as an argument so tests are repeatable: `seededRandom(seed)` in tests and sample data, `systemRandom` from `src/main/random.ts` in the app. The real clock is likewise `systemClock` in `src/main/clock.ts`.
 - Never use an array position or a row number as an id.
 
 ## Data (`src/data/`)
@@ -120,5 +120,6 @@ Created at spec 001. Names follow `context/rules/code-rules.md`.
 - `npm run typecheck`, `npm run lint`, `npm test`.
 - `npm run format` / `npm run format:check`.
 - `npm run check`: typecheck, lint and test in sequence.
+- `npm run test:e2e`: packages the app (with the package contents check, `tools/check-package.ts`), then runs the Playwright tests in `tests/e2e/` against the packaged app in self-check mode (spec 014).
 
 Later specs add to this list. Add each new script here in the same change that creates it.

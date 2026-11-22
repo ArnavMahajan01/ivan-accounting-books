@@ -81,11 +81,12 @@ Created at spec 001 (`context/rules/code-rules.md`, "Scripts"). Update this tabl
 | To do this | Run | Works now? |
 |---|---|---|
 | Install | `npm install` | Yes |
-| Run in development | `npm run dev` | Prints "Not built yet" and fails until spec 008 |
-| Build | `npm run build` | Prints "Not built yet" and fails until spec 008 |
-| Package the Mac app | `npm run package` | Prints "Not built yet" and fails until spec 013 |
+| Run in development | `npm run dev` | Yes: the app with the ` Dev` name and data folder |
+| Build | `npm run build` | Yes: main, preload and renderer into `out/` |
+| Package the Mac app | `npm run package` | Yes: `release/mac-arm64/Accounting Books.app`, then the package contents check |
 | Test (all) | `npm test` | Yes |
 | Test while editing | `npm run test:watch` | Yes |
+| End-to-end test of the packaged app | `npm run test:e2e` | Yes: packages first, then Playwright (`tests/e2e/`) |
 | Typecheck | `npm run typecheck` | Yes |
 | Lint | `npm run lint` | Yes |
 | Format, or check formatting | `npm run format`, `npm run format:check` | Yes. Markdown, `context/` and `wireframe/` are not reformatted |

@@ -172,6 +172,11 @@ export default tseslint.config(
     },
   },
   {
+    // The logger's console sink is the one place in src/ that may print.
+    files: ['src/shared/logger.ts'],
+    rules: { 'no-console': 'off' },
+  },
+  {
     // Development scripts may print to the terminal.
     files: ['tools/**'],
     rules: { 'no-console': 'off' },

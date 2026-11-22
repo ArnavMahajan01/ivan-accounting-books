@@ -6,7 +6,8 @@ Update this file whenever the current phase, the active spec or the implementati
 
 ## Current Phase
 
-- **Folder 00, foundations (2026-11-22):** specs 001 to 006 are done on branch `feature/00-foundations` (tooling, folders and aliases, boundary lint, `Result` and kinds, money, dates and the clock). Nothing is committed. The author allowed folder 00 to start before wireframe sign-off. Screens (spec 020 onward) still wait for W11.
+- **Folder 00, foundations (2026-11-22): done.** Specs 001 to 014 on branch `feature/00-foundations`. The author committed 001 to 006. 007 to 014 are not committed yet. The packaged Mac app builds, passes the package contents check and its end-to-end test, and opens empty books at schema version 1. The author allowed folder 00 to start before wireframe sign-off. Screens (spec 020 onward) still wait for W11.
+- **Folder 01, agent skills:** next. It needs its own branch, `feature/01-agent-skills`, which the author creates.
 - **Phase W, wireframes (2026-11-21):** the wireframes wait for the author to click through them, then for the meeting with the client (W10) and sign-off (W11).
 
 ## Current Goal
@@ -18,7 +19,8 @@ Update this file whenever the current phase, the active spec or the implementati
 ## How To Run
 
 - Wireframes: open `wireframe/index.html` in a browser. No build step.
-- Code checks: `npm install`, then `npm run check` (typecheck, lint, test). The full list is in `CLAUDE.md` section 4. There is no app window yet (spec 008).
+- Code checks: `npm install`, then `npm run check` (typecheck, lint, test). The full list is in `CLAUDE.md` section 4.
+- The app: `npm run dev` (development, ` Dev` data folder). The packaged app: `npm run package`, then open `release/mac-arm64/Accounting Books.app` (right-click, Open, the first time). `npm run test:e2e` packages and tests it.
 
 ## In Progress
 
@@ -43,8 +45,8 @@ The next five specs.
 | W10 | [Client Review Pack](feature-specs/W-wireframes/W10-client-review-pack.md): the meeting | W |
 | W08 | [Wireframe: Invoices and Bills](feature-specs/W-wireframes/W08-wireframe-invoices-and-bills.md), if question 1 says so | W |
 | W11 | [Wireframe Sign-Off](feature-specs/W-wireframes/W11-wireframe-sign-off.md) | W |
-| 007 | [Ids, Logger and Environment](feature-specs/00-foundations/007-ids-logger-env.md) | 00 |
-| 008 | [Hardened Electron Window](feature-specs/00-foundations/008-electron-window.md) | 00 |
+| 015 | [Skills Index and the Kit's Workflow Skills](feature-specs/01-agent-skills/015-skills-index.md), on a new branch `feature/01-agent-skills` | 01 |
+| 016 | [Skill: Electron](feature-specs/01-agent-skills/016-skill-electron.md) | 01 |
 
 After folder 00: the first client demo is spec 029 (Demo 1: the app opens). Demos follow at 054, 067, 077, 088, 104, 121, 131 and 141, then go-live at 151.
 
@@ -54,6 +56,14 @@ Newest first.
 
 | # | Spec | What it does | Status | Date |
 |---|---|---|---|---|
+| 014 | [Package Contents Check and First End-to-End Test](feature-specs/00-foundations/014-package-checks.md) | Fails the package on private or development files; Playwright tests the packaged app in self-check mode | Done (self-check mode replaces direct Playwright control) | 2026-11-22 |
+| 013 | [Packaged Mac App and Fuses](feature-specs/00-foundations/013-package-app.md) | Ad-hoc signed arm64 `.app`, 6 fuses changed, debugging refused, 266 MB | Implemented, Finder look by the author pending | 2026-11-22 |
+| 012 | [Pre-Migration Copy and Integrity Check](feature-specs/00-foundations/012-migration-safety.md) | `VACUUM INTO` copy before migrating, last 5 kept; `integrity_check` on every open | Done | 2026-11-22 |
+| 011 | [SQLite Store and Migration Runner](feature-specs/00-foundations/011-sqlite-store.md) | `books.db`, hashed migrations, `createTestDatabase()`, `app.getDataStatus` | Done | 2026-11-22 |
+| 010 | [App Name, Data Folders and Log File](feature-specs/00-foundations/010-data-folders.md) | ` Dev` name and folder for every unpackaged run, quit on close, rotating log | Done | 2026-11-22 |
+| 009 | [Bridge Contract and the First Bridge Function](feature-specs/00-foundations/009-bridge-contract.md) | `window.bridge`, sender and Zod checks in main, `app.getInfo` | Done | 2026-11-22 |
+| 008 | [Hardened Electron Window](feature-specs/00-foundations/008-electron-window.md) | Sandboxed window, `app://` scheme, CSP, permissions denied, single instance | Done | 2026-11-22 |
+| 007 | [Ids, Logger and Environment](feature-specs/00-foundations/007-ids-logger-env.md) | `newId`, a logger that refuses private fields, `loadEnv` | Done | 2026-11-22 |
 | 006 | [Calendar Dates and the Clock](feature-specs/00-foundations/006-dates.md) | `CalendarDate`, day-first parsing, date maths, `Clock`; real clock in `src/main/clock.ts` | Done | 2026-11-22 |
 | 005 | [Money in Integer Cents](feature-specs/00-foundations/005-money.md) | `Cents`, `parseCents`, `formatCents`, sums; lint ban on `parseFloat` and `toFixed` | Done | 2026-11-22 |
 | 004 | [Result Type and Literal Kinds](feature-specs/00-foundations/004-result-and-kinds.md) | `Result`, `AccountType`, `assertNever` | Done | 2026-11-22 |
@@ -72,10 +82,14 @@ Things found during work that are not part of the current spec. Each has an owne
 | Review `decisions/ui-and-wireframe-skills.md` | Planning | W01 | Open |
 | Get QuickBooks sample company screenshots, or blurred real ones, for W02 | Planning | A W redo, if the client wants screens closer to QuickBooks | Open (W02 went ahead without them) |
 | Keep `references/imagesforaccountant/` (20 unblurred screenshots of his live QuickBooks) out of git, or move it outside the project (risk K3) | 2026-11-22 references | The first commit | `.gitignore` ignores `/references/` (spec 001). The author checks `git status` before the first commit |
-| Check inside Electron at spec 008: the binary downloads and runs on Apple silicon, `formatCents(-123450)` gives `-$1,234.50`, and `systemClock.today()` gives the local date | 001, 005, 006 | Spec 008 | Open |
-| Prove better-sqlite3 13.2.0's shipped arm64 prebuild loads in Electron 45 with no rebuild | 001 | Spec 011 | Open |
+| Check inside Electron at spec 008: the binary downloads and runs on Apple silicon, `formatCents(-123450)` gives `-$1,234.50`, and `systemClock.today()` gives the local date | 001, 005, 006 | Spec 008 | Done 2026-11-22 (008) |
+| Prove better-sqlite3 13.2.0's shipped arm64 prebuild loads in Electron 45 with no rebuild | 001 | Spec 011 | Done 2026-11-22 (011) |
+| Decide the final product name and app id. "Accounting Books" and `app.accountingbooks.desktop` are placeholders. They set the data folder and Keychain access, so they must not change after go-live | 010, 013 | Folder 12 | Open |
+| Open the packaged app from Finder and confirm the page shows the version (no "development") and "Schema version 1, integrity: ok" | 013 | Demo 1 (spec 029) | Open, for the author |
+| `npm audit`: 6 moderate, one `minimatch` advisory inside electron-builder (build time only). Recheck when electron-builder updates | 013 | Folder 12 | Open |
 | Move to TypeScript 7 once `typescript-eslint` supports it (8.73.0 allows below 6.1) | 001 | When supported | Open |
-| npm 12 blocks `fsevents`' install script (an optional file watcher). Approve or deny it by name if it ever matters | 001 | None | Open |
+| npm 12 blocks `fsevents`' install script (an optional file watcher). Approve or deny it by name if it ever matters | 001 | None | Done 2026-11-22: denied in `allowScripts` (011) |
+| `books.db` and its WAL files get default permissions (`-rw-r--r--`), readable by other user accounts on the Mac. Decide with encryption at rest | 011 | Folder 12 | Open |
 | Decide the Admin Dashboard link (`decisions/admin-dashboard-link.md`), and ask client questions 24 and 25 | 2026-11-22 | Folder 10 | Open |
 | Decide whether `wireframe/` goes in git (W01 step 5). Recommended: the HTML yes, `wireframe/brain/` screenshots no | W01 | Spec 001 | Open |
 | Check `/wireframe` shows in a new Claude Code session (W01 check) | W01 | Next session | Open |
@@ -117,6 +131,7 @@ Things a newcomer would trip over.
 
 One or two lines per working session, newest first: what was done, what was measured, what was deferred.
 
+- **2026-11-22 (foundations 007 to 014):** Built ids, the logger and env checks, the hardened Electron window on a private `app://` scheme, the bridge, the ` Dev` data folder and log file, the SQLite store with hashed migrations, the pre-migration copy and integrity check, the packaged app with fuses, and the package contents check with an end-to-end test. 225 unit tests and 2 end-to-end tests pass. Found and fixed: VS Code's `ELECTRON_RUN_AS_NODE=1`, an ESM preload that would need the sandbox off, a self-check refusal that wrote to the real data folder. Stopped before folder 01 for its branch.
 - **2026-11-22 (foundations 001 to 006):** The author ran `git init` and created `feature/00-foundations`. Checked current versions (Electron 45.4.1, TypeScript 6.0.3 because `typescript-eslint` does not yet support 7, Vitest 5.1.1, ESLint 10.15.0) and chose electron-vite. Built tooling, folders, boundary and purity lint, `Result`, kinds, money and dates. 130 tests pass. Each lint rule was proved with throwaway files. Nothing committed. Electron itself not yet run (008).
 
 - **2026-11-22 (restructure):** At the author's request, rewrote every spec as 151 small specs in 13 folders, so the client sees the app in 9 demos with invented sample data. Archived the old specs, wrote `RENUMBERING.md`, `demo-feedback.md`, and updated references in every context file. Installed Impeccable (W01a) and UI UX Pro Max (W01b), wrote `PRODUCT.md` and `DESIGN.md`, and added "How Screens Are Made" to `ui-context.md`.

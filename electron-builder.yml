@@ -1,0 +1,40 @@
+# Packaging for the Mac (spec 013). `npm run package` makes release/mac-arm64/Accounting Books.app.
+# appId and productName decide the data folder and Keychain access: never change them after go-live.
+appId: app.accountingbooks.desktop
+productName: Accounting Books
+directories:
+  output: release
+# A whitelist: the built app and package.json. Production dependencies are added by electron-builder.
+files:
+  - out/**/*
+  - package.json
+  # better-sqlite3's C source and its binaries for other platforms are not needed on the Mac.
+  - '!**/node_modules/better-sqlite3/{deps,src}/**'
+  - '!**/node_modules/better-sqlite3/binding.gyp'
+  - '!**/node_modules/better-sqlite3/prebuilds/!(darwin-arm64.node)'
+  # Zod's TypeScript source and tests, and type definitions and source maps in any dependency.
+  - '!**/node_modules/zod/src/**'
+  - '!**/node_modules/**/*.{d.ts,d.cts,d.mts,map}'
+asar: true
+# better-sqlite3 ships a prebuilt Node-API binary for Apple silicon, so nothing is compiled.
+npmRebuild: false
+buildDependenciesFromSource: false
+mac:
+  target:
+    - target: dir
+      arch: [arm64]
+  # Ad-hoc signature: no Apple Developer account. Apple silicon will not run a binary whose
+  # signature was broken by setting fuses. Developer ID signing and notarizing are folder 12.
+  identity: '-'
+  hardenedRuntime: false
+  category: public.app-category.finance
+# Checked against `npx @electron/fuses read` on Electron 45.4.1 (nine fuses).
+electronFuses:
+  runAsNode: false
+  enableCookieEncryption: true
+  enableNodeOptionsEnvironmentVariable: false
+  enableNodeCliInspectArguments: false
+  enableEmbeddedAsarIntegrityValidation: true
+  onlyLoadAppFromAsar: true
+  loadBrowserProcessSpecificV8Snapshot: false
+  grantFileProtocolExtraPrivileges: false

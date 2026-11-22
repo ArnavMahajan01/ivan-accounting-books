@@ -1,35 +1,58 @@
 {
   "name": "accounting-books",
+  "productName": "Accounting Books",
   "version": "0.0.0",
   "private": true,
   "description": "A private accounting app for the Mac. Working title.",
   "type": "module",
+  "main": "./out/main/index.js",
   "engines": {
     "node": ">=24"
   },
   "scripts": {
-    "dev": "node -e \"console.error('Not built yet: the app window arrives at spec 008.'); process.exit(1)\"",
-    "build": "node -e \"console.error('Not built yet: the build arrives at spec 008.'); process.exit(1)\"",
-    "package": "node -e \"console.error('Not built yet: packaging arrives at spec 013.'); process.exit(1)\"",
-    "typecheck": "tsc --noEmit",
+    "dev": "env -u ELECTRON_RUN_AS_NODE electron-vite dev",
+    "build": "electron-vite build",
+    "package": "npm run build && electron-builder --mac --arm64 && node tools/check-package.ts",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p src/renderer",
     "lint": "eslint . --max-warnings 0",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:e2e": "npm run package && playwright test",
     "check": "npm run typecheck && npm run lint && npm test"
   },
   "devDependencies": {
+    "@electron/asar": "4.3.2",
+    "@electron/fuses": "2.1.3",
     "@eslint/js": "10.0.1",
+    "@playwright/test": "1.65.1",
+    "@types/better-sqlite3": "9.6.0",
     "@types/node": "24.19.2",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.3.0",
     "electron": "45.4.1",
+    "electron-builder": "26.18.0",
+    "electron-vite": "6.0.0",
     "eslint": "10.15.0",
     "eslint-import-resolver-typescript": "4.4.5",
     "eslint-plugin-boundaries": "7.4.4",
     "prettier": "3.10.1",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
     "typescript": "6.0.3",
     "typescript-eslint": "8.73.0",
     "vite": "8.3.8",
     "vitest": "5.1.1"
+  },
+  "dependencies": {
+    "better-sqlite3": "13.2.0",
+    "zod": "4.6.7"
+  },
+  "allowScripts": {
+    "better-sqlite3": false,
+    "fsevents": false,
+    "electron-winstaller": false
   }
 }

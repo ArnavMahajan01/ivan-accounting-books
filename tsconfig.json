@@ -4,7 +4,7 @@
     "lib": ["ES2023"],
     "module": "ESNext",
     "moduleResolution": "bundler",
-    "types": ["node"],
+    "types": ["node", "vite/client"],
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
@@ -28,7 +28,9 @@
       "@main/*": ["./src/main/*"],
       "@preload/*": ["./src/preload/*"],
       "@renderer/*": ["./src/renderer/*"]
-    }
+    },
+    "allowImportingTsExtensions": true
   },
-  "include": ["src", "tests", "tools", "*.config.ts"]
+  "include": ["src", "tests", "tools", "*.config.ts"],
+  "exclude": ["src/renderer"]
 }

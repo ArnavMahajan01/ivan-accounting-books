@@ -4,6 +4,8 @@ out/
 dist/
 release/
 coverage/
+test-results/
+playwright-report/
 
 # Secrets and local settings
 .env
