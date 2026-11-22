@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>F06 Online Invoice Payments (brainstorm) — 2211 Wireframes</title>
+  <link rel="stylesheet" href="base.css">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles-opt1.css">
+  <link rel="stylesheet" href="styles-opt2.css">
+  <link rel="stylesheet" href="styles-opt3.css">
+  <link rel="stylesheet" href="styles-opt4.css">
+  <link rel="stylesheet" href="styles-opt5.css">
+</head>
+<body>
+
+<div class="completion-banner" id="completion-banner" style="display:none;">
+  ✦ Visual designs complete — all options now have Clean + Polished variants
+  <button onclick="this.parentElement.style.display='none'" style="float:right;background:none;border:none;cursor:pointer;font-size:16px;">×</button>
+</div>
+
+<div class="page-wrapper">
+
+  <div class="title-bar">
+    <span><span id="feature-name">F06 Online Invoice Payments (brainstorm)</span> — <span id="project-name">Accounting Books</span></span>
+    <span class="rec">★ Recommended: Option <span id="rec-number">3</span></span>
+  </div>
+
+  <nav class="main-tabs">
+    <button class="tab-btn active" data-tab="option-1">1: Pay Link On Invoice</button>
+    <button class="tab-btn" data-tab="option-2">2: Payments Page</button>
+    <button class="tab-btn" data-tab="option-3">3: Payout Match</button>
+    <button class="tab-btn" data-tab="option-4">4: Customer's View</button>
+    <button class="tab-btn" data-tab="option-5">5: Invoice Timeline</button>
+    <button class="tab-btn" data-tab="summary">Summary</button>
+  </nav>
+
+  <!-- ===== OPTION 1 ===== -->
+  <div class="option-panel active" id="option-1">
+    <h2>Option 1: <span class="opt-name">Pay Link On Invoice</span></h2>
+    <p class="option-description">Each invoice gets a "Pay online" link, added to its PDF and email; its status changes when the payment arrives.</p>
+    <div class="sub-tab-bar" id="frame-opt1-tabs">
+      <button class="sub-tab-btn active" data-variant="wireframe" data-frame="frame-opt1">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTsketch1"><g fill="#555" stroke="#fff" stroke-linejoin="round" stroke-width="4"><rect width="36" height="36" x="6" y="6" rx="3"/><path stroke-linecap="round" d="M18.6 16h10.8l3.6 4.706L24 32l-9-11.294z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTsketch1)"/></svg>
+        <span class="sub-tab-label">Wireframe</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="clean" data-frame="frame-opt1">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTpaint1"><g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"><path d="m15.536 22.898l9.899 9.9m-9.899-9.9L7.05 31.383a7 7 0 1 0 9.9 9.9l8.485-8.486m-9.899 0l-4.243 4.243"/><path fill="#555" d="m25.435 32.797l14.907-6.432c2.688-1.16 3.809-4.379 2.086-6.745C38.264 13.903 32.65 8.89 28.51 5.823c-2.29-1.696-5.33-.64-6.46 1.975l-6.514 15.1z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTpaint1)"/></svg>
+        <span class="sub-tab-label">Clean</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="polished" data-frame="frame-opt1">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTdiamond1"><path fill="#555" stroke="#fff" stroke-width="4" d="M5.939 13.934L23.036 4.53a2 2 0 0 1 1.928 0l17.097 9.404a2 2 0 0 1 .683 2.888l-17.098 24.79a2 2 0 0 1-3.292 0L5.256 16.823a2 2 0 0 1 .683-2.888Z"/></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTdiamond1)"/></svg>
+        <span class="sub-tab-label">Polished</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+    </div>
+    <div class="browser-frame wireframe" id="frame-opt1">
+      <div class="browser-chrome">
+        <div class="browser-dots"><span></span><span></span><span></span></div>
+        <div class="browser-url">Accounting Books — Invoices</div>
+        <div class="browser-controls">─ □ ✕</div>
+      </div>
+      <div class="browser-content">
+        <div class="app"><nav class="sb" aria-label="Sidebar"><div class="biz">Harbour Lane Joinery</div><a href="#"><span>Home</span></a><a href="#"><span>To review</span><span class="n cnt">37</span></a><a href="#"><span>Bank</span></a><a href="#"><span>Transactions</span></a><a href="#"><span>Accounts</span></a><a href="#"><span>Reports</span></a><a href="#" class="on"><span>Invoices</span></a><a href="#"><span>Shared sheets</span></a><a href="#"><span>Accountant changes</span><span class="n cnt">2</span></a><div class="gap"></div><a href="#"><span>Settings</span></a><a href="#"><span>Help</span></a></nav><main class="main">
+  <div class="tb"><h1>INV-1045</h1><span class="badge solid">Paid online 18/11/2026</span><span class="sample">Future idea</span><span class="sp"></span><a href="#" class="btn">Export PDF</a></div>
+  <div class="grid" style="grid-template-columns:2fr 1fr">
+    <div class="panel"><div class="small muted">Bill to</div><b>Bayview Strata</b><table class="t" style="margin-top:8px"><tbody><tr><td>Replace common-area door frame</td><td class="r">$800.00</td></tr><tr><td>GST</td><td class="r">$80.00</td></tr></tbody><tfoot><tr><td>Total</td><td class="r">$880.00</td></tr></tfoot></table></div>
+    <div class="panel"><div class="h2">Online payment<span class="wf-marker">1</span></div><div class="small">Link: pay.example.com/i/8F3K</div><div class="row" style="margin-top:6px"><a href="#" class="btn sm">Copy link</a></div><label class="small"><input type="checkbox" checked> Show "Pay online" on the PDF</label><p class="small muted">Card or bank transfer, on the payment provider's page.</p></div>
+  </div>
+</main></div>
+      </div>
+    </div>
+    <div class="wf-annotations">
+      <h3>UX notes</h3>
+      <ul>
+<li>① The link lives with the invoice. The page that takes the money belongs to the provider, because a desktop app cannot receive payments.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== OPTION 2 ===== -->
+  <div class="option-panel" id="option-2">
+    <h2>Option 2: <span class="opt-name">Payments Page</span></h2>
+    <p class="option-description">A page listing online payments as they come in, and the payouts that bundle them into the bank.</p>
+    <div class="sub-tab-bar" id="frame-opt2-tabs">
+      <button class="sub-tab-btn active" data-variant="wireframe" data-frame="frame-opt2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTsketch2"><g fill="#555" stroke="#fff" stroke-linejoin="round" stroke-width="4"><rect width="36" height="36" x="6" y="6" rx="3"/><path stroke-linecap="round" d="M18.6 16h10.8l3.6 4.706L24 32l-9-11.294z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTsketch2)"/></svg>
+        <span class="sub-tab-label">Wireframe</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="clean" data-frame="frame-opt2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTpaint2"><g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"><path d="m15.536 22.898l9.899 9.9m-9.899-9.9L7.05 31.383a7 7 0 1 0 9.9 9.9l8.485-8.486m-9.899 0l-4.243 4.243"/><path fill="#555" d="m25.435 32.797l14.907-6.432c2.688-1.16 3.809-4.379 2.086-6.745C38.264 13.903 32.65 8.89 28.51 5.823c-2.29-1.696-5.33-.64-6.46 1.975l-6.514 15.1z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTpaint2)"/></svg>
+        <span class="sub-tab-label">Clean</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="polished" data-frame="frame-opt2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTdiamond2"><path fill="#555" stroke="#fff" stroke-width="4" d="M5.939 13.934L23.036 4.53a2 2 0 0 1 1.928 0l17.097 9.404a2 2 0 0 1 .683 2.888l-17.098 24.79a2 2 0 0 1-3.292 0L5.256 16.823a2 2 0 0 1 .683-2.888Z"/></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTdiamond2)"/></svg>
+        <span class="sub-tab-label">Polished</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+    </div>
+    <div class="browser-frame wireframe" id="frame-opt2">
+      <div class="browser-chrome">
+        <div class="browser-dots"><span></span><span></span><span></span></div>
+        <div class="browser-url">Accounting Books — Invoices</div>
+        <div class="browser-controls">─ □ ✕</div>
+      </div>
+      <div class="browser-content">
+        <div class="app"><nav class="sb" aria-label="Sidebar"><div class="biz">Harbour Lane Joinery</div><a href="#"><span>Home</span></a><a href="#"><span>To review</span><span class="n cnt">37</span></a><a href="#"><span>Bank</span></a><a href="#"><span>Transactions</span></a><a href="#"><span>Accounts</span></a><a href="#"><span>Reports</span></a><a href="#"><span>Invoices</span></a><a href="#" class="on"><span>Online payments</span></a><a href="#"><span>Shared sheets</span></a><a href="#"><span>Accountant changes</span><span class="n cnt">2</span></a><div class="gap"></div><a href="#"><span>Settings</span></a><a href="#"><span>Help</span></a></nav><main class="main">
+  <div class="tb"><h1>Online payments</h1><span class="sample">Future idea</span><span class="sp"></span><span class="small muted">Provider connected as owner@example.com</span></div>
+  <table class="t"><thead><tr><th>Date</th><th>Invoice</th><th>Customer</th><th class="r">Paid</th><th>Payout<span class="wf-marker">1</span></th></tr></thead><tbody>
+  <tr><td>18/11/2026</td><td>INV-1045</td><td>Bayview Strata</td><td class="r">$880.00</td><td>19/11 · in bank ✓</td></tr>
+  <tr><td>17/11/2026</td><td>INV-1043</td><td>Smith Renovations</td><td class="r">$1,650.00</td><td>19/11 · in bank ✓</td></tr>
+  <tr><td>21/11/2026</td><td>INV-1047</td><td>K Patel</td><td class="r">$495.00</td><td class="muted">waiting</td></tr></tbody></table>
+</main></div>
+      </div>
+    </div>
+    <div class="wf-annotations">
+      <h3>UX notes</h3>
+      <ul>
+<li>① Shows each payment and which payout it went in. Adds a sidebar item, which phase 07 does not have.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== OPTION 3 ===== -->
+  <div class="option-panel" id="option-3">
+    <h2>Option 3: <span class="opt-name">Payout Match</span></h2>
+    <p class="option-description">When the payout reaches the bank, its To review line opens into the invoices it paid and the fee, already split and balanced.</p>
+    <div class="sub-tab-bar" id="frame-opt3-tabs">
+      <button class="sub-tab-btn active" data-variant="wireframe" data-frame="frame-opt3">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTsketch3"><g fill="#555" stroke="#fff" stroke-linejoin="round" stroke-width="4"><rect width="36" height="36" x="6" y="6" rx="3"/><path stroke-linecap="round" d="M18.6 16h10.8l3.6 4.706L24 32l-9-11.294z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTsketch3)"/></svg>
+        <span class="sub-tab-label">Wireframe</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="clean" data-frame="frame-opt3">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTpaint3"><g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"><path d="m15.536 22.898l9.899 9.9m-9.899-9.9L7.05 31.383a7 7 0 1 0 9.9 9.9l8.485-8.486m-9.899 0l-4.243 4.243"/><path fill="#555" d="m25.435 32.797l14.907-6.432c2.688-1.16 3.809-4.379 2.086-6.745C38.264 13.903 32.65 8.89 28.51 5.823c-2.29-1.696-5.33-.64-6.46 1.975l-6.514 15.1z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTpaint3)"/></svg>
+        <span class="sub-tab-label">Clean</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="polished" data-frame="frame-opt3">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTdiamond3"><path fill="#555" stroke="#fff" stroke-width="4" d="M5.939 13.934L23.036 4.53a2 2 0 0 1 1.928 0l17.097 9.404a2 2 0 0 1 .683 2.888l-17.098 24.79a2 2 0 0 1-3.292 0L5.256 16.823a2 2 0 0 1 .683-2.888Z"/></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTdiamond3)"/></svg>
+        <span class="sub-tab-label">Polished</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+    </div>
+    <div class="browser-frame wireframe" id="frame-opt3">
+      <div class="browser-chrome">
+        <div class="browser-dots"><span></span><span></span><span></span></div>
+        <div class="browser-url">Accounting Books — Invoices</div>
+        <div class="browser-controls">─ □ ✕</div>
+      </div>
+      <div class="browser-content">
+        <div class="app"><nav class="sb" aria-label="Sidebar"><div class="biz">Harbour Lane Joinery</div><a href="#"><span>Home</span></a><a href="#" class="on"><span>To review</span><span class="n cnt">37</span></a><a href="#"><span>Bank</span></a><a href="#"><span>Transactions</span></a><a href="#"><span>Accounts</span></a><a href="#"><span>Reports</span></a><a href="#"><span>Shared sheets</span></a><a href="#"><span>Accountant changes</span><span class="n cnt">2</span></a><div class="gap"></div><a href="#"><span>Settings</span></a><a href="#"><span>Help</span></a></nav><main class="main">
+  <div class="tb"><h1>To review</h1><span class="sample">Future idea</span></div>
+  <table class="t"><tbody>
+  <tr class="sel"><td>19/11</td><td>PAYOUT PAYPROV 19NOV</td><td class="r">$2,485.72</td><td><b>Online payments payout</b><span class="wf-marker">1</span></td><td><a href="#" class="btn sm main-act">Accept</a></td></tr>
+  <tr><td colspan="5" style="padding-left:40px"><table class="t"><tbody>
+<tr><td>INV-1043 · Smith Renovations</td><td class="r">$1,650.00</td></tr>
+<tr><td>INV-1045 · Bayview Strata</td><td class="r">$880.00</td></tr>
+<tr><td>Payment provider fees <span class="small muted">(GST $4.03)</span></td><td class="r">-$44.28</td></tr>
+</tbody><tfoot><tr><td>Paid into Business One on 19/11/2026</td><td class="r">$2,485.72 ✓</td></tr></tfoot></table><div class="small muted" style="margin-top:6px">Marks both invoices as paid, and records the fee as an expense with its GST.<span class="wf-marker">2</span></div></td></tr>
+  <tr><td>18/11</td><td>BUNNINGS 4532</td><td class="r">-$342.15</td><td>Materials & supplies</td><td><a href="#" class="btn sm">Accept</a></td></tr></tbody></table>
+</main></div>
+      </div>
+    </div>
+    <div class="wf-annotations">
+      <h3>UX notes</h3>
+      <ul>
+<li>① The app recognises the payout line and knows what is inside it from the provider.</li>
+        <li>② One Accept does what would otherwise be a three-way split by hand: two invoices and a fee.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== OPTION 4 ===== -->
+  <div class="option-panel" id="option-4">
+    <h2>Option 4: <span class="opt-name">Customer's View</span></h2>
+    <p class="option-description">A sketch of what the customer sees after clicking "Pay online": the provider's page, with the business's name and invoice.</p>
+    <div class="sub-tab-bar" id="frame-opt4-tabs">
+      <button class="sub-tab-btn active" data-variant="wireframe" data-frame="frame-opt4">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTsketch4"><g fill="#555" stroke="#fff" stroke-linejoin="round" stroke-width="4"><rect width="36" height="36" x="6" y="6" rx="3"/><path stroke-linecap="round" d="M18.6 16h10.8l3.6 4.706L24 32l-9-11.294z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTsketch4)"/></svg>
+        <span class="sub-tab-label">Wireframe</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="clean" data-frame="frame-opt4">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTpaint4"><g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"><path d="m15.536 22.898l9.899 9.9m-9.899-9.9L7.05 31.383a7 7 0 1 0 9.9 9.9l8.485-8.486m-9.899 0l-4.243 4.243"/><path fill="#555" d="m25.435 32.797l14.907-6.432c2.688-1.16 3.809-4.379 2.086-6.745C38.264 13.903 32.65 8.89 28.51 5.823c-2.29-1.696-5.33-.64-6.46 1.975l-6.514 15.1z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTpaint4)"/></svg>
+        <span class="sub-tab-label">Clean</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="polished" data-frame="frame-opt4">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTdiamond4"><path fill="#555" stroke="#fff" stroke-width="4" d="M5.939 13.934L23.036 4.53a2 2 0 0 1 1.928 0l17.097 9.404a2 2 0 0 1 .683 2.888l-17.098 24.79a2 2 0 0 1-3.292 0L5.256 16.823a2 2 0 0 1 .683-2.888Z"/></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTdiamond4)"/></svg>
+        <span class="sub-tab-label">Polished</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+    </div>
+    <div class="browser-frame wireframe" id="frame-opt4">
+      <div class="browser-chrome">
+        <div class="browser-dots"><span></span><span></span><span></span></div>
+        <div class="browser-url">Accounting Books — Invoices</div>
+        <div class="browser-controls">─ □ ✕</div>
+      </div>
+      <div class="browser-content">
+        <div class="app one"><main class="main"><div class="cust"><span class="wf-marker">1</span>
+  <div class="small muted">pay.example.com</div><h1 style="font-size:18px">Harbour Lane Joinery Pty Ltd</h1><p>Invoice INV-1045 · due 30/11/2026</p><div style="font-size:26px;font-weight:600">$880.00</div>
+  <div class="field" style="margin-top:12px">Card number<input class="f" aria-label="Card number" placeholder="1234 1234 1234 1234"></div>
+  <a href="#" class="btn main-act" style="width:100%;justify-content:center">Pay $880.00</a><p class="small muted">Or pay by bank transfer: BSB and account shown on the invoice.</p></div></main></div>
+      </div>
+    </div>
+    <div class="wf-annotations">
+      <h3>UX notes</h3>
+      <ul>
+<li>① Hosted and styled by the payment provider, not built in this app. Shown so the client knows what his customers would see.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== OPTION 5 ===== -->
+  <div class="option-panel" id="option-5">
+    <h2>Option 5: <span class="opt-name">Invoice Timeline</span></h2>
+    <p class="option-description">Each invoice shows its life as a short timeline: sent, paid online, paid out, matched in the bank.</p>
+    <div class="sub-tab-bar" id="frame-opt5-tabs">
+      <button class="sub-tab-btn active" data-variant="wireframe" data-frame="frame-opt5">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTsketch5"><g fill="#555" stroke="#fff" stroke-linejoin="round" stroke-width="4"><rect width="36" height="36" x="6" y="6" rx="3"/><path stroke-linecap="round" d="M18.6 16h10.8l3.6 4.706L24 32l-9-11.294z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTsketch5)"/></svg>
+        <span class="sub-tab-label">Wireframe</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="clean" data-frame="frame-opt5">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTpaint5"><g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"><path d="m15.536 22.898l9.899 9.9m-9.899-9.9L7.05 31.383a7 7 0 1 0 9.9 9.9l8.485-8.486m-9.899 0l-4.243 4.243"/><path fill="#555" d="m25.435 32.797l14.907-6.432c2.688-1.16 3.809-4.379 2.086-6.745C38.264 13.903 32.65 8.89 28.51 5.823c-2.29-1.696-5.33-.64-6.46 1.975l-6.514 15.1z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTpaint5)"/></svg>
+        <span class="sub-tab-label">Clean</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="polished" data-frame="frame-opt5">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTdiamond5"><path fill="#555" stroke="#fff" stroke-width="4" d="M5.939 13.934L23.036 4.53a2 2 0 0 1 1.928 0l17.097 9.404a2 2 0 0 1 .683 2.888l-17.098 24.79a2 2 0 0 1-3.292 0L5.256 16.823a2 2 0 0 1 .683-2.888Z"/></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTdiamond5)"/></svg>
+        <span class="sub-tab-label">Polished</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+    </div>
+    <div class="browser-frame wireframe" id="frame-opt5">
+      <div class="browser-chrome">
+        <div class="browser-dots"><span></span><span></span><span></span></div>
+        <div class="browser-url">Accounting Books — Invoices</div>
+        <div class="browser-controls">─ □ ✕</div>
+      </div>
+      <div class="browser-content">
+        <div class="app"><nav class="sb" aria-label="Sidebar"><div class="biz">Harbour Lane Joinery</div><a href="#"><span>Home</span></a><a href="#"><span>To review</span><span class="n cnt">37</span></a><a href="#"><span>Bank</span></a><a href="#"><span>Transactions</span></a><a href="#"><span>Accounts</span></a><a href="#"><span>Reports</span></a><a href="#" class="on"><span>Invoices</span></a><a href="#"><span>Shared sheets</span></a><a href="#"><span>Accountant changes</span><span class="n cnt">2</span></a><div class="gap"></div><a href="#"><span>Settings</span></a><a href="#"><span>Help</span></a></nav><main class="main">
+  <div class="tb"><h1>INV-1043 · Smith Renovations · $1,650.00</h1><span class="sample">Future idea</span></div>
+  <ol class="tl"><span class="wf-marker">1</span>
+    <li class="ok"><b>Sent</b><span>10/11/2026 by email, with a Pay online link</span></li>
+    <li class="ok"><b>Paid online</b><span>17/11/2026, by card</span></li>
+    <li class="ok"><b>Paid out</b><span>19/11/2026, in a payout of $2,485.72 with 1 other invoice, less $44.28 fees</span></li>
+    <li class="cur"><b>Matched in the bank</b><span>Waiting in To review <a href="#" class="btn sm">Review</a></span></li>
+  </ol>
+</main></div>
+      </div>
+    </div>
+    <div class="wf-annotations">
+      <h3>UX notes</h3>
+      <ul>
+<li>① Answers "where is my money?" for one invoice. The sent time is when the app sent it; whether the customer opened it is not known.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== SUMMARY ===== -->
+  <div class="option-panel" id="summary">
+    <h2>Summary</h2>
+<table class="t"><thead><tr><th>Option</th><th>Approach</th><th>Saves bookkeeping work</th></tr></thead><tbody>
+<tr><td>1: Pay Link On Invoice</td><td>A link on each invoice and its PDF</td><td>★★★☆☆</td></tr>
+<tr><td>2: Payments Page</td><td>A list of payments and payouts</td><td>★★★☆☆</td></tr>
+<tr><td>3: Payout Match</td><td>The payout line opens into invoices and the fee</td><td>★★★★★</td></tr>
+<tr><td>4: Customer's View</td><td>What the customer sees (the provider's page)</td><td>n/a</td></tr>
+<tr><td>5: Invoice Timeline</td><td>Sent, paid, paid out, matched</td><td>★★★★☆</td></tr>
+</tbody></table>
+<p><b>Recommended: Option 3, Payout Match</b>, with Option 1's link on the invoice. Taking the payment is the provider's job; the hard bookkeeping part is that one bank line holds several invoices less a fee, and that is where the app can save him the most.</p>
+<p class="muted small">Brainstorm only. Depends on invoices (W08, client question 1) and on whether customers pay online today (question 10). Provider and fees are undecided (F06). Customers and amounts are invented.</p>
+  </div>
+
+</div>
+
+<footer class="skill-footer">
+  This design was crafted by the <a href="https://github.com/Magdoub/claude-wireframe-skill">Wireframe skill</a> — follow on GitHub
+</footer>
+
+<script>
+(function() {
+  // Main tab switching
+  var tabBtns = document.querySelectorAll('.tab-btn');
+  var panels = document.querySelectorAll('.option-panel');
+  tabBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      tabBtns.forEach(function(b) { b.classList.remove('active'); });
+      panels.forEach(function(p) { p.classList.remove('active'); });
+      btn.classList.add('active');
+      var target = document.getElementById(btn.dataset.tab);
+      if (target) target.classList.add('active');
+    });
+  });
+
+  // Sub-tab switching
+  var subBtns = document.querySelectorAll('.sub-tab-btn');
+  subBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var frameId = btn.dataset.frame;
+      var siblings = btn.parentElement.querySelectorAll('.sub-tab-btn');
+      siblings.forEach(function(s) { s.classList.remove('active'); });
+      btn.classList.add('active');
+      var frame = document.getElementById(frameId);
+      if (frame) {
+        frame.classList.remove('wireframe', 'clean', 'polished');
+        frame.classList.add(btn.dataset.variant);
+      }
+    });
+  });
+
+  // Completion banner — one-time load check
+  window.addEventListener('load', function() {
+    var badges = document.querySelectorAll('.sub-tab-badge');
+    var anyVisible = false;
+    badges.forEach(function(b) {
+      if (getComputedStyle(b).display !== 'none') anyVisible = true;
+    });
+    if (!anyVisible && badges.length > 0) {
+      var banner = document.getElementById('completion-banner');
+      if (banner) {
+        banner.style.display = 'block';
+        setTimeout(function() { banner.style.display = 'none'; }, 8000);
+      }
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

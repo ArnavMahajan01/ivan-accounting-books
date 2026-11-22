@@ -1,0 +1,26 @@
+# Dependencies and build output
+node_modules/
+out/
+dist/
+release/
+coverage/
+
+# Secrets and local settings
+.env
+.env.*
+!.env.example
+.claude/settings.local.json
+
+# The books. Real data never enters git
+*.db
+*.db-*
+*.sqlite
+*.sqlite-*
+tests/private/
+
+# Real client screenshots (risk K3)
+/references/
+/wireframe/brain/*.png
+
+# macOS
+.DS_Store

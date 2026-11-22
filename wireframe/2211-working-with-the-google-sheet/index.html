@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Working With the Google Sheet — 2211 Wireframes</title>
+  <link rel="stylesheet" href="base.css">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles-opt1.css">
+  <link rel="stylesheet" href="styles-opt2.css">
+  <link rel="stylesheet" href="styles-opt3.css">
+  <link rel="stylesheet" href="styles-opt4.css">
+  <link rel="stylesheet" href="styles-opt5.css">
+</head>
+<body>
+
+<div class="completion-banner" id="completion-banner" style="display:none;">
+  ✦ Visual designs complete — all options now have Clean + Polished variants
+  <button onclick="this.parentElement.style.display='none'" style="float:right;background:none;border:none;cursor:pointer;font-size:16px;">×</button>
+</div>
+
+<div class="page-wrapper">
+
+  <div class="title-bar">
+    <span><span id="feature-name">Working With the Google Sheet</span> — <span id="project-name">Accounting Books</span></span>
+    <span class="rec">★ Recommended: Option <span id="rec-number">3</span></span>
+  </div>
+
+  <nav class="main-tabs">
+    <button class="tab-btn active" data-tab="option-1">1: Side By Side</button>
+    <button class="tab-btn" data-tab="option-2">2: Sheet Inside The App</button>
+    <button class="tab-btn" data-tab="option-3">3: Preview Before Publish</button>
+    <button class="tab-btn" data-tab="option-4">4: Ready Formulas</button>
+    <button class="tab-btn" data-tab="option-5">5: Workbook Map</button>
+    <button class="tab-btn" data-tab="summary">Summary</button>
+  </nav>
+
+  <!-- ===== OPTION 1 ===== -->
+  <div class="option-panel active" id="option-1">
+    <h2>Option 1: <span class="opt-name">Side By Side</span></h2>
+    <p class="option-description">"Open in Google Sheets" opens the real sheet in Chrome, and one button places the app and Chrome side by side on the screen.</p>
+    <div class="sub-tab-bar" id="frame-opt1-tabs">
+      <button class="sub-tab-btn active" data-variant="wireframe" data-frame="frame-opt1">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTsketch1"><g fill="#555" stroke="#fff" stroke-linejoin="round" stroke-width="4"><rect width="36" height="36" x="6" y="6" rx="3"/><path stroke-linecap="round" d="M18.6 16h10.8l3.6 4.706L24 32l-9-11.294z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTsketch1)"/></svg>
+        <span class="sub-tab-label">Wireframe</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="clean" data-frame="frame-opt1">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTpaint1"><g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"><path d="m15.536 22.898l9.899 9.9m-9.899-9.9L7.05 31.383a7 7 0 1 0 9.9 9.9l8.485-8.486m-9.899 0l-4.243 4.243"/><path fill="#555" d="m25.435 32.797l14.907-6.432c2.688-1.16 3.809-4.379 2.086-6.745C38.264 13.903 32.65 8.89 28.51 5.823c-2.29-1.696-5.33-.64-6.46 1.975l-6.514 15.1z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTpaint1)"/></svg>
+        <span class="sub-tab-label">Clean</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="polished" data-frame="frame-opt1">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTdiamond1"><path fill="#555" stroke="#fff" stroke-width="4" d="M5.939 13.934L23.036 4.53a2 2 0 0 1 1.928 0l17.097 9.404a2 2 0 0 1 .683 2.888l-17.098 24.79a2 2 0 0 1-3.292 0L5.256 16.823a2 2 0 0 1 .683-2.888Z"/></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTdiamond1)"/></svg>
+        <span class="sub-tab-label">Polished</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+    </div>
+    <div class="browser-frame wireframe" id="frame-opt1">
+      <div class="browser-chrome">
+        <div class="browser-dots"><span></span><span></span><span></span></div>
+        <div class="browser-url">Accounting Books — Shared sheets</div>
+        <div class="browser-controls">─ □ ✕</div>
+      </div>
+      <div class="browser-content">
+        <div class="app"><nav class="sb" aria-label="Sidebar"><div class="biz">Harbour Lane Joinery</div><a href="#"><span>Home</span></a><a href="#"><span>To review</span><span class="n cnt">37</span></a><a href="#"><span>Bank</span></a><a href="#"><span>Transactions</span></a><a href="#"><span>Accounts</span></a><a href="#"><span>Reports</span></a><a href="#" class="on"><span>Shared sheets</span></a><a href="#"><span>Accountant changes</span><span class="n cnt">2</span></a><div class="gap"></div><a href="#"><span>Settings</span></a><a href="#"><span>Help</span></a></nav><main class="main">
+  <div class="tb"><h1>Shared sheets</h1><span class="sample">Sample data</span><span class="sp"></span><a href="#" class="btn">Open in Google Sheets</a><a href="#" class="btn main-act">Open side by side<span class="wf-marker">1</span></a></div>
+  <div class="two"><div class="mini"><div class="small muted">Accounting Books</div><b>Quarterly P&amp;L for accountant</b><div class="small">Published 22/11/2026 · shared with accountant@example.com</div></div>
+  <div class="mini chrome"><div class="small muted">Chrome · docs.google.com</div><div class="gs"><div class="gtb"><span>File</span><span>Edit</span><span>View</span><span>Insert</span><span>Format</span><span>Data</span><span class="sp"></span><span class="gsh">Share</span></div>
+<div class="gfx"><b>fx</b><span>=B3-C3</span></div>
+<table class="gg"><thead><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th></tr></thead><tbody>
+<tr><th>1</th><td><b>Account</b></td><td class="n"><b>Oct–Dec 2026</b></td><td class="n"><b>Jul–Sep 2026</b></td><td class="mine"><b>My notes</b></td><td class="mine"><b>Change</b></td></tr>
+<tr><th>2</th><td>Sales</td><td class="n">38,450.00</td><td class="n">48,000.00</td><td class="mine">2 big jobs moved to Jan</td><td class="mine n">-9,550.00</td></tr>
+<tr><th>3</th><td>Materials & supplies</td><td class="n">9,812.40</td><td class="n">12,310.75</td><td class="mine"></td><td class="mine n cur">-2,498.35</td></tr>
+<tr><th>4</th><td>Subcontractors</td><td class="n">6,600.00</td><td class="n">8,250.00</td><td class="mine"></td><td class="mine n">-1,650.00</td></tr>
+<tr><th>5</th><td><b>Net profit</b></td><td class="n"><b>19,120.45</b></td><td class="n"><b>23,333.05</b></td><td class="mine"></td><td class="mine n">-4,212.60</td></tr>
+</tbody></table>
+<div class="gtabs"><span class="on">P&amp;L (from the app)</span><span>My workings</span><span>Ready formulas</span><span>+</span></div></div></div></div>
+  <p class="small muted">His own columns (D, E) and tabs are kept when the app publishes again. Only the app's columns are refreshed.<span class="wf-marker">2</span></p>
+</main></div>
+      </div>
+    </div>
+    <div class="wf-annotations">
+      <h3>UX notes</h3>
+      <ul>
+<li>① Uses the Mac's own side-by-side windows. The real Google Sheets, with everything it can do.</li>
+        <li>② Shaded columns are his: the app never overwrites them.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== OPTION 2 ===== -->
+  <div class="option-panel" id="option-2">
+    <h2>Option 2: <span class="opt-name">Sheet Inside The App</span></h2>
+    <p class="option-description">The real Google Sheet opens in a panel inside the app window, beside the report. Chrome is always one click away.</p>
+    <div class="sub-tab-bar" id="frame-opt2-tabs">
+      <button class="sub-tab-btn active" data-variant="wireframe" data-frame="frame-opt2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTsketch2"><g fill="#555" stroke="#fff" stroke-linejoin="round" stroke-width="4"><rect width="36" height="36" x="6" y="6" rx="3"/><path stroke-linecap="round" d="M18.6 16h10.8l3.6 4.706L24 32l-9-11.294z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTsketch2)"/></svg>
+        <span class="sub-tab-label">Wireframe</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="clean" data-frame="frame-opt2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTpaint2"><g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"><path d="m15.536 22.898l9.899 9.9m-9.899-9.9L7.05 31.383a7 7 0 1 0 9.9 9.9l8.485-8.486m-9.899 0l-4.243 4.243"/><path fill="#555" d="m25.435 32.797l14.907-6.432c2.688-1.16 3.809-4.379 2.086-6.745C38.264 13.903 32.65 8.89 28.51 5.823c-2.29-1.696-5.33-.64-6.46 1.975l-6.514 15.1z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTpaint2)"/></svg>
+        <span class="sub-tab-label">Clean</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="polished" data-frame="frame-opt2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTdiamond2"><path fill="#555" stroke="#fff" stroke-width="4" d="M5.939 13.934L23.036 4.53a2 2 0 0 1 1.928 0l17.097 9.404a2 2 0 0 1 .683 2.888l-17.098 24.79a2 2 0 0 1-3.292 0L5.256 16.823a2 2 0 0 1 .683-2.888Z"/></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTdiamond2)"/></svg>
+        <span class="sub-tab-label">Polished</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+    </div>
+    <div class="browser-frame wireframe" id="frame-opt2">
+      <div class="browser-chrome">
+        <div class="browser-dots"><span></span><span></span><span></span></div>
+        <div class="browser-url">Accounting Books — Shared sheets</div>
+        <div class="browser-controls">─ □ ✕</div>
+      </div>
+      <div class="browser-content">
+        <div class="states"><span>Show:</span><input type="radio" name="o2s" id="o2a" class="st-a" checked><label for="o2a">Sheet opened</label><input type="radio" name="o2s" id="o2b" class="st-b"><label for="o2b">Could not open here</label></div>
+<div class="app"><nav class="sb" aria-label="Sidebar"><div class="biz">Harbour Lane Joinery</div><a href="#"><span>Home</span></a><a href="#"><span>To review</span><span class="n cnt">37</span></a><a href="#"><span>Bank</span></a><a href="#"><span>Transactions</span></a><a href="#"><span>Accounts</span></a><a href="#"><span>Reports</span></a><a href="#" class="on"><span>Shared sheets</span></a><a href="#"><span>Accountant changes</span><span class="n cnt">2</span></a><div class="gap"></div><a href="#"><span>Settings</span></a><a href="#"><span>Help</span></a></nav><main class="main">
+  <div class="tb"><h1>Quarterly P&amp;L for accountant</h1><span class="sample">Sample data</span><span class="sp"></span><a href="#" class="btn">Open in Chrome</a><a href="#" class="btn main-act">Publish again</a></div>
+  <div class="xb"><div class="gs"><div class="gtb"><span>File</span><span>Edit</span><span>View</span><span>Insert</span><span>Format</span><span>Data</span><span class="sp"></span><span class="gsh">Share</span></div>
+<div class="gfx"><b>fx</b><span>=B3-C3</span></div>
+<table class="gg"><thead><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th></tr></thead><tbody>
+<tr><th>1</th><td><b>Account</b></td><td class="n"><b>Oct–Dec 2026</b></td><td class="n"><b>Jul–Sep 2026</b></td><td class="mine"><b>My notes</b></td><td class="mine"><b>Change</b></td></tr>
+<tr><th>2</th><td>Sales</td><td class="n">38,450.00</td><td class="n">48,000.00</td><td class="mine">2 big jobs moved to Jan</td><td class="mine n">-9,550.00</td></tr>
+<tr><th>3</th><td>Materials & supplies</td><td class="n">9,812.40</td><td class="n">12,310.75</td><td class="mine"></td><td class="mine n cur">-2,498.35</td></tr>
+<tr><th>4</th><td>Subcontractors</td><td class="n">6,600.00</td><td class="n">8,250.00</td><td class="mine"></td><td class="mine n">-1,650.00</td></tr>
+<tr><th>5</th><td><b>Net profit</b></td><td class="n"><b>19,120.45</b></td><td class="n"><b>23,333.05</b></td><td class="mine"></td><td class="mine n">-4,212.60</td></tr>
+</tbody></table>
+<div class="gtabs"><span class="on">P&amp;L (from the app)</span><span>My workings</span><span>Ready formulas</span><span>+</span></div></div><span class="wf-marker">1</span></div>
+  <div class="xa empty"><div class="box"></div><b>The sheet could not open inside the app</b>It is safe in Google Drive. Open it in Chrome instead.<br><br><a href="#" class="btn main-act">Open in Chrome</a><span class="wf-marker">2</span></div>
+  <label class="small" style="display:block;margin-top:8px"><input type="checkbox" checked> Open sheets inside the app</label>
+</main></div>
+      </div>
+    </div>
+    <div class="wf-annotations">
+      <h3>UX notes</h3>
+      <ul>
+<li>① Google's own sheet screen in a panel, signed in once. Full editing: rows, columns, formulas, conditions.</li>
+        <li>② If Google does not allow the sign-in inside the app, the panel says so plainly and offers Chrome. Switch "Show" to see it. The tick box turns this panel on or off.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== OPTION 3 ===== -->
+  <div class="option-panel" id="option-3">
+    <h2>Option 3: <span class="opt-name">Preview Before Publish</span></h2>
+    <p class="option-description">Before publishing, a sheet-style preview beside the report shows exactly what Google will get, with its tabs.</p>
+    <div class="sub-tab-bar" id="frame-opt3-tabs">
+      <button class="sub-tab-btn active" data-variant="wireframe" data-frame="frame-opt3">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTsketch3"><g fill="#555" stroke="#fff" stroke-linejoin="round" stroke-width="4"><rect width="36" height="36" x="6" y="6" rx="3"/><path stroke-linecap="round" d="M18.6 16h10.8l3.6 4.706L24 32l-9-11.294z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTsketch3)"/></svg>
+        <span class="sub-tab-label">Wireframe</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="clean" data-frame="frame-opt3">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTpaint3"><g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"><path d="m15.536 22.898l9.899 9.9m-9.899-9.9L7.05 31.383a7 7 0 1 0 9.9 9.9l8.485-8.486m-9.899 0l-4.243 4.243"/><path fill="#555" d="m25.435 32.797l14.907-6.432c2.688-1.16 3.809-4.379 2.086-6.745C38.264 13.903 32.65 8.89 28.51 5.823c-2.29-1.696-5.33-.64-6.46 1.975l-6.514 15.1z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTpaint3)"/></svg>
+        <span class="sub-tab-label">Clean</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="polished" data-frame="frame-opt3">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTdiamond3"><path fill="#555" stroke="#fff" stroke-width="4" d="M5.939 13.934L23.036 4.53a2 2 0 0 1 1.928 0l17.097 9.404a2 2 0 0 1 .683 2.888l-17.098 24.79a2 2 0 0 1-3.292 0L5.256 16.823a2 2 0 0 1 .683-2.888Z"/></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTdiamond3)"/></svg>
+        <span class="sub-tab-label">Polished</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+    </div>
+    <div class="browser-frame wireframe" id="frame-opt3">
+      <div class="browser-chrome">
+        <div class="browser-dots"><span></span><span></span><span></span></div>
+        <div class="browser-url">Accounting Books — Shared sheets</div>
+        <div class="browser-controls">─ □ ✕</div>
+      </div>
+      <div class="browser-content">
+        <div class="app"><nav class="sb" aria-label="Sidebar"><div class="biz">Harbour Lane Joinery</div><a href="#"><span>Home</span></a><a href="#"><span>To review</span><span class="n cnt">37</span></a><a href="#"><span>Bank</span></a><a href="#"><span>Transactions</span></a><a href="#"><span>Accounts</span></a><a href="#" class="on"><span>Reports</span></a><a href="#"><span>Shared sheets</span></a><a href="#"><span>Accountant changes</span><span class="n cnt">2</span></a><div class="gap"></div><a href="#"><span>Settings</span></a><a href="#"><span>Help</span></a></nav><main class="main">
+  <div class="tb"><h1>Publish to Google Sheets</h1><span class="sample">Sample data</span><span class="sp"></span><a href="#" class="btn">Cancel</a><a href="#" class="btn main-act">Publish</a></div>
+  <div class="grid" style="grid-template-columns:200px 1fr">
+    <div class="panel small"><b>Quarterly P&amp;L for accountant</b><p>Goes to: the existing sheet, updated in place.<span class="wf-marker">1</span></p><p>Tabs:<br>✓ P&amp;L (from the app)<br>✓ Ready formulas<br><span class="muted">Kept as they are: My workings</span></p><label><input type="checkbox" checked> Include Ready formulas tab</label></div>
+    <div><div class="small muted mb">Preview<span class="wf-marker">2</span></div><div class="gs"><div class="gtb"><span>File</span><span>Edit</span><span>View</span><span>Insert</span><span>Format</span><span>Data</span><span class="sp"></span><span class="gsh">Share</span></div>
+<div class="gfx"><b>fx</b><span>Preview only. Nothing is sent until you click Publish.</span></div>
+<table class="gg"><thead><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th></tr></thead><tbody>
+<tr><th>1</th><td><b>Account</b></td><td class="n"><b>Oct–Dec 2026</b></td><td class="n"><b>Jul–Sep 2026</b></td><td class="mine"><b>My notes</b></td><td class="mine"><b>Change</b></td></tr>
+<tr><th>2</th><td>Sales</td><td class="n">38,450.00</td><td class="n">48,000.00</td><td class="mine">2 big jobs moved to Jan</td><td class="mine n">-9,550.00</td></tr>
+<tr><th>3</th><td>Materials & supplies</td><td class="n">9,812.40</td><td class="n">12,310.75</td><td class="mine"></td><td class="mine n cur">-2,498.35</td></tr>
+<tr><th>4</th><td>Subcontractors</td><td class="n">6,600.00</td><td class="n">8,250.00</td><td class="mine"></td><td class="mine n">-1,650.00</td></tr>
+<tr><th>5</th><td><b>Net profit</b></td><td class="n"><b>19,120.45</b></td><td class="n"><b>23,333.05</b></td><td class="mine"></td><td class="mine n">-4,212.60</td></tr>
+</tbody></table>
+<div class="gtabs"><span class="on">P&amp;L (from the app)</span><span>My workings</span><span>Ready formulas</span><span>+</span></div></div></div></div>
+</main></div>
+      </div>
+    </div>
+    <div class="wf-annotations">
+      <h3>UX notes</h3>
+      <ul>
+<li>① Says whether a new sheet is made or the same one updated, and which tabs are left alone.</li>
+        <li>② Drawn by the app from the data it is about to send. Works offline, nothing to sign in to.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== OPTION 4 ===== -->
+  <div class="option-panel" id="option-4">
+    <h2>Option 4: <span class="opt-name">Ready Formulas</span></h2>
+    <p class="option-description">A Ready formulas tab in every workbook, and the same list in the app, so he can use helpful formulas without writing them.</p>
+    <div class="sub-tab-bar" id="frame-opt4-tabs">
+      <button class="sub-tab-btn active" data-variant="wireframe" data-frame="frame-opt4">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTsketch4"><g fill="#555" stroke="#fff" stroke-linejoin="round" stroke-width="4"><rect width="36" height="36" x="6" y="6" rx="3"/><path stroke-linecap="round" d="M18.6 16h10.8l3.6 4.706L24 32l-9-11.294z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTsketch4)"/></svg>
+        <span class="sub-tab-label">Wireframe</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="clean" data-frame="frame-opt4">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTpaint4"><g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"><path d="m15.536 22.898l9.899 9.9m-9.899-9.9L7.05 31.383a7 7 0 1 0 9.9 9.9l8.485-8.486m-9.899 0l-4.243 4.243"/><path fill="#555" d="m25.435 32.797l14.907-6.432c2.688-1.16 3.809-4.379 2.086-6.745C38.264 13.903 32.65 8.89 28.51 5.823c-2.29-1.696-5.33-.64-6.46 1.975l-6.514 15.1z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTpaint4)"/></svg>
+        <span class="sub-tab-label">Clean</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="polished" data-frame="frame-opt4">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTdiamond4"><path fill="#555" stroke="#fff" stroke-width="4" d="M5.939 13.934L23.036 4.53a2 2 0 0 1 1.928 0l17.097 9.404a2 2 0 0 1 .683 2.888l-17.098 24.79a2 2 0 0 1-3.292 0L5.256 16.823a2 2 0 0 1 .683-2.888Z"/></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTdiamond4)"/></svg>
+        <span class="sub-tab-label">Polished</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+    </div>
+    <div class="browser-frame wireframe" id="frame-opt4">
+      <div class="browser-chrome">
+        <div class="browser-dots"><span></span><span></span><span></span></div>
+        <div class="browser-url">Accounting Books — Shared sheets</div>
+        <div class="browser-controls">─ □ ✕</div>
+      </div>
+      <div class="browser-content">
+        <div class="app"><nav class="sb" aria-label="Sidebar"><div class="biz">Harbour Lane Joinery</div><a href="#"><span>Home</span></a><a href="#"><span>To review</span><span class="n cnt">37</span></a><a href="#"><span>Bank</span></a><a href="#"><span>Transactions</span></a><a href="#"><span>Accounts</span></a><a href="#"><span>Reports</span></a><a href="#" class="on"><span>Shared sheets</span></a><a href="#"><span>Accountant changes</span><span class="n cnt">2</span></a><div class="gap"></div><a href="#"><span>Settings</span></a><a href="#"><span>Help</span></a></nav><main class="main">
+  <div class="tb"><h1>Ready formulas</h1><span class="sample">Sample data</span><span class="sp"></span><input class="f" placeholder="What do you want to work out?" aria-label="Search formulas"></div>
+  <table class="t"><thead><tr><th>Ready formula</th><th>What it does</th><th>Formula</th><th></th></tr></thead><tbody>
+<tr><td><b>GST in an amount</b></td><td>The GST inside a price that includes GST (one eleventh)</td><td><code>=ROUND(B2/11, 2)</code></td><td><a href="#" class="btn sm">Copy</a></td></tr>
+<tr><td><b>Amount without GST</b></td><td>The price before GST</td><td><code>=B2-ROUND(B2/11, 2)</code></td><td><a href="#" class="btn sm">Copy</a></td></tr>
+<tr><td><b>% of income</b></td><td>How big a cost is compared with sales</td><td><code>=B3/B$2</code></td><td><a href="#" class="btn sm">Copy</a></td></tr>
+<tr><td><b>Change from last quarter</b></td><td>This quarter minus last quarter</td><td><code>=B3-C3</code></td><td><a href="#" class="btn sm">Copy</a></td></tr>
+<tr><td><b>Flag if over an amount</b></td><td>Writes "Check" when a figure is over $1,000</td><td><code>=IF(B3&gt;1000, "Check", "")</code></td><td><a href="#" class="btn sm">Copy</a></td></tr>
+<tr><td><b>Days until the BAS is due</b></td><td>Counts down to 28/02/2027</td><td><code>=DATE(2027,2,28)-TODAY()</code></td><td><a href="#" class="btn sm">Copy</a></td></tr>
+</tbody></table><span class="wf-marker">1</span>
+  <p class="small muted">Copy puts the formula on the clipboard, ready to paste into a cell. Each one is also on the "Ready formulas" tab of the published sheet, with an example.<span class="wf-marker">2</span></p>
+</main></div>
+      </div>
+    </div>
+    <div class="wf-annotations">
+      <h3>UX notes</h3>
+      <ul>
+<li>① Plain names and one-line explanations. GST is one eleventh of a GST-inclusive amount, never 10%.</li>
+        <li>② The same list travels with every workbook, so the accountant sees what he used.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== OPTION 5 ===== -->
+  <div class="option-panel" id="option-5">
+    <h2>Option 5: <span class="opt-name">Workbook Map</span></h2>
+    <p class="option-description">One page explains the workbook: which tabs the app fills, which are his, and what happens when he publishes again.</p>
+    <div class="sub-tab-bar" id="frame-opt5-tabs">
+      <button class="sub-tab-btn active" data-variant="wireframe" data-frame="frame-opt5">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTsketch5"><g fill="#555" stroke="#fff" stroke-linejoin="round" stroke-width="4"><rect width="36" height="36" x="6" y="6" rx="3"/><path stroke-linecap="round" d="M18.6 16h10.8l3.6 4.706L24 32l-9-11.294z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTsketch5)"/></svg>
+        <span class="sub-tab-label">Wireframe</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="clean" data-frame="frame-opt5">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTpaint5"><g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"><path d="m15.536 22.898l9.899 9.9m-9.899-9.9L7.05 31.383a7 7 0 1 0 9.9 9.9l8.485-8.486m-9.899 0l-4.243 4.243"/><path fill="#555" d="m25.435 32.797l14.907-6.432c2.688-1.16 3.809-4.379 2.086-6.745C38.264 13.903 32.65 8.89 28.51 5.823c-2.29-1.696-5.33-.64-6.46 1.975l-6.514 15.1z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTpaint5)"/></svg>
+        <span class="sub-tab-label">Clean</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="polished" data-frame="frame-opt5">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTdiamond5"><path fill="#555" stroke="#fff" stroke-width="4" d="M5.939 13.934L23.036 4.53a2 2 0 0 1 1.928 0l17.097 9.404a2 2 0 0 1 .683 2.888l-17.098 24.79a2 2 0 0 1-3.292 0L5.256 16.823a2 2 0 0 1 .683-2.888Z"/></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTdiamond5)"/></svg>
+        <span class="sub-tab-label">Polished</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+    </div>
+    <div class="browser-frame wireframe" id="frame-opt5">
+      <div class="browser-chrome">
+        <div class="browser-dots"><span></span><span></span><span></span></div>
+        <div class="browser-url">Accounting Books — Shared sheets</div>
+        <div class="browser-controls">─ □ ✕</div>
+      </div>
+      <div class="browser-content">
+        <div class="app"><nav class="sb" aria-label="Sidebar"><div class="biz">Harbour Lane Joinery</div><a href="#"><span>Home</span></a><a href="#"><span>To review</span><span class="n cnt">37</span></a><a href="#"><span>Bank</span></a><a href="#"><span>Transactions</span></a><a href="#"><span>Accounts</span></a><a href="#"><span>Reports</span></a><a href="#" class="on"><span>Shared sheets</span></a><a href="#"><span>Accountant changes</span><span class="n cnt">2</span></a><div class="gap"></div><a href="#"><span>Settings</span></a><a href="#"><span>Help</span></a></nav><main class="main">
+  <div class="tb"><h1>Quarterly P&amp;L for accountant</h1><span class="sample">Sample data</span><span class="sp"></span><a href="#" class="btn">Open in Google Sheets</a></div>
+  <div class="grid g3"><span class="wf-marker">1</span>
+    <div class="panel"><b>P&amp;L (from the app)</b><p class="small">Filled by the app. Refreshed each time you publish. Your accountant can change only the allowed columns, and those changes wait for you.</p></div>
+    <div class="panel mine2"><b>My workings</b><p class="small">Yours. Add rows, columns, formulas and notes. The app never changes it.</p></div>
+    <div class="panel"><b>Ready formulas</b><p class="small">Helpful formulas with examples. Copy any of them into your own tabs.</p></div>
+  </div>
+  <p class="small muted" style="margin-top:12px">Your accountant's edits to allowed columns in the app's tab come back to Accountant changes for you to accept.</p>
+</main></div>
+      </div>
+    </div>
+    <div class="wf-annotations">
+      <h3>UX notes</h3>
+      <ul>
+<li>① A picture of who owns what, so he is never afraid that publishing again will wipe his work.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== SUMMARY ===== -->
+  <div class="option-panel" id="summary">
+    <h2>Summary</h2>
+<table class="t"><thead><tr><th>Option</th><th>Approach</th><th>Free-form work</th></tr></thead><tbody>
+<tr><td>1: Side By Side</td><td>Real Google Sheets in Chrome, next to the app</td><td>★★★★★</td></tr>
+<tr><td>2: Sheet Inside The App</td><td>Real Google Sheets in a panel, Chrome as fallback</td><td>★★★★★</td></tr>
+<tr><td>3: Preview Before Publish</td><td>Sheet-style preview of what Google will get</td><td>★★★☆☆</td></tr>
+<tr><td>4: Ready Formulas</td><td>Ready-made formulas with plain explanations</td><td>★★★★☆</td></tr>
+<tr><td>5: Workbook Map</td><td>Shows which tabs are the app's and which are his</td><td>★★★☆☆</td></tr>
+</tbody></table>
+<p><b>Recommended: all of them together, built around Option 3.</b> These are not rival layouts but parts that fit together. Publishing shows the preview (3) and updates the same workbook, keeping his tabs (5). He works freely in the real sheet, inside the app (2) when it opens there, otherwise beside it in Chrome (1), with Ready formulas (4) to help.</p>
+<p class="muted small">Columns D and E and the "My workings" tab are his own. The figures in columns B and C come from the books. All data is invented.</p>
+  </div>
+
+</div>
+
+<footer class="skill-footer">
+  This design was crafted by the <a href="https://github.com/Magdoub/claude-wireframe-skill">Wireframe skill</a> — follow on GitHub
+</footer>
+
+<script>
+(function() {
+  // Main tab switching
+  var tabBtns = document.querySelectorAll('.tab-btn');
+  var panels = document.querySelectorAll('.option-panel');
+  tabBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      tabBtns.forEach(function(b) { b.classList.remove('active'); });
+      panels.forEach(function(p) { p.classList.remove('active'); });
+      btn.classList.add('active');
+      var target = document.getElementById(btn.dataset.tab);
+      if (target) target.classList.add('active');
+    });
+  });
+
+  // Sub-tab switching
+  var subBtns = document.querySelectorAll('.sub-tab-btn');
+  subBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var frameId = btn.dataset.frame;
+      var siblings = btn.parentElement.querySelectorAll('.sub-tab-btn');
+      siblings.forEach(function(s) { s.classList.remove('active'); });
+      btn.classList.add('active');
+      var frame = document.getElementById(frameId);
+      if (frame) {
+        frame.classList.remove('wireframe', 'clean', 'polished');
+        frame.classList.add(btn.dataset.variant);
+      }
+    });
+  });
+
+  // Completion banner — one-time load check
+  window.addEventListener('load', function() {
+    var badges = document.querySelectorAll('.sub-tab-badge');
+    var anyVisible = false;
+    badges.forEach(function(b) {
+      if (getComputedStyle(b).display !== 'none') anyVisible = true;
+    });
+    if (!anyVisible && badges.length > 0) {
+      var banner = document.getElementById('completion-banner');
+      if (banner) {
+        banner.style.display = 'block';
+        setTimeout(function() { banner.style.display = 'none'; }, 8000);
+      }
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

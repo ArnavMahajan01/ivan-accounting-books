@@ -1,0 +1,14 @@
+# Build output and dependencies
+node_modules/
+out/
+dist/
+release/
+coverage/
+package-lock.json
+
+# Hand-written planning, wireframes, outside skills and private references are not reformatted
+*.md
+context/
+wireframe/
+references/
+.claude/

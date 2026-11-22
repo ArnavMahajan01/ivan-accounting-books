@@ -1,0 +1,35 @@
+{
+  "name": "accounting-books",
+  "version": "0.0.0",
+  "private": true,
+  "description": "A private accounting app for the Mac. Working title.",
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "dev": "node -e \"console.error('Not built yet: the app window arrives at spec 008.'); process.exit(1)\"",
+    "build": "node -e \"console.error('Not built yet: the build arrives at spec 008.'); process.exit(1)\"",
+    "package": "node -e \"console.error('Not built yet: packaging arrives at spec 013.'); process.exit(1)\"",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint . --max-warnings 0",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "check": "npm run typecheck && npm run lint && npm test"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@types/node": "24.19.2",
+    "electron": "45.4.1",
+    "eslint": "10.15.0",
+    "eslint-import-resolver-typescript": "4.4.5",
+    "eslint-plugin-boundaries": "7.4.4",
+    "prettier": "3.10.1",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.73.0",
+    "vite": "8.3.8",
+    "vitest": "5.1.1"
+  }
+}

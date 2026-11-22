@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wireframes for review</title>
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #f5f5f5; color: #000; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 14px; line-height: 1.5; }
+  main { max-width: 860px; margin: 0 auto; padding: 32px 16px 48px; }
+  h1 { font-size: 24px; margin: 0 0 4px; }
+  .lead { color: #333; margin: 0 0 24px; }
+  ol { list-style: none; padding: 0; margin: 0; counter-reset: s; }
+  li { counter-increment: s; background: #fff; border: 1px solid #ccc; border-radius: 10px; padding: 16px 16px 16px 56px; margin-bottom: 12px; position: relative; }
+  li::before { content: counter(s); position: absolute; left: 16px; top: 16px; width: 26px; height: 26px; border: 1px solid #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; }
+  li a { font-size: 16px; font-weight: 600; color: #000; }
+  li a:focus-visible { outline: 2px solid #000; outline-offset: 2px; }
+  .rec { margin: 4px 0 0; }
+  .why { margin: 2px 0 0; color: #333; }
+  .skip { background: #eee; border-style: solid; }
+  .skip::before { color: #666; border-color: #999; }
+  .note { border-top: 1px solid #ccc; margin-top: 24px; padding-top: 16px; color: #333; font-size: 13px; }
+  .note h2 { font-size: 15px; color: #000; margin: 0 0 6px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Accounting Books: wireframes for review</h1>
+  <p class="lead">Thirteen screens, in the order he would use them. Each screen has five layout options and a summary. They are black-and-white sketches of layout only: colours and final wording come later. Every name, amount and email is invented.</p>
+  <ol>
+    <li><a href="2111-app-shell-and-home/index.html">App shell and Home</a>
+      <p class="rec"><b>Recommended: Option 2, Next Steps.</b></p>
+      <p class="why">He does his books every few weeks, so Home should say what is waiting and give one button per job.</p></li>
+    <li><a href="2111-bank-import/index.html">Bank page and importing a Westpac file</a>
+      <p class="rec"><b>Recommended: Option 5, Plain Summary.</b></p>
+      <p class="why">The preview says what will happen in sentences, so duplicates and bad lines are understood without reading a table.</p></li>
+    <li><a href="2111-to-review/index.html">To review (giving bank lines an account)</a>
+      <p class="rec"><b>Recommended: Option 1, Review Table.</b></p>
+      <p class="why">The fastest way through 50 lines. Updated from his QuickBooks screens: Spent and Received, From/To, Match or account, and Post.</p></li>
+    <li><a href="2211-bank-rules/index.html">Bank rules</a>
+      <p class="rec"><b>Recommended: Option 1, List and Edit Panel.</b></p>
+      <p class="why">Works like the QuickBooks rules he uses now, including rules that post by themselves, plus "Do this every time?" after posting.</p></li>
+    <li><a href="2211-transactions-and-accounts/index.html">Transactions and chart of accounts</a>
+      <p class="rec"><b>Recommended: Option 1, Tables.</b></p>
+      <p class="why">Like his QuickBooks expense list and chart of accounts, with each entry's history one click away.</p></li>
+    <li><a href="2211-invoices-from-admin-dashboard/index.html">Invoices from the Admin Dashboard</a>
+      <p class="rec"><b>Recommended: Option 2, Linked Folder.</b></p>
+      <p class="why">He keeps making invoices and quotes in his Admin Dashboard. This app receives the issued invoices, shows who owes what, and matches payments.</p></li>
+    <li><a href="2211-contacts/index.html">Customers and suppliers (contacts)</a>
+      <p class="rec"><b>Recommended: Option 1, List and Contact Page, with saving as you go.</b></p>
+      <p class="why">Names are saved the first time they appear, so he never types them twice, and clicking a customer shows all their invoices and payments.</p></li>
+    <li><a href="2111-reports-and-bas/index.html">Reports and the BAS worksheet</a>
+      <p class="rec"><b>Recommended: Option 3, Quarter Close.</b></p>
+      <p class="why">A short checklist makes sure the quarter is only locked after the lines are reviewed and the accounts reconciled.</p></li>
+    <li><a href="2211-customise-a-report/index.html">Customising a report (columns and rows)</a>
+      <p class="rec"><b>Recommended: Option 2, Side Panel.</b></p>
+      <p class="why">He ticks the columns and rows he wants and sees the report change at once, then saves it as his own report.</p></li>
+    <li><a href="2111-sharing-with-accountant/index.html">Sharing with the accountant</a>
+      <p class="rec"><b>Recommended: Option 2, People First</b>, with Option 4's "What accepting does" box.</p>
+      <p class="why">Shows in one place what the accountant can see, with one button to stop it, and what each change would do before it is accepted.</p></li>
+    <li><a href="2211-working-with-the-google-sheet/index.html">Working with the Google Sheet (free-form, formulas)</a>
+      <p class="rec"><b>Recommended: all five together, built around Option 3.</b></p>
+      <p class="why">These are parts that fit together, not rivals: preview before publishing, the real sheet inside the app or beside it in Chrome, ready formulas, and his own tabs kept.</p></li>
+    <li><a href="2111-settings/index.html">Settings</a>
+      <p class="rec"><b>Recommended: Option 3, Status Cards.</b></p>
+      <p class="why">A disconnected Google account or stopped backups show at the top, where they cannot be missed.</p></li>
+    <li><a href="2211-help-and-guides/index.html">Help and guides</a>
+      <p class="rec"><b>Recommended: Option 1, Like Admin Dashboard.</b></p>
+      <p class="why">The same Help he already knows from his Admin Dashboard, with a help button on each page.</p></li>
+    <li class="skip"><b>Invoices and bills</b>
+      <p class="why">Not drawn yet. Only needed if he uses invoices or bills in QuickBooks today (client question 1).</p></li>
+  </ol>
+  <div class="note">
+    <h2>How to use these</h2>
+    <p>Open a screen, then click the numbered tabs to compare the options. Inside each window, the "Show" buttons switch between situations, such as a brand-new book or a file with a problem. Buttons with a "…" open the box they would open in the app. The numbered circles match the notes under each window.</p>
+    <p>Write down his choices and changes in <code>context/wireframe-feedback.md</code>.</p>
+  </div>
+</main>
+</body>
+</html>

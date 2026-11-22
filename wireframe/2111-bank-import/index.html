@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bank Page and Import Preview — 2111 Wireframes</title>
+  <link rel="stylesheet" href="base.css">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles-opt1.css">
+  <link rel="stylesheet" href="styles-opt2.css">
+  <link rel="stylesheet" href="styles-opt3.css">
+  <link rel="stylesheet" href="styles-opt4.css">
+  <link rel="stylesheet" href="styles-opt5.css">
+</head>
+<body>
+
+<div class="completion-banner" id="completion-banner" style="display:none;">
+  ✦ Visual designs complete — all options now have Clean + Polished variants
+  <button onclick="this.parentElement.style.display='none'" style="float:right;background:none;border:none;cursor:pointer;font-size:16px;">×</button>
+</div>
+
+<div class="page-wrapper">
+
+  <div class="title-bar">
+    <span><span id="feature-name">Bank Page and Import Preview</span> — <span id="project-name">Accounting Books</span></span>
+    <span class="rec">★ Recommended: Option <span id="rec-number">5</span></span>
+  </div>
+
+  <nav class="main-tabs">
+    <button class="tab-btn active" data-tab="option-1">1: Safe Sheet</button>
+    <button class="tab-btn" data-tab="option-2">2: Step Flow</button>
+    <button class="tab-btn" data-tab="option-3">3: Full Page</button>
+    <button class="tab-btn" data-tab="option-4">4: Inline Row</button>
+    <button class="tab-btn" data-tab="option-5">5: Plain Summary</button>
+    <button class="tab-btn" data-tab="summary">Summary</button>
+  </nav>
+
+  <!-- ===== OPTION 1 ===== -->
+  <div class="option-panel active" id="option-1">
+    <h2>Option 1: <span class="opt-name">Safe Sheet</span></h2>
+    <p class="option-description">As in ui-context.md: the Bank page with a drop zone, and the preview as a sheet over it.</p>
+    <div class="sub-tab-bar" id="frame-opt1-tabs">
+      <button class="sub-tab-btn active" data-variant="wireframe" data-frame="frame-opt1">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTsketch1"><g fill="#555" stroke="#fff" stroke-linejoin="round" stroke-width="4"><rect width="36" height="36" x="6" y="6" rx="3"/><path stroke-linecap="round" d="M18.6 16h10.8l3.6 4.706L24 32l-9-11.294z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTsketch1)"/></svg>
+        <span class="sub-tab-label">Wireframe</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="clean" data-frame="frame-opt1">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTpaint1"><g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"><path d="m15.536 22.898l9.899 9.9m-9.899-9.9L7.05 31.383a7 7 0 1 0 9.9 9.9l8.485-8.486m-9.899 0l-4.243 4.243"/><path fill="#555" d="m25.435 32.797l14.907-6.432c2.688-1.16 3.809-4.379 2.086-6.745C38.264 13.903 32.65 8.89 28.51 5.823c-2.29-1.696-5.33-.64-6.46 1.975l-6.514 15.1z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTpaint1)"/></svg>
+        <span class="sub-tab-label">Clean</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="polished" data-frame="frame-opt1">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTdiamond1"><path fill="#555" stroke="#fff" stroke-width="4" d="M5.939 13.934L23.036 4.53a2 2 0 0 1 1.928 0l17.097 9.404a2 2 0 0 1 .683 2.888l-17.098 24.79a2 2 0 0 1-3.292 0L5.256 16.823a2 2 0 0 1 .683-2.888Z"/></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTdiamond1)"/></svg>
+        <span class="sub-tab-label">Polished</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+    </div>
+    <div class="browser-frame wireframe" id="frame-opt1">
+      <div class="browser-chrome">
+        <div class="browser-dots"><span></span><span></span><span></span></div>
+        <div class="browser-url">Accounting Books — Bank</div>
+        <div class="browser-controls">─ □ ✕</div>
+      </div>
+      <div class="browser-content">
+        <div class="states"><span>Show:</span><input type="radio" name="o1s" id="o1a" class="st-a" checked><label for="o1a">Clean file</label><input type="radio" name="o1s" id="o1b" class="st-b"><label for="o1b">File with duplicates</label><input type="radio" name="o1s" id="o1c" class="st-c"><label for="o1c">File with a problem</label></div>
+<div class="app"><nav class="sb" aria-label="Sidebar"><div class="biz">Harbour Lane Joinery</div><a href="#"><span>Home</span></a><a href="#"><span>To review</span><span class="n cnt">37</span></a><a href="#" class="on"><span>Bank</span></a><a href="#"><span>Transactions</span></a><a href="#"><span>Accounts</span></a><a href="#"><span>Reports</span></a><a href="#"><span>Shared sheets</span></a><a href="#"><span>Accountant changes</span><span class="n cnt">2</span></a><div class="gap"></div><a href="#"><span>Settings</span></a><a href="#"><span>Help</span></a></nav>
+<main class="main">
+  <div class="tb"><h1>Bank</h1><span class="sample">Sample data</span><span class="sp"></span><span class="pop"><input type="checkbox" id="o1p" checked><label for="o1p" class="btn main-act">Import file</label>
+  <div class="sheet"><div class="box" style="width:600px"><h3>Import preview<span class="wf-marker">1</span></h3><div class="small muted mb">Westpac_4821_14-20Nov2026.csv · Business One ··4821 · 14/11/2026 to 20/11/2026</div><div class="counts">
+  <div><span class="v xc">24</span><span class="v xa xb">23</span><span class="l">New lines</span></div>
+  <div><span class="v xb">0</span><span class="v xa xc">6</span><span class="l">Already in your books, skipped</span></div>
+  <div><span class="v xc">0</span><span class="v xa xb">1</span><span class="l">Could not be read</span></div>
+</div><div class="check xc"><span class="ic">✓</span><div><b>Closing balance matches.</b> File: $21,307.90 on 20/11/2026. Your books after import: $21,307.90.</div></div>
+<div class="check bad xa xb"><span class="ic">!</span><div><b>Closing balance does not match.</b> File: $21,307.90 on 20/11/2026. Your books after import: $21,207.90. The difference, $100.00, is the line that could not be read.</div></div><span class="wf-marker">2</span>
+    <div class="scroll"><table class="t"><thead><tr><th>Date</th><th>Description</th><th class="r">Amount</th><th>Status</th></tr></thead><tbody>
+<tr class="xa xc"><td>14/11/2026</td><td>TIMBERLINK SUPPLIES PTY LTD</td><td class="r">-$1,284.70</td><td><span class="badge">Duplicate · skipped</span></td></tr>
+<tr class="xa xb rej"><td>—</td><td>Line 17: date "31/11/2026" is not a real date</td><td class="r">-$100.00</td><td><span class="badge solid">Rejected</span></td></tr>
+<tr><td>15/11/2026</td><td>DEPOSIT SMITH RENOVATIONS INV 1042</td><td class="r">$4,950.00</td><td><span class="badge">New</span></td></tr>
+<tr><td>16/11/2026</td><td>AMPOL ALEXANDRIA</td><td class="r">-$96.40</td><td><span class="badge">New</span></td></tr>
+<tr><td>17/11/2026</td><td>TELSTRA BUSINESS</td><td class="r">-$129.00</td><td><span class="badge">New</span></td></tr>
+<tr><td>18/11/2026</td><td>BUNNINGS 4532</td><td class="r">-$342.15</td><td><span class="badge">New</span></td></tr>
+<tr><td>19/11/2026</td><td>TRANSFER TO CASH RESERVE 7730</td><td class="r">-$2,000.00</td><td><span class="badge">New</span></td></tr>
+<tr><td colspan="4" class="muted">and 18 more lines</td></tr>
+</tbody></table></div>
+    <div class="acts"><label for="o1p" class="btn">Cancel</label><label for="o1p" class="btn main-act"><span class="xc">Import 24 lines</span><span class="xa xb">Import 23 lines</span></label></div></div></div></span></div>
+  <table class="t mb"><thead><tr><th>Account</th><th class="r">In your books</th><th class="r">Last statement</th><th>Reconciled</th></tr></thead><tbody>
+<tr><td><b>Business One</b> ··4821</td><td class="r">$18,642.35</td><td class="r">$18,642.35</td><td>to 13/11/2026</td></tr>
+<tr><td><b>Business Cash Reserve</b> ··7730</td><td class="r">$25,000.00</td><td class="r">$25,000.00</td><td>to 31/10/2026</td></tr>
+</tbody></table>
+  <div class="drop">Drop a Westpac statement file (OFX or CSV) here, or click <b>Import file</b>.<span class="wf-marker">3</span></div>
+</main></div>
+      </div>
+    </div>
+    <div class="wf-annotations">
+      <h3>UX notes</h3>
+      <ul>
+<li>① The preview is a sheet over the Bank page. Nothing is saved until <b>Import</b>. Click Cancel to see the page, and Import file to reopen it.</li>
+        <li>② Counts first, then the balance check, then the lines. Rejected lines say why in words.</li>
+        <li>③ The drop zone is always on the Bank page. A file can also be dropped anywhere on the window.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== OPTION 2 ===== -->
+  <div class="option-panel" id="option-2">
+    <h2>Option 2: <span class="opt-name">Step Flow</span></h2>
+    <p class="option-description">Import is three steps: choose the file, check it, done. Each step has one decision.</p>
+    <div class="sub-tab-bar" id="frame-opt2-tabs">
+      <button class="sub-tab-btn active" data-variant="wireframe" data-frame="frame-opt2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTsketch2"><g fill="#555" stroke="#fff" stroke-linejoin="round" stroke-width="4"><rect width="36" height="36" x="6" y="6" rx="3"/><path stroke-linecap="round" d="M18.6 16h10.8l3.6 4.706L24 32l-9-11.294z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTsketch2)"/></svg>
+        <span class="sub-tab-label">Wireframe</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="clean" data-frame="frame-opt2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTpaint2"><g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"><path d="m15.536 22.898l9.899 9.9m-9.899-9.9L7.05 31.383a7 7 0 1 0 9.9 9.9l8.485-8.486m-9.899 0l-4.243 4.243"/><path fill="#555" d="m25.435 32.797l14.907-6.432c2.688-1.16 3.809-4.379 2.086-6.745C38.264 13.903 32.65 8.89 28.51 5.823c-2.29-1.696-5.33-.64-6.46 1.975l-6.514 15.1z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTpaint2)"/></svg>
+        <span class="sub-tab-label">Clean</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="polished" data-frame="frame-opt2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTdiamond2"><path fill="#555" stroke="#fff" stroke-width="4" d="M5.939 13.934L23.036 4.53a2 2 0 0 1 1.928 0l17.097 9.404a2 2 0 0 1 .683 2.888l-17.098 24.79a2 2 0 0 1-3.292 0L5.256 16.823a2 2 0 0 1 .683-2.888Z"/></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTdiamond2)"/></svg>
+        <span class="sub-tab-label">Polished</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+    </div>
+    <div class="browser-frame wireframe" id="frame-opt2">
+      <div class="browser-chrome">
+        <div class="browser-dots"><span></span><span></span><span></span></div>
+        <div class="browser-url">Accounting Books — Bank</div>
+        <div class="browser-controls">─ □ ✕</div>
+      </div>
+      <div class="browser-content">
+        <div class="states"><span>Show:</span><input type="radio" name="o2s" id="o2a" class="st-a" checked><label for="o2a">Clean file</label><input type="radio" name="o2s" id="o2b" class="st-b"><label for="o2b">File with duplicates</label><input type="radio" name="o2s" id="o2c" class="st-c"><label for="o2c">File with a problem</label></div>
+<div class="app"><nav class="sb" aria-label="Sidebar"><div class="biz">Harbour Lane Joinery</div><a href="#"><span>Home</span></a><a href="#"><span>To review</span><span class="n cnt">37</span></a><a href="#" class="on"><span>Bank</span></a><a href="#"><span>Transactions</span></a><a href="#"><span>Accounts</span></a><a href="#"><span>Reports</span></a><a href="#"><span>Shared sheets</span></a><a href="#"><span>Accountant changes</span><span class="n cnt">2</span></a><div class="gap"></div><a href="#"><span>Settings</span></a><a href="#"><span>Help</span></a></nav>
+<main class="main">
+  <div class="tb"><h1>Import a statement</h1><span class="sample">Sample data</span></div>
+  <ol class="stepper"><li class="ok">Choose file</li><li class="cur">Check<span class="wf-marker">1</span></li><li>Done</li></ol>
+  <div class="small muted mb">Westpac_4821_14-20Nov2026.csv · Business One ··4821 · 14/11/2026 to 20/11/2026</div>
+  <div class="grid" style="grid-template-columns:1fr 2fr">
+    <div><div class="counts">
+  <div><span class="v xc">24</span><span class="v xa xb">23</span><span class="l">New lines</span></div>
+  <div><span class="v xb">0</span><span class="v xa xc">6</span><span class="l">Already in your books, skipped</span></div>
+  <div><span class="v xc">0</span><span class="v xa xb">1</span><span class="l">Could not be read</span></div>
+</div><div class="check xc"><span class="ic">✓</span><div><b>Closing balance matches.</b> File: $21,307.90 on 20/11/2026. Your books after import: $21,307.90.</div></div>
+<div class="check bad xa xb"><span class="ic">!</span><div><b>Closing balance does not match.</b> File: $21,307.90 on 20/11/2026. Your books after import: $21,207.90. The difference, $100.00, is the line that could not be read.</div></div></div>
+    <div class="scroll"><table class="t"><thead><tr><th>Date</th><th>Description</th><th class="r">Amount</th><th>Status</th></tr></thead><tbody>
+<tr class="xa xc"><td>14/11/2026</td><td>TIMBERLINK SUPPLIES PTY LTD</td><td class="r">-$1,284.70</td><td><span class="badge">Duplicate · skipped</span></td></tr>
+<tr class="xa xb rej"><td>—</td><td>Line 17: date "31/11/2026" is not a real date</td><td class="r">-$100.00</td><td><span class="badge solid">Rejected</span></td></tr>
+<tr><td>15/11/2026</td><td>DEPOSIT SMITH RENOVATIONS INV 1042</td><td class="r">$4,950.00</td><td><span class="badge">New</span></td></tr>
+<tr><td>16/11/2026</td><td>AMPOL ALEXANDRIA</td><td class="r">-$96.40</td><td><span class="badge">New</span></td></tr>
+<tr><td>17/11/2026</td><td>TELSTRA BUSINESS</td><td class="r">-$129.00</td><td><span class="badge">New</span></td></tr>
+<tr><td>18/11/2026</td><td>BUNNINGS 4532</td><td class="r">-$342.15</td><td><span class="badge">New</span></td></tr>
+<tr><td>19/11/2026</td><td>TRANSFER TO CASH RESERVE 7730</td><td class="r">-$2,000.00</td><td><span class="badge">New</span></td></tr>
+<tr><td colspan="4" class="muted">and 18 more lines</td></tr>
+</tbody></table></div>
+  </div>
+  <div class="row" style="margin-top:12px"><a href="#" class="btn">Back</a><span class="sp"></span><a href="#" class="btn">Cancel</a>
+  <span class="pop"><input type="checkbox" id="o2p"><label for="o2p" class="btn main-act"><span class="xc">Import 24 lines</span><span class="xa xb">Import 23 lines</span></label>
+  <div class="sheet"><div class="box"><h3>Done<span class="wf-marker">2</span></h3><p class="xc">24 lines added to To review. Business One is up to date to 20/11/2026.</p><p class="xa xb">23 lines added to To review. 1 line was not imported. Check it in Westpac Online Banking.</p><div class="acts"><label for="o2p" class="btn">Back to Bank</label><a href="#" class="btn main-act">Go to To review</a></div></div></div></span></div>
+</main></div>
+      </div>
+    </div>
+    <div class="wf-annotations">
+      <h3>UX notes</h3>
+      <ul>
+<li>① A step bar shows where he is. Step 1 was choosing the file and its account.</li>
+        <li>② Click Import to see step 3, which points straight to the next job.</li>
+        <li>Risk: three screens for a job he does every few weeks may feel slow once he knows it.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== OPTION 3 ===== -->
+  <div class="option-panel" id="option-3">
+    <h2>Option 3: <span class="opt-name">Full Page</span></h2>
+    <p class="option-description">The preview takes the whole page, with filters for new, duplicate and rejected lines, for checking big files.</p>
+    <div class="sub-tab-bar" id="frame-opt3-tabs">
+      <button class="sub-tab-btn active" data-variant="wireframe" data-frame="frame-opt3">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTsketch3"><g fill="#555" stroke="#fff" stroke-linejoin="round" stroke-width="4"><rect width="36" height="36" x="6" y="6" rx="3"/><path stroke-linecap="round" d="M18.6 16h10.8l3.6 4.706L24 32l-9-11.294z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTsketch3)"/></svg>
+        <span class="sub-tab-label">Wireframe</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="clean" data-frame="frame-opt3">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTpaint3"><g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"><path d="m15.536 22.898l9.899 9.9m-9.899-9.9L7.05 31.383a7 7 0 1 0 9.9 9.9l8.485-8.486m-9.899 0l-4.243 4.243"/><path fill="#555" d="m25.435 32.797l14.907-6.432c2.688-1.16 3.809-4.379 2.086-6.745C38.264 13.903 32.65 8.89 28.51 5.823c-2.29-1.696-5.33-.64-6.46 1.975l-6.514 15.1z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTpaint3)"/></svg>
+        <span class="sub-tab-label">Clean</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="polished" data-frame="frame-opt3">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTdiamond3"><path fill="#555" stroke="#fff" stroke-width="4" d="M5.939 13.934L23.036 4.53a2 2 0 0 1 1.928 0l17.097 9.404a2 2 0 0 1 .683 2.888l-17.098 24.79a2 2 0 0 1-3.292 0L5.256 16.823a2 2 0 0 1 .683-2.888Z"/></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTdiamond3)"/></svg>
+        <span class="sub-tab-label">Polished</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+    </div>
+    <div class="browser-frame wireframe" id="frame-opt3">
+      <div class="browser-chrome">
+        <div class="browser-dots"><span></span><span></span><span></span></div>
+        <div class="browser-url">Accounting Books — Bank</div>
+        <div class="browser-controls">─ □ ✕</div>
+      </div>
+      <div class="browser-content">
+        <div class="states"><span>Show:</span><input type="radio" name="o3s" id="o3a" class="st-a" checked><label for="o3a">Clean file</label><input type="radio" name="o3s" id="o3b" class="st-b"><label for="o3b">File with duplicates</label><input type="radio" name="o3s" id="o3c" class="st-c"><label for="o3c">File with a problem</label></div>
+<div class="app"><nav class="sb" aria-label="Sidebar"><div class="biz">Harbour Lane Joinery</div><a href="#"><span>Home</span></a><a href="#"><span>To review</span><span class="n cnt">37</span></a><a href="#" class="on"><span>Bank</span></a><a href="#"><span>Transactions</span></a><a href="#"><span>Accounts</span></a><a href="#"><span>Reports</span></a><a href="#"><span>Shared sheets</span></a><a href="#"><span>Accountant changes</span><span class="n cnt">2</span></a><div class="gap"></div><a href="#"><span>Settings</span></a><a href="#"><span>Help</span></a></nav>
+<main class="main">
+  <div class="tb"><a href="#" class="btn sm">‹ Bank</a><h1>Import preview</h1><span class="sample">Sample data</span><span class="sp"></span><a href="#" class="btn">Cancel</a><a href="#" class="btn main-act"><span class="xc">Import 24 lines</span><span class="xa xb">Import 23 lines</span></a></div>
+  <div class="small muted mb">Westpac_4821_14-20Nov2026.csv · Business One ··4821 · 14/11/2026 to 20/11/2026</div><div class="check xc"><span class="ic">✓</span><div><b>Closing balance matches.</b> File: $21,307.90 on 20/11/2026. Your books after import: $21,307.90.</div></div>
+<div class="check bad xa xb"><span class="ic">!</span><div><b>Closing balance does not match.</b> File: $21,307.90 on 20/11/2026. Your books after import: $21,207.90. The difference, $100.00, is the line that could not be read.</div></div>
+  <div class="row mb"><span class="seg"><input type="radio" name="o3f" id="o3f1" checked><label for="o3f1">All</label><input type="radio" name="o3f" id="o3f2"><label for="o3f2">New</label><input type="radio" name="o3f" id="o3f3"><label for="o3f3">Skipped</label><input type="radio" name="o3f" id="o3f4"><label for="o3f4">Could not read</label></span><span class="wf-marker">1</span><span class="sp"></span><input class="f" placeholder="Search lines" aria-label="Search lines"></div>
+  <table class="t"><thead><tr><th>Date</th><th>Description</th><th class="r">Amount</th><th>Status</th></tr></thead><tbody>
+<tr class="xa xc"><td>14/11/2026</td><td>TIMBERLINK SUPPLIES PTY LTD</td><td class="r">-$1,284.70</td><td><span class="badge">Duplicate · skipped</span></td></tr>
+<tr class="xa xb rej"><td>—</td><td>Line 17: date "31/11/2026" is not a real date</td><td class="r">-$100.00</td><td><span class="badge solid">Rejected</span></td></tr>
+<tr><td>15/11/2026</td><td>DEPOSIT SMITH RENOVATIONS INV 1042</td><td class="r">$4,950.00</td><td><span class="badge">New</span></td></tr>
+<tr><td>16/11/2026</td><td>AMPOL ALEXANDRIA</td><td class="r">-$96.40</td><td><span class="badge">New</span></td></tr>
+<tr><td>17/11/2026</td><td>TELSTRA BUSINESS</td><td class="r">-$129.00</td><td><span class="badge">New</span></td></tr>
+<tr><td>18/11/2026</td><td>BUNNINGS 4532</td><td class="r">-$342.15</td><td><span class="badge">New</span></td></tr>
+<tr><td>19/11/2026</td><td>TRANSFER TO CASH RESERVE 7730</td><td class="r">-$2,000.00</td><td><span class="badge">New</span></td></tr>
+<tr><td colspan="4" class="muted">and 18 more lines</td></tr>
+</tbody></table>
+</main></div>
+      </div>
+    </div>
+    <div class="wf-annotations">
+      <h3>UX notes</h3>
+      <ul>
+<li>① Filters and search for a file with hundreds of lines, such as the first import of a whole year.</li>
+        <li>The balance check stays above the table, so it is not missed.</li>
+        <li>Risk: he loses sight of the Bank page, and the counts are only in the filter labels.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== OPTION 4 ===== -->
+  <div class="option-panel" id="option-4">
+    <h2>Option 4: <span class="opt-name">Inline Row</span></h2>
+    <p class="option-description">Each account row takes its own file, and the preview opens inside that row.</p>
+    <div class="sub-tab-bar" id="frame-opt4-tabs">
+      <button class="sub-tab-btn active" data-variant="wireframe" data-frame="frame-opt4">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTsketch4"><g fill="#555" stroke="#fff" stroke-linejoin="round" stroke-width="4"><rect width="36" height="36" x="6" y="6" rx="3"/><path stroke-linecap="round" d="M18.6 16h10.8l3.6 4.706L24 32l-9-11.294z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTsketch4)"/></svg>
+        <span class="sub-tab-label">Wireframe</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="clean" data-frame="frame-opt4">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTpaint4"><g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"><path d="m15.536 22.898l9.899 9.9m-9.899-9.9L7.05 31.383a7 7 0 1 0 9.9 9.9l8.485-8.486m-9.899 0l-4.243 4.243"/><path fill="#555" d="m25.435 32.797l14.907-6.432c2.688-1.16 3.809-4.379 2.086-6.745C38.264 13.903 32.65 8.89 28.51 5.823c-2.29-1.696-5.33-.64-6.46 1.975l-6.514 15.1z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTpaint4)"/></svg>
+        <span class="sub-tab-label">Clean</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="polished" data-frame="frame-opt4">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTdiamond4"><path fill="#555" stroke="#fff" stroke-width="4" d="M5.939 13.934L23.036 4.53a2 2 0 0 1 1.928 0l17.097 9.404a2 2 0 0 1 .683 2.888l-17.098 24.79a2 2 0 0 1-3.292 0L5.256 16.823a2 2 0 0 1 .683-2.888Z"/></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTdiamond4)"/></svg>
+        <span class="sub-tab-label">Polished</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+    </div>
+    <div class="browser-frame wireframe" id="frame-opt4">
+      <div class="browser-chrome">
+        <div class="browser-dots"><span></span><span></span><span></span></div>
+        <div class="browser-url">Accounting Books — Bank</div>
+        <div class="browser-controls">─ □ ✕</div>
+      </div>
+      <div class="browser-content">
+        <div class="states"><span>Show:</span><input type="radio" name="o4s" id="o4a" class="st-a" checked><label for="o4a">Clean file</label><input type="radio" name="o4s" id="o4b" class="st-b"><label for="o4b">File with duplicates</label><input type="radio" name="o4s" id="o4c" class="st-c"><label for="o4c">File with a problem</label></div>
+<div class="app"><nav class="sb" aria-label="Sidebar"><div class="biz">Harbour Lane Joinery</div><a href="#"><span>Home</span></a><a href="#"><span>To review</span><span class="n cnt">37</span></a><a href="#" class="on"><span>Bank</span></a><a href="#"><span>Transactions</span></a><a href="#"><span>Accounts</span></a><a href="#"><span>Reports</span></a><a href="#"><span>Shared sheets</span></a><a href="#"><span>Accountant changes</span><span class="n cnt">2</span></a><div class="gap"></div><a href="#"><span>Settings</span></a><a href="#"><span>Help</span></a></nav>
+<main class="main">
+  <div class="tb"><h1>Bank</h1><span class="sample">Sample data</span><span class="sp"></span><a href="#" class="btn">Add account</a></div>
+  <div class="acct open"><div class="row"><b>Business One</b> ··4821<span class="sp"></span><span class="amt">$18,642.35</span><span class="small muted">reconciled to 13/11/2026</span></div><span class="wf-marker">1</span>
+    <div class="inl"><div class="small muted mb">Westpac_4821_14-20Nov2026.csv · Business One ··4821 · 14/11/2026 to 20/11/2026</div><div class="counts">
+  <div><span class="v xc">24</span><span class="v xa xb">23</span><span class="l">New lines</span></div>
+  <div><span class="v xb">0</span><span class="v xa xc">6</span><span class="l">Already in your books, skipped</span></div>
+  <div><span class="v xc">0</span><span class="v xa xb">1</span><span class="l">Could not be read</span></div>
+</div><div class="check xc"><span class="ic">✓</span><div><b>Closing balance matches.</b> File: $21,307.90 on 20/11/2026. Your books after import: $21,307.90.</div></div>
+<div class="check bad xa xb"><span class="ic">!</span><div><b>Closing balance does not match.</b> File: $21,307.90 on 20/11/2026. Your books after import: $21,207.90. The difference, $100.00, is the line that could not be read.</div></div>
+      <details><summary class="small">Show the lines</summary><table class="t"><thead><tr><th>Date</th><th>Description</th><th class="r">Amount</th><th>Status</th></tr></thead><tbody>
+<tr class="xa xc"><td>14/11/2026</td><td>TIMBERLINK SUPPLIES PTY LTD</td><td class="r">-$1,284.70</td><td><span class="badge">Duplicate · skipped</span></td></tr>
+<tr class="xa xb rej"><td>—</td><td>Line 17: date "31/11/2026" is not a real date</td><td class="r">-$100.00</td><td><span class="badge solid">Rejected</span></td></tr>
+<tr><td>15/11/2026</td><td>DEPOSIT SMITH RENOVATIONS INV 1042</td><td class="r">$4,950.00</td><td><span class="badge">New</span></td></tr>
+<tr><td>16/11/2026</td><td>AMPOL ALEXANDRIA</td><td class="r">-$96.40</td><td><span class="badge">New</span></td></tr>
+<tr><td>17/11/2026</td><td>TELSTRA BUSINESS</td><td class="r">-$129.00</td><td><span class="badge">New</span></td></tr>
+<tr><td>18/11/2026</td><td>BUNNINGS 4532</td><td class="r">-$342.15</td><td><span class="badge">New</span></td></tr>
+<tr><td>19/11/2026</td><td>TRANSFER TO CASH RESERVE 7730</td><td class="r">-$2,000.00</td><td><span class="badge">New</span></td></tr>
+<tr><td colspan="4" class="muted">and 18 more lines</td></tr>
+</tbody></table></details>
+      <div class="row" style="margin-top:10px"><span class="sp"></span><a href="#" class="btn">Cancel</a><a href="#" class="btn main-act"><span class="xc">Import 24 lines</span><span class="xa xb">Import 23 lines</span></a></div></div></div>
+  <div class="acct"><div class="row"><b>Business Cash Reserve</b> ··7730<span class="sp"></span><span class="amt">$25,000.00</span><span class="small muted">reconciled to 31/10/2026</span></div>
+    <div class="drop small" style="margin-top:8px">Drop a statement for this account here, or <a href="#">choose a file</a><span class="wf-marker">2</span></div></div>
+</main></div>
+      </div>
+    </div>
+    <div class="wf-annotations">
+      <h3>UX notes</h3>
+      <ul>
+<li>① The preview opens under the account it belongs to, so the account is never in doubt.</li>
+        <li>② Each account has its own drop zone. No separate Import file button.</li>
+        <li>Risk: a file for the wrong account is easier to drop in the wrong row. The app would still check the account number in the file.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== OPTION 5 ===== -->
+  <div class="option-panel" id="option-5">
+    <h2>Option 5: <span class="opt-name">Plain Summary</span></h2>
+    <p class="option-description">The sheet opens with a few plain sentences about the file. The details are one click away.</p>
+    <div class="sub-tab-bar" id="frame-opt5-tabs">
+      <button class="sub-tab-btn active" data-variant="wireframe" data-frame="frame-opt5">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTsketch5"><g fill="#555" stroke="#fff" stroke-linejoin="round" stroke-width="4"><rect width="36" height="36" x="6" y="6" rx="3"/><path stroke-linecap="round" d="M18.6 16h10.8l3.6 4.706L24 32l-9-11.294z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTsketch5)"/></svg>
+        <span class="sub-tab-label">Wireframe</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="clean" data-frame="frame-opt5">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTpaint5"><g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"><path d="m15.536 22.898l9.899 9.9m-9.899-9.9L7.05 31.383a7 7 0 1 0 9.9 9.9l8.485-8.486m-9.899 0l-4.243 4.243"/><path fill="#555" d="m25.435 32.797l14.907-6.432c2.688-1.16 3.809-4.379 2.086-6.745C38.264 13.903 32.65 8.89 28.51 5.823c-2.29-1.696-5.33-.64-6.46 1.975l-6.514 15.1z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTpaint5)"/></svg>
+        <span class="sub-tab-label">Clean</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="polished" data-frame="frame-opt5">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTdiamond5"><path fill="#555" stroke="#fff" stroke-width="4" d="M5.939 13.934L23.036 4.53a2 2 0 0 1 1.928 0l17.097 9.404a2 2 0 0 1 .683 2.888l-17.098 24.79a2 2 0 0 1-3.292 0L5.256 16.823a2 2 0 0 1 .683-2.888Z"/></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTdiamond5)"/></svg>
+        <span class="sub-tab-label">Polished</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+    </div>
+    <div class="browser-frame wireframe" id="frame-opt5">
+      <div class="browser-chrome">
+        <div class="browser-dots"><span></span><span></span><span></span></div>
+        <div class="browser-url">Accounting Books — Bank</div>
+        <div class="browser-controls">─ □ ✕</div>
+      </div>
+      <div class="browser-content">
+        <div class="states"><span>Show:</span><input type="radio" name="o5s" id="o5a" class="st-a" checked><label for="o5a">Clean file</label><input type="radio" name="o5s" id="o5b" class="st-b"><label for="o5b">File with duplicates</label><input type="radio" name="o5s" id="o5c" class="st-c"><label for="o5c">File with a problem</label></div>
+<div class="app"><nav class="sb" aria-label="Sidebar"><div class="biz">Harbour Lane Joinery</div><a href="#"><span>Home</span></a><a href="#"><span>To review</span><span class="n cnt">37</span></a><a href="#" class="on"><span>Bank</span></a><a href="#"><span>Transactions</span></a><a href="#"><span>Accounts</span></a><a href="#"><span>Reports</span></a><a href="#"><span>Shared sheets</span></a><a href="#"><span>Accountant changes</span><span class="n cnt">2</span></a><div class="gap"></div><a href="#"><span>Settings</span></a><a href="#"><span>Help</span></a></nav>
+<main class="main">
+  <div class="tb"><h1>Bank</h1><span class="sample">Sample data</span><span class="sp"></span><span class="pop"><input type="checkbox" id="o5p" checked><label for="o5p" class="btn main-act">Import file</label>
+  <div class="sheet"><div class="box" style="width:560px"><h3>Westpac_4821_14-20Nov2026.csv</h3>
+    <ul class="plain">
+      <li>This file is for <b>Business One ··4821</b>, from 14/11/2026 to 20/11/2026.<span class="wf-marker">1</span></li>
+      <li class="xc"><b>24 new lines</b> will go to To review.</li>
+      <li class="xa xb"><b>23 new lines</b> will go to To review.</li>
+      <li class="xa xc"><b>6 lines are already in your books</b> from an earlier import. They will be skipped.</li>
+      <li class="xa xb"><b>1 line could not be read</b>: line 17 has the date "31/11/2026", which is not a real date. It will not be imported.</li>
+    </ul>
+    <div class="check xc"><span class="ic">✓</span><div><b>Closing balance matches.</b> File: $21,307.90 on 20/11/2026. Your books after import: $21,307.90.</div></div>
+<div class="check bad xa xb"><span class="ic">!</span><div><b>Closing balance does not match.</b> File: $21,307.90 on 20/11/2026. Your books after import: $21,207.90. The difference, $100.00, is the line that could not be read.</div></div>
+    <details><summary class="small">See all lines<span class="wf-marker">2</span></summary><div class="scroll"><table class="t"><thead><tr><th>Date</th><th>Description</th><th class="r">Amount</th><th>Status</th></tr></thead><tbody>
+<tr class="xa xc"><td>14/11/2026</td><td>TIMBERLINK SUPPLIES PTY LTD</td><td class="r">-$1,284.70</td><td><span class="badge">Duplicate · skipped</span></td></tr>
+<tr class="xa xb rej"><td>—</td><td>Line 17: date "31/11/2026" is not a real date</td><td class="r">-$100.00</td><td><span class="badge solid">Rejected</span></td></tr>
+<tr><td>15/11/2026</td><td>DEPOSIT SMITH RENOVATIONS INV 1042</td><td class="r">$4,950.00</td><td><span class="badge">New</span></td></tr>
+<tr><td>16/11/2026</td><td>AMPOL ALEXANDRIA</td><td class="r">-$96.40</td><td><span class="badge">New</span></td></tr>
+<tr><td>17/11/2026</td><td>TELSTRA BUSINESS</td><td class="r">-$129.00</td><td><span class="badge">New</span></td></tr>
+<tr><td>18/11/2026</td><td>BUNNINGS 4532</td><td class="r">-$342.15</td><td><span class="badge">New</span></td></tr>
+<tr><td>19/11/2026</td><td>TRANSFER TO CASH RESERVE 7730</td><td class="r">-$2,000.00</td><td><span class="badge">New</span></td></tr>
+<tr><td colspan="4" class="muted">and 18 more lines</td></tr>
+</tbody></table></div></details>
+    <div class="acts"><label for="o5p" class="btn">Cancel</label><label for="o5p" class="btn main-act"><span class="xc">Import 24 lines</span><span class="xa xb">Import 23 lines</span></label></div></div></div></span></div>
+  <table class="t mb"><thead><tr><th>Account</th><th class="r">In your books</th><th class="r">Last statement</th><th>Reconciled</th></tr></thead><tbody>
+<tr><td><b>Business One</b> ··4821</td><td class="r">$18,642.35</td><td class="r">$18,642.35</td><td>to 13/11/2026</td></tr>
+<tr><td><b>Business Cash Reserve</b> ··7730</td><td class="r">$25,000.00</td><td class="r">$25,000.00</td><td>to 31/10/2026</td></tr>
+</tbody></table>
+  <div class="drop">Drop a Westpac statement file (OFX or CSV) here, or click <b>Import file</b>.</div>
+</main></div>
+      </div>
+    </div>
+    <div class="wf-annotations">
+      <h3>UX notes</h3>
+      <ul>
+<li>① What will happen is said in sentences, in the order he cares about: which account, what is new, what is skipped, what is wrong.</li>
+        <li>② The table is still there for checking, closed by default.</li>
+        <li>Same sheet and Bank page as Option 1, so it fits the rest of the app.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== SUMMARY ===== -->
+  <div class="option-panel" id="summary">
+    <h2>Summary</h2>
+<table class="t">
+  <thead><tr><th>Option</th><th>Approach</th><th>Ease and safety</th></tr></thead>
+  <tbody>
+  <tr><td>1: Safe Sheet</td><td>Counts, balance check and lines in a sheet over the Bank page</td><td>★★★★☆</td></tr>
+  <tr><td>2: Step Flow</td><td>Choose, check, done, one step at a time</td><td>★★★☆☆</td></tr>
+  <tr><td>3: Full Page</td><td>A full-page table with filters, for big files</td><td>★★★☆☆</td></tr>
+  <tr><td>4: Inline Row</td><td>Drop a file on its account, preview inside the row</td><td>★★★☆☆</td></tr>
+  <tr><td>5: Plain Summary</td><td>The same sheet, written as sentences, with the table one click away</td><td>★★★★★</td></tr>
+  </tbody>
+</table>
+<p><b>Recommended: Option 5, Plain Summary.</b> It keeps Option 1's sheet over the Bank page, but says what will happen in plain words, so a duplicate or a bad line is understood without reading a table. The filters from Option 3 can be added inside "See all lines" for big files.</p>
+<p class="muted small">Use "Show" above each window to switch between a clean file, a file with duplicates, and a file with a bad line and a balance warning. All data is invented.</p>
+  </div>
+
+</div>
+
+<footer class="skill-footer">
+  This design was crafted by the <a href="https://github.com/Magdoub/claude-wireframe-skill">Wireframe skill</a> — follow on GitHub
+</footer>
+
+<script>
+(function() {
+  // Main tab switching
+  var tabBtns = document.querySelectorAll('.tab-btn');
+  var panels = document.querySelectorAll('.option-panel');
+  tabBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      tabBtns.forEach(function(b) { b.classList.remove('active'); });
+      panels.forEach(function(p) { p.classList.remove('active'); });
+      btn.classList.add('active');
+      var target = document.getElementById(btn.dataset.tab);
+      if (target) target.classList.add('active');
+    });
+  });
+
+  // Sub-tab switching
+  var subBtns = document.querySelectorAll('.sub-tab-btn');
+  subBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var frameId = btn.dataset.frame;
+      var siblings = btn.parentElement.querySelectorAll('.sub-tab-btn');
+      siblings.forEach(function(s) { s.classList.remove('active'); });
+      btn.classList.add('active');
+      var frame = document.getElementById(frameId);
+      if (frame) {
+        frame.classList.remove('wireframe', 'clean', 'polished');
+        frame.classList.add(btn.dataset.variant);
+      }
+    });
+  });
+
+  // Completion banner — one-time load check
+  window.addEventListener('load', function() {
+    var badges = document.querySelectorAll('.sub-tab-badge');
+    var anyVisible = false;
+    badges.forEach(function(b) {
+      if (getComputedStyle(b).display !== 'none') anyVisible = true;
+    });
+    if (!anyVisible && badges.length > 0) {
+      var banner = document.getElementById('completion-banner');
+      if (banner) {
+        banner.style.display = 'block';
+        setTimeout(function() { banner.style.display = 'none'; }, 8000);
+      }
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

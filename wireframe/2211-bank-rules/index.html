@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bank Rules — 2211 Wireframes</title>
+  <link rel="stylesheet" href="base.css">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles-opt1.css">
+  <link rel="stylesheet" href="styles-opt2.css">
+  <link rel="stylesheet" href="styles-opt3.css">
+  <link rel="stylesheet" href="styles-opt4.css">
+  <link rel="stylesheet" href="styles-opt5.css">
+</head>
+<body>
+
+<div class="completion-banner" id="completion-banner" style="display:none;">
+  ✦ Visual designs complete — all options now have Clean + Polished variants
+  <button onclick="this.parentElement.style.display='none'" style="float:right;background:none;border:none;cursor:pointer;font-size:16px;">×</button>
+</div>
+
+<div class="page-wrapper">
+
+  <div class="title-bar">
+    <span><span id="feature-name">Bank Rules</span> — <span id="project-name">Accounting Books</span></span>
+    <span class="rec">★ Recommended: Option <span id="rec-number">1</span></span>
+  </div>
+
+  <nav class="main-tabs">
+    <button class="tab-btn active" data-tab="option-1">1: List and Edit Panel</button>
+    <button class="tab-btn" data-tab="option-2">2: Rule From a Line</button>
+    <button class="tab-btn" data-tab="option-3">3: Plain Sentences</button>
+    <button class="tab-btn" data-tab="option-4">4: Suggested Rules</button>
+    <button class="tab-btn" data-tab="option-5">5: Rules Per Account</button>
+    <button class="tab-btn" data-tab="summary">Summary</button>
+  </nav>
+
+  <!-- ===== OPTION 1 ===== -->
+  <div class="option-panel active" id="option-1">
+    <h2>Option 1: <span class="opt-name">List and Edit Panel</span></h2>
+    <p class="option-description">Like his QuickBooks Rules page: a list in order, and an edit panel with name, conditions, what to set, and a test.</p>
+    <div class="sub-tab-bar" id="frame-opt1-tabs">
+      <button class="sub-tab-btn active" data-variant="wireframe" data-frame="frame-opt1">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTsketch1"><g fill="#555" stroke="#fff" stroke-linejoin="round" stroke-width="4"><rect width="36" height="36" x="6" y="6" rx="3"/><path stroke-linecap="round" d="M18.6 16h10.8l3.6 4.706L24 32l-9-11.294z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTsketch1)"/></svg>
+        <span class="sub-tab-label">Wireframe</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="clean" data-frame="frame-opt1">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTpaint1"><g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"><path d="m15.536 22.898l9.899 9.9m-9.899-9.9L7.05 31.383a7 7 0 1 0 9.9 9.9l8.485-8.486m-9.899 0l-4.243 4.243"/><path fill="#555" d="m25.435 32.797l14.907-6.432c2.688-1.16 3.809-4.379 2.086-6.745C38.264 13.903 32.65 8.89 28.51 5.823c-2.29-1.696-5.33-.64-6.46 1.975l-6.514 15.1z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTpaint1)"/></svg>
+        <span class="sub-tab-label">Clean</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="polished" data-frame="frame-opt1">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTdiamond1"><path fill="#555" stroke="#fff" stroke-width="4" d="M5.939 13.934L23.036 4.53a2 2 0 0 1 1.928 0l17.097 9.404a2 2 0 0 1 .683 2.888l-17.098 24.79a2 2 0 0 1-3.292 0L5.256 16.823a2 2 0 0 1 .683-2.888Z"/></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTdiamond1)"/></svg>
+        <span class="sub-tab-label">Polished</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+    </div>
+    <div class="browser-frame wireframe" id="frame-opt1">
+      <div class="browser-chrome">
+        <div class="browser-dots"><span></span><span></span><span></span></div>
+        <div class="browser-url">Accounting Books — Rules</div>
+        <div class="browser-controls">─ □ ✕</div>
+      </div>
+      <div class="browser-content">
+        <div class="app"><nav class="sb" aria-label="Sidebar"><div class="biz">Harbour Lane Joinery</div><a href="#"><span>Home</span></a><a href="#"><span>To review</span><span class="n cnt">37</span></a><a href="#"><span>Bank</span></a><a href="#"><span>Transactions</span></a><a href="#"><span>Accounts</span></a><a href="#"><span>Reports</span></a><a href="#" class="on"><span>Rules</span></a><a href="#"><span>Shared sheets</span></a><a href="#"><span>Accountant changes</span><span class="n cnt">2</span></a><div class="gap"></div><a href="#"><span>Settings</span></a><a href="#"><span>Help</span></a></nav><main class="main">
+  <div class="tb"><h1>Rules</h1><span class="sample">Sample data</span><span class="sp"></span><span class="pop"><input type="checkbox" id="o1ed" checked><label for="o1ed" class="btn main-act">New rule</label>
+  <div class="sheet"><div class="box" style="width:560px"><h3>Edit rule<span class="wf-marker">1</span></h3><div class="field">Rule name<input class="f" value="Timberlink is always materials" aria-label="Rule name"></div>
+<div class="row mb"><span class="small">For</span><select class="f" aria-label="Direction"><option>Money out</option><option>Money in</option></select><span class="small">in</span><select class="f" aria-label="Accounts"><option>All bank accounts</option><option>Business One ··4821</option></select></div>
+<div class="h2">When</div>
+<div class="row mb"><select class="f" aria-label="Field"><option>Description</option><option>Amount</option></select><select class="f" aria-label="Test"><option>contains</option><option>is</option><option>starts with</option></select><input class="f" value="TIMBERLINK" aria-label="Value"><a href="#" class="btn sm">+ Condition</a></div>
+<div class="h2">Then</div>
+<div class="grid g2"><div class="field">Account<select class="f"><option>Materials & supplies</option></select></div><div class="field">GST<select class="f" aria-label="GST code"><option>GST</option><option>GST free</option><option>Input taxed</option><option>BAS excluded</option></select></div></div>
+<div class="grid g2"><div class="field">Payee<input class="f" value="Timberlink" aria-label="Payee"></div><div class="field">Split<a href="#" class="btn sm">+ Add a split</a></div></div>
+<label class="small"><input type="checkbox" checked> Post matching lines by themselves, without waiting in To review</label>
+    <div class="panel small" style="margin-top:10px"><b>Test:</b> matches 9 lines in To review and 41 posted lines.<span class="wf-marker">2</span> <a href="#">See them</a></div>
+    <div class="acts"><label for="o1ed" class="btn">Cancel</label><label for="o1ed" class="btn main-act">Save</label></div></div></div></span></div>
+  <input class="f mb" placeholder="Search rules" aria-label="Search rules" style="width:240px">
+  <table class="t"><thead><tr><th>Order</th><th>Rule</th><th>Bank accounts</th><th>When</th><th>Then</th><th>Post by itself</th></tr></thead><tbody>
+<tr><td>1</td><td><b>Timberlink is always materials</b></td><td>All</td><td>Description contains "TIMBERLINK"</td><td>Materials & supplies · GST</td><td>Yes</td></tr>
+<tr><td>2</td><td><b>Fuel</b></td><td>Business One ··4821</td><td>Description contains "AMPOL" or "SHELL"</td><td>Motor vehicle – fuel · GST</td><td>No</td></tr>
+<tr><td>3</td><td><b>Phone and internet</b></td><td>All</td><td>Description contains "TELSTRA"</td><td>Split: 70% Telephone & internet, 30% Owner drawings</td><td>No</td></tr>
+</tbody></table><p class="small muted">Rules are tried in order. Drag a row to change the order.<span class="wf-marker">3</span></p>
+</main></div>
+      </div>
+    </div>
+    <div class="wf-annotations">
+      <h3>UX notes</h3>
+      <ul>
+<li>① The same fields as his QuickBooks rule panel: money in or out, which accounts, conditions, then account, GST, payee and split. Close it to see the list.</li>
+        <li>② Testing shows how many lines a rule would catch before it is saved.</li>
+        <li>③ Order decides which rule wins when two match, as in QuickBooks.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== OPTION 2 ===== -->
+  <div class="option-panel" id="option-2">
+    <h2>Option 2: <span class="opt-name">Rule From a Line</span></h2>
+    <p class="option-description">Rules are made from To review: after he posts a line, the app offers "Do this every time?" with the rule filled in.</p>
+    <div class="sub-tab-bar" id="frame-opt2-tabs">
+      <button class="sub-tab-btn active" data-variant="wireframe" data-frame="frame-opt2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTsketch2"><g fill="#555" stroke="#fff" stroke-linejoin="round" stroke-width="4"><rect width="36" height="36" x="6" y="6" rx="3"/><path stroke-linecap="round" d="M18.6 16h10.8l3.6 4.706L24 32l-9-11.294z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTsketch2)"/></svg>
+        <span class="sub-tab-label">Wireframe</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="clean" data-frame="frame-opt2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTpaint2"><g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"><path d="m15.536 22.898l9.899 9.9m-9.899-9.9L7.05 31.383a7 7 0 1 0 9.9 9.9l8.485-8.486m-9.899 0l-4.243 4.243"/><path fill="#555" d="m25.435 32.797l14.907-6.432c2.688-1.16 3.809-4.379 2.086-6.745C38.264 13.903 32.65 8.89 28.51 5.823c-2.29-1.696-5.33-.64-6.46 1.975l-6.514 15.1z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTpaint2)"/></svg>
+        <span class="sub-tab-label">Clean</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="polished" data-frame="frame-opt2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTdiamond2"><path fill="#555" stroke="#fff" stroke-width="4" d="M5.939 13.934L23.036 4.53a2 2 0 0 1 1.928 0l17.097 9.404a2 2 0 0 1 .683 2.888l-17.098 24.79a2 2 0 0 1-3.292 0L5.256 16.823a2 2 0 0 1 .683-2.888Z"/></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTdiamond2)"/></svg>
+        <span class="sub-tab-label">Polished</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+    </div>
+    <div class="browser-frame wireframe" id="frame-opt2">
+      <div class="browser-chrome">
+        <div class="browser-dots"><span></span><span></span><span></span></div>
+        <div class="browser-url">Accounting Books — Rules</div>
+        <div class="browser-controls">─ □ ✕</div>
+      </div>
+      <div class="browser-content">
+        <div class="app"><nav class="sb" aria-label="Sidebar"><div class="biz">Harbour Lane Joinery</div><a href="#"><span>Home</span></a><a href="#" class="on"><span>To review</span><span class="n cnt">37</span></a><a href="#"><span>Bank</span></a><a href="#"><span>Transactions</span></a><a href="#"><span>Accounts</span></a><a href="#"><span>Reports</span></a><a href="#"><span>Shared sheets</span></a><a href="#"><span>Accountant changes</span><span class="n cnt">2</span></a><div class="gap"></div><a href="#"><span>Settings</span></a><a href="#"><span>Help</span></a></nav><main class="main">
+  <div class="tb"><h1>To review</h1><span class="sample">Sample data</span></div>
+  <div class="warn"><span class="ic">✓</span><span>Posted <b>BUNNINGS 4532</b> to Materials & supplies.</span><span class="sp"></span><span class="pop"><input type="checkbox" id="o2r"><label for="o2r" class="btn sm main-act">Do this every time for "BUNNINGS"</label><div class="sheet"><div class="box"><h3>New rule from this line</h3><div class="field">Rule name<input class="f" value="Timberlink is always materials" aria-label="Rule name"></div>
+<div class="row mb"><span class="small">For</span><select class="f" aria-label="Direction"><option>Money out</option><option>Money in</option></select><span class="small">in</span><select class="f" aria-label="Accounts"><option>All bank accounts</option><option>Business One ··4821</option></select></div>
+<div class="h2">When</div>
+<div class="row mb"><select class="f" aria-label="Field"><option>Description</option><option>Amount</option></select><select class="f" aria-label="Test"><option>contains</option><option>is</option><option>starts with</option></select><input class="f" value="TIMBERLINK" aria-label="Value"><a href="#" class="btn sm">+ Condition</a></div>
+<div class="h2">Then</div>
+<div class="grid g2"><div class="field">Account<select class="f"><option>Materials & supplies</option></select></div><div class="field">GST<select class="f" aria-label="GST code"><option>GST</option><option>GST free</option><option>Input taxed</option><option>BAS excluded</option></select></div></div>
+<div class="grid g2"><div class="field">Payee<input class="f" value="Timberlink" aria-label="Payee"></div><div class="field">Split<a href="#" class="btn sm">+ Add a split</a></div></div>
+<label class="small"><input type="checkbox" checked> Post matching lines by themselves, without waiting in To review</label><div class="acts"><label for="o2r" class="btn">Cancel</label><label for="o2r" class="btn main-act">Save rule</label></div></div></div></span><a href="#" class="btn sm">Not now</a><span class="wf-marker">1</span></div>
+  <table class="t"><tbody><tr><td>05/11</td><td>TELSTRA BUSINESS</td><td class="r">$129.00</td><td>Telephone & internet</td><td><a href="#" class="btn sm">Post</a></td></tr><tr><td>06/11</td><td>BUNNINGS 4532</td><td class="r">$98.10</td><td>Materials & supplies <span class="why">same as last one</span></td><td><a href="#" class="btn sm">Post</a></td></tr></tbody></table>
+</main></div>
+      </div>
+    </div>
+    <div class="wf-annotations">
+      <h3>UX notes</h3>
+      <ul>
+<li>① Rules appear where the work happens, already filled in from the line he just posted. Click the button to see it.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== OPTION 3 ===== -->
+  <div class="option-panel" id="option-3">
+    <h2>Option 3: <span class="opt-name">Plain Sentences</span></h2>
+    <p class="option-description">Each rule reads as one sentence with blanks to fill, for someone who does not think in conditions and fields.</p>
+    <div class="sub-tab-bar" id="frame-opt3-tabs">
+      <button class="sub-tab-btn active" data-variant="wireframe" data-frame="frame-opt3">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTsketch3"><g fill="#555" stroke="#fff" stroke-linejoin="round" stroke-width="4"><rect width="36" height="36" x="6" y="6" rx="3"/><path stroke-linecap="round" d="M18.6 16h10.8l3.6 4.706L24 32l-9-11.294z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTsketch3)"/></svg>
+        <span class="sub-tab-label">Wireframe</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="clean" data-frame="frame-opt3">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTpaint3"><g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"><path d="m15.536 22.898l9.899 9.9m-9.899-9.9L7.05 31.383a7 7 0 1 0 9.9 9.9l8.485-8.486m-9.899 0l-4.243 4.243"/><path fill="#555" d="m25.435 32.797l14.907-6.432c2.688-1.16 3.809-4.379 2.086-6.745C38.264 13.903 32.65 8.89 28.51 5.823c-2.29-1.696-5.33-.64-6.46 1.975l-6.514 15.1z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTpaint3)"/></svg>
+        <span class="sub-tab-label">Clean</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="polished" data-frame="frame-opt3">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTdiamond3"><path fill="#555" stroke="#fff" stroke-width="4" d="M5.939 13.934L23.036 4.53a2 2 0 0 1 1.928 0l17.097 9.404a2 2 0 0 1 .683 2.888l-17.098 24.79a2 2 0 0 1-3.292 0L5.256 16.823a2 2 0 0 1 .683-2.888Z"/></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTdiamond3)"/></svg>
+        <span class="sub-tab-label">Polished</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+    </div>
+    <div class="browser-frame wireframe" id="frame-opt3">
+      <div class="browser-chrome">
+        <div class="browser-dots"><span></span><span></span><span></span></div>
+        <div class="browser-url">Accounting Books — Rules</div>
+        <div class="browser-controls">─ □ ✕</div>
+      </div>
+      <div class="browser-content">
+        <div class="app"><nav class="sb" aria-label="Sidebar"><div class="biz">Harbour Lane Joinery</div><a href="#"><span>Home</span></a><a href="#"><span>To review</span><span class="n cnt">37</span></a><a href="#"><span>Bank</span></a><a href="#"><span>Transactions</span></a><a href="#"><span>Accounts</span></a><a href="#"><span>Reports</span></a><a href="#" class="on"><span>Rules</span></a><a href="#"><span>Shared sheets</span></a><a href="#"><span>Accountant changes</span><span class="n cnt">2</span></a><div class="gap"></div><a href="#"><span>Settings</span></a><a href="#"><span>Help</span></a></nav><main class="main">
+  <div class="tb"><h1>Rules</h1><span class="sample">Sample data</span><span class="sp"></span><a href="#" class="btn main-act">New rule</a></div>
+  <div class="sent"><span class="wf-marker">1</span>
+    <div class="s1">When <b>money goes out</b> of <b>any account</b> and the description has <input class="f" value="TIMBERLINK" size="10" aria-label="Words">, put it in <select class="f"><option>Materials & supplies</option></select> with <b>GST</b>, and <b>post it by itself</b>.</div>
+    <div class="s1">When <b>money goes out</b> of <b>Business One</b> and the description has <b>AMPOL</b> or <b>SHELL</b>, put it in <b>Motor vehicle – fuel</b> with <b>GST</b>, and <b>wait for me to check</b>.</div>
+    <div class="s1">When the description has <b>TELSTRA</b>, split it <b>70% Telephone & internet</b> and <b>30% Owner drawings</b>.</div>
+  </div>
+</main></div>
+      </div>
+    </div>
+    <div class="wf-annotations">
+      <h3>UX notes</h3>
+      <ul>
+<li>① Each bold word or box can be clicked to change. Harder to show many conditions at once.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== OPTION 4 ===== -->
+  <div class="option-panel" id="option-4">
+    <h2>Option 4: <span class="opt-name">Suggested Rules</span></h2>
+    <p class="option-description">The app notices repeats and suggests rules, which he only has to say yes to.</p>
+    <div class="sub-tab-bar" id="frame-opt4-tabs">
+      <button class="sub-tab-btn active" data-variant="wireframe" data-frame="frame-opt4">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTsketch4"><g fill="#555" stroke="#fff" stroke-linejoin="round" stroke-width="4"><rect width="36" height="36" x="6" y="6" rx="3"/><path stroke-linecap="round" d="M18.6 16h10.8l3.6 4.706L24 32l-9-11.294z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTsketch4)"/></svg>
+        <span class="sub-tab-label">Wireframe</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="clean" data-frame="frame-opt4">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTpaint4"><g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"><path d="m15.536 22.898l9.899 9.9m-9.899-9.9L7.05 31.383a7 7 0 1 0 9.9 9.9l8.485-8.486m-9.899 0l-4.243 4.243"/><path fill="#555" d="m25.435 32.797l14.907-6.432c2.688-1.16 3.809-4.379 2.086-6.745C38.264 13.903 32.65 8.89 28.51 5.823c-2.29-1.696-5.33-.64-6.46 1.975l-6.514 15.1z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTpaint4)"/></svg>
+        <span class="sub-tab-label">Clean</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="polished" data-frame="frame-opt4">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTdiamond4"><path fill="#555" stroke="#fff" stroke-width="4" d="M5.939 13.934L23.036 4.53a2 2 0 0 1 1.928 0l17.097 9.404a2 2 0 0 1 .683 2.888l-17.098 24.79a2 2 0 0 1-3.292 0L5.256 16.823a2 2 0 0 1 .683-2.888Z"/></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTdiamond4)"/></svg>
+        <span class="sub-tab-label">Polished</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+    </div>
+    <div class="browser-frame wireframe" id="frame-opt4">
+      <div class="browser-chrome">
+        <div class="browser-dots"><span></span><span></span><span></span></div>
+        <div class="browser-url">Accounting Books — Rules</div>
+        <div class="browser-controls">─ □ ✕</div>
+      </div>
+      <div class="browser-content">
+        <div class="app"><nav class="sb" aria-label="Sidebar"><div class="biz">Harbour Lane Joinery</div><a href="#"><span>Home</span></a><a href="#"><span>To review</span><span class="n cnt">37</span></a><a href="#"><span>Bank</span></a><a href="#"><span>Transactions</span></a><a href="#"><span>Accounts</span></a><a href="#"><span>Reports</span></a><a href="#" class="on"><span>Rules</span></a><a href="#"><span>Shared sheets</span></a><a href="#"><span>Accountant changes</span><span class="n cnt">2</span></a><div class="gap"></div><a href="#"><span>Settings</span></a><a href="#"><span>Help</span></a></nav><main class="main">
+  <div class="tb"><h1>Rules</h1><span class="sample">Sample data</span></div>
+  <div class="h2">Suggested from your books<span class="wf-marker">1</span></div>
+  <table class="t mb"><tbody>
+  <tr><td>You put <b>OFFICEWORKS</b> in Office supplies 6 times</td><td><a href="#" class="btn sm main-act">Make a rule</a></td><td><a href="#" class="btn sm">No thanks</a></td></tr>
+  <tr><td>You put <b>J NGUYEN CONTRACTING</b> in Subcontractors 4 times</td><td><a href="#" class="btn sm">Make a rule</a></td><td><a href="#" class="btn sm">No thanks</a></td></tr></tbody></table>
+  <div class="h2">Your rules</div><table class="t"><thead><tr><th>Order</th><th>Rule</th><th>Bank accounts</th><th>When</th><th>Then</th><th>Post by itself</th></tr></thead><tbody>
+<tr><td>1</td><td><b>Timberlink is always materials</b></td><td>All</td><td>Description contains "TIMBERLINK"</td><td>Materials & supplies · GST</td><td>Yes</td></tr>
+<tr><td>2</td><td><b>Fuel</b></td><td>Business One ··4821</td><td>Description contains "AMPOL" or "SHELL"</td><td>Motor vehicle – fuel · GST</td><td>No</td></tr>
+<tr><td>3</td><td><b>Phone and internet</b></td><td>All</td><td>Description contains "TELSTRA"</td><td>Split: 70% Telephone & internet, 30% Owner drawings</td><td>No</td></tr>
+</tbody></table>
+</main></div>
+      </div>
+    </div>
+    <div class="wf-annotations">
+      <h3>UX notes</h3>
+      <ul>
+<li>① Saves him from ever opening a rule editor. Ties in with client question 18 (automatic rules).</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== OPTION 5 ===== -->
+  <div class="option-panel" id="option-5">
+    <h2>Option 5: <span class="opt-name">Rules Per Account</span></h2>
+    <p class="option-description">Rules live with each bank account in Settings, since most of them belong to one account's kind of spending.</p>
+    <div class="sub-tab-bar" id="frame-opt5-tabs">
+      <button class="sub-tab-btn active" data-variant="wireframe" data-frame="frame-opt5">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTsketch5"><g fill="#555" stroke="#fff" stroke-linejoin="round" stroke-width="4"><rect width="36" height="36" x="6" y="6" rx="3"/><path stroke-linecap="round" d="M18.6 16h10.8l3.6 4.706L24 32l-9-11.294z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTsketch5)"/></svg>
+        <span class="sub-tab-label">Wireframe</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="clean" data-frame="frame-opt5">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTpaint5"><g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"><path d="m15.536 22.898l9.899 9.9m-9.899-9.9L7.05 31.383a7 7 0 1 0 9.9 9.9l8.485-8.486m-9.899 0l-4.243 4.243"/><path fill="#555" d="m25.435 32.797l14.907-6.432c2.688-1.16 3.809-4.379 2.086-6.745C38.264 13.903 32.65 8.89 28.51 5.823c-2.29-1.696-5.33-.64-6.46 1.975l-6.514 15.1z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTpaint5)"/></svg>
+        <span class="sub-tab-label">Clean</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="polished" data-frame="frame-opt5">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTdiamond5"><path fill="#555" stroke="#fff" stroke-width="4" d="M5.939 13.934L23.036 4.53a2 2 0 0 1 1.928 0l17.097 9.404a2 2 0 0 1 .683 2.888l-17.098 24.79a2 2 0 0 1-3.292 0L5.256 16.823a2 2 0 0 1 .683-2.888Z"/></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTdiamond5)"/></svg>
+        <span class="sub-tab-label">Polished</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+    </div>
+    <div class="browser-frame wireframe" id="frame-opt5">
+      <div class="browser-chrome">
+        <div class="browser-dots"><span></span><span></span><span></span></div>
+        <div class="browser-url">Accounting Books — Rules</div>
+        <div class="browser-controls">─ □ ✕</div>
+      </div>
+      <div class="browser-content">
+        <div class="app"><nav class="sb" aria-label="Sidebar"><div class="biz">Harbour Lane Joinery</div><a href="#"><span>Home</span></a><a href="#"><span>To review</span><span class="n cnt">37</span></a><a href="#"><span>Bank</span></a><a href="#"><span>Transactions</span></a><a href="#"><span>Accounts</span></a><a href="#"><span>Reports</span></a><a href="#"><span>Shared sheets</span></a><a href="#"><span>Accountant changes</span><span class="n cnt">2</span></a><div class="gap"></div><a href="#" class="on"><span>Settings</span></a><a href="#"><span>Help</span></a></nav><main class="main">
+  <div class="tb"><h1>Business One ··4821</h1><span class="sample">Sample data</span></div>
+  <div class="row mb"><span class="tab on">Details</span><span class="tab on2">Rules (2)<span class="wf-marker">1</span></span><span class="tab">Statement imports</span></div>
+  <table class="t"><tbody>
+  <tr><td><b>Fuel</b></td><td>"AMPOL" or "SHELL" → Motor vehicle – fuel</td><td><a href="#" class="btn sm">Edit</a></td></tr>
+  <tr><td><b>Timberlink is always materials</b></td><td>"TIMBERLINK" → Materials & supplies <span class="small muted">(all accounts)</span></td><td><a href="#" class="btn sm">Edit</a></td></tr></tbody></table>
+</main></div>
+      </div>
+    </div>
+    <div class="wf-annotations">
+      <h3>UX notes</h3>
+      <ul>
+<li>① Tidy for one account, but rules for all accounts end up shown in several places.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== SUMMARY ===== -->
+  <div class="option-panel" id="summary">
+    <h2>Summary</h2>
+<table class="t"><thead><tr><th>Option</th><th>Approach</th><th>Overall UX</th></tr></thead><tbody>
+<tr><td>1: List and Edit Panel</td><td>As in his QuickBooks: ordered list, edit panel, test</td><td>★★★★★</td></tr>
+<tr><td>2: Rule From a Line</td><td>"Do this every time?" after posting</td><td>★★★★☆</td></tr>
+<tr><td>3: Plain Sentences</td><td>Each rule as a sentence with blanks</td><td>★★★☆☆</td></tr>
+<tr><td>4: Suggested Rules</td><td>The app spots repeats and suggests rules</td><td>★★★★☆</td></tr>
+<tr><td>5: Rules Per Account</td><td>Rules kept with each bank account</td><td>★★☆☆☆</td></tr>
+</tbody></table>
+<p><b>Recommended: Option 1, List and Edit Panel</b>, with Option 2's "Do this every time?" after posting. He already uses QuickBooks rules this way, including rules that post by themselves, so moving them across is familiar.</p>
+<p class="muted small">Drawn from the structure of his QuickBooks Rules screens, with invented rules. Moving his existing rules across is part of go-live (phase 09).</p>
+  </div>
+
+</div>
+
+<footer class="skill-footer">
+  This design was crafted by the <a href="https://github.com/Magdoub/claude-wireframe-skill">Wireframe skill</a> — follow on GitHub
+</footer>
+
+<script>
+(function() {
+  // Main tab switching
+  var tabBtns = document.querySelectorAll('.tab-btn');
+  var panels = document.querySelectorAll('.option-panel');
+  tabBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      tabBtns.forEach(function(b) { b.classList.remove('active'); });
+      panels.forEach(function(p) { p.classList.remove('active'); });
+      btn.classList.add('active');
+      var target = document.getElementById(btn.dataset.tab);
+      if (target) target.classList.add('active');
+    });
+  });
+
+  // Sub-tab switching
+  var subBtns = document.querySelectorAll('.sub-tab-btn');
+  subBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var frameId = btn.dataset.frame;
+      var siblings = btn.parentElement.querySelectorAll('.sub-tab-btn');
+      siblings.forEach(function(s) { s.classList.remove('active'); });
+      btn.classList.add('active');
+      var frame = document.getElementById(frameId);
+      if (frame) {
+        frame.classList.remove('wireframe', 'clean', 'polished');
+        frame.classList.add(btn.dataset.variant);
+      }
+    });
+  });
+
+  // Completion banner — one-time load check
+  window.addEventListener('load', function() {
+    var badges = document.querySelectorAll('.sub-tab-badge');
+    var anyVisible = false;
+    badges.forEach(function(b) {
+      if (getComputedStyle(b).display !== 'none') anyVisible = true;
+    });
+    if (!anyVisible && badges.length > 0) {
+      var banner = document.getElementById('completion-banner');
+      if (banner) {
+        banner.style.display = 'block';
+        setTimeout(function() { banner.style.display = 'none'; }, 8000);
+      }
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

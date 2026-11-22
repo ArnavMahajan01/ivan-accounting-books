@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>F07 Payroll Totals Import (brainstorm) — 2211 Wireframes</title>
+  <link rel="stylesheet" href="base.css">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles-opt1.css">
+  <link rel="stylesheet" href="styles-opt2.css">
+  <link rel="stylesheet" href="styles-opt3.css">
+  <link rel="stylesheet" href="styles-opt4.css">
+  <link rel="stylesheet" href="styles-opt5.css">
+</head>
+<body>
+
+<div class="completion-banner" id="completion-banner" style="display:none;">
+  ✦ Visual designs complete — all options now have Clean + Polished variants
+  <button onclick="this.parentElement.style.display='none'" style="float:right;background:none;border:none;cursor:pointer;font-size:16px;">×</button>
+</div>
+
+<div class="page-wrapper">
+
+  <div class="title-bar">
+    <span><span id="feature-name">F07 Payroll Totals Import (brainstorm)</span> — <span id="project-name">Accounting Books</span></span>
+    <span class="rec">★ Recommended: Option <span id="rec-number">1</span></span>
+  </div>
+
+  <nav class="main-tabs">
+    <button class="tab-btn active" data-tab="option-1">1: Import Sheet</button>
+    <button class="tab-btn" data-tab="option-2">2: First-Time Mapping</button>
+    <button class="tab-btn" data-tab="option-3">3: Type The Totals</button>
+    <button class="tab-btn" data-tab="option-4">4: Pay Runs Page</button>
+    <button class="tab-btn" data-tab="option-5">5: Match To Bank</button>
+    <button class="tab-btn" data-tab="summary">Summary</button>
+  </nav>
+
+  <!-- ===== OPTION 1 ===== -->
+  <div class="option-panel active" id="option-1">
+    <h2>Option 1: <span class="opt-name">Import Sheet</span></h2>
+    <p class="option-description">A pay run summary file goes through the same import sheet as a bank file: totals, the entry it will post, then Post.</p>
+    <div class="sub-tab-bar" id="frame-opt1-tabs">
+      <button class="sub-tab-btn active" data-variant="wireframe" data-frame="frame-opt1">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTsketch1"><g fill="#555" stroke="#fff" stroke-linejoin="round" stroke-width="4"><rect width="36" height="36" x="6" y="6" rx="3"/><path stroke-linecap="round" d="M18.6 16h10.8l3.6 4.706L24 32l-9-11.294z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTsketch1)"/></svg>
+        <span class="sub-tab-label">Wireframe</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="clean" data-frame="frame-opt1">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTpaint1"><g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"><path d="m15.536 22.898l9.899 9.9m-9.899-9.9L7.05 31.383a7 7 0 1 0 9.9 9.9l8.485-8.486m-9.899 0l-4.243 4.243"/><path fill="#555" d="m25.435 32.797l14.907-6.432c2.688-1.16 3.809-4.379 2.086-6.745C38.264 13.903 32.65 8.89 28.51 5.823c-2.29-1.696-5.33-.64-6.46 1.975l-6.514 15.1z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTpaint1)"/></svg>
+        <span class="sub-tab-label">Clean</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="polished" data-frame="frame-opt1">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTdiamond1"><path fill="#555" stroke="#fff" stroke-width="4" d="M5.939 13.934L23.036 4.53a2 2 0 0 1 1.928 0l17.097 9.404a2 2 0 0 1 .683 2.888l-17.098 24.79a2 2 0 0 1-3.292 0L5.256 16.823a2 2 0 0 1 .683-2.888Z"/></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTdiamond1)"/></svg>
+        <span class="sub-tab-label">Polished</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+    </div>
+    <div class="browser-frame wireframe" id="frame-opt1">
+      <div class="browser-chrome">
+        <div class="browser-dots"><span></span><span></span><span></span></div>
+        <div class="browser-url">Accounting Books — Pay runs</div>
+        <div class="browser-controls">─ □ ✕</div>
+      </div>
+      <div class="browser-content">
+        <div class="app"><nav class="sb" aria-label="Sidebar"><div class="biz">Harbour Lane Joinery</div><a href="#"><span>Home</span></a><a href="#"><span>To review</span><span class="n cnt">37</span></a><a href="#" class="on"><span>Bank</span></a><a href="#"><span>Transactions</span></a><a href="#"><span>Accounts</span></a><a href="#"><span>Reports</span></a><a href="#"><span>Shared sheets</span></a><a href="#"><span>Accountant changes</span><span class="n cnt">2</span></a><div class="gap"></div><a href="#"><span>Settings</span></a><a href="#"><span>Help</span></a></nav><main class="main">
+  <div class="tb"><h1>Bank</h1><span class="sample">Future idea</span></div>
+  <div class="sheet" style="display:block"><div class="box" style="width:600px"><h3>Pay run: 01/11/2026 to 14/11/2026, paid 15/11/2026</h3>
+    <div class="small muted mb">payrun_summary_2026-11-15.csv · 4 employees<span class="wf-marker">1</span></div>
+    <table class="t"><thead><tr><th>From the file</th><th class="r">Amount</th><th>Goes to account</th></tr></thead><tbody>
+<tr><td>Gross wages</td><td class="r">$12,400.00</td><td>Wages and salaries</td></tr>
+<tr><td>PAYG withheld</td><td class="r">$2,356.00</td><td>PAYG withholding payable</td></tr>
+<tr><td>Super</td><td class="r">$1,488.00</td><td>Superannuation expense, and Superannuation payable</td></tr>
+<tr><td>Net pay</td><td class="r">$10,044.00</td><td>Net wages clearing (matched to the bank payments)</td></tr>
+</tbody></table>
+    <details style="margin-top:8px"><summary class="small">See the journal entry<span class="wf-marker">2</span></summary><table class="t"><thead><tr><th>Account</th><th class="r">Debit</th><th class="r">Credit</th></tr></thead><tbody>
+<tr><td>Wages and salaries</td><td class="r">$12,400.00</td><td></td></tr>
+<tr><td>Superannuation expense</td><td class="r">$1,488.00</td><td></td></tr>
+<tr><td>PAYG withholding payable</td><td></td><td class="r">$2,356.00</td></tr>
+<tr><td>Superannuation payable</td><td></td><td class="r">$1,488.00</td></tr>
+<tr><td>Net wages clearing</td><td></td><td class="r">$10,044.00</td></tr>
+</tbody><tfoot><tr><td>Balanced ✓</td><td class="r">$13,888.00</td><td class="r">$13,888.00</td></tr></tfoot></table></details>
+    <div class="acts"><a href="#" class="btn">Cancel</a><a href="#" class="btn main-act">Post pay run</a></div></div></div>
+</main></div>
+      </div>
+    </div>
+    <div class="wf-annotations">
+      <h3>UX notes</h3>
+      <ul>
+<li>① Totals only. No employee names or per-person pay come into the app.</li>
+        <li>② The entry is one balanced journal, posted through the posting service like everything else.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== OPTION 2 ===== -->
+  <div class="option-panel" id="option-2">
+    <h2>Option 2: <span class="opt-name">First-Time Mapping</span></h2>
+    <p class="option-description">The first file asks once which account each total goes to, then every later pay run uses the saved mapping.</p>
+    <div class="sub-tab-bar" id="frame-opt2-tabs">
+      <button class="sub-tab-btn active" data-variant="wireframe" data-frame="frame-opt2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTsketch2"><g fill="#555" stroke="#fff" stroke-linejoin="round" stroke-width="4"><rect width="36" height="36" x="6" y="6" rx="3"/><path stroke-linecap="round" d="M18.6 16h10.8l3.6 4.706L24 32l-9-11.294z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTsketch2)"/></svg>
+        <span class="sub-tab-label">Wireframe</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="clean" data-frame="frame-opt2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTpaint2"><g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"><path d="m15.536 22.898l9.899 9.9m-9.899-9.9L7.05 31.383a7 7 0 1 0 9.9 9.9l8.485-8.486m-9.899 0l-4.243 4.243"/><path fill="#555" d="m25.435 32.797l14.907-6.432c2.688-1.16 3.809-4.379 2.086-6.745C38.264 13.903 32.65 8.89 28.51 5.823c-2.29-1.696-5.33-.64-6.46 1.975l-6.514 15.1z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTpaint2)"/></svg>
+        <span class="sub-tab-label">Clean</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="polished" data-frame="frame-opt2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTdiamond2"><path fill="#555" stroke="#fff" stroke-width="4" d="M5.939 13.934L23.036 4.53a2 2 0 0 1 1.928 0l17.097 9.404a2 2 0 0 1 .683 2.888l-17.098 24.79a2 2 0 0 1-3.292 0L5.256 16.823a2 2 0 0 1 .683-2.888Z"/></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTdiamond2)"/></svg>
+        <span class="sub-tab-label">Polished</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+    </div>
+    <div class="browser-frame wireframe" id="frame-opt2">
+      <div class="browser-chrome">
+        <div class="browser-dots"><span></span><span></span><span></span></div>
+        <div class="browser-url">Accounting Books — Pay runs</div>
+        <div class="browser-controls">─ □ ✕</div>
+      </div>
+      <div class="browser-content">
+        <div class="app"><nav class="sb" aria-label="Sidebar"><div class="biz">Harbour Lane Joinery</div><a href="#"><span>Home</span></a><a href="#"><span>To review</span><span class="n cnt">37</span></a><a href="#" class="on"><span>Bank</span></a><a href="#"><span>Transactions</span></a><a href="#"><span>Accounts</span></a><a href="#"><span>Reports</span></a><a href="#"><span>Shared sheets</span></a><a href="#"><span>Accountant changes</span><span class="n cnt">2</span></a><div class="gap"></div><a href="#"><span>Settings</span></a><a href="#"><span>Help</span></a></nav><main class="main">
+  <div class="tb"><h1>Set up pay run imports</h1><span class="sample">Future idea</span></div>
+  <p class="small">This is the first pay run file. Choose where each total goes. You will not be asked again.<span class="wf-marker">1</span></p>
+  <table class="t"><thead><tr><th>Total in the file</th><th class="r">Example</th><th>Account</th></tr></thead><tbody>
+  <tr><td>Gross wages</td><td class="r">$12,400.00</td><td><select class="f"><option>Wages and salaries</option></select></td></tr>
+  <tr><td>PAYG withheld</td><td class="r">$2,356.00</td><td><select class="f"><option>PAYG withholding payable</option></select></td></tr>
+  <tr><td>Super</td><td class="r">$1,488.00</td><td><select class="f"><option>Superannuation expense / payable</option></select></td></tr>
+  <tr><td>Net pay</td><td class="r">$10,044.00</td><td><select class="f"><option>Net wages clearing</option></select></td></tr></tbody></table>
+  <div class="row" style="margin-top:10px"><span class="sp"></span><a href="#" class="btn main-act">Save and preview</a></div>
+</main></div>
+      </div>
+    </div>
+    <div class="wf-annotations">
+      <h3>UX notes</h3>
+      <ul>
+<li>① Suggested accounts are filled in from the standard chart, so most people just confirm.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== OPTION 3 ===== -->
+  <div class="option-panel" id="option-3">
+    <h2>Option 3: <span class="opt-name">Type The Totals</span></h2>
+    <p class="option-description">No file at all: a small form for the four totals from the payroll product's pay run report.</p>
+    <div class="sub-tab-bar" id="frame-opt3-tabs">
+      <button class="sub-tab-btn active" data-variant="wireframe" data-frame="frame-opt3">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTsketch3"><g fill="#555" stroke="#fff" stroke-linejoin="round" stroke-width="4"><rect width="36" height="36" x="6" y="6" rx="3"/><path stroke-linecap="round" d="M18.6 16h10.8l3.6 4.706L24 32l-9-11.294z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTsketch3)"/></svg>
+        <span class="sub-tab-label">Wireframe</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="clean" data-frame="frame-opt3">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTpaint3"><g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"><path d="m15.536 22.898l9.899 9.9m-9.899-9.9L7.05 31.383a7 7 0 1 0 9.9 9.9l8.485-8.486m-9.899 0l-4.243 4.243"/><path fill="#555" d="m25.435 32.797l14.907-6.432c2.688-1.16 3.809-4.379 2.086-6.745C38.264 13.903 32.65 8.89 28.51 5.823c-2.29-1.696-5.33-.64-6.46 1.975l-6.514 15.1z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTpaint3)"/></svg>
+        <span class="sub-tab-label">Clean</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="polished" data-frame="frame-opt3">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTdiamond3"><path fill="#555" stroke="#fff" stroke-width="4" d="M5.939 13.934L23.036 4.53a2 2 0 0 1 1.928 0l17.097 9.404a2 2 0 0 1 .683 2.888l-17.098 24.79a2 2 0 0 1-3.292 0L5.256 16.823a2 2 0 0 1 .683-2.888Z"/></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTdiamond3)"/></svg>
+        <span class="sub-tab-label">Polished</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+    </div>
+    <div class="browser-frame wireframe" id="frame-opt3">
+      <div class="browser-chrome">
+        <div class="browser-dots"><span></span><span></span><span></span></div>
+        <div class="browser-url">Accounting Books — Pay runs</div>
+        <div class="browser-controls">─ □ ✕</div>
+      </div>
+      <div class="browser-content">
+        <div class="app"><nav class="sb" aria-label="Sidebar"><div class="biz">Harbour Lane Joinery</div><a href="#"><span>Home</span></a><a href="#"><span>To review</span><span class="n cnt">37</span></a><a href="#"><span>Bank</span></a><a href="#" class="on"><span>Transactions</span></a><a href="#"><span>Accounts</span></a><a href="#"><span>Reports</span></a><a href="#"><span>Shared sheets</span></a><a href="#"><span>Accountant changes</span><span class="n cnt">2</span></a><div class="gap"></div><a href="#"><span>Settings</span></a><a href="#"><span>Help</span></a></nav><main class="main">
+  <div class="tb"><h1>Record a pay run</h1><span class="sample">Future idea</span></div>
+  <div class="grid g2"><div class="field">Pay date<input class="f" value="15/11/2026" aria-label="Pay date"></div><div class="field">Period<input class="f" value="01/11/2026 to 14/11/2026" aria-label="Period"></div></div>
+  <div class="grid g4"><div class="field">Gross wages<input class="f amt" value="12,400.00" aria-label="Gross wages"></div><div class="field">PAYG withheld<input class="f amt" value="2,356.00" aria-label="PAYG withheld"></div><div class="field">Super<input class="f amt" value="1,488.00" aria-label="Super"></div><div class="field">Net pay<span class="wf-marker">1</span><input class="f amt" value="10,044.00" aria-label="Net pay" readonly></div></div>
+  <p class="small muted">Net pay is worked out as gross wages minus PAYG withheld, and checked against the bank payments.</p>
+  <div class="row"><span class="sp"></span><a href="#" class="btn main-act">Post pay run</a></div>
+</main></div>
+      </div>
+    </div>
+    <div class="wf-annotations">
+      <h3>UX notes</h3>
+      <ul>
+<li>① Works with any payroll product. Risk: typing errors, though net pay is calculated, not typed.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== OPTION 4 ===== -->
+  <div class="option-panel" id="option-4">
+    <h2>Option 4: <span class="opt-name">Pay Runs Page</span></h2>
+    <p class="option-description">A Pay runs page lists every imported pay run, with the quarter's totals for the BAS beside them.</p>
+    <div class="sub-tab-bar" id="frame-opt4-tabs">
+      <button class="sub-tab-btn active" data-variant="wireframe" data-frame="frame-opt4">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTsketch4"><g fill="#555" stroke="#fff" stroke-linejoin="round" stroke-width="4"><rect width="36" height="36" x="6" y="6" rx="3"/><path stroke-linecap="round" d="M18.6 16h10.8l3.6 4.706L24 32l-9-11.294z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTsketch4)"/></svg>
+        <span class="sub-tab-label">Wireframe</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="clean" data-frame="frame-opt4">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTpaint4"><g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"><path d="m15.536 22.898l9.899 9.9m-9.899-9.9L7.05 31.383a7 7 0 1 0 9.9 9.9l8.485-8.486m-9.899 0l-4.243 4.243"/><path fill="#555" d="m25.435 32.797l14.907-6.432c2.688-1.16 3.809-4.379 2.086-6.745C38.264 13.903 32.65 8.89 28.51 5.823c-2.29-1.696-5.33-.64-6.46 1.975l-6.514 15.1z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTpaint4)"/></svg>
+        <span class="sub-tab-label">Clean</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="polished" data-frame="frame-opt4">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTdiamond4"><path fill="#555" stroke="#fff" stroke-width="4" d="M5.939 13.934L23.036 4.53a2 2 0 0 1 1.928 0l17.097 9.404a2 2 0 0 1 .683 2.888l-17.098 24.79a2 2 0 0 1-3.292 0L5.256 16.823a2 2 0 0 1 .683-2.888Z"/></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTdiamond4)"/></svg>
+        <span class="sub-tab-label">Polished</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+    </div>
+    <div class="browser-frame wireframe" id="frame-opt4">
+      <div class="browser-chrome">
+        <div class="browser-dots"><span></span><span></span><span></span></div>
+        <div class="browser-url">Accounting Books — Pay runs</div>
+        <div class="browser-controls">─ □ ✕</div>
+      </div>
+      <div class="browser-content">
+        <div class="app"><nav class="sb" aria-label="Sidebar"><div class="biz">Harbour Lane Joinery</div><a href="#"><span>Home</span></a><a href="#"><span>To review</span><span class="n cnt">37</span></a><a href="#"><span>Bank</span></a><a href="#"><span>Transactions</span></a><a href="#"><span>Accounts</span></a><a href="#"><span>Reports</span></a><a href="#" class="on"><span>Pay runs</span></a><a href="#"><span>Shared sheets</span></a><a href="#"><span>Accountant changes</span><span class="n cnt">2</span></a><div class="gap"></div><a href="#"><span>Settings</span></a><a href="#"><span>Help</span></a></nav><main class="main">
+  <div class="tb"><h1>Pay runs</h1><span class="sample">Future idea</span><span class="sp"></span><a href="#" class="btn main-act">Import pay run file</a></div>
+  <table class="t mb"><thead><tr><th>Paid</th><th>Period</th><th class="r">Gross</th><th class="r">PAYG</th><th class="r">Super</th><th>Bank</th></tr></thead><tbody>
+  <tr><td>15/11/2026</td><td>01/11 – 14/11</td><td class="r">$12,400.00</td><td class="r">$2,356.00</td><td class="r">$1,488.00</td><td>matched ✓</td></tr>
+  <tr><td>01/11/2026</td><td>18/10 – 31/10</td><td class="r">$12,150.00</td><td class="r">$2,298.00</td><td class="r">$1,458.00</td><td>matched ✓</td></tr>
+  <tr><td>18/10/2026</td><td>04/10 – 17/10</td><td class="r">$12,150.00</td><td class="r">$2,298.00</td><td class="r">$1,458.00</td><td>matched ✓</td></tr></tbody></table>
+  <div class="panel small"><b>For the Oct to Dec BAS so far</b><span class="wf-marker">1</span><br>Total wages (W1): $36,700.00 · PAYG withheld (W2): $6,952.00</div>
+</main></div>
+      </div>
+    </div>
+    <div class="wf-annotations">
+      <h3>UX notes</h3>
+      <ul>
+<li>① Shows the figures the BAS needs for PAYG withholding. The label numbers are to be checked on ato.gov.au (F07).</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== OPTION 5 ===== -->
+  <div class="option-panel" id="option-5">
+    <h2>Option 5: <span class="opt-name">Match To Bank</span></h2>
+    <p class="option-description">Starts from the bank side: net pay lines in To review are matched to a pay run, which is imported on the spot.</p>
+    <div class="sub-tab-bar" id="frame-opt5-tabs">
+      <button class="sub-tab-btn active" data-variant="wireframe" data-frame="frame-opt5">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTsketch5"><g fill="#555" stroke="#fff" stroke-linejoin="round" stroke-width="4"><rect width="36" height="36" x="6" y="6" rx="3"/><path stroke-linecap="round" d="M18.6 16h10.8l3.6 4.706L24 32l-9-11.294z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTsketch5)"/></svg>
+        <span class="sub-tab-label">Wireframe</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="clean" data-frame="frame-opt5">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTpaint5"><g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"><path d="m15.536 22.898l9.899 9.9m-9.899-9.9L7.05 31.383a7 7 0 1 0 9.9 9.9l8.485-8.486m-9.899 0l-4.243 4.243"/><path fill="#555" d="m25.435 32.797l14.907-6.432c2.688-1.16 3.809-4.379 2.086-6.745C38.264 13.903 32.65 8.89 28.51 5.823c-2.29-1.696-5.33-.64-6.46 1.975l-6.514 15.1z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTpaint5)"/></svg>
+        <span class="sub-tab-label">Clean</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="polished" data-frame="frame-opt5">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTdiamond5"><path fill="#555" stroke="#fff" stroke-width="4" d="M5.939 13.934L23.036 4.53a2 2 0 0 1 1.928 0l17.097 9.404a2 2 0 0 1 .683 2.888l-17.098 24.79a2 2 0 0 1-3.292 0L5.256 16.823a2 2 0 0 1 .683-2.888Z"/></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTdiamond5)"/></svg>
+        <span class="sub-tab-label">Polished</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+    </div>
+    <div class="browser-frame wireframe" id="frame-opt5">
+      <div class="browser-chrome">
+        <div class="browser-dots"><span></span><span></span><span></span></div>
+        <div class="browser-url">Accounting Books — Pay runs</div>
+        <div class="browser-controls">─ □ ✕</div>
+      </div>
+      <div class="browser-content">
+        <div class="app"><nav class="sb" aria-label="Sidebar"><div class="biz">Harbour Lane Joinery</div><a href="#"><span>Home</span></a><a href="#" class="on"><span>To review</span><span class="n cnt">37</span></a><a href="#"><span>Bank</span></a><a href="#"><span>Transactions</span></a><a href="#"><span>Accounts</span></a><a href="#"><span>Reports</span></a><a href="#"><span>Shared sheets</span></a><a href="#"><span>Accountant changes</span><span class="n cnt">2</span></a><div class="gap"></div><a href="#"><span>Settings</span></a><a href="#"><span>Help</span></a></nav><main class="main">
+  <div class="tb"><h1>To review</h1><span class="sample">Future idea</span></div>
+  <table class="t"><tbody>
+  <tr class="sel"><td>15/11</td><td>PAYROLL 4 PAYMENTS</td><td class="r">-$10,044.00</td><td><b>Looks like net pay</b><span class="wf-marker">1</span></td><td><a href="#" class="btn sm main-act">Match to a pay run…</a></td></tr>
+  <tr><td>16/11</td><td>AMPOL ALEXANDRIA</td><td class="r">-$96.40</td><td>Motor vehicle – fuel</td><td><a href="#" class="btn sm">Accept</a></td></tr></tbody></table>
+  <p class="small muted">Matching asks for the pay run summary file for that date, then posts it and clears the net wages.</p>
+</main></div>
+      </div>
+    </div>
+    <div class="wf-annotations">
+      <h3>UX notes</h3>
+      <ul>
+<li>① Natural if he forgets to import the pay run: the bank line reminds him. Risk: net pay may arrive as many lines, one per employee.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== SUMMARY ===== -->
+  <div class="option-panel" id="summary">
+    <h2>Summary</h2>
+<table class="t"><thead><tr><th>Option</th><th>Approach</th><th>Overall UX</th></tr></thead><tbody>
+<tr><td>1: Import Sheet</td><td>Same sheet as a bank import, totals and entry</td><td>★★★★★</td></tr>
+<tr><td>2: First-Time Mapping</td><td>Choose accounts once per payroll product</td><td>★★★★☆</td></tr>
+<tr><td>3: Type The Totals</td><td>A form, no file</td><td>★★★☆☆</td></tr>
+<tr><td>4: Pay Runs Page</td><td>A list with BAS totals</td><td>★★★★☆</td></tr>
+<tr><td>5: Match To Bank</td><td>Start from the net pay bank line</td><td>★★★☆☆</td></tr>
+</tbody></table>
+<p><b>Recommended: Option 1, Import Sheet</b>, with Option 2's mapping the first time and Option 4's page for history. It reuses the import pattern he already knows, shows the balanced entry before posting, and brings in totals only, not employee details.</p>
+<p class="muted small">Brainstorm only. Depends on whether he has employees and which payroll product he uses (client question 11). Figures are invented; the BAS labels W1 and W2 are to be checked on ato.gov.au.</p>
+  </div>
+
+</div>
+
+<footer class="skill-footer">
+  This design was crafted by the <a href="https://github.com/Magdoub/claude-wireframe-skill">Wireframe skill</a> — follow on GitHub
+</footer>
+
+<script>
+(function() {
+  // Main tab switching
+  var tabBtns = document.querySelectorAll('.tab-btn');
+  var panels = document.querySelectorAll('.option-panel');
+  tabBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      tabBtns.forEach(function(b) { b.classList.remove('active'); });
+      panels.forEach(function(p) { p.classList.remove('active'); });
+      btn.classList.add('active');
+      var target = document.getElementById(btn.dataset.tab);
+      if (target) target.classList.add('active');
+    });
+  });
+
+  // Sub-tab switching
+  var subBtns = document.querySelectorAll('.sub-tab-btn');
+  subBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var frameId = btn.dataset.frame;
+      var siblings = btn.parentElement.querySelectorAll('.sub-tab-btn');
+      siblings.forEach(function(s) { s.classList.remove('active'); });
+      btn.classList.add('active');
+      var frame = document.getElementById(frameId);
+      if (frame) {
+        frame.classList.remove('wireframe', 'clean', 'polished');
+        frame.classList.add(btn.dataset.variant);
+      }
+    });
+  });
+
+  // Completion banner — one-time load check
+  window.addEventListener('load', function() {
+    var badges = document.querySelectorAll('.sub-tab-badge');
+    var anyVisible = false;
+    badges.forEach(function(b) {
+      if (getComputedStyle(b).display !== 'none') anyVisible = true;
+    });
+    if (!anyVisible && badges.length > 0) {
+      var banner = document.getElementById('completion-banner');
+      if (banner) {
+        banner.style.display = 'block';
+        setTimeout(function() { banner.style.display = 'none'; }, 8000);
+      }
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

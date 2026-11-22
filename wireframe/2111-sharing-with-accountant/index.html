@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sharing With the Accountant — 2111 Wireframes</title>
+  <link rel="stylesheet" href="base.css">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles-opt1.css">
+  <link rel="stylesheet" href="styles-opt2.css">
+  <link rel="stylesheet" href="styles-opt3.css">
+  <link rel="stylesheet" href="styles-opt4.css">
+  <link rel="stylesheet" href="styles-opt5.css">
+</head>
+<body>
+
+<div class="completion-banner" id="completion-banner" style="display:none;">
+  ✦ Visual designs complete — all options now have Clean + Polished variants
+  <button onclick="this.parentElement.style.display='none'" style="float:right;background:none;border:none;cursor:pointer;font-size:16px;">×</button>
+</div>
+
+<div class="page-wrapper">
+
+  <div class="title-bar">
+    <span><span id="feature-name">Sharing With the Accountant</span> — <span id="project-name">Accounting Books</span></span>
+    <span class="rec">★ Recommended: Option <span id="rec-number">2</span></span>
+  </div>
+
+  <nav class="main-tabs">
+    <button class="tab-btn active" data-tab="option-1">1: Safe Tables</button>
+    <button class="tab-btn" data-tab="option-2">2: People First</button>
+    <button class="tab-btn" data-tab="option-3">3: Sheet Cards</button>
+    <button class="tab-btn" data-tab="option-4">4: Change Diff</button>
+    <button class="tab-btn" data-tab="option-5">5: Inbox</button>
+    <button class="tab-btn" data-tab="summary">Summary</button>
+  </nav>
+
+  <!-- ===== OPTION 1 ===== -->
+  <div class="option-panel active" id="option-1">
+    <h2>Option 1: <span class="opt-name">Safe Tables</span></h2>
+    <p class="option-description">As in ui-context.md: a table of published sheets with their sharing, and a table of waiting changes.</p>
+    <div class="sub-tab-bar" id="frame-opt1-tabs">
+      <button class="sub-tab-btn active" data-variant="wireframe" data-frame="frame-opt1">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTsketch1"><g fill="#555" stroke="#fff" stroke-linejoin="round" stroke-width="4"><rect width="36" height="36" x="6" y="6" rx="3"/><path stroke-linecap="round" d="M18.6 16h10.8l3.6 4.706L24 32l-9-11.294z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTsketch1)"/></svg>
+        <span class="sub-tab-label">Wireframe</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="clean" data-frame="frame-opt1">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTpaint1"><g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"><path d="m15.536 22.898l9.899 9.9m-9.899-9.9L7.05 31.383a7 7 0 1 0 9.9 9.9l8.485-8.486m-9.899 0l-4.243 4.243"/><path fill="#555" d="m25.435 32.797l14.907-6.432c2.688-1.16 3.809-4.379 2.086-6.745C38.264 13.903 32.65 8.89 28.51 5.823c-2.29-1.696-5.33-.64-6.46 1.975l-6.514 15.1z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTpaint1)"/></svg>
+        <span class="sub-tab-label">Clean</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="polished" data-frame="frame-opt1">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTdiamond1"><path fill="#555" stroke="#fff" stroke-width="4" d="M5.939 13.934L23.036 4.53a2 2 0 0 1 1.928 0l17.097 9.404a2 2 0 0 1 .683 2.888l-17.098 24.79a2 2 0 0 1-3.292 0L5.256 16.823a2 2 0 0 1 .683-2.888Z"/></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTdiamond1)"/></svg>
+        <span class="sub-tab-label">Polished</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+    </div>
+    <div class="browser-frame wireframe" id="frame-opt1">
+      <div class="browser-chrome">
+        <div class="browser-dots"><span></span><span></span><span></span></div>
+        <div class="browser-url">Accounting Books — Shared sheets</div>
+        <div class="browser-controls">─ □ ✕</div>
+      </div>
+      <div class="browser-content">
+        <div class="states"><span>Show:</span><input type="radio" name="o1s" id="o1a" class="st-a" checked><label for="o1a">Shared sheets</label><input type="radio" name="o1s" id="o1b" class="st-b"><label for="o1b">Accountant changes</label></div>
+<div class="app"><nav class="sb" aria-label="Sidebar"><div class="biz">Harbour Lane Joinery</div><a href="#"><span>Home</span></a><a href="#"><span>To review</span><span class="n cnt">37</span></a><a href="#"><span>Bank</span></a><a href="#"><span>Transactions</span></a><a href="#"><span>Accounts</span></a><a href="#"><span>Reports</span></a><a href="#" class="on"><span>Shared sheets</span></a><a href="#"><span>Accountant changes</span><span class="n cnt">2</span></a><div class="gap"></div><a href="#"><span>Settings</span></a><a href="#"><span>Help</span></a></nav>
+<main class="main">
+  <div class="xb"><div class="tb"><h1>Shared sheets</h1><span class="sample">Sample data</span><span class="sp"></span><span class="small muted">Google: owner@example.com</span></div>
+  <table class="t"><thead><tr><th>Sheet</th><th>Published</th><th>Shared with<span class="wf-marker">1</span></th><th></th></tr></thead><tbody>
+  <tr><td><b>Transactions</b><br><span class="small muted">Oct–Dec 2026</span></td><td>13/11/2026</td><td>accountant@example.com<br><span class="badge">Editor</span></td><td><div class="row"><a href="#" class="btn sm">Open in Google Sheets</a><a href="#" class="btn sm">Publish again</a><span class="pop"><input type="checkbox" id="o1st"><label for="o1st" class="btn sm">Stop sharing</label>
+<div class="sheet"><div class="box"><h3>Stop sharing?</h3><p><b>accountant@example.com</b> will no longer be able to open "Transactions · Oct–Dec 2026". The sheet stays in your Google Drive.</p>
+<div class="acts"><label for="o1st" class="btn">Cancel</label><label for="o1st" class="btn danger">Stop sharing</label></div></div></div></span></div></td></tr>
+  <tr><td><b>Profit and loss</b><br><span class="small muted">Oct–Dec 2026</span></td><td>13/11/2026</td><td>accountant@example.com<br><span class="badge">Viewer</span></td><td><div class="row"><a href="#" class="btn sm">Open in Google Sheets</a><a href="#" class="btn sm">Publish again</a></div></td></tr>
+  <tr><td><b>BAS worksheet</b><br><span class="small muted">Jul–Sep 2026</span></td><td>27/10/2026</td><td>accountant@example.com<br><span class="badge">Commenter</span></td><td><div class="row"><a href="#" class="btn sm">Open in Google Sheets</a></div></td></tr>
+  <tr><td><b>Trial balance</b><br><span class="small muted">FY 2025–26</span></td><td>05/08/2026</td><td class="muted">Not shared</td><td><span class="pop"><input type="checkbox" id="o1sh"><label for="o1sh" class="btn">Share…</label>
+<div class="sheet"><div class="box"><h3>Share "Transactions · Oct–Dec 2026"</h3>
+  <div class="field">Email<input class="f" value="accountant@example.com" aria-label="Email"></div>
+  <div class="field">What they can do</div>
+  <label class="role"><input type="radio" name="o1r"> <b>Viewer</b> · can see the sheet</label>
+  <label class="role"><input type="radio" name="o1r"> <b>Commenter</b> · can see and leave comments</label>
+  <label class="role"><input type="radio" name="o1r" checked> <b>Editor</b> · can change the Account, GST and Note columns. Changes come back to you to accept</label>
+  <div class="acts"><label for="o1sh" class="btn">Cancel</label>
+  <span class="pop"><input type="checkbox" id="o1cf"><label for="o1cf" class="btn main-act">Continue</label>
+  <div class="sheet"><div class="box"><h3>Check before sharing</h3>
+    <p>Share <b>Transactions · Oct–Dec 2026</b> with</p><p class="who">accountant@example.com</p><p>as <b>Editor</b>.</p>
+    <p class="small muted">Google will email them a link. Only this sheet is shared, not your books or other sheets.</p>
+    <div class="acts"><label for="o1cf" class="btn">Back</label><label for="o1sh" class="btn main-act">Share</label></div></div></div></span></div></div></div></span><span class="wf-marker">2</span></td></tr>
+  </tbody></table></div>
+  <div class="xa"><div class="tb"><h1>Accountant changes</h1><span class="badge">2 waiting</span><span class="sample">Sample data</span><span class="sp"></span><span class="small muted">Checked 2 minutes ago</span></div>
+  <div class="warn"><span class="ic">i</span><span><b>Nothing in your books changes until you accept.</b> Accepting updates the line and records who changed it and when.</span></div><div class="small muted mb">From "Transactions · Oct–Dec 2026", by accountant@example.com on 20/11/2026<span class="wf-marker">3</span></div>
+  <table class="t"><thead><tr><th>Line</th><th>Field</th><th>Was</th><th>Accountant's change</th><th></th></tr></thead><tbody>
+<tr><td>15/10/2026 BUNNINGS 4532<br><span class="small muted">-$389.10 · row 18</span></td><td>Account</td><td><s>Materials & supplies</s></td><td><b>Tools & equipment</b></td><td><div class="row" style="flex-wrap:nowrap"><a href="#" class="btn sm">Reject</a><a href="#" class="btn sm main-act">Accept</a></div></td></tr>
+<tr><td>30/10/2026 ATM WITHDRAWAL<br><span class="small muted">-$200.00 · row 33</span></td><td>Account<br>GST</td><td><s>Office supplies</s><br><s>GST</s></td><td><b>Owner drawings</b><br><b>BAS excluded</b></td><td><div class="row" style="flex-wrap:nowrap"><a href="#" class="btn sm">Reject</a><a href="#" class="btn sm">Accept</a></div></td></tr>
+</tbody></table><div class="h2" style="margin-top:16px">Done</div>
+<table class="t"><tbody>
+<tr><td>12/11/2026</td><td>TELSTRA BUSINESS, GST: GST free → GST</td><td><span class="badge solid">Accepted</span></td></tr>
+<tr><td>12/11/2026</td><td>TIMBERLINK SUPPLIES, Account: Materials & supplies → Subcontractors</td><td><span class="badge">Rejected</span></td></tr>
+</tbody></table></div>
+</main></div>
+      </div>
+    </div>
+    <div class="wf-annotations">
+      <h3>UX notes</h3>
+      <ul>
+<li>① Who can see each sheet, and as what, is in the table. Click Stop sharing on the first row to see the confirmation.</li>
+        <li>② Click Share… to see the dialog and its second step, which shows the full email and role before anything is sent.</li>
+        <li>③ Use "Show" to switch to Accountant changes: old value crossed out, new value in bold, and Accept or Reject per change.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== OPTION 2 ===== -->
+  <div class="option-panel" id="option-2">
+    <h2>Option 2: <span class="opt-name">People First</span></h2>
+    <p class="option-description">Sharing is shown per person: what each person can see, and one place to change or stop it.</p>
+    <div class="sub-tab-bar" id="frame-opt2-tabs">
+      <button class="sub-tab-btn active" data-variant="wireframe" data-frame="frame-opt2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTsketch2"><g fill="#555" stroke="#fff" stroke-linejoin="round" stroke-width="4"><rect width="36" height="36" x="6" y="6" rx="3"/><path stroke-linecap="round" d="M18.6 16h10.8l3.6 4.706L24 32l-9-11.294z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTsketch2)"/></svg>
+        <span class="sub-tab-label">Wireframe</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="clean" data-frame="frame-opt2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTpaint2"><g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"><path d="m15.536 22.898l9.899 9.9m-9.899-9.9L7.05 31.383a7 7 0 1 0 9.9 9.9l8.485-8.486m-9.899 0l-4.243 4.243"/><path fill="#555" d="m25.435 32.797l14.907-6.432c2.688-1.16 3.809-4.379 2.086-6.745C38.264 13.903 32.65 8.89 28.51 5.823c-2.29-1.696-5.33-.64-6.46 1.975l-6.514 15.1z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTpaint2)"/></svg>
+        <span class="sub-tab-label">Clean</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="polished" data-frame="frame-opt2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTdiamond2"><path fill="#555" stroke="#fff" stroke-width="4" d="M5.939 13.934L23.036 4.53a2 2 0 0 1 1.928 0l17.097 9.404a2 2 0 0 1 .683 2.888l-17.098 24.79a2 2 0 0 1-3.292 0L5.256 16.823a2 2 0 0 1 .683-2.888Z"/></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTdiamond2)"/></svg>
+        <span class="sub-tab-label">Polished</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+    </div>
+    <div class="browser-frame wireframe" id="frame-opt2">
+      <div class="browser-chrome">
+        <div class="browser-dots"><span></span><span></span><span></span></div>
+        <div class="browser-url">Accounting Books — Shared sheets</div>
+        <div class="browser-controls">─ □ ✕</div>
+      </div>
+      <div class="browser-content">
+        <div class="states"><span>Show:</span><input type="radio" name="o2s" id="o2a" class="st-a" checked><label for="o2a">Shared sheets</label><input type="radio" name="o2s" id="o2b" class="st-b"><label for="o2b">Accountant changes</label></div>
+<div class="app"><nav class="sb" aria-label="Sidebar"><div class="biz">Harbour Lane Joinery</div><a href="#"><span>Home</span></a><a href="#"><span>To review</span><span class="n cnt">37</span></a><a href="#"><span>Bank</span></a><a href="#"><span>Transactions</span></a><a href="#"><span>Accounts</span></a><a href="#"><span>Reports</span></a><a href="#" class="on"><span>Shared sheets</span></a><a href="#"><span>Accountant changes</span><span class="n cnt">2</span></a><div class="gap"></div><a href="#"><span>Settings</span></a><a href="#"><span>Help</span></a></nav>
+<main class="main">
+  <div class="xb"><div class="tb"><h1>Shared sheets</h1><span class="sample">Sample data</span><span class="sp"></span><span class="pop"><input type="checkbox" id="o2sh"><label for="o2sh" class="btn">Share…</label>
+<div class="sheet"><div class="box"><h3>Share "Transactions · Oct–Dec 2026"</h3>
+  <div class="field">Email<input class="f" value="accountant@example.com" aria-label="Email"></div>
+  <div class="field">What they can do</div>
+  <label class="role"><input type="radio" name="o2r"> <b>Viewer</b> · can see the sheet</label>
+  <label class="role"><input type="radio" name="o2r"> <b>Commenter</b> · can see and leave comments</label>
+  <label class="role"><input type="radio" name="o2r" checked> <b>Editor</b> · can change the Account, GST and Note columns. Changes come back to you to accept</label>
+  <div class="acts"><label for="o2sh" class="btn">Cancel</label>
+  <span class="pop"><input type="checkbox" id="o2cf"><label for="o2cf" class="btn main-act">Continue</label>
+  <div class="sheet"><div class="box"><h3>Check before sharing</h3>
+    <p>Share <b>Transactions · Oct–Dec 2026</b> with</p><p class="who">accountant@example.com</p><p>as <b>Editor</b>.</p>
+    <p class="small muted">Google will email them a link. Only this sheet is shared, not your books or other sheets.</p>
+    <div class="acts"><label for="o2cf" class="btn">Back</label><label for="o2sh" class="btn main-act">Share</label></div></div></div></span></div></div></div></span></div>
+  <div class="person mb"><div class="row ph"><b>accountant@example.com</b><span class="small muted">can see 3 sheets</span><span class="sp"></span><a href="#" class="btn sm">Stop sharing everything</a><span class="wf-marker">1</span></div>
+    <table class="t"><tbody>
+    <tr><td><b>Transactions</b> · Oct–Dec 2026</td><td class="small muted">published 13/11/2026</td><td><select class="f" aria-label="Role"><option>Viewer</option><option>Commenter</option><option selected>Editor</option></select><span class="wf-marker">2</span></td><td><div class="row"><a href="#" class="btn sm">Open in Google Sheets</a><span class="pop"><input type="checkbox" id="o2st"><label for="o2st" class="btn sm">Stop sharing</label>
+<div class="sheet"><div class="box"><h3>Stop sharing?</h3><p><b>accountant@example.com</b> will no longer be able to open "Transactions · Oct–Dec 2026". The sheet stays in your Google Drive.</p>
+<div class="acts"><label for="o2st" class="btn">Cancel</label><label for="o2st" class="btn danger">Stop sharing</label></div></div></div></span></div></td></tr>
+    <tr><td><b>Profit and loss</b> · Oct–Dec 2026</td><td class="small muted">published 13/11/2026</td><td><select class="f" aria-label="Role"><option selected>Viewer</option><option>Commenter</option><option>Editor</option></select></td><td><div class="row"><a href="#" class="btn sm">Open in Google Sheets</a><a href="#" class="btn sm">Stop sharing</a></div></td></tr>
+    <tr><td><b>BAS worksheet</b> · Jul–Sep 2026</td><td class="small muted">published 27/10/2026</td><td><select class="f" aria-label="Role"><option>Viewer</option><option selected>Commenter</option><option>Editor</option></select></td><td><div class="row"><a href="#" class="btn sm">Open in Google Sheets</a><a href="#" class="btn sm">Stop sharing</a></div></td></tr>
+    </tbody></table></div>
+  <div class="person"><div class="row ph"><b>Only you</b><span class="small muted">published but not shared</span></div>
+    <table class="t"><tbody><tr><td><b>Trial balance</b> · FY 2025–26</td><td class="small muted">published 05/08/2026</td><td><div class="row"><a href="#" class="btn sm">Open in Google Sheets</a><a href="#" class="btn sm">Publish again</a></div></td></tr></tbody></table></div></div>
+  <div class="xa"><div class="tb"><h1>Accountant changes</h1><span class="badge">2 waiting</span><span class="sample">Sample data</span><span class="sp"></span><a href="#" class="btn">Reject all</a></div>
+  <div class="warn"><span class="ic">i</span><span><b>Nothing in your books changes until you accept.</b> Accepting updates the line and records who changed it and when.</span></div><div class="h2">Transactions · Oct–Dec 2026<span class="wf-marker">3</span></div>
+  <table class="t"><thead><tr><th>Line</th><th>Field</th><th>Was</th><th>Accountant's change</th><th></th></tr></thead><tbody>
+<tr><td>15/10/2026 BUNNINGS 4532<br><span class="small muted">-$389.10 · row 18</span></td><td>Account</td><td><s>Materials & supplies</s></td><td><b>Tools & equipment</b></td><td><div class="row" style="flex-wrap:nowrap"><a href="#" class="btn sm">Reject</a><a href="#" class="btn sm main-act">Accept</a></div></td></tr>
+<tr><td>30/10/2026 ATM WITHDRAWAL<br><span class="small muted">-$200.00 · row 33</span></td><td>Account<br>GST</td><td><s>Office supplies</s><br><s>GST</s></td><td><b>Owner drawings</b><br><b>BAS excluded</b></td><td><div class="row" style="flex-wrap:nowrap"><a href="#" class="btn sm">Reject</a><a href="#" class="btn sm">Accept</a></div></td></tr>
+</tbody></table><div class="h2" style="margin-top:16px">Done</div>
+<table class="t"><tbody>
+<tr><td>12/11/2026</td><td>TELSTRA BUSINESS, GST: GST free → GST</td><td><span class="badge solid">Accepted</span></td></tr>
+<tr><td>12/11/2026</td><td>TIMBERLINK SUPPLIES, Account: Materials & supplies → Subcontractors</td><td><span class="badge">Rejected</span></td></tr>
+</tbody></table></div>
+</main></div>
+      </div>
+    </div>
+    <div class="wf-annotations">
+      <h3>UX notes</h3>
+      <ul>
+<li>① Everyone who can see something is listed once, with a way to cut off all their access at once.</li>
+        <li>② The role is changed right in the row. Click Share… at the top to share another sheet, and Stop sharing on the first row to see that confirmation.</li>
+        <li>③ Changes are grouped by sheet, with the accepted and rejected ones listed under them.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== OPTION 3 ===== -->
+  <div class="option-panel" id="option-3">
+    <h2>Option 3: <span class="opt-name">Sheet Cards</span></h2>
+    <p class="option-description">Each published sheet is a card with its own access list, like the Google Drive share box he already knows.</p>
+    <div class="sub-tab-bar" id="frame-opt3-tabs">
+      <button class="sub-tab-btn active" data-variant="wireframe" data-frame="frame-opt3">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTsketch3"><g fill="#555" stroke="#fff" stroke-linejoin="round" stroke-width="4"><rect width="36" height="36" x="6" y="6" rx="3"/><path stroke-linecap="round" d="M18.6 16h10.8l3.6 4.706L24 32l-9-11.294z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTsketch3)"/></svg>
+        <span class="sub-tab-label">Wireframe</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="clean" data-frame="frame-opt3">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTpaint3"><g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"><path d="m15.536 22.898l9.899 9.9m-9.899-9.9L7.05 31.383a7 7 0 1 0 9.9 9.9l8.485-8.486m-9.899 0l-4.243 4.243"/><path fill="#555" d="m25.435 32.797l14.907-6.432c2.688-1.16 3.809-4.379 2.086-6.745C38.264 13.903 32.65 8.89 28.51 5.823c-2.29-1.696-5.33-.64-6.46 1.975l-6.514 15.1z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTpaint3)"/></svg>
+        <span class="sub-tab-label">Clean</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="polished" data-frame="frame-opt3">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTdiamond3"><path fill="#555" stroke="#fff" stroke-width="4" d="M5.939 13.934L23.036 4.53a2 2 0 0 1 1.928 0l17.097 9.404a2 2 0 0 1 .683 2.888l-17.098 24.79a2 2 0 0 1-3.292 0L5.256 16.823a2 2 0 0 1 .683-2.888Z"/></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTdiamond3)"/></svg>
+        <span class="sub-tab-label">Polished</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+    </div>
+    <div class="browser-frame wireframe" id="frame-opt3">
+      <div class="browser-chrome">
+        <div class="browser-dots"><span></span><span></span><span></span></div>
+        <div class="browser-url">Accounting Books — Shared sheets</div>
+        <div class="browser-controls">─ □ ✕</div>
+      </div>
+      <div class="browser-content">
+        <div class="states"><span>Show:</span><input type="radio" name="o3s" id="o3a" class="st-a" checked><label for="o3a">Shared sheets</label><input type="radio" name="o3s" id="o3b" class="st-b"><label for="o3b">Accountant changes</label></div>
+<div class="app"><nav class="sb" aria-label="Sidebar"><div class="biz">Harbour Lane Joinery</div><a href="#"><span>Home</span></a><a href="#"><span>To review</span><span class="n cnt">37</span></a><a href="#"><span>Bank</span></a><a href="#"><span>Transactions</span></a><a href="#"><span>Accounts</span></a><a href="#"><span>Reports</span></a><a href="#" class="on"><span>Shared sheets</span></a><a href="#"><span>Accountant changes</span><span class="n cnt">2</span></a><div class="gap"></div><a href="#"><span>Settings</span></a><a href="#"><span>Help</span></a></nav>
+<main class="main">
+  <div class="xb"><div class="tb"><h1>Shared sheets</h1><span class="sample">Sample data</span></div>
+  <div class="grid g2">
+    <div class="panel"><div class="row"><b>Transactions · Oct–Dec 2026</b><span class="sp"></span><span class="small muted">13/11/2026</span></div>
+      <div class="acc"><span>Owner (you)</span><span class="small muted">Owner</span></div>
+      <div class="acc"><span>accountant@example.com</span><select class="f" aria-label="Role"><option>Viewer</option><option>Commenter</option><option selected>Editor</option></select></div>
+      <div class="row" style="margin-top:8px"><span class="pop"><input type="checkbox" id="o3sh"><label for="o3sh" class="btn">Share…</label>
+<div class="sheet"><div class="box"><h3>Share "Transactions · Oct–Dec 2026"</h3>
+  <div class="field">Email<input class="f" value="accountant@example.com" aria-label="Email"></div>
+  <div class="field">What they can do</div>
+  <label class="role"><input type="radio" name="o3r"> <b>Viewer</b> · can see the sheet</label>
+  <label class="role"><input type="radio" name="o3r"> <b>Commenter</b> · can see and leave comments</label>
+  <label class="role"><input type="radio" name="o3r" checked> <b>Editor</b> · can change the Account, GST and Note columns. Changes come back to you to accept</label>
+  <div class="acts"><label for="o3sh" class="btn">Cancel</label>
+  <span class="pop"><input type="checkbox" id="o3cf"><label for="o3cf" class="btn main-act">Continue</label>
+  <div class="sheet"><div class="box"><h3>Check before sharing</h3>
+    <p>Share <b>Transactions · Oct–Dec 2026</b> with</p><p class="who">accountant@example.com</p><p>as <b>Editor</b>.</p>
+    <p class="small muted">Google will email them a link. Only this sheet is shared, not your books or other sheets.</p>
+    <div class="acts"><label for="o3cf" class="btn">Back</label><label for="o3sh" class="btn main-act">Share</label></div></div></div></span></div></div></div></span><a href="#" class="btn sm">Open in Google Sheets</a><span class="pop"><input type="checkbox" id="o3st"><label for="o3st" class="btn sm">Stop sharing</label>
+<div class="sheet"><div class="box"><h3>Stop sharing?</h3><p><b>accountant@example.com</b> will no longer be able to open "Transactions · Oct–Dec 2026". The sheet stays in your Google Drive.</p>
+<div class="acts"><label for="o3st" class="btn">Cancel</label><label for="o3st" class="btn danger">Stop sharing</label></div></div></div></span><span class="wf-marker">1</span></div></div>
+    <div class="panel"><div class="row"><b>Profit and loss · Oct–Dec 2026</b><span class="sp"></span><span class="small muted">13/11/2026</span></div>
+      <div class="acc"><span>Owner (you)</span><span class="small muted">Owner</span></div>
+      <div class="acc"><span>accountant@example.com</span><span class="badge">Viewer</span></div>
+      <div class="row" style="margin-top:8px"><a href="#" class="btn sm">Share…</a><a href="#" class="btn sm">Open in Google Sheets</a></div></div>
+    <div class="panel"><div class="row"><b>BAS worksheet · Jul–Sep 2026</b><span class="sp"></span><span class="small muted">27/10/2026</span></div>
+      <div class="acc"><span>accountant@example.com</span><span class="badge">Commenter</span></div></div>
+    <div class="panel"><div class="row"><b>Trial balance · FY 2025–26</b><span class="sp"></span><span class="small muted">05/08/2026</span></div>
+      <div class="acc muted"><span>Not shared</span></div></div>
+  </div></div>
+  <div class="xa"><div class="tb"><h1>Accountant changes</h1><span class="badge">2 waiting</span><span class="sample">Sample data</span></div><div class="warn"><span class="ic">i</span><span><b>Nothing in your books changes until you accept.</b> Accepting updates the line and records who changed it and when.</span></div>
+    <div class="grid g2"><div class="panel"><div class="small muted">Row 18 · 15/10/2026 · -$389.10</div><b>BUNNINGS 4532</b><div class="chg"><span>Account</span><s>Materials & supplies</s><b>Tools & equipment</b></div><div class="row"><span class="sp"></span><a href="#" class="btn sm">Reject</a><a href="#" class="btn sm main-act">Accept</a></div></div>
+    <div class="panel"><div class="small muted">Row 33 · 30/10/2026 · -$200.00</div><b>ATM WITHDRAWAL</b><div class="chg"><span>Account</span><s>Office supplies</s><b>Owner drawings</b></div><div class="chg"><span>GST</span><s>GST</s><b>BAS excluded</b></div><div class="row"><span class="sp"></span><a href="#" class="btn sm">Reject</a><a href="#" class="btn sm">Accept</a></div></div></div>
+    <div class="h2" style="margin-top:16px">Done</div>
+<table class="t"><tbody>
+<tr><td>12/11/2026</td><td>TELSTRA BUSINESS, GST: GST free → GST</td><td><span class="badge solid">Accepted</span></td></tr>
+<tr><td>12/11/2026</td><td>TIMBERLINK SUPPLIES, Account: Materials & supplies → Subcontractors</td><td><span class="badge">Rejected</span></td></tr>
+</tbody></table></div>
+</main></div>
+      </div>
+    </div>
+    <div class="wf-annotations">
+      <h3>UX notes</h3>
+      <ul>
+<li>① Each card has its own Share, Open and Stop sharing. Familiar from Google Drive.</li>
+        <li>Risk: with many sheets, it is harder to see everything one person can open.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== OPTION 4 ===== -->
+  <div class="option-panel" id="option-4">
+    <h2>Option 4: <span class="opt-name">Change Diff</span></h2>
+    <p class="option-description">Each accountant change shows exactly what it would do to the books before he accepts it.</p>
+    <div class="sub-tab-bar" id="frame-opt4-tabs">
+      <button class="sub-tab-btn active" data-variant="wireframe" data-frame="frame-opt4">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTsketch4"><g fill="#555" stroke="#fff" stroke-linejoin="round" stroke-width="4"><rect width="36" height="36" x="6" y="6" rx="3"/><path stroke-linecap="round" d="M18.6 16h10.8l3.6 4.706L24 32l-9-11.294z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTsketch4)"/></svg>
+        <span class="sub-tab-label">Wireframe</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="clean" data-frame="frame-opt4">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTpaint4"><g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"><path d="m15.536 22.898l9.899 9.9m-9.899-9.9L7.05 31.383a7 7 0 1 0 9.9 9.9l8.485-8.486m-9.899 0l-4.243 4.243"/><path fill="#555" d="m25.435 32.797l14.907-6.432c2.688-1.16 3.809-4.379 2.086-6.745C38.264 13.903 32.65 8.89 28.51 5.823c-2.29-1.696-5.33-.64-6.46 1.975l-6.514 15.1z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTpaint4)"/></svg>
+        <span class="sub-tab-label">Clean</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="polished" data-frame="frame-opt4">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTdiamond4"><path fill="#555" stroke="#fff" stroke-width="4" d="M5.939 13.934L23.036 4.53a2 2 0 0 1 1.928 0l17.097 9.404a2 2 0 0 1 .683 2.888l-17.098 24.79a2 2 0 0 1-3.292 0L5.256 16.823a2 2 0 0 1 .683-2.888Z"/></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTdiamond4)"/></svg>
+        <span class="sub-tab-label">Polished</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+    </div>
+    <div class="browser-frame wireframe" id="frame-opt4">
+      <div class="browser-chrome">
+        <div class="browser-dots"><span></span><span></span><span></span></div>
+        <div class="browser-url">Accounting Books — Shared sheets</div>
+        <div class="browser-controls">─ □ ✕</div>
+      </div>
+      <div class="browser-content">
+        <div class="states"><span>Show:</span><input type="radio" name="o4s" id="o4a" class="st-a" checked><label for="o4a">Shared sheets</label><input type="radio" name="o4s" id="o4b" class="st-b"><label for="o4b">Accountant changes</label></div>
+<div class="app"><nav class="sb" aria-label="Sidebar"><div class="biz">Harbour Lane Joinery</div><a href="#"><span>Home</span></a><a href="#"><span>To review</span><span class="n cnt">37</span></a><a href="#"><span>Bank</span></a><a href="#"><span>Transactions</span></a><a href="#"><span>Accounts</span></a><a href="#"><span>Reports</span></a><a href="#" class="on"><span>Shared sheets</span></a><a href="#"><span>Accountant changes</span><span class="n cnt">2</span></a><div class="gap"></div><a href="#"><span>Settings</span></a><a href="#"><span>Help</span></a></nav>
+<main class="main">
+  <div class="xb"><div class="tb"><h1>Shared sheets</h1><span class="sample">Sample data</span><span class="sp"></span><span class="pop"><input type="checkbox" id="o4sh"><label for="o4sh" class="btn">Share…</label>
+<div class="sheet"><div class="box"><h3>Share "Transactions · Oct–Dec 2026"</h3>
+  <div class="field">Email<input class="f" value="accountant@example.com" aria-label="Email"></div>
+  <div class="field">What they can do</div>
+  <label class="role"><input type="radio" name="o4r"> <b>Viewer</b> · can see the sheet</label>
+  <label class="role"><input type="radio" name="o4r"> <b>Commenter</b> · can see and leave comments</label>
+  <label class="role"><input type="radio" name="o4r" checked> <b>Editor</b> · can change the Account, GST and Note columns. Changes come back to you to accept</label>
+  <div class="acts"><label for="o4sh" class="btn">Cancel</label>
+  <span class="pop"><input type="checkbox" id="o4cf"><label for="o4cf" class="btn main-act">Continue</label>
+  <div class="sheet"><div class="box"><h3>Check before sharing</h3>
+    <p>Share <b>Transactions · Oct–Dec 2026</b> with</p><p class="who">accountant@example.com</p><p>as <b>Editor</b>.</p>
+    <p class="small muted">Google will email them a link. Only this sheet is shared, not your books or other sheets.</p>
+    <div class="acts"><label for="o4cf" class="btn">Back</label><label for="o4sh" class="btn main-act">Share</label></div></div></div></span></div></div></div></span></div>
+  <table class="t"><thead><tr><th>Sheet</th><th>Shared with</th><th></th></tr></thead><tbody>
+  <tr><td><b>Transactions</b> · Oct–Dec 2026</td><td>accountant@example.com · <b>Editor</b></td><td><div class="row"><a href="#" class="btn sm">Open in Google Sheets</a><span class="pop"><input type="checkbox" id="o4st"><label for="o4st" class="btn sm">Stop sharing</label>
+<div class="sheet"><div class="box"><h3>Stop sharing?</h3><p><b>accountant@example.com</b> will no longer be able to open "Transactions · Oct–Dec 2026". The sheet stays in your Google Drive.</p>
+<div class="acts"><label for="o4st" class="btn">Cancel</label><label for="o4st" class="btn danger">Stop sharing</label></div></div></div></span></div></td></tr>
+  <tr><td><b>Profit and loss</b> · Oct–Dec 2026</td><td>accountant@example.com · <b>Viewer</b></td><td><a href="#" class="btn sm">Open in Google Sheets</a></td></tr>
+  <tr><td><b>BAS worksheet</b> · Jul–Sep 2026</td><td>accountant@example.com · <b>Commenter</b></td><td><a href="#" class="btn sm">Open in Google Sheets</a></td></tr>
+  </tbody></table></div>
+  <div class="xa" style="margin:-16px -20px"><div class="dv">
+    <div class="dvl"><div class="small muted" style="padding:10px">2 waiting</div>
+      <div class="it on">BUNNINGS 4532<br><span class="small">Account</span></div>
+      <div class="it">ATM WITHDRAWAL<br><span class="small">Account, GST</span></div>
+      <div class="small muted" style="padding:10px">Done</div>
+      <div class="it">TELSTRA BUSINESS <span class="badge solid">Accepted</span></div>
+      <div class="it">TIMBERLINK SUPPLIES <span class="badge">Rejected</span></div></div>
+    <div class="dvr"><div class="small muted">Transactions · Oct–Dec 2026 · row 18 · by accountant@example.com on 20/11/2026</div>
+      <div style="font-size:15px;font-weight:600;margin:4px 0 12px">15/10/2026 BUNNINGS 4532 · -$389.10</div>
+      <div class="grid g2 mb"><div class="panel"><div class="small muted">Now</div>Materials & supplies · GST</div><div class="panel" style="border:2px solid #000"><div class="small muted">Accountant's change</div><b>Tools & equipment</b> · GST</div></div>
+      <div class="h2">What accepting does<span class="wf-marker">1</span></div>
+      <table class="t mb"><tbody><tr><td>Materials & supplies</td><td class="r">-$353.73</td></tr><tr><td>Tools & equipment</td><td class="r">$353.73</td></tr><tr><td>GST, profit and BAS</td><td class="muted">no change</td></tr></tbody></table>
+      <p class="small muted">Nothing changes until you accept. The change and who made it are kept in the history.</p>
+      <div class="row"><span class="sp"></span><a href="#" class="btn">Reject</a><a href="#" class="btn main-act">Accept</a></div></div>
+  </div></div>
+</main></div>
+      </div>
+    </div>
+    <div class="wf-annotations">
+      <h3>UX notes</h3>
+      <ul>
+<li>① Before accepting, the effect on accounts, GST, profit and the BAS is spelled out. Amounts are before GST.</li>
+        <li>Risk: one change at a time is slower when the accountant makes many small fixes.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== OPTION 5 ===== -->
+  <div class="option-panel" id="option-5">
+    <h2>Option 5: <span class="opt-name">Inbox</span></h2>
+    <p class="option-description">One Sharing page. Waiting changes sit at the top like an inbox, and the sheets are listed below.</p>
+    <div class="sub-tab-bar" id="frame-opt5-tabs">
+      <button class="sub-tab-btn active" data-variant="wireframe" data-frame="frame-opt5">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTsketch5"><g fill="#555" stroke="#fff" stroke-linejoin="round" stroke-width="4"><rect width="36" height="36" x="6" y="6" rx="3"/><path stroke-linecap="round" d="M18.6 16h10.8l3.6 4.706L24 32l-9-11.294z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTsketch5)"/></svg>
+        <span class="sub-tab-label">Wireframe</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="clean" data-frame="frame-opt5">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTpaint5"><g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"><path d="m15.536 22.898l9.899 9.9m-9.899-9.9L7.05 31.383a7 7 0 1 0 9.9 9.9l8.485-8.486m-9.899 0l-4.243 4.243"/><path fill="#555" d="m25.435 32.797l14.907-6.432c2.688-1.16 3.809-4.379 2.086-6.745C38.264 13.903 32.65 8.89 28.51 5.823c-2.29-1.696-5.33-.64-6.46 1.975l-6.514 15.1z"/></g></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTpaint5)"/></svg>
+        <span class="sub-tab-label">Clean</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+      <button class="sub-tab-btn" data-variant="polished" data-frame="frame-opt5">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48"><defs><mask id="ipTdiamond5"><path fill="#555" stroke="#fff" stroke-width="4" d="M5.939 13.934L23.036 4.53a2 2 0 0 1 1.928 0l17.097 9.404a2 2 0 0 1 .683 2.888l-17.098 24.79a2 2 0 0 1-3.292 0L5.256 16.823a2 2 0 0 1 .683-2.888Z"/></mask></defs><path fill="currentColor" d="M0 0h48v48H0z" mask="url(#ipTdiamond5)"/></svg>
+        <span class="sub-tab-label">Polished</span>
+        <span class="sub-tab-badge">generating...</span>
+      </button>
+    </div>
+    <div class="browser-frame wireframe" id="frame-opt5">
+      <div class="browser-chrome">
+        <div class="browser-dots"><span></span><span></span><span></span></div>
+        <div class="browser-url">Accounting Books — Shared sheets</div>
+        <div class="browser-controls">─ □ ✕</div>
+      </div>
+      <div class="browser-content">
+        <div class="states"><span>Show:</span><input type="radio" name="o5s" id="o5a" class="st-a" checked><label for="o5a">Shared sheets</label><input type="radio" name="o5s" id="o5b" class="st-b"><label for="o5b">Accountant changes</label></div>
+<div class="app"><nav class="sb" aria-label="Sidebar"><div class="biz">Harbour Lane Joinery</div><a href="#"><span>Home</span></a><a href="#"><span>To review</span><span class="n cnt">37</span></a><a href="#"><span>Bank</span></a><a href="#"><span>Transactions</span></a><a href="#"><span>Accounts</span></a><a href="#"><span>Reports</span></a><a href="#" class="on"><span>Shared sheets</span></a><a href="#"><span>Accountant changes</span><span class="n cnt">2</span></a><div class="gap"></div><a href="#"><span>Settings</span></a><a href="#"><span>Help</span></a></nav>
+<main class="main">
+  <div class="tb"><h1>Sharing</h1><span class="sample">Sample data</span><span class="sp"></span><span class="pop"><input type="checkbox" id="o5sh"><label for="o5sh" class="btn">Share…</label>
+<div class="sheet"><div class="box"><h3>Share "Transactions · Oct–Dec 2026"</h3>
+  <div class="field">Email<input class="f" value="accountant@example.com" aria-label="Email"></div>
+  <div class="field">What they can do</div>
+  <label class="role"><input type="radio" name="o5r"> <b>Viewer</b> · can see the sheet</label>
+  <label class="role"><input type="radio" name="o5r"> <b>Commenter</b> · can see and leave comments</label>
+  <label class="role"><input type="radio" name="o5r" checked> <b>Editor</b> · can change the Account, GST and Note columns. Changes come back to you to accept</label>
+  <div class="acts"><label for="o5sh" class="btn">Cancel</label>
+  <span class="pop"><input type="checkbox" id="o5cf"><label for="o5cf" class="btn main-act">Continue</label>
+  <div class="sheet"><div class="box"><h3>Check before sharing</h3>
+    <p>Share <b>Transactions · Oct–Dec 2026</b> with</p><p class="who">accountant@example.com</p><p>as <b>Editor</b>.</p>
+    <p class="small muted">Google will email them a link. Only this sheet is shared, not your books or other sheets.</p>
+    <div class="acts"><label for="o5cf" class="btn">Back</label><label for="o5sh" class="btn main-act">Share</label></div></div></div></span></div></div></div></span></div>
+  <div class="panel mb xb"><div class="row"><b>2 changes from accountant@example.com are waiting</b><span class="sp"></span><label for="o5b" class="btn sm main-act">Review</label><span class="wf-marker">1</span></div></div>
+  <div class="xb"><table class="t"><thead><tr><th>Sheet</th><th>Shared with</th><th>Published</th><th></th></tr></thead><tbody>
+  <tr><td><b>Transactions</b> · Oct–Dec 2026</td><td>accountant@example.com <span class="badge">Editor</span></td><td>13/11/2026</td><td><div class="row"><a href="#" class="btn sm">Open in Google Sheets</a><span class="pop"><input type="checkbox" id="o5st"><label for="o5st" class="btn sm">Stop sharing</label>
+<div class="sheet"><div class="box"><h3>Stop sharing?</h3><p><b>accountant@example.com</b> will no longer be able to open "Transactions · Oct–Dec 2026". The sheet stays in your Google Drive.</p>
+<div class="acts"><label for="o5st" class="btn">Cancel</label><label for="o5st" class="btn danger">Stop sharing</label></div></div></div></span></div></td></tr>
+  <tr><td><b>Profit and loss</b> · Oct–Dec 2026</td><td>accountant@example.com <span class="badge">Viewer</span></td><td>13/11/2026</td><td><a href="#" class="btn sm">Open in Google Sheets</a></td></tr>
+  <tr><td><b>BAS worksheet</b> · Jul–Sep 2026</td><td>accountant@example.com <span class="badge">Commenter</span></td><td>27/10/2026</td><td><a href="#" class="btn sm">Open in Google Sheets</a></td></tr>
+  </tbody></table></div>
+  <div class="xa"><div class="row mb"><label for="o5a" class="btn sm">‹ Back to sheets</label></div><div class="warn"><span class="ic">i</span><span><b>Nothing in your books changes until you accept.</b> Accepting updates the line and records who changed it and when.</span></div><table class="t"><thead><tr><th>Line</th><th>Field</th><th>Was</th><th>Accountant's change</th><th></th></tr></thead><tbody>
+<tr><td>15/10/2026 BUNNINGS 4532<br><span class="small muted">-$389.10 · row 18</span></td><td>Account</td><td><s>Materials & supplies</s></td><td><b>Tools & equipment</b></td><td><div class="row" style="flex-wrap:nowrap"><a href="#" class="btn sm">Reject</a><a href="#" class="btn sm main-act">Accept</a></div></td></tr>
+<tr><td>30/10/2026 ATM WITHDRAWAL<br><span class="small muted">-$200.00 · row 33</span></td><td>Account<br>GST</td><td><s>Office supplies</s><br><s>GST</s></td><td><b>Owner drawings</b><br><b>BAS excluded</b></td><td><div class="row" style="flex-wrap:nowrap"><a href="#" class="btn sm">Reject</a><a href="#" class="btn sm">Accept</a></div></td></tr>
+</tbody></table><div class="h2" style="margin-top:16px">Done</div>
+<table class="t"><tbody>
+<tr><td>12/11/2026</td><td>TELSTRA BUSINESS, GST: GST free → GST</td><td><span class="badge solid">Accepted</span></td></tr>
+<tr><td>12/11/2026</td><td>TIMBERLINK SUPPLIES, Account: Materials & supplies → Subcontractors</td><td><span class="badge">Rejected</span></td></tr>
+</tbody></table></div>
+</main></div>
+      </div>
+    </div>
+    <div class="wf-annotations">
+      <h3>UX notes</h3>
+      <ul>
+<li>① Shared sheets and Accountant changes merge into one page, and the sidebar loses an item. Click Review.</li>
+        <li>Risk: a waiting change is easy to miss if he does not open the Sharing page.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== SUMMARY ===== -->
+  <div class="option-panel" id="summary">
+    <h2>Summary</h2>
+<table class="t">
+  <thead><tr><th>Option</th><th>Approach</th><th>Clear control of access</th></tr></thead>
+  <tbody>
+  <tr><td>1: Safe Tables</td><td>A sheets table and a changes table</td><td>★★★★☆</td></tr>
+  <tr><td>2: People First</td><td>Access grouped by person, role changed in the row</td><td>★★★★★</td></tr>
+  <tr><td>3: Sheet Cards</td><td>A Drive-like access card per sheet</td><td>★★★☆☆</td></tr>
+  <tr><td>4: Change Diff</td><td>Each change shown with its effect on the books</td><td>★★★★☆</td></tr>
+  <tr><td>5: Inbox</td><td>One page, changes on top, sheets below</td><td>★★★☆☆</td></tr>
+  </tbody>
+</table>
+<p><b>Recommended: Option 2, People First</b>, with the "What accepting does" box from Option 4 added to each change. The risk that matters most here is someone keeping access they should not have. Listing access by person answers "what can my accountant see?" in one place, with one button to stop it all.</p>
+<p class="muted small">Questions for the client: which columns may the accountant edit (client question 7 assumes Account, GST and Note)? Is there anyone besides his accountant to share with? All names and emails are invented.</p>
+  </div>
+
+</div>
+
+<footer class="skill-footer">
+  This design was crafted by the <a href="https://github.com/Magdoub/claude-wireframe-skill">Wireframe skill</a> — follow on GitHub
+</footer>
+
+<script>
+(function() {
+  // Main tab switching
+  var tabBtns = document.querySelectorAll('.tab-btn');
+  var panels = document.querySelectorAll('.option-panel');
+  tabBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      tabBtns.forEach(function(b) { b.classList.remove('active'); });
+      panels.forEach(function(p) { p.classList.remove('active'); });
+      btn.classList.add('active');
+      var target = document.getElementById(btn.dataset.tab);
+      if (target) target.classList.add('active');
+    });
+  });
+
+  // Sub-tab switching
+  var subBtns = document.querySelectorAll('.sub-tab-btn');
+  subBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var frameId = btn.dataset.frame;
+      var siblings = btn.parentElement.querySelectorAll('.sub-tab-btn');
+      siblings.forEach(function(s) { s.classList.remove('active'); });
+      btn.classList.add('active');
+      var frame = document.getElementById(frameId);
+      if (frame) {
+        frame.classList.remove('wireframe', 'clean', 'polished');
+        frame.classList.add(btn.dataset.variant);
+      }
+    });
+  });
+
+  // Completion banner — one-time load check
+  window.addEventListener('load', function() {
+    var badges = document.querySelectorAll('.sub-tab-badge');
+    var anyVisible = false;
+    badges.forEach(function(b) {
+      if (getComputedStyle(b).display !== 'none') anyVisible = true;
+    });
+    if (!anyVisible && badges.length > 0) {
+      var banner = document.getElementById('completion-banner');
+      if (banner) {
+        banner.style.display = 'block';
+        setTimeout(function() { banner.style.display = 'none'; }, 8000);
+      }
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
