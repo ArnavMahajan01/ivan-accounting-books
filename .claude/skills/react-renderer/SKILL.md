@@ -14,7 +14,7 @@ First check the installed versions in `node_modules/react/package.json` (19.3.1 
 - `src/renderer/`, the unprivileged screens:
   - `index.html`: the entry. No inline script.
   - `main.tsx`: mounts `App` in `StrictMode`.
-  - `App.tsx`: the current page.
+  - `App.tsx`: the layout and the current page. `routes.ts` and `use-route.ts`: the pages and the hash router. `layout/`: `AppLayout`, `Sidebar`, `PageToolbar`. `pages/`: one component per page, `use-bridge.ts`, `data-status.ts`.
   - `bridge.ts`: the typed `window.bridge`.
   - `styles.css`: a placeholder until spec 020.
   - `tsconfig.json`: adds the DOM library and JSX for this folder only.
@@ -23,9 +23,9 @@ First check the installed versions in `node_modules/react/package.json` (19.3.1 
 
 ## How a screen gets its data
 
-1. **Only through the bridge.** A screen calls `bridge['area.verbNoun'](input)` from `src/renderer/bridge.ts`. It never touches files, the database, tokens or the network (invariant 8). A new function is added with the `electron` skill ("Add a bridge function").
+1. **Only through the bridge.** A screen calls `bridge()['area.verbNoun'](input)` from `src/renderer/bridge.ts` (a function, read when called, so tests can provide a stand-in `window.bridge`). It never touches files, the database, tokens or the network (invariant 8). A new function is added with the `electron` skill ("Add a bridge function").
 2. **Every call returns a `Result`.** Handle both sides: `result.ok` with `result.value`, or `result.error.code` (`invalid-input`, `not-allowed`, `internal`, and later the function's own codes). Never assume success. Never show raw error text.
-3. **Model the screen's state as a union**, as `useBridge` in `src/renderer/App.tsx` does: `loading`, then `ready` with the value or `failed` with the error. When a second screen needs it, move `useBridge` to its own file in `src/renderer/` and reuse it, rather than copying it.
+3. **Model the screen's state as a union**, with `useBridge` from `src/renderer/pages/use-bridge.ts`: `loading`, then `ready` with the value or `failed` with the error. Pass it a stable loader, as in `src/renderer/pages/data-status.ts`.
 4. **Every screen has these states** (`ui-context.md`, "States"):
    - **Loading:** skeleton rows shaped like the final table, not a blank screen or only a spinner.
    - **Empty:** a `ready` result with no rows shows muted text, an icon and the next action ("No bank lines yet. Import a file from Westpac Online Banking.").
@@ -36,11 +36,11 @@ First check the installed versions in `node_modules/react/package.json` (19.3.1 
 5. **Money and dates** come from the main process as `Cents` and `CalendarDate`. Show them only with `formatCents` and `formatDateAU` from `@shared/money` and `@shared/dates`. Amounts are right-aligned with tabular figures, and a negative shows a minus sign, never colour alone.
 
 ```tsx
-// The pattern in App.tsx: a stable loader, a state union, and every branch shown.
-const loadData = () => bridge['app.getDataStatus']({});
+// The pattern in src/renderer/pages/SettingsPage.tsx: a stable loader, a state union, every branch shown.
+const loadDataStatus = () => bridge()['app.getDataStatus']({});
 
 export function App() {
-  const data = useBridge<DataStatus>(loadData);
+  const data = useBridge<DataStatus>(loadDataStatus);
   return (
     <main>
       {data.status === 'loading' && <p>Loading…</p>}

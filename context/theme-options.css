@@ -1,0 +1,218 @@
+/*
+ * Colour theme options, saved for later. Not used by the app.
+ *
+ * The app's colours live in src/renderer/styles/tokens.css (the "Harbour" palette below,
+ * signed off at W11). This file holds other palettes with the same role names, each in a
+ * light and a dark version, so one can replace Harbour, or be offered in Settings
+ * (Appearance) later.
+ *
+ * To use one: copy its light block into tokens.css ":root", and its dark block into both
+ * dark blocks there (the system setting and data-theme='dark'), which must stay the same.
+ * Keep the non-colour tokens as they are. Then run `npm run check` and look at the app in
+ * both themes. Changing the palette is a design change: the author decides, and
+ * ui-context.md and DESIGN.md are updated in the same change.
+ *
+ * Contrast (checked 2026-11-23, WCAG 2.2): in every palette and theme, the three text
+ * colours, brand, success, warning and error are at least 4.5:1 on surface and on
+ * surface-secondary, and on-brand and on-accent are at least 4.5:1 on their colour.
+ */
+
+/* Harbour: the current palette (teal brand, coral accent). Copied from tokens.css. */
+[data-palette='harbour'] {
+  --color-background: #d7e6ea;
+  --color-surface: #ffffff;
+  --color-surface-secondary: #f2f7f8;
+  --color-glass: rgb(255 255 255 / 0.7);
+  --color-glass-border: rgb(255 255 255 / 0.55);
+  --color-border: #cfdde1;
+  --color-text-primary: #10212b;
+  --color-text-secondary: #40535c;
+  --color-text-muted: #53656e;
+  --color-brand: #0f5e6e;
+  --color-on-brand: #ffffff;
+  --color-accent: #ff7a59;
+  --color-on-accent: #10212b;
+  --color-success: #0f7b55;
+  --color-warning: #b45309;
+  --color-error: #b3261e;
+  --color-scrim: rgb(16 33 43 / 0.24);
+}
+[data-palette='harbour'][data-theme='dark'] {
+  --color-background: #0a1a20;
+  --color-surface: #12242b;
+  --color-surface-secondary: #1a2f37;
+  --color-glass: rgb(18 40 47 / 0.6);
+  --color-glass-border: rgb(255 255 255 / 0.1);
+  --color-border: #2a424b;
+  --color-text-primary: #f1f6f7;
+  --color-text-secondary: #b7c7cc;
+  --color-text-muted: #8fa3aa;
+  --color-brand: #6ccbd9;
+  --color-on-brand: #0a1a20;
+  --color-accent: #ff8a6b;
+  --color-on-accent: #10212b;
+  --color-success: #4cc38a;
+  --color-warning: #f0a94b;
+  --color-error: #ff7b72;
+  --color-scrim: rgb(0 0 0 / 0.5);
+}
+
+/* Eucalyptus: soft grey-green, gold accent. Calm and outdoorsy. */
+[data-palette='eucalyptus'] {
+  --color-background: #dfe7e0;
+  --color-surface: #ffffff;
+  --color-surface-secondary: #f3f7f3;
+  --color-glass: rgb(255 255 255 / 0.7);
+  --color-glass-border: rgb(255 255 255 / 0.55);
+  --color-border: #cfdccf;
+  --color-text-primary: #14231a;
+  --color-text-secondary: #3f5246;
+  --color-text-muted: #55665a;
+  --color-brand: #2f6b45;
+  --color-on-brand: #ffffff;
+  --color-accent: #d9a441;
+  --color-on-accent: #14231a;
+  --color-success: #1f7a4a;
+  --color-warning: #a65a00;
+  --color-error: #b3261e;
+  --color-scrim: rgb(20 35 26 / 0.24);
+}
+[data-palette='eucalyptus'][data-theme='dark'] {
+  --color-background: #0d1a12;
+  --color-surface: #15241b;
+  --color-surface-secondary: #1d2e23;
+  --color-glass: rgb(21 36 27 / 0.6);
+  --color-glass-border: rgb(255 255 255 / 0.1);
+  --color-border: #2d4235;
+  --color-text-primary: #eef5f0;
+  --color-text-secondary: #b8c9bd;
+  --color-text-muted: #8fa496;
+  --color-brand: #7fcf9a;
+  --color-on-brand: #0d1a12;
+  --color-accent: #e9b45a;
+  --color-on-accent: #14231a;
+  --color-success: #5fcf8f;
+  --color-warning: #f0a94b;
+  --color-error: #ff7b72;
+  --color-scrim: rgb(0 0 0 / 0.5);
+}
+
+/* Ink: deep navy brand, amber accent. Traditional and businesslike. */
+[data-palette='ink'] {
+  --color-background: #dde3ee;
+  --color-surface: #ffffff;
+  --color-surface-secondary: #f3f5fa;
+  --color-glass: rgb(255 255 255 / 0.7);
+  --color-glass-border: rgb(255 255 255 / 0.55);
+  --color-border: #cfd7e5;
+  --color-text-primary: #111a2e;
+  --color-text-secondary: #3d4a63;
+  --color-text-muted: #546078;
+  --color-brand: #234e9a;
+  --color-on-brand: #ffffff;
+  --color-accent: #e0a526;
+  --color-on-accent: #111a2e;
+  --color-success: #0f7b55;
+  --color-warning: #b45309;
+  --color-error: #b3261e;
+  --color-scrim: rgb(17 26 46 / 0.24);
+}
+[data-palette='ink'][data-theme='dark'] {
+  --color-background: #0b1220;
+  --color-surface: #131c2e;
+  --color-surface-secondary: #1b2539;
+  --color-glass: rgb(19 28 46 / 0.6);
+  --color-glass-border: rgb(255 255 255 / 0.1);
+  --color-border: #2b3851;
+  --color-text-primary: #f0f3f9;
+  --color-text-secondary: #b6c0d3;
+  --color-text-muted: #8e9ab0;
+  --color-brand: #8db4ff;
+  --color-on-brand: #0b1220;
+  --color-accent: #f2bd4b;
+  --color-on-accent: #111a2e;
+  --color-success: #4cc38a;
+  --color-warning: #f0a94b;
+  --color-error: #ff7b72;
+  --color-scrim: rgb(0 0 0 / 0.5);
+}
+
+/* Sandstone: warm cream and terracotta, teal accent. Friendly and warm. */
+[data-palette='sandstone'] {
+  --color-background: #ebe3d8;
+  --color-surface: #fffdf9;
+  --color-surface-secondary: #f7f2ea;
+  --color-glass: rgb(255 253 249 / 0.7);
+  --color-glass-border: rgb(255 255 255 / 0.55);
+  --color-border: #e0d5c5;
+  --color-text-primary: #2a1f16;
+  --color-text-secondary: #5a4a3c;
+  --color-text-muted: #6b5a4b;
+  --color-brand: #8a4b22;
+  --color-on-brand: #ffffff;
+  --color-accent: #2f6f73;
+  --color-on-accent: #ffffff;
+  --color-success: #2f7a3e;
+  --color-warning: #a14d00;
+  --color-error: #b3261e;
+  --color-scrim: rgb(42 31 22 / 0.24);
+}
+[data-palette='sandstone'][data-theme='dark'] {
+  --color-background: #1a140f;
+  --color-surface: #241c15;
+  --color-surface-secondary: #2e241b;
+  --color-glass: rgb(36 28 21 / 0.6);
+  --color-glass-border: rgb(255 255 255 / 0.1);
+  --color-border: #463829;
+  --color-text-primary: #f6efe6;
+  --color-text-secondary: #cdbfae;
+  --color-text-muted: #a89884;
+  --color-brand: #e7a774;
+  --color-on-brand: #1a140f;
+  --color-accent: #79c3c7;
+  --color-on-accent: #1a140f;
+  --color-success: #73c487;
+  --color-warning: #f0a94b;
+  --color-error: #ff8a80;
+  --color-scrim: rgb(0 0 0 / 0.5);
+}
+
+/* Graphite: neutral greys, steel-blue brand, orange accent. Plain and quiet. */
+[data-palette='graphite'] {
+  --color-background: #e2e3e5;
+  --color-surface: #ffffff;
+  --color-surface-secondary: #f4f5f6;
+  --color-glass: rgb(255 255 255 / 0.7);
+  --color-glass-border: rgb(255 255 255 / 0.55);
+  --color-border: #d4d6d9;
+  --color-text-primary: #16181b;
+  --color-text-secondary: #45494f;
+  --color-text-muted: #5a5f66;
+  --color-brand: #2c5f8a;
+  --color-on-brand: #ffffff;
+  --color-accent: #f08a5a;
+  --color-on-accent: #16181b;
+  --color-success: #0f7b55;
+  --color-warning: #b45309;
+  --color-error: #b3261e;
+  --color-scrim: rgb(22 24 27 / 0.24);
+}
+[data-palette='graphite'][data-theme='dark'] {
+  --color-background: #111214;
+  --color-surface: #1a1c1f;
+  --color-surface-secondary: #23262a;
+  --color-glass: rgb(26 28 31 / 0.6);
+  --color-glass-border: rgb(255 255 255 / 0.1);
+  --color-border: #34383d;
+  --color-text-primary: #f2f3f4;
+  --color-text-secondary: #bfc3c8;
+  --color-text-muted: #969ba2;
+  --color-brand: #86b8e6;
+  --color-on-brand: #111214;
+  --color-accent: #f08a5a;
+  --color-on-accent: #16181b;
+  --color-success: #4cc38a;
+  --color-warning: #f0a94b;
+  --color-error: #ff7b72;
+  --color-scrim: rgb(0 0 0 / 0.5);
+}

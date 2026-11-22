@@ -1,6 +1,6 @@
 // Electron main process: one hardened window (context/rules/desktop-app.md, spec 008).
 
-import { app, BrowserWindow, ipcMain, Menu, net, protocol, session } from 'electron';
+import { app, BrowserWindow, ipcMain, Menu, net, protocol, screen, session } from 'electron';
 import { readdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -22,6 +22,7 @@ import { systemClock } from './clock';
 import { debuggingFlags } from './launch-guard';
 import { logFileSink, teeSinks } from './log-file';
 import { packagedMenuTemplate } from './menu';
+import { loadWindowBounds, MIN_HEIGHT, MIN_WIDTH, saveWindowBounds } from './window-state';
 import {
   parseSelfCheckArg,
   READ_STATUS_SCRIPT,
@@ -129,11 +130,15 @@ function lockDownContents(): void {
 }
 
 function createWindow(): void {
+  const dataDir = app.getPath('userData');
+  const saved = loadWindowBounds(
+    dataDir,
+    screen.getAllDisplays().map((d) => d.workArea),
+  );
   const window = new BrowserWindow({
-    width: 1100,
-    height: 700,
-    minWidth: 1100,
-    minHeight: 700,
+    ...(saved ?? { width: 1280, height: 800 }),
+    minWidth: MIN_WIDTH,
+    minHeight: MIN_HEIGHT,
     show: false,
     title: 'Accounting Books',
     webPreferences: {
@@ -168,6 +173,11 @@ function createWindow(): void {
       });
     });
   }
+  window.on('close', () => {
+    if (!window.isMinimized() && !window.isFullScreen()) {
+      saveWindowBounds(dataDir, window.getNormalBounds());
+    }
+  });
   window.on('closed', () => {
     mainWindow = null;
   });

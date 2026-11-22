@@ -1,0 +1,14 @@
+.app-layout {
+  display: flex;
+  height: 100vh;
+  min-width: var(--size-window-min-width);
+  background: var(--color-background);
+}
+
+/* The page scrolls inside its own column, so the sidebar always stays in view. */
+.app-layout__page {
+  flex: 1;
+  min-width: 0;
+  overflow: auto;
+  padding: var(--space-5) var(--space-6);
+}

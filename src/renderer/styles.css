@@ -1,9 +1,31 @@
-/* A placeholder until the design tokens arrive at spec 020. */
-:root {
-  color-scheme: light dark;
-  font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-}
+@import './styles/tokens.css';
 
+/* Base element styles, using tokens only. Components add their own CSS files from spec 021. */
+html,
 body {
   margin: 0;
+  background: var(--color-background);
+  color: var(--color-text-primary);
+  font-family: var(--font-family);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: var(--size-focus-ring) solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+/* Text selection in the brand colour, not the browser's default blue. */
+::selection {
+  background: var(--color-brand);
+  color: var(--color-on-brand);
+}
+
+/* A solid page surface for tables, forms and lists (no glass behind them). */
+.page-surface {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
 }

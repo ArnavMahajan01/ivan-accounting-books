@@ -1,0 +1,197 @@
+<!doctype html>
+<!--
+  Spec 020: every design token, in light and dark. Open this file in a browser.
+  Add ?theme=dark to the address for the dark theme. A development page only; never packaged.
+-->
+<html lang="en-AU">
+  <head>
+    <meta charset="utf-8" />
+    <title>Accounting Books tokens</title>
+    <link rel="stylesheet" href="../src/renderer/styles/tokens.css" />
+    <style>
+      body {
+        margin: 0;
+        padding: var(--space-6);
+        background: var(--color-background);
+        color: var(--color-text-primary);
+        font-family: var(--font-family);
+        font-size: var(--font-size-body);
+      }
+      h1 {
+        font-size: var(--font-size-page-title);
+        font-weight: var(--font-weight-semibold);
+        margin: 0 0 var(--space-5);
+      }
+      h2 {
+        font-size: var(--font-size-section);
+        font-weight: var(--font-weight-semibold);
+        margin: var(--space-6) 0 var(--space-3);
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: var(--space-3);
+      }
+      .sw {
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-card);
+        padding: var(--space-3);
+      }
+      .chip {
+        height: 40px;
+        border-radius: var(--radius-control);
+        border: 1px solid var(--color-border);
+        margin-bottom: var(--space-2);
+      }
+      .name {
+        font-size: var(--font-size-label);
+        font-weight: var(--font-weight-medium);
+      }
+      .val {
+        font-size: var(--font-size-caption);
+        color: var(--color-text-muted);
+        font-variant-numeric: tabular-nums;
+      }
+      .surface {
+        background: var(--color-surface);
+        border-radius: var(--radius-card);
+        padding: var(--space-5);
+        border: 1px solid var(--color-border);
+      }
+      .row {
+        display: flex;
+        gap: var(--space-4);
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .btn {
+        font: inherit;
+        border: 0;
+        border-radius: var(--radius-control);
+        padding: var(--space-2) var(--space-4);
+      }
+      .amount {
+        font-variant-numeric: tabular-nums;
+        text-align: right;
+        min-width: 120px;
+        display: inline-block;
+      }
+      .glass {
+        background: var(--color-glass);
+        border: 1px solid var(--color-glass-border);
+        border-radius: var(--radius-card);
+        padding: var(--space-4);
+        width: var(--size-sidebar);
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Tokens <span class="val" id="theme"></span></h1>
+    <h2>Colours</h2>
+    <div class="grid" id="colours"></div>
+    <h2>Text on each surface</h2>
+    <div class="row">
+      <div class="surface">
+        <div>Primary text on surface</div>
+        <div style="color: var(--color-text-secondary)">Secondary text</div>
+        <div style="color: var(--color-text-muted)">Muted text</div>
+      </div>
+      <div class="surface" style="background: var(--color-surface-secondary)">
+        <div>Primary on secondary surface</div>
+        <div style="color: var(--color-text-secondary)">Secondary text</div>
+        <div style="color: var(--color-text-muted)">Muted text</div>
+      </div>
+      <div class="glass">
+        <div>Sidebar glass</div>
+        <div style="color: var(--color-text-secondary)">Secondary text</div>
+        <div style="color: var(--color-brand)">Selected item</div>
+      </div>
+    </div>
+    <h2>Actions and status</h2>
+    <div class="row">
+      <button class="btn" style="background: var(--color-accent); color: var(--color-on-accent)">
+        Import file
+      </button>
+      <button class="btn" style="background: var(--color-brand); color: var(--color-on-brand)">
+        Brand
+      </button>
+      <span style="color: var(--color-success)">Reconciled</span>
+      <span style="color: var(--color-warning)">To review</span>
+      <span style="color: var(--color-error)">Rejected</span>
+    </div>
+    <h2>Type</h2>
+    <div class="surface">
+      <div style="font-size: var(--font-size-page-title); font-weight: var(--font-weight-semibold)">
+        Page title 24
+      </div>
+      <div
+        style="font-size: var(--font-size-summary); font-weight: var(--font-weight-semibold)"
+        class="amount"
+      >
+        $43,642.35
+      </div>
+      <div style="font-size: var(--font-size-section); font-weight: var(--font-weight-semibold)">
+        Section heading 16
+      </div>
+      <div>Body and table cells 14: <span class="amount">-$1,234.50</span></div>
+      <div
+        style="
+          font-size: var(--font-size-label);
+          font-weight: var(--font-weight-medium);
+          color: var(--color-text-secondary);
+        "
+      >
+        Label 13
+      </div>
+      <div style="font-size: var(--font-size-caption); color: var(--color-text-muted)">
+        Caption 12
+      </div>
+    </div>
+    <h2>Spacing and radius</h2>
+    <div class="row" id="spacing"></div>
+    <script>
+      const theme = new URLSearchParams(location.search).get('theme');
+      if (theme) document.documentElement.dataset.theme = theme;
+      document.getElementById('theme').textContent = theme ?? 'light (or the system setting)';
+      const roles = [
+        'background',
+        'surface',
+        'surface-secondary',
+        'glass',
+        'glass-border',
+        'border',
+        'text-primary',
+        'text-secondary',
+        'text-muted',
+        'brand',
+        'on-brand',
+        'accent',
+        'on-accent',
+        'success',
+        'warning',
+        'error',
+      ];
+      const css = getComputedStyle(document.documentElement);
+      document.getElementById('colours').innerHTML = roles
+        .map(
+          (r) =>
+            `<div class="sw"><div class="chip" style="background: var(--color-${r})"></div><div class="name">--color-${r}</div><div class="val">${css.getPropertyValue('--color-' + r).trim()}</div></div>`,
+        )
+        .join('');
+      document.getElementById('spacing').innerHTML =
+        [1, 2, 3, 4, 5, 6, 7]
+          .map(
+            (n) =>
+              `<div class="sw"><div style="width: var(--space-${n}); height: var(--space-${n}); background: var(--color-brand)"></div><div class="val">--space-${n}: ${css.getPropertyValue('--space-' + n).trim()}</div></div>`,
+          )
+          .join('') +
+        ['control', 'card', 'dialog']
+          .map(
+            (r) =>
+              `<div class="sw" style="border-radius: var(--radius-${r})"><div class="val">--radius-${r}: ${css.getPropertyValue('--radius-' + r).trim()}</div></div>`,
+          )
+          .join('');
+    </script>
+  </body>
+</html>

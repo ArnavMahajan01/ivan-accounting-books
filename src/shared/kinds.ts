@@ -12,6 +12,10 @@ export function isAccountType(value: string): value is AccountType {
 export const ID_KINDS = ['acc', 'ent', 'lin', 'stl', 'imp'] as const;
 export type IdKind = (typeof ID_KINDS)[number];
 
+/** The access a person has to a shared Google Sheet (folder 09). */
+export const SHARE_ROLES = ['viewer', 'commenter', 'editor'] as const;
+export type ShareRole = (typeof SHARE_ROLES)[number];
+
 /** Why the books could not be opened. The data layer returns these, and the page shows them. */
 export const STORE_PROBLEMS = [
   'cannot-open',

@@ -20,7 +20,7 @@ This is a client project. The author is the developer you work with. The client 
 - Do not combine unrelated system boundaries in one step.
 - Build only what the spec's Implementation section says, and respect its Scope Limits.
 - Gates:
-  - Phase W (wireframes) comes before any code. Do not start spec 001 until W11 records the client's sign-off. Exception (the author, 2026-11-22): folders 00 and 01 (specs 001 to 019, no screens) may start before W11. Screens (spec 020 onward) still wait for W11.
+  - Phase W (wireframes) comes before any screen. Done: the client signed off on 2026-11-22 (W11, `decisions/wireframe-sign-off.md`), with the recommended option for every screen. A change the client asks for later becomes a new spec. W08 (invoices and bills) still waits for client question 1.
   - Do not start spec 001 until `decisions/desktop-shell.md` and `decisions/local-data-storage.md` are decided.
   - Do not start folder 04 (the sample book) until spec 045 passes, or the author accepts it as passed with known issues.
   - Do not start spec 125 (invoice exchange) until `decisions/admin-dashboard-link.md` is decided and client question 24 is answered.

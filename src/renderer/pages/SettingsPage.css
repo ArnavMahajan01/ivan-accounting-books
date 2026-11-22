@@ -1,0 +1,38 @@
+.settings-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-4);
+}
+
+.settings-card {
+  padding: var(--space-4) var(--space-5);
+}
+
+.settings-card__title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-2);
+  font-size: var(--font-size-section);
+  font-weight: var(--font-weight-semibold);
+}
+
+.settings-card__icon {
+  width: var(--size-icon-button);
+  height: var(--size-icon-button);
+  color: var(--color-brand);
+}
+
+.settings-card__line {
+  margin: 0 0 var(--space-1);
+}
+
+.settings-card__line--secondary {
+  color: var(--color-text-secondary);
+}
+
+.settings-card__later {
+  margin: var(--space-2) 0 0;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-caption);
+}

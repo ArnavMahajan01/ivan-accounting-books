@@ -8,8 +8,8 @@ Update this file whenever the current phase, the active spec or the implementati
 
 - **Folder 00, foundations (2026-11-22): done.** Specs 001 to 014 on branch `feature/00-foundations`. The author committed 001 to 006. 007 to 014 are not committed yet. The packaged Mac app builds, passes the package contents check and its end-to-end test, and opens empty books at schema version 1. The author allowed folder 00 to start before wireframe sign-off. Screens (spec 020 onward) still wait for W11.
 - **Folder 01, agent skills (2026-11-22): done.** Specs 015 to 019 on branch `feature/01-agent-skills`, not committed yet. Eleven skills in `.claude/skills/`: the three UI and wireframe skills, the kit's four workflow skills, and four technology skills (Electron, SQLite and migrations, Australian bookkeeping rules, React renderer).
-- **Next: folder 02 (Demo 1, the app opens).** Its specs are screens, so they wait for W11, the client's wireframe sign-off. It also needs its own branch, `feature/02-demo-1-the-app-opens`.
-- **Phase W, wireframes (2026-11-21):** the wireframes wait for the author to click through them, then for the meeting with the client (W10) and sign-off (W11).
+- **Folder 02, Demo 1 (2026-11-22): started** on branch `feature/02-demo-1-the-app-opens`. The first folder with screens.
+- **Phase W, wireframes: done 2026-11-22.** The client signed off, with the recommended option on every screen (`decisions/wireframe-sign-off.md`). W08 waits for client question 1.
 
 ## Current Goal
 
@@ -29,12 +29,7 @@ Update this file whenever the current phase, the active spec or the implementati
 |---|---|---|
 | W01 | [Skill: Wireframe](feature-specs/W-wireframes/W01-skill-wireframe.md) | Installed, byte for byte from commit `44a5814`. Not yet checked: `/wireframe` showing in a new session. Step 5 (git) waits for the author |
 | W02 | [Wireframe Design Context](feature-specs/W-wireframes/W02-wireframe-design-context.md) | Written from the context files. No screenshots were supplied, so there are none to check |
-| W03 to W07, W09 | Six screen wireframes | Built, 5 options each, checked by screenshot. Waiting for the author to click through all options. Options and recommendations are listed in `wireframe-feedback.md` |
 | W08 | [Wireframe: Invoices and Bills](feature-specs/W-wireframes/W08-wireframe-invoices-and-bills.md) | Not started. Waits for client question 1 |
-| W10 | [Client Review Pack](feature-specs/W-wireframes/W10-client-review-pack.md) | `wireframe/index.html` and `wireframe-feedback.md` written. Waiting for the client meeting |
-| W06a, W07a, W09a | Customise a report, working with the Google Sheet, Help and guides | Built, 5 options each, added to the client review pack. Waiting for the author's click-through |
-| W08b | Contacts: saved automatically, a page for each with invoices and payments, merging duplicates | Built, added to the client pack. Waiting for the author's click-through |
-| W05a, W05b, W08a | Bank rules, transactions and accounts, invoices from the Admin Dashboard. W05 Option 1 updated | Built from the author's QuickBooks screenshots (structure only), added to the client pack. Waiting for the author's click-through |
 | W12 to W17 | Brainstorm wireframes of future ideas F01, F02, F03, F05, F06, F07 | Built in `wireframe/future/`, 5 options each, checked by screenshot. Waiting for the author's click-through. Do not gate W11 or 001 |
 
 ## Next Up
@@ -43,10 +38,11 @@ The next five specs.
 
 | # | Spec | Phase |
 |---|---|---|
-| W10 | [Client Review Pack](feature-specs/W-wireframes/W10-client-review-pack.md): the meeting | W |
 | W08 | [Wireframe: Invoices and Bills](feature-specs/W-wireframes/W08-wireframe-invoices-and-bills.md), if question 1 says so | W |
-| W11 | [Wireframe Sign-Off](feature-specs/W-wireframes/W11-wireframe-sign-off.md) | W |
-| 020 | The first spec of folder 02 (Demo 1), after W11 and on branch `feature/02-demo-1-the-app-opens` | 02 |
+| 026 | [Keyboard, Focus and Mac Menus](feature-specs/02-demo-1-the-app-opens/026-keyboard-and-menus.md) | 02 |
+| 027 | [Help: Guide Format and the Getting Started Guide](feature-specs/02-demo-1-the-app-opens/027-guide-format.md) | 02 |
+| 028 | [Help: Guide List, Search and Reader](feature-specs/02-demo-1-the-app-opens/028-help-reader.md) | 02 |
+| 029 | [Demo 1: The App Opens](feature-specs/02-demo-1-the-app-opens/029-demo-1.md) | 02 |
 
 After folder 00: the first client demo is spec 029 (Demo 1: the app opens). Demos follow at 054, 067, 077, 088, 104, 121, 131 and 141, then go-live at 151.
 
@@ -56,6 +52,14 @@ Newest first.
 
 | # | Spec | What it does | Status | Date |
 |---|---|---|---|---|
+| 025 | [Every Page With Its Empty State](feature-specs/02-demo-1-the-app-opens/025-empty-pages.md) | Home's Getting started, Settings' status cards with About, every other page's empty state | Done | 2026-11-22 |
+| 024 | [App Layout](feature-specs/02-demo-1-the-app-opens/024-app-layout.md) | Glass sidebar, hash router, toolbar, remembered window size and sidebar | Done (author's look pending) | 2026-11-22 |
+| 023 | [Feedback Components](feature-specs/02-demo-1-the-app-opens/023-feedback-components.md) | EmptyState, Sheet, ConfirmDialog, ErrorMessage, SampleDataLabel | Done | 2026-11-22 |
+| 022 | [Table Component](feature-specs/02-demo-1-the-app-opens/022-table-component.md) | Sort, selection, keyboard, sticky header, skeleton; 500 rows smooth | Done | 2026-11-22 |
+| 021 | [Basic Components](feature-specs/02-demo-1-the-app-opens/021-basic-components.md) | Button, Badge, Amount, DateCell, the components page | Done | 2026-11-22 |
+| 020 | [Design Tokens](feature-specs/02-demo-1-the-app-opens/020-design-tokens.md) | `tokens.css`, light and dark, contrast measured, Lucide icons | Done (author's look at the preview pending) | 2026-11-22 |
+| W11 | [Wireframe Sign-Off](feature-specs/W-wireframes/W11-wireframe-sign-off.md) | The client's choice per screen written into `ui-context.md`, `decisions/wireframe-sign-off.md` | Done (reported by the author) | 2026-11-22 |
+| W10 | [Client Review Pack](feature-specs/W-wireframes/W10-client-review-pack.md) | The client reviewed the wireframes | Done (reported by the author) | 2026-11-22 |
 | 019 | [Skill: React Renderer](feature-specs/01-agent-skills/019-skill-react.md) | Screens: data through the bridge, `Result`, every state, where the look comes from | Done | 2026-11-22 |
 | 018 | [Skill: Australian Bookkeeping Rules](feature-specs/01-agent-skills/018-skill-bookkeeping.md) | Signed-cents double entry with 5 worked examples, GST, simpler BAS, periods, cash or accruals, each fact with its ATO page | Done (ATO pages read through search results; confirm in a browser) | 2026-11-22 |
 | 017 | [Skill: SQLite and Migrations](feature-specs/01-agent-skills/017-skill-sqlite.md) | Adding a table, column rules, repositories, transactions. Also made the migration tests hold for any number of real migrations | Done | 2026-11-22 |
@@ -138,6 +142,7 @@ Things a newcomer would trip over.
 
 One or two lines per working session, newest first: what was done, what was measured, what was deferred.
 
+- **2026-11-22 (Demo 1, 020 to 025):** The client's sign-off recorded (W11, recommended options). Built the tokens (contrast measured), the components (Button, Badge, Amount, DateCell, Table, EmptyState, Sheet, ConfirmDialog, ErrorMessage, SampleDataLabel), the app layout and every page. 289 unit tests and 2 end-to-end tests pass. Impeccable reviewed each step single-context (no launcher): no P0 or P1. Fixed: the UI UX Pro Max cache rule, the dark sheet backdrop, the Settings order.
 - **2026-11-22 (agent skills 015 to 019):** On `feature/01-agent-skills`. Extended the W11 gate exception to folder 01 at the author's request. Adapted the kit's four workflow skills and wrote four technology skills, each checked by following it: a throwaway bridge function, a throwaway migration and repository, examples summed by script, ATO facts via search (ato.gov.au gives 403 to fetches), and an inline-style test in the built app. Following the SQLite skill found that 14 migration tests from 011 and 012 assumed schema version 1. Fixed: they now follow the real migration list. Added client question 27 (invoice GST rounding).
 - **2026-11-22 (foundations 007 to 014):** Built ids, the logger and env checks, the hardened Electron window on a private `app://` scheme, the bridge, the ` Dev` data folder and log file, the SQLite store with hashed migrations, the pre-migration copy and integrity check, the packaged app with fuses, and the package contents check with an end-to-end test. 225 unit tests and 2 end-to-end tests pass. Found and fixed: VS Code's `ELECTRON_RUN_AS_NODE=1`, an ESM preload that would need the sandbox off, a self-check refusal that wrote to the real data folder. Stopped before folder 01 for its branch.
 - **2026-11-22 (foundations 001 to 006):** The author ran `git init` and created `feature/00-foundations`. Checked current versions (Electron 45.4.1, TypeScript 6.0.3 because `typescript-eslint` does not yet support 7, Vitest 5.1.1, ESLint 10.15.0) and chose electron-vite. Built tooling, folders, boundary and purity lint, `Result`, kinds, money and dates. 130 tests pass. Each lint rule was proved with throwaway files. Nothing committed. Electron itself not yet run (008).

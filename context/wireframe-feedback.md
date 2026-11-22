@@ -39,7 +39,7 @@ Taken from `client-questions.md`. Record each answer there as well, and change i
 
 | Option he picks | Changes he wants | What he does not want | Who and when |
 |---|---|---|---|
-| | | | |
+| Option 2, Next Steps (the recommended option) | None reported | None reported | Client, signed off 2026-11-22, reported by the author |
 
 ## 2. Bank Page And Import Preview
 
@@ -50,7 +50,7 @@ Taken from `client-questions.md`. Record each answer there as well, and change i
 
 | Option he picks | Changes he wants | What he does not want | Who and when |
 |---|---|---|---|
-| | | | |
+| Option 5, Plain Summary (the recommended option) | None reported | None reported | Client, signed off 2026-11-22, reported by the author |
 
 ## 3. To Review
 
@@ -61,7 +61,7 @@ Taken from `client-questions.md`. Record each answer there as well, and change i
 
 | Option he picks | Changes he wants | What he does not want | Who and when |
 |---|---|---|---|
-| | | | |
+| Option 1, Review Table, with Option 3's "Accept all suggested" button (the recommended option) | None reported | None reported | Client, signed off 2026-11-22, reported by the author |
 
 ## 3a. Bank Rules
 
@@ -72,7 +72,7 @@ Taken from `client-questions.md`. Record each answer there as well, and change i
 
 | Option he picks | Changes he wants | What he does not want | Who and when |
 |---|---|---|---|
-| | | | |
+| Option 1, with Option 2's "Do this every time?" (the recommended option) | None reported | None reported | Client, signed off 2026-11-22, reported by the author |
 
 ## 3b. Transactions And Chart Of Accounts
 
@@ -83,7 +83,7 @@ Taken from `client-questions.md`. Record each answer there as well, and change i
 
 | Option he picks | Changes he wants | What he does not want | Who and when |
 |---|---|---|---|
-| | | | |
+| Option 1, with Option 2's history panel and Option 3's "Move to" (the recommended option) | None reported | None reported | Client, signed off 2026-11-22, reported by the author |
 
 ## 3c. Invoices From The Admin Dashboard
 
@@ -94,7 +94,7 @@ Taken from `client-questions.md`. Record each answer there as well, and change i
 
 | Option he picks | Changes he wants | What he does not want | Who and when |
 |---|---|---|---|
-| | | | |
+| Option 2, with Options 3 and 4 (the recommended option) | None reported | None reported | Client, signed off 2026-11-22, reported by the author |
 
 ## 3d. Contacts
 
@@ -105,7 +105,7 @@ Taken from `client-questions.md`. Record each answer there as well, and change i
 
 | Option he picks | Changes he wants | What he does not want | Who and when |
 |---|---|---|---|
-| | | | |
+| Option 1, with Option 2's saving as you go, Option 3's side panel, and Option 5's merging (the recommended option) | None reported | None reported | Client, signed off 2026-11-22, reported by the author |
 
 ## 4. Reports And BAS Worksheet
 
@@ -116,7 +116,7 @@ Taken from `client-questions.md`. Record each answer there as well, and change i
 
 | Option he picks | Changes he wants | What he does not want | Who and when |
 |---|---|---|---|
-| | | | |
+| Option 3, Quarter Close (the recommended option) | None reported | None reported | Client, signed off 2026-11-22, reported by the author |
 
 ## 5. Sharing With The Accountant
 
@@ -127,7 +127,7 @@ Taken from `client-questions.md`. Record each answer there as well, and change i
 
 | Option he picks | Changes he wants | What he does not want | Who and when |
 |---|---|---|---|
-| | | | |
+| Option 2, People First, with Option 4's "What accepting does" box (the recommended option) | None reported | None reported | Client, signed off 2026-11-22, reported by the author |
 
 ## 6. Settings
 
@@ -138,7 +138,7 @@ Taken from `client-questions.md`. Record each answer there as well, and change i
 
 | Option he picks | Changes he wants | What he does not want | Who and when |
 |---|---|---|---|
-| | | | |
+| Option 3, Status Cards (the recommended option) | None reported | None reported | Client, signed off 2026-11-22, reported by the author |
 
 ## 6a. Customise A Report
 
@@ -149,7 +149,7 @@ Taken from `client-questions.md`. Record each answer there as well, and change i
 
 | Option he picks | Changes he wants | What he does not want | Who and when |
 |---|---|---|---|
-| | | | |
+| Option 2, Side Panel, starting from Option 5's layouts and saving into Option 4's list (the recommended option) | None reported | None reported | Client, signed off 2026-11-22, reported by the author |
 
 ## 6b. Working With The Google Sheet
 
@@ -160,7 +160,7 @@ Taken from `client-questions.md`. Record each answer there as well, and change i
 
 | Option he picks | Changes he wants | What he does not want | Who and when |
 |---|---|---|---|
-| | | | |
+| All together, built around Option 3. Explain the in-app panel's limits to him in person (the recommended option) | None reported | None reported | Client, signed off 2026-11-22, reported by the author |
 
 ## 6c. Help And Guides
 
@@ -171,13 +171,16 @@ Taken from `client-questions.md`. Record each answer there as well, and change i
 
 | Option he picks | Changes he wants | What he does not want | Who and when |
 |---|---|---|---|
-| | | | |
+| Option 1, with Option 2's help button on each page (the recommended option) | None reported | None reported | Client, signed off 2026-11-22, reported by the author |
 
 ## 7. Invoices And Bills
 
 Not drawn. Waits for client question 1 (spec W08).
 
 ## Anything Else He Said
+
+Nothing else was reported with the sign-off on 2026-11-22. The meeting questions above are still open in `client-questions.md` unless marked there.
+
 
 | What he said | Screen | Who and when |
 |---|---|---|

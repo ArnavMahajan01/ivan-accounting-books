@@ -8,4 +8,7 @@ declare global {
   }
 }
 
-export const bridge: BridgeApi = window.bridge;
+/** The bridge, read when it is called, so tests can provide their own. */
+export function bridge(): BridgeApi {
+  return window.bridge;
+}

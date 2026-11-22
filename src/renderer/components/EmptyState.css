@@ -1,0 +1,25 @@
+.empty-state {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-3);
+  padding: var(--space-7) var(--space-5);
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+.empty-state__icon {
+  width: var(--size-icon-empty);
+  height: var(--size-icon-empty);
+}
+
+.empty-state__message {
+  margin: 0;
+  max-width: 48ch;
+  color: var(--color-text-secondary);
+}
+
+.empty-state__note {
+  margin: 0;
+  font-size: var(--font-size-label);
+  color: var(--color-text-muted);
+}

@@ -1,6 +1,6 @@
 # Design
 
-Generated from `context/ui-context.md` on 2026-11-22 for the Impeccable skill. That file wins wherever they differ, and is updated first. Do not run `/impeccable document` on this file.
+Generated from `context/ui-context.md` on 2026-11-22 (updated at spec 020) for the Impeccable skill. That file wins wherever they differ, and is updated first. Do not run `/impeccable document` on this file.
 
 ## World
 
@@ -8,7 +8,9 @@ A calm, Mac-native bookkeeping app: a left sidebar, solid surfaces for every tab
 
 ## Tokens
 
-Defined once in `src/renderer/styles/tokens.css`, light and dark, following the system. The current values and their measured contrast are in `context/ui-context.md` ("Theme"). They are defaults until spec 020 confirms them.
+Defined once in `src/renderer/styles/tokens.css`, light and dark, following the system unless picked in Settings. Confirmed at spec 020 (2026-11-22): deep teal brand, coral accent for the one main action, a quiet blue-grey background, solid white or dark-teal surfaces. Every text pair passes 4.5:1, measured and listed in `context/ui-context.md` ("Theme"). The sidebar glass sits over the app's own background, never the desktop.
+
+- Icons: Lucide (ISC), one stroke set. 16 inline, 20 in buttons and the sidebar, 32 in empty states.
 
 - 60% quiet base, 30% brand (selection, links), 10% accent. The accent marks only the single main action on a view.
 - Status colours only communicate status. Destructive actions use the error colour.

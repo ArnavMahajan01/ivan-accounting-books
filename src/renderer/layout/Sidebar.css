@@ -1,0 +1,138 @@
+/* Glass over the app's own background, never over the desktop (ui-context.md, "Theme"). */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  width: var(--size-sidebar);
+  flex: none;
+  margin: var(--space-2);
+  padding: var(--space-3) var(--space-2);
+  background: var(--color-glass);
+  border: 1px solid var(--color-glass-border);
+  border-radius: var(--radius-card);
+  backdrop-filter: blur(20px) saturate(1.4);
+  transition: width var(--motion-duration) var(--motion-easing);
+}
+
+.sidebar--collapsed {
+  width: calc(var(--size-icon-button) + var(--space-4) * 2);
+}
+
+.sidebar__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: 0 var(--space-2) var(--space-3);
+  min-height: var(--space-6);
+}
+
+.sidebar--collapsed .sidebar__head {
+  justify-content: center;
+  padding-inline: 0;
+}
+
+.sidebar__title {
+  font-size: var(--font-size-label);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sidebar__toggle {
+  display: inline-flex;
+  border: 0;
+  border-radius: var(--radius-control);
+  padding: var(--space-1);
+  background: none;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+}
+
+.sidebar__toggle:hover {
+  color: var(--color-text-primary);
+}
+
+.sidebar__nav {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.sidebar__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.sidebar__list--bottom {
+  margin-top: auto;
+  padding-top: var(--space-3);
+}
+
+.sidebar__item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2);
+  border-radius: var(--radius-control);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-body);
+  text-decoration: none;
+}
+
+.sidebar--collapsed .sidebar__item {
+  justify-content: center;
+}
+
+.sidebar__item:hover {
+  color: var(--color-text-primary);
+  background: var(--color-surface);
+}
+
+.sidebar__item--current,
+.sidebar__item--current:hover {
+  color: var(--color-on-brand);
+  background: var(--color-brand);
+  font-weight: var(--font-weight-medium);
+}
+
+.sidebar__icon {
+  width: var(--size-icon-button);
+  height: var(--size-icon-button);
+  flex: none;
+}
+
+.sidebar__label {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar__count {
+  min-width: var(--space-5);
+  padding: 0 var(--space-1);
+  border-radius: var(--radius-full);
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-medium);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.sidebar__dot {
+  position: absolute;
+  top: var(--space-1);
+  right: var(--space-1);
+  width: var(--space-2);
+  height: var(--space-2);
+  border-radius: var(--radius-full);
+  background: var(--color-brand);
+}

@@ -62,7 +62,7 @@ The only way a screen reaches the main process. Example name: `books.getSummary`
    - It returns a `Result` (`ok(...)` or `err({ code })`).
    - It calls one service in `src/services/`, and never runs SQL or calls Google itself. Pass anything it needs (the store, the clock) through `HandlerDeps`.
 3. **Preload:** no change. It exposes every name in `BRIDGE_NAMES`.
-4. **Screen:** call `bridge['books.getSummary']({ periodEnd })` from `src/renderer/bridge.ts`. Handle loading, `result.ok`, and `result.error.code`, as `useBridge` in `src/renderer/App.tsx` does.
+4. **Screen:** call `bridge()['books.getSummary']({ periodEnd })` from `src/renderer/bridge.ts`. Handle loading, `result.ok`, and `result.error.code`, with `useBridge` from `src/renderer/pages/use-bridge.ts`.
 5. **Tests** (`src/main/bridge.test.ts`): one call with valid input, and one with wrong input returning `invalid-input`, plus the service's own tests. `registerBridge` registers one IPC channel per name, `bridge:<name>`.
 6. **Check:** `npm run check`, then `npm run build` and the app. Logs must show only the event and a code, never the input.
 

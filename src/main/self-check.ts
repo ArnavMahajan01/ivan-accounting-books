@@ -34,10 +34,11 @@ export interface SelfCheckReport {
 }
 
 /**
- * Runs in the app's own page. Waits for both status lines and returns their text.
- * Reads only those two elements, never the rest of the page.
+ * Runs in the app's own page. Opens Settings, where the About card shows the version and the
+ * books status, waits for both lines and returns their text. Reads only those two elements.
  */
 export const READ_STATUS_SCRIPT = `new Promise((resolve) => {
+  location.hash = '#/settings';
   const started = Date.now();
   const timer = setInterval(() => {
     const info = document.querySelector('[data-testid="app-info"]');

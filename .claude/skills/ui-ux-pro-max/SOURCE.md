@@ -14,7 +14,7 @@ The second UI skill: a local reference. Impeccable leads, and `context/ui-contex
 
 ## Project Rules For Using It
 
-1. Run searches as `PYTHONDONTWRITEBYTECODE=1 python3 -I .claude/skills/ui-ux-pro-max/scripts/search.py "<query>" --domain <domain>` (a project install, not a plugin; no cache files left in the skill folder).
+1. Run searches as `python3 -I -B .claude/skills/ui-ux-pro-max/scripts/search.py "<query>" --domain <domain>` (a project install, not a plugin). `-B` stops Python writing a `__pycache__` folder into the skill. Corrected on 2026-11-22: the earlier form used `PYTHONDONTWRITEBYTECODE=1`, which `-I` ignores, so it left a cache folder.
 2. **Never** use `--persist`, `--force`, `--output-dir`, or `preview.py`, so it never writes a second design system or loads web fonts.
 3. Queries never contain client data.
 4. Results are suggestions. Anything adopted is written into `context/ui-context.md` first, with the date.

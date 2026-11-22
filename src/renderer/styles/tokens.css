@@ -1,0 +1,132 @@
+/*
+ * Design tokens: the only place a colour, size, radius, spacing or motion value is written
+ * (context/ui-context.md, "Theme", "Typography", "Spacing And Radius", "Motion"; spec 020).
+ * Components use these variables and nothing else. A test fails on any raw colour elsewhere
+ * in src/renderer/ (tools/no-raw-colours.test.ts).
+ *
+ * Light is the default. Dark follows the system, unless the client picks a theme in Settings,
+ * which sets data-theme="light" or data-theme="dark" on <html>.
+ */
+
+:root {
+  color-scheme: light;
+
+  /* Colour: light */
+  --color-background: #d7e6ea;
+  --color-surface: #ffffff;
+  --color-surface-secondary: #f2f7f8;
+  --color-glass: rgb(255 255 255 / 0.7);
+  --color-glass-border: rgb(255 255 255 / 0.55);
+  --color-border: #cfdde1;
+  --color-text-primary: #10212b;
+  --color-text-secondary: #40535c;
+  --color-text-muted: #53656e;
+  --color-brand: #0f5e6e;
+  --color-on-brand: #ffffff;
+  --color-accent: #ff7a59;
+  --color-on-accent: #10212b;
+  --color-success: #0f7b55;
+  --color-warning: #b45309;
+  --color-error: #b3261e;
+  --color-focus-ring: var(--color-brand);
+  --shadow-raised: 0 8px 24px rgb(16 33 43 / 0.16);
+  --color-scrim: rgb(16 33 43 / 0.24);
+
+  /* Type: the system font (San Francisco on the Mac). Amounts use tabular figures. */
+  --font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-size-page-title: 24px;
+  --font-size-summary: 28px;
+  --font-size-section: 16px;
+  --font-size-body: 14px;
+  --font-size-label: 13px;
+  --font-size-caption: 12px;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --line-height-tight: 1.25;
+  --line-height-body: 1.45;
+
+  /* Spacing scale: 4, 8, 12, 16, 24, 32, 48 */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+
+  /* Radius. Nested corners: inner radius = outer radius minus the padding between them. */
+  --radius-control: 8px;
+  --radius-card: 12px;
+  --radius-dialog: 16px;
+  --radius-full: 9999px;
+
+  /* Sizes */
+  --size-sidebar: 232px;
+  --size-icon-badge: 12px;
+  --size-icon-inline: 16px;
+  --size-icon-button: 20px;
+  --size-icon-empty: 32px;
+  --size-focus-ring: 2px;
+  --size-window-min-width: 1100px;
+  --size-window-min-height: 700px;
+
+  /* Motion: about 0.2 s, ease-out, only in answer to an action. */
+  --motion-duration: 200ms;
+  --motion-easing: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* Dark, following the system unless light was picked. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+    --color-background: #0a1a20;
+    --color-surface: #12242b;
+    --color-surface-secondary: #1a2f37;
+    --color-glass: rgb(18 40 47 / 0.6);
+    --color-glass-border: rgb(255 255 255 / 0.1);
+    --color-border: #2a424b;
+    --color-text-primary: #f1f6f7;
+    --color-text-secondary: #b7c7cc;
+    --color-text-muted: #8fa3aa;
+    --color-brand: #6ccbd9;
+    --color-on-brand: #0a1a20;
+    --color-accent: #ff8a6b;
+    --color-on-accent: #10212b;
+    --color-success: #4cc38a;
+    --color-warning: #f0a94b;
+    --color-error: #ff7b72;
+    --shadow-raised: 0 8px 24px rgb(0 0 0 / 0.45);
+    --color-scrim: rgb(0 0 0 / 0.5);
+  }
+}
+
+/* Dark, picked in Settings. The same values as above. */
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --color-background: #0a1a20;
+  --color-surface: #12242b;
+  --color-surface-secondary: #1a2f37;
+  --color-glass: rgb(18 40 47 / 0.6);
+  --color-glass-border: rgb(255 255 255 / 0.1);
+  --color-border: #2a424b;
+  --color-text-primary: #f1f6f7;
+  --color-text-secondary: #b7c7cc;
+  --color-text-muted: #8fa3aa;
+  --color-brand: #6ccbd9;
+  --color-on-brand: #0a1a20;
+  --color-accent: #ff8a6b;
+  --color-on-accent: #10212b;
+  --color-success: #4cc38a;
+  --color-warning: #f0a94b;
+  --color-error: #ff7b72;
+  --shadow-raised: 0 8px 24px rgb(0 0 0 / 0.45);
+  --color-scrim: rgb(0 0 0 / 0.5);
+}
+
+/* Reduced motion removes movement and keeps simple fades. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-duration: 1ms;
+  }
+}
