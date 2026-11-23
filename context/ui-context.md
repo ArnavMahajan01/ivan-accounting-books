@@ -241,6 +241,16 @@ From `2211-help-and-guides/`, Option 1, Like Admin Dashboard, with Option 2's he
 
 - The same Help as his Admin Dashboard: guides from `guides/` grouped by feature, search, stars and his own tags, and a plain reading page. "Keep on screen" turns a guide into a small panel that stays while he moves around. Works offline.
 - Every page has a **?** button in its toolbar that opens that page's guide in a side panel.
+- Built so far (spec 028): the list grouped by feature with a search box, and the reading page with an **All guides** back button, at `#/help` and `#/help/<guide id>`. Search needs every word, anywhere in a guide's text. Stars, tags, Keep on screen and the **?** button come at specs 134 and 135.
+
+## Keyboard And Menus
+
+Decided at spec 026. Every shortcut is listed once, in `src/shared/shortcuts.ts`. The Mac menu (`src/main/menu.ts`) and the screens (sidebar tooltips, key handling) both read that list, so they cannot disagree.
+
+- **Menus:** App, File, Edit, View, Window, Help. View lists the pages. A development run adds Reload and Developer Tools to View. The packaged app does not have them.
+- **Pages:** Command-1 to Command-9 open the first nine pages in sidebar order (Home is Command-1, Settings Command-9). Help is the tenth, so it takes Command-? (also in the Help menu).
+- **Sidebar:** Control-Command-S hides or shows it.
+- A new page joins `src/shared/pages.ts`, and gets its shortcut from its place in that list.
 
 ## Component Library
 

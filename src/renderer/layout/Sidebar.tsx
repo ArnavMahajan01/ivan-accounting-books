@@ -1,4 +1,5 @@
 import { PanelLeftClose, PanelLeftOpen } from 'lucide-react';
+import { findShortcutById, formatShortcut, shortcutForPage } from '@shared/shortcuts';
 import { ROUTES, routeHref, type RouteId, type RouteInfo } from '../routes';
 import './Sidebar.css';
 
@@ -12,6 +13,9 @@ export interface SidebarProps {
   readonly counts?: Partial<Record<RouteId, number>>;
 }
 
+const toggleShortcut = findShortcutById('toggle-sidebar');
+const TOGGLE_HINT = toggleShortcut === undefined ? '' : formatShortcut(toggleShortcut);
+
 function Item({
   route,
   current,
@@ -24,6 +28,7 @@ function Item({
   count: number | undefined;
 }) {
   const Icon = route.icon;
+  const shortcut = shortcutForPage(route.id);
   const showCount = count !== undefined && count > 0;
   return (
     <li>
@@ -31,7 +36,9 @@ function Item({
         href={routeHref(route.id)}
         className={current ? 'sidebar__item sidebar__item--current' : 'sidebar__item'}
         aria-current={current ? 'page' : undefined}
-        title={collapsed ? route.label : undefined}
+        title={
+          shortcut === undefined ? route.label : `${route.label} (${formatShortcut(shortcut)})`
+        }
         aria-label={
           collapsed ? `${route.label}${showCount ? `, ${String(count)}` : ''}` : undefined
         }
@@ -56,9 +63,7 @@ export function Sidebar({ title, current, collapsed, onToggle, counts = {} }: Si
           className="sidebar__toggle"
           aria-label={collapsed ? 'Show sidebar' : 'Hide sidebar'}
           aria-expanded={!collapsed}
-          title={
-            collapsed ? 'Show sidebar (Control-Command-S)' : 'Hide sidebar (Control-Command-S)'
-          }
+          title={`${collapsed ? 'Show' : 'Hide'} sidebar (${TOGGLE_HINT})`}
           onClick={onToggle}
         >
           <ToggleIcon aria-hidden="true" className="sidebar__icon" />

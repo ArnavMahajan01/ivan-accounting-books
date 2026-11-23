@@ -55,7 +55,7 @@ Development runs on Node 24 or later (`engines` in `package.json`).
 Planned. The folders are created at spec 002.
 
 ```
-src/shared/       Result, money, dates, ids, logger, shared types
+src/shared/       Result, money, dates, ids, logger, pages, shortcuts, guide format, shared types
 src/domain/       pure accounting rules: accounts, journal, GST, reports
 src/import/       pure bank file parsers: OFX, Westpac CSV
 src/data/         SQLite store, migrations, repositories (main process only)

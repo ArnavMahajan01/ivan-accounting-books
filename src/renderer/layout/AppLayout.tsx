@@ -1,6 +1,7 @@
-import { useEffect, useState, type ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import type { RouteId } from '../routes';
 import { Sidebar } from './Sidebar';
+import { useShortcuts } from './use-shortcuts';
 import './AppLayout.css';
 
 const COLLAPSED_KEY = 'sidebar-collapsed';
@@ -39,19 +40,7 @@ export function AppLayout({ title, current, counts, children }: AppLayoutProps) 
     });
   };
 
-  // Control-Command-S shows or hides the sidebar, as in Finder and Mail.
-  useEffect(() => {
-    const onKey = (event: KeyboardEvent) => {
-      if (event.ctrlKey && event.metaKey && event.key.toLowerCase() === 's') {
-        event.preventDefault();
-        toggle();
-      }
-    };
-    window.addEventListener('keydown', onKey);
-    return () => {
-      window.removeEventListener('keydown', onKey);
-    };
-  }, []);
+  useShortcuts(toggle);
 
   return (
     <div className="app-layout">

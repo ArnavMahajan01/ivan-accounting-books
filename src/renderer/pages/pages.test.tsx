@@ -26,13 +26,27 @@ describe('every page', () => {
     },
   );
 
-  it.each(ROUTES.filter((r) => !['home', 'settings'].includes(r.id)).map((r) => r.id))(
+  it.each(ROUTES.filter((r) => !['home', 'settings', 'help'].includes(r.id)).map((r) => r.id))(
     '%s says in plain words that it is coming in a later version',
     (id) => {
       render(<Page route={id} />);
       expect(screen.getByText('Coming in a later version.')).not.toBeNull();
     },
   );
+});
+
+describe('keyboard and screen readers', () => {
+  // Every control in a page has a name a screen reader can say, and is reachable by Tab.
+  it.each(ROUTES.map((r) => r.id))('%s has a name on every control', async (id) => {
+    render(<Page route={id} />);
+    await screen.findAllByRole('heading');
+    for (const role of ['button', 'link', 'textbox', 'searchbox', 'combobox'] as const) {
+      const all = screen.queryAllByRole(role);
+      const named = screen.queryAllByRole(role, { name: /\S/ });
+      expect(named.length, `${id}: a ${role} has no name`).toBe(all.length);
+      for (const control of all) expect(control.getAttribute('tabindex')).not.toBe('-1');
+    }
+  });
 });
 
 describe('Home', () => {

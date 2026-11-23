@@ -66,6 +66,18 @@ A guide is done only when:
 3. It has been read once for plain wording.
 4. Its feature's behaviour is final, or the guide is updated when it changes.
 
+## Format
+
+Decided at spec 027. A guide is one JSON file in `guides/`, named after its id, such as `guides/getting-started.json`. The schema is `guideSchema` in `src/shared/guide.ts`.
+
+- `id` (lower case words joined by hyphens, the same as the file name), `title`, `group`, `summary` (one sentence), and `sections`.
+- `group` is one of `GUIDE_GROUPS` in the schema, which is also the order Help lists them in. A folder that adds a new feature group adds it there.
+- A section has a `heading`, then `paragraphs` and `steps`, at least one of them. A step has `text`, and may have an `image` (`file` in `guides/images/`, and a `description`).
+- Everything is plain text. Help shows it as text, never as HTML, so `*`, `#` and `&amp;` show as written, and the schema refuses anything that looks like a tag. There is no bold: name a button as it is on the screen, in quotes if that helps.
+- Images are PNG, JPEG or WebP (never SVG), under 300 KB, in `guides/images/`.
+- `npm test` checks every guide: it validates, its file name matches its id, and every image exists.
+- The build bundles `guides/` into the app, so Help works offline.
+
 ## Example
 
 **Bring in a Westpac statement**

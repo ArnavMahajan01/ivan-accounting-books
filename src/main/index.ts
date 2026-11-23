@@ -12,6 +12,7 @@ import {
   type Store,
 } from '@data/database';
 import { consoleSink, createLogger } from '@shared/logger';
+import { pageHash, type PageId } from '@shared/pages';
 import { err, type Result } from '@shared/result';
 import { dataFolder, runName } from './app-identity';
 import { APP_ENTRY_URL, APP_SCHEME, resolveAppFile } from './app-protocol';
@@ -21,7 +22,7 @@ import { createHandlers } from './handlers';
 import { systemClock } from './clock';
 import { debuggingFlags } from './launch-guard';
 import { logFileSink, teeSinks } from './log-file';
-import { packagedMenuTemplate } from './menu';
+import { menuTemplate } from './menu';
 import { loadWindowBounds, MIN_HEIGHT, MIN_WIDTH, saveWindowBounds } from './window-state';
 import {
   parseSelfCheckArg,
@@ -185,6 +186,14 @@ function createWindow(): void {
   mainWindow = window;
 }
 
+/** Changing only the address hash moves the page without a reload, so nothing is lost. */
+function openPageInWindow(page: PageId): void {
+  if (mainWindow === null) return;
+  const entry = new URL(devServerUrl ?? APP_ENTRY_URL);
+  entry.hash = pageHash(page);
+  void mainWindow.loadURL(entry.toString());
+}
+
 function focusMainWindow(): void {
   if (mainWindow === null) return;
   if (mainWindow.isMinimized()) mainWindow.restore();
@@ -212,7 +221,11 @@ if (refusedFlags.length > 0) {
   });
   lockDownContents();
   void app.whenReady().then(() => {
-    if (app.isPackaged) Menu.setApplicationMenu(Menu.buildFromTemplate(packagedMenuTemplate));
+    Menu.setApplicationMenu(
+      Menu.buildFromTemplate(
+        menuTemplate({ development: !app.isPackaged, openPage: openPageInWindow }),
+      ),
+    );
     denyAllPermissions();
     serveAppFiles();
     const store = openBooks();

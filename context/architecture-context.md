@@ -32,7 +32,7 @@ Cost and accounts: nothing is needed to build and run it locally. Before go-live
 ## Repo Layout
 
 ```
-src/shared/       Result, money, dates, ids, logger, shared types
+src/shared/       Result, money, dates, ids, logger, pages, shortcuts, guide format, shared types
 src/domain/       pure accounting rules
 src/import/       pure bank file parsers
 src/data/         SQLite store, migrations, repositories

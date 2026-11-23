@@ -1,0 +1,54 @@
+{
+  "id": "getting-started",
+  "title": "Getting started",
+  "group": "Getting started",
+  "summary": "What this app is, how to find your way around it, and where your books are kept.",
+  "sections": [
+    {
+      "heading": "What this app is",
+      "paragraphs": [
+        "This app keeps your business books on your own Mac. It takes the place of QuickBooks Online.",
+        "You bring in your bank statement files, give each line an account and a GST code, and then look at your reports. When you want your accountant to see something, you share it as a Google Sheet.",
+        "Some pages are still empty while the app is being built. They say \"Coming in a later version.\""
+      ]
+    },
+    {
+      "heading": "Find your way around",
+      "paragraphs": [
+        "The sidebar on the left lists every page. The page you are on is highlighted.",
+        "Home shows what to do first. To review will hold your imported bank lines until you post them. Bank is where your bank accounts and statement files will live. Transactions will list everything you have posted. Accounts will show your chart of accounts with balances. Reports will hold your profit and loss, balance sheet and BAS worksheet. Shared sheets will show what you have shared with your accountant. Accountant changes will hold edits your accountant makes in a shared sheet, until you accept or reject them.",
+        "Settings and Help are at the bottom of the sidebar."
+      ],
+      "steps": [
+        { "text": "Click a page name in the sidebar to open it." },
+        {
+          "text": "Press Command and a number to jump to a page: Command-1 is Home, Command-2 is To review, and so on down the list to Command-9 for Settings."
+        },
+        { "text": "Press Command and the question mark key to open Help." },
+        {
+          "text": "Press Control-Command-S, or click the button at the top of the sidebar, to hide the sidebar or show it again."
+        }
+      ]
+    },
+    {
+      "heading": "Where your books are kept",
+      "paragraphs": [
+        "Your books are one file on this Mac. They are in the Library folder, inside Application Support, in a folder with the name of this app. Nothing is sent anywhere unless you ask for it, such as sharing a report with your accountant.",
+        "The About card in Settings shows the version of the app and whether your books opened without problems."
+      ],
+      "steps": [
+        { "text": "Click Settings in the sidebar." },
+        {
+          "text": "Find the About card. Under the version, the second line should end with \"integrity: ok\"."
+        }
+      ]
+    },
+    {
+      "heading": "If something goes wrong",
+      "paragraphs": [
+        "If a message says \"The books could not be opened\", close the app and open it again. If the message stays, do not delete or move anything. Ask for help first.",
+        "If a page you expect is empty, check that it does not say \"Coming in a later version.\" Those pages are not built yet."
+      ]
+    }
+  ]
+}

@@ -2,7 +2,6 @@ import {
   ArrowLeftRight,
   BookOpen,
   ChartColumn,
-  CircleHelp,
   Inbox,
   Landmark,
   Share2,
@@ -11,6 +10,7 @@ import {
 import { assertNever } from '@shared/kinds';
 import type { RouteId } from '../routes';
 import { EmptyPage } from './EmptyPage';
+import { HelpPage } from './HelpPage';
 import { HomePage } from './HomePage';
 import { SettingsPage } from './SettingsPage';
 
@@ -78,13 +78,7 @@ export function Page({ route }: { readonly route: RouteId }) {
     case 'settings':
       return <SettingsPage />;
     case 'help':
-      return (
-        <EmptyPage
-          title="Help"
-          icon={CircleHelp}
-          message="Guides for each part of the app appear here, and work offline."
-        />
-      );
+      return <HelpPage />;
     default:
       return assertNever(route);
   }

@@ -108,6 +108,65 @@ describe('AppLayout', () => {
   });
 });
 
+describe('page shortcuts', () => {
+  const press = (init: KeyboardEventInit) => {
+    act(() => {
+      window.dispatchEvent(new KeyboardEvent('keydown', { cancelable: true, ...init }));
+    });
+  };
+
+  it('opens each of the first nine pages with Command and its number, Home first', () => {
+    render(
+      <AppLayout title="Accounting Books" current="home">
+        <p>Page</p>
+      </AppLayout>,
+    );
+    ROUTES.slice(0, 9).forEach((route, index) => {
+      window.location.hash = '#/somewhere-else';
+      press({ key: String(index + 1), metaKey: true });
+      expect(window.location.hash, route.id).toBe(`#/${route.id}`);
+    });
+  });
+
+  it('opens Help with Command-?', () => {
+    render(
+      <AppLayout title="Accounting Books" current="home">
+        <p>Page</p>
+      </AppLayout>,
+    );
+    window.location.hash = '#/home';
+    press({ key: '?', metaKey: true, shiftKey: true });
+    expect(window.location.hash).toBe('#/help');
+  });
+
+  it('leaves other key presses alone', () => {
+    render(
+      <AppLayout title="Accounting Books" current="home">
+        <p>Page</p>
+      </AppLayout>,
+    );
+    window.location.hash = '#/bank';
+    const event = new KeyboardEvent('keydown', { key: '1', cancelable: true });
+    act(() => {
+      window.dispatchEvent(event);
+    });
+    expect(window.location.hash).toBe('#/bank');
+    expect(event.defaultPrevented).toBe(false);
+  });
+
+  it('shows each shortcut in the sidebar tooltips', () => {
+    render(<Sidebar title="x" current="home" collapsed={false} onToggle={() => undefined} />);
+    expect(screen.getByRole('link', { name: 'Home' }).getAttribute('title')).toBe('Home (⌘1)');
+    expect(screen.getByRole('link', { name: 'Settings' }).getAttribute('title')).toBe(
+      'Settings (⌘9)',
+    );
+    expect(screen.getByRole('link', { name: 'Help' }).getAttribute('title')).toBe('Help (⌘?)');
+    expect(screen.getByRole('button', { name: 'Hide sidebar' }).getAttribute('title')).toBe(
+      'Hide sidebar (⌃⌘S)',
+    );
+  });
+});
+
 describe('PageToolbar', () => {
   it('has the title as the page heading, with actions on the right', () => {
     render(<PageToolbar title="Bank" mainAction={<button type="button">Import file</button>} />);
