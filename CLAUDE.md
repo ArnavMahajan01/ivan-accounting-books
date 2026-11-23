@@ -8,7 +8,7 @@ A private accounting app for the Mac, built for one client: an Australian small 
 
 - **Goals:** correct books that always balance. The client can do his bookkeeping without QuickBooks. The accountant gets the sheets he needs, with the access the client chooses. Nothing leaves the Mac unless the client asks for it.
 - **Out of scope:** web app or server, accounts and logins inside the app, ATO lodgement (BAS e-lodge, STP), payroll, taking payments, live bank feeds, and every "scale version" feature (licensing, many clients, other banks). See `context/project-overview.md`.
-- **Current focus:** folder 00 (foundations, no screens) on branch `feature/00-foundations`, started before wireframe sign-off by the author's choice. Wireframes wait for the client's review (W10) and sign-off (W11), and screens (spec 020 onward) wait for W11. The UI skills Impeccable and UI UX Pro Max are installed (W01a, W01b). The client sees the app grow in 9 demos (`context/feature-specs/README.md`). Progress is in `context/progress-tracker.md`.
+- **Current focus:** the wireframes are signed off (W11). Demo 1 (folder 02, specs 020 to 028) and the ledger core (folder 03, specs 030 to 045) are built, and so is the Demo 2 sample book (folder 04, specs 046 to 053), on branch `feature/03-ledger-core` for now. The Demo 2 demo (054) is prepared, and not yet held. The UI skills Impeccable and UI UX Pro Max are installed (W01a, W01b). The client sees the app grow in 9 demos (`context/feature-specs/README.md`). Progress is in `context/progress-tracker.md`.
 
 **Hard rules.** Never break these. If a task seems to need it, stop and ask.
 
@@ -91,6 +91,7 @@ Created at spec 001 (`context/rules/code-rules.md`, "Scripts"). Update this tabl
 | Lint | `npm run lint` | Yes |
 | Format, or check formatting | `npm run format`, `npm run format:check` | Yes. Markdown, `context/` and `wireframe/` are not reformatted |
 | Every check in one go | `npm run check` | Yes: typecheck, lint, test |
+| Work with a books file from the terminal | `npm run ledger -- init\|trial-balance\|check --file <path>` | Yes: a development tool, never packaged. Needs `--file`, and refuses the app's own data folder |
 
 ## 5. How to work here
 

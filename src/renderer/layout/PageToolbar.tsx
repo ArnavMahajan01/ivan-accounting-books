@@ -1,4 +1,6 @@
 import type { ReactNode } from 'react';
+import { useBooksState } from '../books-state';
+import { SampleDataLabel } from '../components/SampleDataLabel';
 import './PageToolbar.css';
 
 export interface PageToolbarProps {
@@ -12,10 +14,13 @@ export interface PageToolbarProps {
 }
 
 export function PageToolbar({ title, status, actions, mainAction }: PageToolbarProps) {
+  const { state } = useBooksState();
   return (
     <header className="page-toolbar">
       <div className="page-toolbar__start">
         <h1 className="page-toolbar__title">{title}</h1>
+        {/* Every page says so while the books are sample ones (ui-context.md, "States"). */}
+        {state?.mode === 'sample' && <SampleDataLabel />}
         {status}
       </div>
       <div className="page-toolbar__actions">

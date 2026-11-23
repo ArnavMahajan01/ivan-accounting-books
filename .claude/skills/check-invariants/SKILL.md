@@ -28,7 +28,7 @@ A clean lint covers most of invariants 2, 7 and 8.
 
 Each search prints nothing on a pass, unless an expected hit is named. Hits in `*.test.ts` files that are clearly test-only are allowed. Quote `--include` patterns, because zsh expands them.
 
-**1. Every journal entry's lines sum to zero cents.** Not built yet. From spec 038, the entry validation tests. From 042, the trial balance tests.
+**1. Every journal entry's lines sum to zero cents.** `npm test` runs the entry validation tests (`src/domain/journal.test.ts`), the posting tests that refuse an unbalanced entry and roll back a failure halfway (`src/services/post-journal.test.ts`), the trial balance tests, and the books check tests that find a corrupted line. The posting service also confirms the saved lines sum to zero before it commits.
 
 **2. Money is integer cents, no floats.** `npm run lint` (the float ban), and:
 
@@ -36,10 +36,10 @@ Each search prints nothing on a pass, unless an expected hit is named. Hits in `
 grep -rnE "parseFloat|toFixed\(|Number\(.*(amount|cents)" src/domain src/import src/data src/services src/shared/money.ts
 ```
 
-**3. Only the posting service writes journal entries and lines, each with an audit row in the same transaction.** Not built yet. From spec 041, this must print nothing, and 041 adds its own test:
+**3. Only the posting service writes journal entries and lines, each with an audit row in the same transaction.** `tools/single-writer.test.ts` (spec 041) fails if any source file but `src/data/journal-writes.ts` writes those tables, or if any file but `src/services/post-journal.ts` imports that file. `tools/audit-append-only.test.ts` keeps the audit log append-only. The search below must print nothing:
 
 ```bash
-grep -rnE "(INSERT INTO|UPDATE|DELETE FROM) journal_(entries|lines)" src/ | grep -v "src/services/posting"
+grep -rnE "(INSERT( OR [A-Z]+)? INTO|UPDATE|DELETE FROM|REPLACE INTO) +journal_(entry|line)" src/ tools/ --include='*.ts' | grep -v "\.test\.ts" | grep -v "src/data/journal-writes.ts"
 ```
 
 **4. The same or an overlapping bank file never stores a line twice.** Not built yet. From spec 060: the duplicate and overlap tests, and a unique key on statement lines in the migration.
@@ -50,7 +50,7 @@ grep -rnE "(INSERT INTO|UPDATE|DELETE FROM) journal_(entries|lines)" src/ | grep
 grep -rnE "from ['\"]@services/posting" src/google
 ```
 
-**6. Nothing changes on or before the lock date.** Not built yet. From spec 096: the period lock tests.
+**6. Nothing changes on or before the lock date.** The rule is enforced in the posting service (`validateEntry`, `changeEntry`, `removeEntry`), with tests for each (`src/domain/journal.test.ts`, `src/services/post-journal.test.ts`, `src/services/change-entry.test.ts`). Setting and unlocking the lock date is spec 096.
 
 **7. `domain` and `import` are pure.** `npm run lint`, and:
 

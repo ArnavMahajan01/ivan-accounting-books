@@ -1,6 +1,6 @@
 # Architecture Context
 
-How the app is built. This file describes the design as planned on 2026-11-21. Nothing is built yet. Once code exists, this file describes the code as it is, and is updated before continuing whenever the structure changes.
+How the app is built. This file describes the design as planned on 2026-11-21, and is updated before continuing whenever the code's structure changes. The data model below is as built through spec 043 (2026-11-23).
 
 The stack below is a recommendation until `decisions/desktop-shell.md` and `decisions/local-data-storage.md` are decided. Spec 001 is blocked on both.
 
@@ -107,22 +107,22 @@ A draft. Each table is written in full by the spec that creates it.
 
 | Model | Purpose and key fields |
 |---|---|
-| `business` | One row. Name, ABN, GST registered, GST basis (cash or accrual), BAS frequency, financial year start (07-01), lock date |
-| `account` | The chart of accounts. Code, name, type (asset, liability, equity, income, expense), default tax code, active flag |
-| `tax_code` | GST codes: GST on sales or purchases (10%), GST-free, input taxed, BAS excluded, and the BAS label each feeds |
-| `bank_account` | A Westpac account. The linked `account`, a display name, and the last four digits only |
+| `business` | One row (id 1). Name, ABN (11 digits, check digits verified), GST registered, GST basis (cash or accrual), BAS frequency (monthly or quarterly), lock date. Built at spec 030 |
+| `account` | The chart of accounts. Unique code, name, type (asset, liability, equity, income, expense), optional parent, default tax code, active flag. Never deleted or merged. Spec 032 |
+| `tax_code` | Four seeded GST codes (`GST` taxable 10%, `FRE` GST-free, `INP` input taxed, `N-T` outside GST), each with a treatment and a rate in basis points. Code branches on the treatment. The BAS label a line feeds is worked out in `src/domain/bas-labels.ts`, not stored. Spec 034 |
+| `bank_account` | One of his bank accounts: its name, bank, the last four digits only, and the ledger `account` that holds its balance. The table was created at spec 046 (the sample books needed it), and spec 055 adds the services around it |
 | `import_batch` | One imported file. Format, a hash of the file text, period covered, counts of new, duplicate and rejected lines, opening and closing balance |
 | `statement_line` | One bank line. Bank account, date, amount in cents, description, the bank's id (`FITID`) or a content hash, status (to review, posted, excluded) |
-| `journal_entry` | Date, memo, source (bank line, manual, invoice, opening balance, accountant change), status |
-| `journal_line` | Entry, account, amount in cents (positive debit, negative credit), tax code, GST amount in cents |
+| `journal_entry` | Id, date, memo, source (manual, bank line, invoice, opening balance, accountant change), source id. Spec 037 |
+| `journal_line` | Entry, position, account, amount in cents (positive debit, negative credit, never zero), tax code, GST in cents (same sign as the amount, which is net), payee, memo. The database checks each line, and the posting service checks that an entry sums to zero. Spec 037 |
 | `rule` | A bank rule. Order, direction, bank accounts, conditions, then account, tax code, payee, split, posts by itself (spec 078) |
 | `reconciliation` | A finished reconciliation: bank account, statement date and balance (spec 085) |
 | `report_layout` | A saved custom report: name, base report, columns, rows, his own columns (specs 101, 102) |
-| `contact`, `contact_match` | A customer or supplier, and the bank description words that point to it. Saved automatically (specs 071, 122) |
+| `contact`, `contact_match` | A customer or supplier (a journal line's `payee_id` is a contact's id, which the posting service checks). `contact` was created at spec 046, because the sample books need payees. `contact_match`, the bank description words that point to a contact, comes at spec 071, and the contact's details at 122 |
 | `invoice` and its lines | Issued invoices brought in from the Admin Dashboard (spec 126). Bills only if the client asks |
 | `sheet_link` | A published sheet. Google file id, which report and period, when it was last published, and its shares |
 | `accountant_change` | An edit read back from a sheet. Sheet, row key, column, old value, new value, status (waiting, accepted, rejected) |
-| `audit_log` | Append-only. When, what kind of change, which row, the value before and after |
+| `audit_log` | Append-only. Id, when, kind, table, row id, JSON before and after. Created at spec 033, not 037, because account changes needed it first |
 | `period_lock` | Dates up to which nothing may change, and why |
 
 Rules across models:
@@ -131,7 +131,7 @@ Rules across models:
 - `statement_line` has a unique key on (bank account, `FITID`) for OFX, or (bank account, content hash) for CSV, so a repeated import cannot add a line twice.
 - Only the posting service writes `journal_entry` and `journal_line`, and every write adds an `audit_log` row in the same transaction.
 - No change may touch a date on or before the lock date.
-- A deleted entry is kept as a reversed entry, or removed with its full content in the audit log. Which one is decided at spec 040.
+- **Changing or removing a posted entry (decided 2026-11-23 at spec 040):** `changeEntry` and `removeEntry` in the posting service replace or remove it, and the audit log row keeps its full content before and after (before only, for a removal). Nothing on or before the lock date may be changed or removed. The author said "go for it" to the spec's recommendation without choosing in words, so this is the recommendation, adopted and **awaiting the author's confirmation**. The alternative, never changing an entry and correcting only by a reversing entry, would replace these two functions with one `reverseEntry`.
 
 ## Importing A Bank File
 
@@ -218,7 +218,7 @@ These must hold after every change. If a change needs to break one, stop and ask
 
 ## Later Phases (not built)
 
-- **Sample data (folder 04):** demos use an invented business stored in a separate sample books file, never in the real books file. The release build at go-live removes the sample data switch (spec 150).
+- **Sample data (folder 04, built 2026-11-23):** demos use an invented business stored in a separate sample books file, `sample/books.db`, in a folder of its own inside the data folder, never in the real books file. `src/main/books-session.ts` holds which file is open, builds the sample books into a temporary file and renames it when they are complete, and deletes only the `sample/` folder to clear them. The real books are closed while the sample books are in use. The sample books are built by `src/services/sample/`, posting every entry through `postEntry`. The release build at go-live removes the sample data switch (spec 150).
 - **Folder 10, contacts and invoices:** contacts saved automatically, invoices from the Admin Dashboard through a versioned exchange file (`decisions/admin-dashboard-link.md`), and matching payments. Bills only if the client asks.
 - **Folder 11, backup and safety:** an encrypted copy of the data file on a schedule, kept for a set number of days, plus restore and full export.
 - **Folder 12, go-live:** signing and notarization, automatic updates, moving the client's data from QuickBooks, handover guides.

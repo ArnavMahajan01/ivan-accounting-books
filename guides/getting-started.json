@@ -9,22 +9,28 @@
       "paragraphs": [
         "This app keeps your business books on your own Mac. It takes the place of QuickBooks Online.",
         "You bring in your bank statement files, give each line an account and a GST code, and then look at your reports. When you want your accountant to see something, you share it as a Google Sheet.",
-        "Some pages are still empty while the app is being built. They say \"Coming in a later version.\""
+        "Some pages are still empty while the app is being built. They say \"Coming in a later version.\"",
+        "If you see \"Sample data\" next to a page title, the figures are invented, for a made-up business."
       ]
     },
     {
       "heading": "Find your way around",
       "paragraphs": [
         "The sidebar on the left lists every page. The page you are on is highlighted.",
-        "Home shows what to do first. To review will hold your imported bank lines until you post them. Bank is where your bank accounts and statement files will live. Transactions will list everything you have posted. Accounts will show your chart of accounts with balances. Reports will hold your profit and loss, balance sheet and BAS worksheet. Shared sheets will show what you have shared with your accountant. Accountant changes will hold edits your accountant makes in a shared sheet, until you accept or reject them.",
+        "Home shows your numbers and what to do next. Accounts lists your chart of accounts, with what each account holds. Transactions lists everything you have posted, and shows what each one did to your books. To review will hold your imported bank lines until you post them. Bank is where your bank accounts and statement files will live. Reports will hold your profit and loss, balance sheet and BAS worksheet. Shared sheets will show what you have shared with your accountant. Accountant changes will hold edits your accountant makes in a shared sheet, until you accept or reject them.",
+        "To learn to read Home, Accounts and Transactions, open the guide Reading your books in Help.",
         "Settings and Help are at the bottom of the sidebar."
       ],
       "steps": [
-        { "text": "Click a page name in the sidebar to open it." },
+        {
+          "text": "Click a page name in the sidebar to open it."
+        },
         {
           "text": "Press Command and a number to jump to a page: Command-1 is Home, Command-2 is To review, and so on down the list to Command-9 for Settings."
         },
-        { "text": "Press Command and the question mark key to open Help." },
+        {
+          "text": "Press Command and the question mark key to open Help."
+        },
         {
           "text": "Press Control-Command-S, or click the button at the top of the sidebar, to hide the sidebar or show it again."
         }
@@ -37,7 +43,9 @@
         "The About card in Settings shows the version of the app and whether your books opened without problems."
       ],
       "steps": [
-        { "text": "Click Settings in the sidebar." },
+        {
+          "text": "Click Settings in the sidebar."
+        },
         {
           "text": "Find the About card. Under the version, the second line should end with \"integrity: ok\"."
         }

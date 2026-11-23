@@ -1,46 +1,56 @@
-import { Building2, CircleCheck, Cloud, Landmark, Upload } from 'lucide-react';
-import type { LucideIcon } from 'lucide-react';
-import type { DataStatus } from '@shared/bridge-contract';
+import { Upload } from 'lucide-react';
+import type { BooksProblem } from '@shared/kinds';
+import type { HomeSummary } from '@shared/views';
 import { Button } from '../components/Button';
 import { ErrorMessage } from '../components/ErrorMessage';
 import { PageToolbar } from '../layout/PageToolbar';
 import { COMING_LATER } from './EmptyPage';
-import { describeData, loadDataStatus } from './data-status';
+import { GettingStarted } from './GettingStarted';
+import { HomeNumbers } from './HomeNumbers';
+import { NextStepsList } from './NextStepsList';
+import { loadHomeSummary } from './data-status';
 import { useBridge } from './use-bridge';
 import './HomePage.css';
 
-interface Step {
-  readonly icon: LucideIcon;
-  readonly title: string;
-  readonly detail: string;
+// What the books check found, in words he can act on. Home shows one only when something is wrong.
+const WARNING_TEXT: Record<BooksProblem, string> = {
+  'out-of-balance':
+    'Your books do not balance: the debits and credits no longer match. Do not add anything new. Close the app and ask for help.',
+  'integrity-failed':
+    'The file that holds your books has a problem. Close the app, and ask for help before you go on.',
+  'not-open': 'Your books could not be opened. Close the app and open it again.',
+};
+
+function HomeSkeleton() {
+  return (
+    <div className="home-overview" aria-busy="true" aria-label="Loading Home">
+      <div className="page-surface home-todo home-skeleton" />
+      <div className="page-surface home-numbers home-skeleton" />
+    </div>
+  );
 }
 
-// The "Brand-new book" state of Home, Option 2, Next Steps (wireframe/2111-app-shell-and-home/).
-const GETTING_STARTED: readonly Step[] = [
-  {
-    icon: Building2,
-    title: 'Add your business details',
-    detail: 'Your business name, ABN, GST basis and BAS frequency.',
-  },
-  {
-    icon: Landmark,
-    title: 'Add your bank accounts',
-    detail: 'Your Westpac accounts, by name and last four digits.',
-  },
-  {
-    icon: Upload,
-    title: 'No bank lines yet',
-    detail: 'Download a statement file (OFX or CSV) from Westpac Online Banking, then import it.',
-  },
-  {
-    icon: Cloud,
-    title: 'Connect Google',
-    detail: 'Only needed when you want to share sheets with your accountant.',
-  },
-];
+function Overview({ summary }: { readonly summary: HomeSummary }) {
+  return (
+    <div className="home-overview">
+      <section className="page-surface home-todo" aria-labelledby="home-todo-title">
+        <h2 id="home-todo-title" className="home-section__title">
+          To do
+        </h2>
+        <NextStepsList steps={summary.nextSteps} upToDate={summary.upToDate} />
+      </section>
+      <section className="page-surface home-numbers" aria-labelledby="home-numbers-title">
+        <h2 id="home-numbers-title" className="home-section__title">
+          Numbers
+        </h2>
+        <HomeNumbers summary={summary} />
+      </section>
+    </div>
+  );
+}
 
 export function HomePage() {
-  const data = useBridge<DataStatus>(loadDataStatus);
+  const summary = useBridge<HomeSummary>(loadHomeSummary);
   return (
     <>
       <PageToolbar
@@ -51,39 +61,16 @@ export function HomePage() {
           </Button>
         }
       />
-      {data.status === 'ready' && data.value.problem !== null && (
-        <ErrorMessage message={describeData(data.value)} />
+      {summary.status === 'failed' && (
+        <ErrorMessage message="Home could not be read. Close the app and open it again. If this keeps happening, ask for help." />
       )}
-      {data.status === 'failed' && (
-        <ErrorMessage message="The books could not be checked. Restart the app to try again." />
-      )}
-      <section className="page-surface home-start" aria-labelledby="home-start-title">
-        <h2 id="home-start-title" className="home-start__title">
-          Getting started
-        </h2>
-        <ol className="home-start__list">
-          {GETTING_STARTED.map((step, index) => {
-            const Icon = step.icon;
-            return (
-              <li key={step.title} className="home-start__step">
-                <span className="home-start__number" aria-hidden="true">
-                  {index + 1}
-                </span>
-                <Icon aria-hidden="true" className="home-start__icon" />
-                <div className="home-start__text">
-                  <span className="home-start__step-title">{step.title}</span>
-                  <span className="home-start__detail">{step.detail}</span>
-                </div>
-                <span className="home-start__later">{COMING_LATER}</span>
-              </li>
-            );
-          })}
-        </ol>
-        <p className="home-start__done">
-          <CircleCheck aria-hidden="true" className="home-start__done-icon" />
-          Your books are set up on this Mac and work offline.
-        </p>
-      </section>
+      {summary.status === 'ready' &&
+        summary.value.warnings.map((problem) => (
+          <ErrorMessage key={problem} message={WARNING_TEXT[problem]} />
+        ))}
+      {summary.status === 'loading' && <HomeSkeleton />}
+      {summary.status === 'ready' &&
+        (summary.value.brandNew ? <GettingStarted /> : <Overview summary={summary.value} />)}
     </>
   );
 }

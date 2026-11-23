@@ -2,7 +2,7 @@
 
 The risks in this app, who handles each one, and when. Rules live in `security-context.md`. This file tracks what could go wrong.
 
-**Last reviewed:** 2026-11-21, written from the plan, before any code. Review again at the end of each phase, and whenever a new outside service, stored data type or dependency is added.
+**Last reviewed:** 2026-11-23, after folder 03 (the ledger core, specs 030 to 045): L1, L2 and L4 are fixed, and no new risk was found in the code. First written 2026-11-21 from the plan. Review again at the end of each phase, and whenever a new outside service, stored data type or dependency is added.
 
 **Severity:** High means someone could read, change or lose the client's financial records, or act in his Google account. Medium means it weakens a protection, or depends on another failure. Low means the impact is limited.
 
@@ -22,10 +22,10 @@ No code yet.
 
 | ID | Severity | Risk | What to do | Owner | Due |
 |---|---|---|---|---|---|
-| L1 | High | An entry that does not balance is saved, and every report is wrong | One posting service checks every entry. A test posts through every route. A check on launch confirms the trial balance is zero | Developer | Spec 039 |
-| L2 | High | Money stored as floats drifts by cents | Integer cents only, with a lint rule against `parseFloat` in `src/domain`, `src/import` and `src/services` | Developer | Spec 005 |
+| L1 | High | An entry that does not balance is saved, and every report is wrong | One posting service checks every entry. A test posts through every route. A check on launch confirms the trial balance is zero | Developer | Spec 039. **Fixed 2026-11-23:** `postEntry`, `changeEntry` and `removeEntry` (039, 040) are the only writers (guard test 041), every route is tested, and the launch check (043) finds a book that does not balance |
+| L2 | High | Money stored as floats drifts by cents | Integer cents only, with a lint rule against `parseFloat` in `src/domain`, `src/import` and `src/services` | Developer | Spec 005. **Fixed 2026-11-22 (005), re-confirmed 2026-11-23 (045):** no float in `domain`, `data` or `services`, and the GST maths (035) is exact integer arithmetic |
 | L3 | High | Importing a file twice doubles transactions | Unique keys on statement lines, and a test that imports the same file twice | Developer | Spec 060 |
-| L4 | High | A crash or failed migration corrupts the file | Transactions for every write, a copy before each migration, an integrity check after | Developer | Spec 012 |
+| L4 | High | A crash or failed migration corrupts the file | Transactions for every write, a copy before each migration, an integrity check after | Developer | Spec 012. **Fixed 2026-11-22 (012), extended 2026-11-23 (039, 043):** every service write is one transaction (tested by forcing a failure halfway), and the books check runs the integrity check on every launch |
 | L5 | Medium | A past period changes after the BAS is done | Period lock, enforced in the posting service | Developer | Spec 096 |
 | L6 | Medium | Wrong GST rounding or basis gives wrong BAS figures | One tested GST helper. BAS tests against figures worked out by hand | Developer | Specs 035, 094 |
 

@@ -55,9 +55,13 @@ function Item({
 export function Sidebar({ title, current, collapsed, onToggle, counts = {} }: SidebarProps) {
   const ToggleIcon = collapsed ? PanelLeftOpen : PanelLeftClose;
   return (
-    <aside className={collapsed ? 'sidebar sidebar--collapsed' : 'sidebar'}>
+    <aside className={collapsed ? 'sidebar sidebar--collapsed' : 'sidebar'} aria-label="Sidebar">
       <div className="sidebar__head">
-        {!collapsed && <span className="sidebar__title">{title}</span>}
+        {!collapsed && (
+          <span className="sidebar__title" title={title}>
+            {title}
+          </span>
+        )}
         <button
           type="button"
           className="sidebar__toggle"

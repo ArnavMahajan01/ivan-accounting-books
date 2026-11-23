@@ -1,18 +1,12 @@
-import {
-  ArrowLeftRight,
-  BookOpen,
-  ChartColumn,
-  Inbox,
-  Landmark,
-  Share2,
-  UserCheck,
-} from 'lucide-react';
+import { ChartColumn, Inbox, Landmark, Share2, UserCheck } from 'lucide-react';
 import { assertNever } from '@shared/kinds';
 import type { RouteId } from '../routes';
 import { EmptyPage } from './EmptyPage';
+import { AccountsPage } from './AccountsPage';
 import { HelpPage } from './HelpPage';
 import { HomePage } from './HomePage';
 import { SettingsPage } from './SettingsPage';
+import { TransactionsPage } from './TransactionsPage';
 
 /** The page for each route. Pages not built yet say what they will hold. */
 export function Page({ route }: { readonly route: RouteId }) {
@@ -36,21 +30,9 @@ export function Page({ route }: { readonly route: RouteId }) {
         />
       );
     case 'transactions':
-      return (
-        <EmptyPage
-          title="Transactions"
-          icon={ArrowLeftRight}
-          message="No transactions yet. Everything you post appears here, with its history."
-        />
-      );
+      return <TransactionsPage />;
     case 'accounts':
-      return (
-        <EmptyPage
-          title="Accounts"
-          icon={BookOpen}
-          message="Your chart of accounts appears here, grouped by type, with balances."
-        />
-      );
+      return <AccountsPage />;
     case 'reports':
       return (
         <EmptyPage

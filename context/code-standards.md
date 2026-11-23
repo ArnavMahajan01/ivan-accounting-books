@@ -47,7 +47,7 @@ The project's own implementation rules. The general rules are in `context/rules/
 
 ## Ids
 
-- Stable string ids with a kind prefix: `acc_`, `ent_`, `lin_`, `stl_`, `imp_`. They are built by `newId(kind)` in `src/shared/ids.ts`, which takes its random source as an argument so tests are repeatable: `seededRandom(seed)` in tests and sample data, `systemRandom` from `src/main/random.ts` in the app. The real clock is likewise `systemClock` in `src/main/clock.ts`.
+- Stable string ids with a kind prefix: `acc_`, `tax_`, `ent_`, `lin_`, `aud_`, `stl_`, `imp_`. The four seeded tax codes have fixed ids (`tax_gst`, `tax_fre`, `tax_inp`, `tax_nt`). They are built by `newId(kind)` in `src/shared/ids.ts`, which takes its random source as an argument so tests are repeatable: `seededRandom(seed)` in tests and sample data, `systemRandom` from `src/main/random.ts` in the app. The real clock is likewise `systemClock` in `src/main/clock.ts`.
 - Never use an array position or a row number as an id.
 
 ## Data (`src/data/`)
@@ -62,7 +62,10 @@ The project's own implementation rules. The general rules are in `context/rules/
 
 - One file per use case, named for it: `import-statement.ts`, `post-journal.ts`, `accept-accountant-change.ts`.
 - Each runs inside one transaction, and either everything is saved or nothing is.
-- `post-journal.ts` is the only writer of `journal_entry` and `journal_line`. It checks the entry balances, checks the lock date, and writes the audit log row.
+- `post-journal.ts` is the only writer of `journal_entry` and `journal_line` (`postEntry`, `changeEntry`, `removeEntry`). It checks the entry with `validateEntry`, and writes the audit log row in the same transaction. The SQL itself is in `src/data/journal-writes.ts`, which only `post-journal.ts` imports. `tools/single-writer.test.ts` fails the checks if any other file writes those tables or imports the writer.
+- A service takes a `ServiceContext` (`db`, `clock`, `random`) from `src/services/context.ts`, so tests pass a fixed clock and a seeded random source. A service that only reads takes a `ReadContext` (`db`), or a `TodayContext` (`db`, `clock`) when it needs today's date.
+- The sample books (`src/services/sample/`) are built only through `postEntry`, `changeEntry` and the other services, never by writing rows. `src/services/sample/sample-figures.ts` lists the figures they must produce, and a test checks every one.
+- The audit log is append-only: `src/data/audit-repository.ts` has an insert and a read, and `tools/audit-append-only.test.ts` fails the checks on anything else.
 
 ## Bridge (`src/main/` and `src/preload/`)
 
@@ -120,6 +123,8 @@ Created at spec 001. Names follow `context/rules/code-rules.md`.
 - `npm run typecheck`, `npm run lint`, `npm test`.
 - `npm run format` / `npm run format:check`.
 - `npm run check`: typecheck, lint and test in sequence.
+- `npm run ledger -- <command> --file <path>`: a development tool (spec 044): `init` makes new books with the sample business, `trial-balance [--from D] [--to D]` prints the trial balance, `check` runs the books check. It builds `tools/ledger-run.ts` with Vite into `dist/ledger/` and runs it. It refuses to run without `--file`, and refuses any file in the Mac's application data folder.
+- An unpackaged run honours `--data-dir=/absolute/path`, which keeps the books somewhere other than the usual data folder, for trying the app without touching its own data. The packaged app ignores it.
 - `npm run test:e2e`: packages the app (with the package contents check, `tools/check-package.ts`), then runs the Playwright tests in `tests/e2e/` against the packaged app in self-check mode (spec 014).
 
 Later specs add to this list. Add each new script here in the same change that creates it.

@@ -95,3 +95,21 @@
   border-radius: var(--radius-control);
   background: var(--color-surface-secondary);
 }
+
+/* A heading row for a group of rows, such as an account type. It is not sticky: only the column
+   headings are. */
+.table .table__group th {
+  position: static;
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-label);
+  font-weight: var(--font-weight-semibold);
+  padding-top: var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.table__row--active,
+.table__row--active:hover {
+  background: var(--color-surface-secondary);
+  box-shadow: inset 3px 0 0 var(--color-brand);
+}

@@ -1,6 +1,7 @@
 import { Info } from 'lucide-react';
 import type { AppInfo, DataStatus } from '@shared/bridge-contract';
 import { PageToolbar } from '../layout/PageToolbar';
+import { DeveloperCard } from './DeveloperCard';
 import { COMING_LATER } from './EmptyPage';
 import { describeData, loadDataStatus, loadInfo } from './data-status';
 import { useBridge } from './use-bridge';
@@ -57,6 +58,7 @@ export function SettingsPage() {
             <p role="alert">Could not read the books status ({data.error.code}).</p>
           )}
         </section>
+        <DeveloperCard />
       </div>
     </>
   );

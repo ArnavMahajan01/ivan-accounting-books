@@ -55,10 +55,21 @@ function hashSegments(hash: string): string[] {
   return hash.replace(/^#\/?/, '').split('/');
 }
 
-/** The route in an address hash such as `#/bank`. Anything else is Home. */
+/** The route in an address hash such as `#/bank`, or `#/transactions?account=acc_x`. Anything else is Home. */
 export function routeFromHash(hash: string): RouteId {
-  const id = hashSegments(hash)[0] ?? '';
+  const id = (hashSegments(hash)[0] ?? '').split('?')[0] ?? '';
   return isPageId(id) ? id : 'home';
+}
+
+/** The `?name=value` part of an address hash, such as the account a page was opened for. */
+export function queryFromHash(hash: string): URLSearchParams {
+  const at = hash.indexOf('?');
+  return new URLSearchParams(at < 0 ? '' : hash.slice(at + 1));
+}
+
+/** Transactions, filtered to one account. */
+export function transactionsHref(accountId: string): string {
+  return `${routeHref('transactions')}?account=${encodeURIComponent(accountId)}`;
 }
 
 /** The guide named in an address such as `#/help/getting-started`, or null for the guide list. */

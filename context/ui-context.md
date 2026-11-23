@@ -143,6 +143,7 @@ From `2111-app-shell-and-home/`, Option 2, Next Steps.
 - **Recent imports:** a short dated list (date, account, new and skipped lines).
 - **A brand-new book** shows a "Getting started" list instead: business details, bank accounts, the first import ("Download a statement file (OFX or CSV) from Westpac Online Banking, then import it"), and connecting Google ("Only needed when you want to share sheets with your accountant").
 - Warnings (an overdue backup, a broken Google connection) appear only when something is wrong.
+- **Built at specs 048 and 049 (2026-11-23):** the two columns (To do on the left, Numbers on the right), with the four numbers as links. Bank balance, GST owing and Profit open Accounts, where the same balances are, until the Bank page and Reports exist. A job whose feature does not exist is not shown (`AVAILABLE_NEXT_STEPS` in `src/services/get-home-summary.ts`), so for now To do says "You are up to date." Books with no entries show the Getting started list. Recent imports waits for folder 05. The books check's problems show as red messages at the top.
 
 ### Bank and Import preview (folder 05)
 
@@ -177,6 +178,11 @@ From `2211-transactions-and-accounts/`, Option 1, Tables, with Option 2's histor
 
 - **Transactions:** one table, filtered by kind of transaction and date range, with the account changed right in the row. Clicking a row opens a side panel with the whole entry (debits and credits) and its history. Tick several rows, then **Move to…** another account in one step. Every change is recorded in the history. A line in a locked quarter shows "Locked" and cannot change.
 - **Accounts:** the chart of accounts as a table, grouped by type, with balances.
+- **Built at specs 050 to 052 (2026-11-23):**
+  - **Accounts:** his bank accounts first, then other assets, liabilities, equity, income and expenses. Columns: account (code and name), type, usual GST and balance in the books, with a Transactions link per row (reached by Enter on the row from the keyboard). Search by name or code. Inactive accounts are hidden behind a checkbox that appears only when there are some. A balance is a debit when positive and a credit when negative, so a credit shows with a minus sign (client question 29). The last statement balance joins bank accounts in folder 05.
+  - **Transactions:** columns date, type (with Money in, Money out or Transfer beneath), payee (with the description beneath), account, before GST, GST and total. Filters: kind, dates (last 12 months to start with), account and search (a name, a word or an amount). 100 rows a page, with the totals of everything that matches underneath. Clicking a row, or Enter on it, opens the panel. A locked entry shows "Locked".
+  - **The panel:** a side panel, not a dialog: the date, payee, description and amounts, "What it did to the books" (debits and credits, which are equal), and History (Posted, and each change in words). Escape or Close closes it, and focus goes back to the row. It floats over the list in windows narrower than 1500 wide, and sits beside it in wider ones.
+  - Moving entries between accounts in the row, "Move to…", and export wait for later specs.
 
 ### Invoices and Customers (folder 10)
 
@@ -251,6 +257,15 @@ Decided at spec 026. Every shortcut is listed once, in `src/shared/shortcuts.ts`
 - **Pages:** Command-1 to Command-9 open the first nine pages in sidebar order (Home is Command-1, Settings Command-9). Help is the tenth, so it takes Command-? (also in the Help menu).
 - **Sidebar:** Control-Command-S hides or shows it.
 - A new page joins `src/shared/pages.ts`, and gets its shortcut from its place in that list.
+
+## Sample Data And First Launch
+
+Built at spec 047 (2026-11-23).
+
+- **First launch with empty books:** a choice, "Start with sample data" or "Start my own books". Starting his own books is remembered, so the choice does not come back.
+- **The sample books** are a separate file in a folder of their own inside the data folder (`sample/books.db`). The real books file (`books.db`) is closed while they are in use and never touched, and clearing the sample data deletes only that folder.
+- **The label:** while sample data is loaded, every page's toolbar shows "Sample data" beside its title, and the sidebar shows the sample business's name.
+- **Settings, Developer** (demo builds only): "Load sample data" and "Clear sample data" (with a confirmation that says his own books are not touched). The release build for go-live turns the switch off (`src/main/build-flags.ts`, spec 150).
 
 ## Component Library
 

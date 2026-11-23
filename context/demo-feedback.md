@@ -17,6 +17,8 @@ What the client says at each demo (the last spec of each `NN-demo-N-...` folder)
 
 ## Demo 2: The Sample Book (spec 054)
 
+The script and the questions to ask are in `demo-scripts/demo-2-the-sample-book.md`. The demo has not been held yet.
+
 | What he said | Screen | Who and when | Spec |
 |---|---|---|---|
 | | | | |

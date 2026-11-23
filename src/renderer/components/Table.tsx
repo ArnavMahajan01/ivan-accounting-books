@@ -1,5 +1,5 @@
 import { ArrowDown, ArrowUp } from 'lucide-react';
-import { useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
+import { Fragment, useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
 import './Table.css';
 
 export type SortDirection = 'ascending' | 'descending';
@@ -29,10 +29,19 @@ export interface TableProps<Row> {
   };
   /** The row's main action, run by Enter or a double click. */
   readonly onRowAction?: (row: Row) => void;
+  /** Run when a row is clicked, anywhere but on a button, link or field inside it. */
+  readonly onRowClick?: (row: Row) => void;
   readonly initialSort?: { readonly key: string; readonly direction: SortDirection };
+  /** The key of the row whose details are open beside the table, drawn with a mark. */
+  readonly activeRowKey?: string | null;
   /** Shows skeleton rows shaped like the table instead of the rows. */
   readonly loading?: boolean;
   readonly skeletonRows?: number;
+  /**
+   * Puts a heading row above each run of rows with the same group name, such as the account types
+   * of the chart. The rows should already be in group order, so a table with this has no sorting.
+   */
+  readonly groupBy?: (row: Row) => string;
 }
 
 function compare(a: string | number, b: string | number): number {
@@ -48,9 +57,12 @@ export function Table<Row>({
   rowLabel,
   selection,
   onRowAction,
+  onRowClick,
   initialSort,
+  activeRowKey = null,
   loading = false,
   skeletonRows = 8,
+  groupBy,
 }: TableProps<Row>) {
   const [sort, setSort] = useState(initialSort);
   const [focusIndex, setFocusIndex] = useState(0);
@@ -209,51 +221,83 @@ export function Table<Row>({
             : sorted.map((row, index) => {
                 const key = rowKey(row);
                 const isSelected = selection?.selected.has(key) ?? false;
+                const group = groupBy?.(row);
+                const startsGroup =
+                  group !== undefined &&
+                  (index === 0 || group !== groupBy?.(sorted[index - 1] as Row));
                 return (
-                  <tr
-                    key={key}
-                    ref={(el) => {
-                      rowRefs.current[index] = el;
-                    }}
-                    tabIndex={index === Math.min(focusIndex, sorted.length - 1) ? 0 : -1}
-                    aria-selected={selection === undefined ? undefined : isSelected}
-                    className={isSelected ? 'table__row table__row--selected' : 'table__row'}
-                    onFocus={() => {
-                      setFocusIndex(index);
-                    }}
-                    onKeyDown={(event) => {
-                      onRowKeyDown(event, index, row);
-                    }}
-                    onDoubleClick={
-                      onRowAction === undefined
-                        ? undefined
-                        : () => {
-                            onRowAction(row);
-                          }
-                    }
-                  >
-                    {selection !== undefined && (
-                      <td className="table__select">
-                        <input
-                          type="checkbox"
-                          tabIndex={-1}
-                          aria-label={`Select ${rowLabel?.(row) ?? 'row'}`}
-                          checked={isSelected}
-                          onChange={() => {
-                            toggleRow(key);
-                          }}
-                        />
-                      </td>
+                  <Fragment key={key}>
+                    {startsGroup && (
+                      <tr className="table__group">
+                        <th
+                          scope="rowgroup"
+                          colSpan={columns.length + (selection === undefined ? 0 : 1)}
+                        >
+                          {group}
+                        </th>
+                      </tr>
                     )}
-                    {columns.map((column) => (
-                      <td
-                        key={column.key}
-                        className={column.align === 'end' ? 'table__cell--end' : undefined}
-                      >
-                        {column.cell(row)}
-                      </td>
-                    ))}
-                  </tr>
+                    <tr
+                      ref={(el) => {
+                        rowRefs.current[index] = el;
+                      }}
+                      tabIndex={index === Math.min(focusIndex, sorted.length - 1) ? 0 : -1}
+                      aria-selected={selection === undefined ? undefined : isSelected}
+                      aria-current={key === activeRowKey ? 'true' : undefined}
+                      className={
+                        isSelected
+                          ? 'table__row table__row--selected'
+                          : key === activeRowKey
+                            ? 'table__row table__row--active'
+                            : 'table__row'
+                      }
+                      onFocus={() => {
+                        setFocusIndex(index);
+                      }}
+                      onKeyDown={(event) => {
+                        onRowKeyDown(event, index, row);
+                      }}
+                      onClick={
+                        onRowClick === undefined
+                          ? undefined
+                          : (event) => {
+                              const target = event.target as HTMLElement;
+                              if (target.closest('a, button, input, select, textarea') === null) {
+                                onRowClick(row);
+                              }
+                            }
+                      }
+                      onDoubleClick={
+                        onRowAction === undefined
+                          ? undefined
+                          : () => {
+                              onRowAction(row);
+                            }
+                      }
+                    >
+                      {selection !== undefined && (
+                        <td className="table__select">
+                          <input
+                            type="checkbox"
+                            tabIndex={-1}
+                            aria-label={`Select ${rowLabel?.(row) ?? 'row'}`}
+                            checked={isSelected}
+                            onChange={() => {
+                              toggleRow(key);
+                            }}
+                          />
+                        </td>
+                      )}
+                      {columns.map((column) => (
+                        <td
+                          key={column.key}
+                          className={column.align === 'end' ? 'table__cell--end' : undefined}
+                        >
+                          {column.cell(row)}
+                        </td>
+                      ))}
+                    </tr>
+                  </Fragment>
                 );
               })}
         </tbody>

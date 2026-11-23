@@ -1,0 +1,151 @@
+/* The page fills the window's height, so the table scrolls inside its own box and the filters and
+   totals stay in view (ui-context.md, "Layout"). */
+.transactions {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - var(--space-5) * 2);
+  min-height: 0;
+}
+
+.transactions__filters {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.transactions__filters select,
+.transactions__filters input[type='date'],
+.transactions__search input {
+  box-sizing: border-box;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  font: inherit;
+}
+
+.transactions__filters select {
+  max-width: 200px;
+}
+
+.transactions__search {
+  position: relative;
+  display: block;
+  width: 170px;
+}
+
+.transactions__search input {
+  width: 100%;
+  padding-inline-start: calc(var(--space-3) + var(--size-icon-inline) + var(--space-2));
+}
+
+.transactions__search input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.transactions__search-icon {
+  position: absolute;
+  inset-inline-start: var(--space-3);
+  top: 50%;
+  translate: 0 -50%;
+  width: var(--size-icon-inline);
+  height: var(--size-icon-inline);
+  color: var(--color-text-muted);
+  pointer-events: none;
+}
+
+.transactions__body {
+  position: relative;
+  display: flex;
+  flex: 1;
+  gap: var(--space-4);
+  min-height: 0;
+}
+
+.transactions__list {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: var(--space-3);
+  min-width: 0;
+  min-height: 0;
+}
+
+.transactions__table {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+  transition: opacity var(--motion-duration) var(--motion-easing);
+}
+
+.transactions__table > .table-scroll {
+  flex: 1;
+}
+
+.transactions__table--busy {
+  opacity: 0.6;
+}
+
+/* Words are never broken in the middle: a column keeps the width of its longest word, and the table
+   scrolls inside its own box if it must. The date and type stay on one line. */
+.transactions__stack {
+  display: grid;
+  gap: 2px;
+  justify-items: start;
+  overflow-wrap: break-word;
+}
+
+.transactions__table td:nth-child(-n + 2) {
+  white-space: nowrap;
+}
+
+.transactions__sub {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-caption);
+}
+
+.transactions__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-label);
+}
+
+.transactions__totals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-4);
+  margin: 0;
+}
+
+.transactions__range {
+  color: var(--color-text-muted);
+}
+
+.transactions__paging {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.transactions__next-icon {
+  width: var(--size-icon-inline);
+  height: var(--size-icon-inline);
+}
+
+/* Unless the window is wide, the panel floats over the right of the list instead of squeezing the table. */
+@media (max-width: 1499px) {
+  .transactions__body > .side-panel {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-end: 0;
+    z-index: 2;
+    box-shadow: var(--shadow-raised);
+  }
+}

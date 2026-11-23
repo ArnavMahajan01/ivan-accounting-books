@@ -4,29 +4,26 @@ import { app, BrowserWindow, ipcMain, Menu, net, protocol, screen, session } fro
 import { readdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
-import {
-  BOOKS_FILE_NAME,
-  bundledMigrations,
-  openStore,
-  type OpenError,
-  type Store,
-} from '@data/database';
+import { bundledMigrations, openStore, type OpenError, type Store } from '@data/database';
 import { consoleSink, createLogger } from '@shared/logger';
 import { pageHash, type PageId } from '@shared/pages';
 import { err, type Result } from '@shared/result';
-import { dataFolder, runName } from './app-identity';
+import { dataFolder, parseDataDirArg, runName } from './app-identity';
 import { APP_ENTRY_URL, APP_SCHEME, resolveAppFile } from './app-protocol';
 import { registerBridge } from './bridge';
+import { SAMPLE_DATA_SWITCH } from './build-flags';
+import { createBooksSession } from './books-session';
 import { contentSecurityPolicy } from './csp';
 import { createHandlers } from './handlers';
 import { systemClock } from './clock';
+import { checkBooks } from '@services/check-books';
 import { debuggingFlags } from './launch-guard';
 import { logFileSink, teeSinks } from './log-file';
 import { menuTemplate } from './menu';
 import { loadWindowBounds, MIN_HEIGHT, MIN_WIDTH, saveWindowBounds } from './window-state';
 import {
   parseSelfCheckArg,
-  READ_STATUS_SCRIPT,
+  SELF_CHECK_SCRIPT,
   SELF_CHECK_FILE,
   type SelfCheckReport,
 } from './self-check';
@@ -42,9 +39,12 @@ const selfCheck = parseSelfCheckArg(process.argv, (dir) => {
     return null;
   }
 });
+const dataDirOverride = parseDataDirArg(process.argv, app.isPackaged);
 app.setPath(
   'userData',
-  selfCheck.kind === 'run' ? selfCheck.dir : dataFolder(app.getPath('appData'), name),
+  selfCheck.kind === 'run'
+    ? selfCheck.dir
+    : (dataDirOverride ?? dataFolder(app.getPath('appData'), name)),
 );
 
 const refusedFlags = app.isPackaged ? debuggingFlags(process.argv) : [];
@@ -70,14 +70,12 @@ const packagedCsp = contentSecurityPolicy({ development: false });
 
 let mainWindow: BrowserWindow | null = null;
 
-/** Opens the books in the data folder and applies any new migrations. */
-function openBooks(): Result<Store, OpenError> {
+/** Opens a books file and applies any new migrations. */
+function openBooksAt(path: string): Result<Store, OpenError> {
   const migrations = bundledMigrations();
   if (!migrations.ok)
     return err({ code: migrations.error.code, message: migrations.error.message });
-  const store = openStore(join(app.getPath('userData'), BOOKS_FILE_NAME), migrations.value, () =>
-    systemClock.now(),
-  );
+  const store = openStore(path, migrations.value, () => systemClock.now());
   if (store.ok) {
     log.info('books.opened', { schemaVersion: store.value.schemaVersion });
   } else {
@@ -163,7 +161,7 @@ function createWindow(): void {
     const { dir } = selfCheck;
     window.webContents.once('did-finish-load', () => {
       void (
-        window.webContents.executeJavaScript(READ_STATUS_SCRIPT) as Promise<
+        window.webContents.executeJavaScript(SELF_CHECK_SCRIPT) as Promise<
           Omit<SelfCheckReport, 'packaged'>
         >
       ).then((status) => {
@@ -228,13 +226,32 @@ if (refusedFlags.length > 0) {
     );
     denyAllPermissions();
     serveAppFiles();
-    const store = openBooks();
+    // The real books, or the sample books if they were loaded last time (spec 047).
+    const books = createBooksSession({
+      dir: app.getPath('userData'),
+      openBooks: openBooksAt,
+      clock: systemClock,
+      log,
+      sampleSwitch: SAMPLE_DATA_SWITCH,
+    });
+    const store = books.store();
+    if (store.ok) {
+      // Counts and codes only: the log never holds anything from the books.
+      const health = checkBooks({ db: store.value.db });
+      const fields = {
+        entries: health.entries,
+        lines: health.lines,
+        problems: health.problems.length,
+      };
+      if (health.problems.length === 0) log.info('books.checked', fields);
+      else log.error('books.check-failed', { ...fields, first: health.problems[0] ?? 'none' });
+    }
     app.on('will-quit', () => {
-      if (store.ok) store.value.close();
+      books.close();
     });
     registerBridge(
       ipcMain,
-      createHandlers({ app, store }),
+      createHandlers({ app, books, clock: systemClock }),
       (url) => isAppUrl(url, devServerUrl),
       log,
     );

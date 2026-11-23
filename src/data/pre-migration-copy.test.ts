@@ -7,6 +7,7 @@ import {
   openSync,
   readdirSync,
   rmSync,
+  statSync,
   writeFileSync,
   writeSync,
 } from 'node:fs';
@@ -156,9 +157,11 @@ describe('integrity check', () => {
 
     // Change four bytes of row data on one page after another, until SQLite itself reports a
     // problem (a row missing from an index) without refusing to read the file.
+    // Every page is tried, because the real tables decide where the sample table's pages sit.
     const damaged = join(dir, 'damaged.db');
+    const pageCount = statSync(books).size / 4096;
     let found = false;
-    for (let page = 2; page < 12 && !found; page += 1) {
+    for (let page = 2; page < pageCount && !found; page += 1) {
       for (const at of [1500, 2500, 3500]) {
         copyFileSync(books, damaged);
         const fd = openSync(damaged, 'r+');

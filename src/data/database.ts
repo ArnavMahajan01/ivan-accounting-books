@@ -13,6 +13,9 @@ import {
 } from './migrations';
 import { copyBeforeMigrating } from './pre-migration-copy';
 
+/** The open books file. Services take this type from here, because only `data` imports better-sqlite3. */
+export type Db = Database.Database;
+
 export const BOOKS_FILE_NAME = 'books.db';
 
 /** The real migrations, bundled into the app as text so the packaged app cannot miss one. */
@@ -36,13 +39,16 @@ export interface OpenError {
 }
 
 export interface Store {
-  readonly db: Database.Database;
+  readonly db: Db;
   readonly schemaVersion: number;
   close(): void;
 }
 
-/** `PRAGMA integrity_check` returns the single row "ok" when the file is sound. */
-function integrityProblems(db: Database.Database): string[] {
+/**
+ * `PRAGMA integrity_check` returns the single row "ok" when the file is sound. It also reports a
+ * row that breaks a CHECK or NOT NULL rule of its table. An empty list means the file is sound.
+ */
+export function integrityProblems(db: Database.Database): string[] {
   const rows = db.pragma('integrity_check') as { integrity_check: string }[];
   const messages = rows.map((r) => r.integrity_check);
   return messages.length === 1 && messages[0] === 'ok' ? [] : messages;

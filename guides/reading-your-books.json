@@ -1,0 +1,137 @@
+{
+  "id": "reading-your-books",
+  "title": "Reading your books",
+  "group": "Your books",
+  "summary": "How to read Home, Accounts and Transactions, and where each number comes from.",
+  "sections": [
+    {
+      "heading": "Home: your numbers",
+      "paragraphs": [
+        "Home shows four numbers about your business, and a list of jobs that need doing. If you see \"Sample data\" next to a page title, the figures are invented, for a made-up business."
+      ],
+      "steps": [
+        {
+          "text": "Click Home in the sidebar, or press Command-1."
+        },
+        {
+          "text": "Read the Numbers box. Bank balance is the money in your bank accounts today.",
+          "image": {
+            "file": "home-numbers.png",
+            "description": "Home, with a To do box and a Numbers box that lists Bank balance, Lines to review, GST owing and Profit. The Sample data label is beside the title."
+          }
+        },
+        {
+          "text": "Read GST owing. It is the GST you owe the tax office for the BAS period you are in, counted so far."
+        },
+        {
+          "text": "Read Profit. It is what you have earned less what you have spent since 1 July."
+        },
+        {
+          "text": "Click a number to see where it comes from. Bank balance, GST owing and Profit open Accounts, where the same balances are listed."
+        },
+        {
+          "text": "Look at the To do box. When it says you are up to date, nothing is waiting for you."
+        }
+      ]
+    },
+    {
+      "heading": "Accounts: your chart of accounts",
+      "paragraphs": [
+        "Accounts lists every account your business uses, with what each one holds today."
+      ],
+      "steps": [
+        {
+          "text": "Click Accounts in the sidebar.",
+          "image": {
+            "file": "accounts-chart.png",
+            "description": "The Accounts page. A search box is above a table of accounts in groups, starting with Bank accounts. Each row shows a code, a name, a type, the usual GST and the balance."
+          }
+        },
+        {
+          "text": "Find your bank accounts at the top. The other groups follow: assets, liabilities, equity, income and expenses."
+        },
+        {
+          "text": "Type in the search box to find an account by its name or its code."
+        },
+        {
+          "text": "Read the Balance column. A minus sign means the account has a credit balance. For example, GST owing shows with a minus sign, because you owe it."
+        },
+        {
+          "text": "Click Transactions at the end of a row, or press Enter on the row, to see only that account's transactions."
+        },
+        {
+          "text": "Tick Show inactive accounts to see accounts that are switched off. This box appears only when there are some."
+        }
+      ]
+    },
+    {
+      "heading": "Transactions: find one",
+      "paragraphs": [
+        "Transactions lists everything that has been posted to your books, newest first."
+      ],
+      "steps": [
+        {
+          "text": "Click Transactions in the sidebar.",
+          "image": {
+            "file": "transactions-list.png",
+            "description": "The Transactions page. Three drop-down boxes and a search box are above a table with the columns Date, Type, Payee, Account, Before GST, GST and Total. The totals are under the table."
+          }
+        },
+        {
+          "text": "In the first box, choose All transactions, Money in, Money out or Transfers."
+        },
+        {
+          "text": "In the second box, choose the dates. Last 12 months is chosen to start with. Choose \"Choose dates…\" to type your own."
+        },
+        {
+          "text": "In the third box, choose an account to see only that account."
+        },
+        {
+          "text": "Type in the Search box a name, a word from the description, or an amount such as 342.15."
+        },
+        {
+          "text": "Read the totals under the list. They add up everything that matches, not only what is on screen."
+        },
+        {
+          "text": "If more than 100 match, click Next to see the rest."
+        },
+        {
+          "text": "Click Clear filters to start again."
+        }
+      ]
+    },
+    {
+      "heading": "A transaction in detail",
+      "paragraphs": [
+        "Every transaction is written in your books twice: once as a debit and once as a credit. The two always add up to the same amount."
+      ],
+      "steps": [
+        {
+          "text": "Click a transaction in the list. Or move to it with the arrow keys and press Enter.",
+          "image": {
+            "file": "transaction-panel.png",
+            "description": "A panel beside the Transactions list. It shows the date, payee, description and amounts of one transaction, a table called What it did to the books with Debit and Credit columns, and its History."
+          }
+        },
+        {
+          "text": "Read What it did to the books. Each line shows an account and an amount in the Debit or the Credit column. The Totals row shows that both sides are equal."
+        },
+        {
+          "text": "Read History. Posted is when the transaction was added. Changed lists each correction, with what it changed."
+        },
+        {
+          "text": "Press Escape, or click Close, to close the panel."
+        }
+      ]
+    },
+    {
+      "heading": "If something goes wrong",
+      "paragraphs": [
+        "If Home says your books do not balance, or that the file has a problem, do not add anything new. Close the app and ask for help.",
+        "If Transactions says to check the dates, the first date is after the last one. Change one of them.",
+        "If Transactions says that nothing matches, click Clear filters.",
+        "If a page says \"Coming in a later version.\", it is not built yet."
+      ]
+    }
+  ]
+}

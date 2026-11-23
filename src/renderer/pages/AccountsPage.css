@@ -1,0 +1,94 @@
+.accounts__filters {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.accounts__search {
+  position: relative;
+  display: block;
+  width: min(360px, 100%);
+}
+
+.accounts__search-icon {
+  position: absolute;
+  inset-inline-start: var(--space-3);
+  top: 50%;
+  translate: 0 -50%;
+  width: var(--size-icon-inline);
+  height: var(--size-icon-inline);
+  color: var(--color-text-muted);
+  pointer-events: none;
+}
+
+.accounts__search input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  padding-inline-start: calc(var(--space-3) + var(--size-icon-inline) + var(--space-2));
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  font: inherit;
+}
+
+.accounts__search input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.accounts__inactive-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-label);
+}
+
+.accounts__inactive-toggle input {
+  accent-color: var(--color-brand);
+}
+
+.accounts__table {
+  /* The table scrolls inside its own box. This leaves room for the heading above and the note below. */
+  max-height: calc(100vh - 17rem);
+  display: flex;
+}
+
+.accounts__table > .table-scroll {
+  flex: 1;
+}
+
+.accounts__loading {
+  padding: 0;
+}
+
+.accounts__name {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  overflow-wrap: anywhere;
+}
+
+.accounts__code {
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.accounts__inactive {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-caption);
+}
+
+.accounts__link {
+  color: var(--color-brand);
+  font-size: var(--font-size-label);
+}
+
+.accounts__note {
+  margin: var(--space-3) 0 0;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-caption);
+}

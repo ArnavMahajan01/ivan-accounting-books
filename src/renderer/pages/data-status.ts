@@ -9,3 +9,7 @@ export function describeData(data: DataStatus): string {
     ? `Schema version ${String(data.schemaVersion)}, integrity: ${data.integrity}`
     : `The books could not be opened (${data.problem}).`;
 }
+
+export const loadBooksState = () => bridge()['app.getBooksState']({});
+export const loadHomeSummary = () => bridge()['home.getSummary']({});
+export const loadAccounts = () => bridge()['accounts.list']({});
