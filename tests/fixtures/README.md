@@ -3,6 +3,7 @@
 Invented data only. Every bank file, name, account number, amount and description in this folder is made up.
 
 - Never copy a real Westpac export, a real QuickBooks file or a screenshot here, even with parts removed. Make a new file in the same format instead.
+- `westpac/` holds the invented Westpac statement files (OFX). Its own README says what each file is for and how it relates to the sample books.
 - The invented business used everywhere is "Harbour Lane Joinery Pty Ltd".
 - Real files for a private check go in `tests/private/`, which git ignores, and never into a test that runs in `npm test`.
 

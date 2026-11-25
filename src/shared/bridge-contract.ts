@@ -9,8 +9,12 @@ import {
   TRANSACTION_KINDS,
   TRANSACTION_PERIODS,
   type AccountsView,
+  type BankView,
   type BooksState,
+  type CommitOutcome,
   type HomeSummary,
+  type PreviewOutcome,
+  type UndoOutcome,
   type TransactionDetail,
   type TransactionsPage,
 } from './views';
@@ -44,6 +48,14 @@ export const bridgeContract = {
   'accounts.list': { input: noInput },
   'transactions.list': { input: transactionFiltersSchema },
   'transactions.get': { input: z.object({ id: idText('ent') }).strict() },
+  'bank.list': { input: noInput },
+  /** Opens the Mac's file chooser, then previews the file chosen. */
+  'bank.chooseAndPreview': { input: noInput },
+  /** Previews a file dropped on the window. The path comes from the preload's `pathForFile`. */
+  'bank.previewFile': { input: z.object({ path: z.string().min(1).max(1024) }).strict() },
+  'bank.commitImport': { input: z.object({ previewId: idText('pre') }).strict() },
+  'bank.undoImport': { input: z.object({ batchId: idText('imp') }).strict() },
+  'review.getCount': { input: noInput },
 } as const;
 
 export interface AppInfo {
@@ -79,6 +91,13 @@ export interface BridgeResults {
   'transactions.list': TransactionsPage;
   /** Null when there is no entry with that id. */
   'transactions.get': TransactionDetail | null;
+  'bank.list': BankView;
+  'bank.chooseAndPreview': PreviewOutcome;
+  'bank.previewFile': PreviewOutcome;
+  'bank.commitImport': CommitOutcome;
+  'bank.undoImport': UndoOutcome;
+  /** How many imported lines wait for review: the count on the sidebar. */
+  'review.getCount': { readonly count: number };
 }
 
 export type BridgeName = keyof typeof bridgeContract;
@@ -96,6 +115,9 @@ export type BridgeResult<N extends BridgeName> = Result<BridgeResults[N], Bridge
 /** The object the preload puts on `window.bridge`. */
 export type BridgeApi = {
   readonly [N in BridgeName]: (input: BridgeInput<N>) => Promise<BridgeResult<N>>;
+} & {
+  /** The path of a file dropped on the window. The screens never read the file themselves. */
+  readonly pathForFile: (file: File) => string;
 };
 
 /** The IPC channel for one function. Only the preload and the main process use it. */

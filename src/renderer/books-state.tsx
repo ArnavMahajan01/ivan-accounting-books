@@ -22,6 +22,10 @@ export interface BooksStateValue {
   readonly version: number;
   /** Use the state a bridge call returned (after loading, clearing or choosing). */
   readonly apply: (next: BooksState) => void;
+  /** Imported lines waiting for review: the count on the sidebar's To review. */
+  readonly reviewCount: number;
+  /** Asks again, after an import or a review changed it. */
+  readonly refreshReviewCount: () => void;
 }
 
 const NOT_LOADED: BooksStateValue = {
@@ -29,6 +33,8 @@ const NOT_LOADED: BooksStateValue = {
   status: 'ready',
   version: 0,
   apply: () => undefined,
+  reviewCount: 0,
+  refreshReviewCount: () => undefined,
 };
 
 export const BooksStateContext = createContext<BooksStateValue>(NOT_LOADED);
@@ -37,6 +43,7 @@ export function BooksStateProvider({ children }: { readonly children: ReactNode 
   const [state, setState] = useState<BooksState | null>(null);
   const [status, setStatus] = useState<BooksStateValue['status']>('loading');
   const [version, setVersion] = useState(0);
+  const [reviewCount, setReviewCount] = useState(0);
 
   useEffect(() => {
     const api = bridge();
@@ -50,13 +57,27 @@ export function BooksStateProvider({ children }: { readonly children: ReactNode 
     });
   }, []);
 
+  const refreshReviewCount = useCallback(() => {
+    const api = bridge();
+    void api['review.getCount']({}).then((result) => {
+      if (result.ok) setReviewCount(result.value.count);
+    });
+  }, []);
+  // The books changed (sample data loaded or cleared), so the count is asked for again.
+  useEffect(() => {
+    refreshReviewCount();
+  }, [version, refreshReviewCount]);
+
   const apply = useCallback((next: BooksState) => {
     setState(next);
     setStatus('ready');
     setVersion((v) => v + 1);
   }, []);
 
-  const value = useMemo(() => ({ state, status, version, apply }), [state, status, version, apply]);
+  const value = useMemo(
+    () => ({ state, status, version, apply, reviewCount, refreshReviewCount }),
+    [state, status, version, apply, reviewCount, refreshReviewCount],
+  );
   return <BooksStateContext.Provider value={value}>{children}</BooksStateContext.Provider>;
 }
 

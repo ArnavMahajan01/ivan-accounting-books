@@ -98,10 +98,6 @@
   overflow-wrap: break-word;
 }
 
-.transactions__table td:nth-child(-n + 2) {
-  white-space: nowrap;
-}
-
 .transactions__sub {
   color: var(--color-text-muted);
   font-size: var(--font-size-caption);

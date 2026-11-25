@@ -12,6 +12,20 @@ export interface TableColumn<Row> {
   readonly cell: (row: Row) => ReactNode;
   /** Present when the column can be sorted. */
   readonly sortValue?: (row: Row) => string | number;
+  /**
+   * The column takes only the width its content needs and never wraps, so figures and dates stay
+   * whole at any window size. The columns without it share what is left, and their text wraps.
+   */
+  readonly fit?: boolean;
+}
+
+/** The classes a column's heading and its cells share. */
+function cellClass<Row>(column: TableColumn<Row>): string | undefined {
+  const names = [
+    column.align === 'end' ? 'table__cell--end' : '',
+    column.fit === true ? 'table__col--fit' : '',
+  ].filter((name) => name !== '');
+  return names.length === 0 ? undefined : names.join(' ');
 }
 
 export interface TableProps<Row> {
@@ -174,7 +188,7 @@ export function Table<Row>({
                 <th
                   key={column.key}
                   scope="col"
-                  className={column.align === 'end' ? 'table__cell--end' : undefined}
+                  className={cellClass(column)}
                   aria-sort={
                     active ? sort.direction : column.sortValue !== undefined ? 'none' : undefined
                   }
@@ -209,10 +223,7 @@ export function Table<Row>({
                 <tr key={i} className="table__skeleton-row" aria-hidden="true">
                   {selection !== undefined && <td className="table__select" />}
                   {columns.map((column) => (
-                    <td
-                      key={column.key}
-                      className={column.align === 'end' ? 'table__cell--end' : undefined}
-                    >
+                    <td key={column.key} className={cellClass(column)}>
                       <span className="table__skeleton" />
                     </td>
                   ))}
@@ -289,10 +300,7 @@ export function Table<Row>({
                         </td>
                       )}
                       {columns.map((column) => (
-                        <td
-                          key={column.key}
-                          className={column.align === 'end' ? 'table__cell--end' : undefined}
-                        >
+                        <td key={column.key} className={cellClass(column)}>
                           {column.cell(row)}
                         </td>
                       ))}

@@ -4,6 +4,8 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { asCents } from '@shared/money';
 import { err, ok } from '@shared/result';
 import type { NextStep } from '@shared/views';
+import { BooksStateProvider } from '../books-state';
+import { ImportProvider } from '../import/ImportProvider';
 import { date, HOME, installBridge, settle } from '../test-bridge';
 import { HomePage } from './HomePage';
 
@@ -21,7 +23,7 @@ describe('Home with books that have entries', () => {
     const link = (name: RegExp) => within(numbers).getByRole('link', { name });
     expect(link(/Bank balance/).textContent).toContain('$43,642.35');
     expect(link(/Bank balance/).textContent).toContain('2 accounts');
-    expect(link(/Bank balance/).getAttribute('href')).toBe('#/accounts');
+    expect(link(/Bank balance/).getAttribute('href')).toBe('#/bank');
     expect(link(/Lines to review/).textContent).toContain('none waiting');
     expect(link(/Lines to review/).getAttribute('href')).toBe('#/to-review');
     expect(link(/GST owing, Oct–Dec 2026/).textContent).toContain('$3,184.20');
@@ -108,13 +110,21 @@ describe('Home with books that have entries', () => {
     expect(window.location.hash).toBe('#/reports');
   });
 
-  it('has Import file as its one main action, switched off until it exists', async () => {
-    installBridge();
-    render(<HomePage />);
+  it('has Import file as its one main action, which opens the file chooser on the Bank page', async () => {
+    const api = installBridge();
+    render(
+      <BooksStateProvider>
+        <ImportProvider>
+          <HomePage />
+        </ImportProvider>
+      </BooksStateProvider>,
+    );
     await settle();
-    const main = screen.getByRole('button', { name: 'Import file' });
-    expect((main as HTMLButtonElement).disabled).toBe(true);
     expect(document.querySelectorAll('.button--main')).toHaveLength(1);
+    await userEvent.click(screen.getByRole('button', { name: 'Import file' }));
+    await settle();
+    expect(window.location.hash).toBe('#/bank');
+    expect(api['bank.chooseAndPreview']).toHaveBeenCalledOnce();
   });
 });
 

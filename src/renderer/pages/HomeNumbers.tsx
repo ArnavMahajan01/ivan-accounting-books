@@ -13,8 +13,8 @@ interface NumberItem {
   readonly route: RouteId;
 }
 
-// Each number opens the page that shows what it is made of. The Bank page, the BAS worksheet and
-// Reports do not exist yet, so the figures open Accounts, where the same balances are.
+// Each number opens the page that shows what it is made of. The BAS worksheet and Reports do not
+// exist yet, so GST owing and Profit open Accounts, where the same balances are.
 function items(summary: HomeSummary): NumberItem[] {
   const accounts = summary.bank.accountCount;
   const { count, oldest } = summary.linesToReview;
@@ -24,7 +24,7 @@ function items(summary: HomeSummary): NumberItem[] {
       label: 'Bank balance',
       figure: <Amount cents={summary.bank.balance} />,
       note: `${String(accounts)} ${accounts === 1 ? 'account' : 'accounts'}`,
-      route: 'accounts',
+      route: 'bank',
     },
     {
       key: 'review',

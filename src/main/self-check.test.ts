@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { parseSelfCheckArg } from './self-check';
+import { parseSelfCheckArg, parseSelfCheckStatements, selfCheckScript } from './self-check';
 
 const none = () => null;
 
@@ -33,5 +33,27 @@ describe('parseSelfCheckArg', () => {
       kind: 'invalid',
       reason: 'not-empty',
     });
+  });
+});
+
+describe('parseSelfCheckStatements', () => {
+  it('lists the statement files given, in order, and drops any that is not an absolute path', () => {
+    expect(
+      parseSelfCheckStatements([
+        'app',
+        '--self-check-statement=/tmp/a.ofx',
+        '--self-check-statement=relative/b.ofx',
+        '--self-check-statement=/tmp/c.ofx',
+      ]),
+    ).toEqual(['/tmp/a.ofx', '/tmp/c.ofx']);
+    expect(parseSelfCheckStatements(['app'])).toEqual([]);
+  });
+});
+
+describe('selfCheckScript', () => {
+  it('is told how many files to import, and nothing else is left to fill in', () => {
+    const script = selfCheckScript(4);
+    expect(script).toContain('const importCount = 4;');
+    expect(script).not.toContain('__IMPORT_COUNT__');
   });
 });

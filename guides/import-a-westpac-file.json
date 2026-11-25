@@ -1,0 +1,99 @@
+{
+  "id": "import-a-westpac-file",
+  "title": "Bring in a Westpac statement",
+  "group": "Bank",
+  "summary": "How to download a statement file from Westpac Online Banking, and bring its lines into the app.",
+  "sections": [
+    {
+      "heading": "Download the file from Westpac",
+      "paragraphs": [
+        "Do this on your computer. The file is downloaded from Westpac Online Banking, not from this app, and the app never signs in to your bank.",
+        "The app reads OFX files, one account at a time. Westpac only offers OFX when a single account is selected."
+      ],
+      "steps": [
+        {
+          "text": "Sign in to Westpac Online Banking on your computer."
+        },
+        {
+          "text": "Go to Overview, and select Exports and reports."
+        },
+        {
+          "text": "In the Transactions section, select Export."
+        },
+        {
+          "text": "Choose the dates you want, and select one account. Choose OFX as the file format, then select Export."
+        },
+        {
+          "text": "Save the file somewhere you can find it, such as your Downloads folder."
+        }
+      ]
+    },
+    {
+      "heading": "Bring the file into the app",
+      "steps": [
+        {
+          "text": "Click Bank in the sidebar. Each of your accounts is listed, with what your books hold and the balance of its last statement.",
+          "image": {
+            "file": "bank-page.png",
+            "description": "The Bank page. A table lists two accounts with the balance in your books, the last statement, the lines waiting to be reviewed and the reconciled date. Import file is at the top right, and a dashed box below says to drop a Westpac statement file. The Sample data label is beside the title."
+          }
+        },
+        {
+          "text": "Click Import file, and choose the file you saved. Or drag the file onto the app window, from any page."
+        },
+        {
+          "text": "Read the sheet that opens. In plain sentences it says which account the file is for, how many lines are new, how many are already in your books, and how many could not be read. Nothing is saved yet.",
+          "image": {
+            "file": "import-sheet.png",
+            "description": "The sheet that opens over the Bank page. It says the file is for Business One, from 09/11/2026 to 20/11/2026, that 7 new lines will go to To review and that 6 lines are already in your books and will be skipped. A tick says the closing balance matches. Cancel and Import 7 lines are at the bottom."
+          }
+        },
+        {
+          "text": "Look at the closing balance line. A tick means the lines in your books add up to the closing balance on the statement. If it does not match, it says by how much."
+        },
+        {
+          "text": "Click See all lines if you want to check them one by one. Use Show to see only the new lines, the ones that will be skipped, or the ones that could not be read."
+        },
+        {
+          "text": "Click Import, which also says how many lines. The new lines are saved and wait in To review. The count beside To review in the sidebar goes up."
+        }
+      ]
+    },
+    {
+      "heading": "If you brought in the wrong file",
+      "paragraphs": [
+        "You can take back the file you imported last for an account, as long as none of its lines has been dealt with yet. The file stays where it is, so you can import it again."
+      ],
+      "steps": [
+        {
+          "text": "On the Bank page, look under the accounts for Last import. It names the file, and how many lines it added."
+        },
+        {
+          "text": "Click Undo import beside it. A question opens, which says how many lines will leave To review."
+        },
+        {
+          "text": "Click Undo import in the question. The lines are removed, and the count beside To review goes down."
+        }
+      ]
+    },
+    {
+      "heading": "Bringing in the same lines twice",
+      "paragraphs": [
+        "You cannot double anything by mistake. If you bring in a file you have already imported, or a file that covers some of the same days as an earlier one, the lines already in your books are skipped, and only the new ones are added.",
+        "Two real payments of the same amount on the same day, such as two coffees, are both kept."
+      ]
+    },
+    {
+      "heading": "If something goes wrong",
+      "paragraphs": [
+        "It says \"This file is for an account ending ...\", which is not one of your bank accounts. Check you chose the right account in Westpac. The sheet gives the last four digits of the account the file is for.",
+        "It says \"This does not look like a Westpac statement file.\" The app reads OFX files only for now. Go back to Westpac and choose OFX as the file format.",
+        "It says \"This file has more than one account in it.\" Download the statement again with only one account selected.",
+        "It says \"1 line could not be read.\" The rest of the file is fine and will import. The sheet says which line, and why. The closing balance line shows the difference, which is that line, and it will not match until that line is in.",
+        "It says \"Closing balance does not match.\" You can still import. This usually means a line is missing from this file or an earlier one. Check you have brought in every statement, one after another, without a gap in the dates.",
+        "It says \"First file for this account.\" That is normal for the first import. Later files are checked against it.",
+        "It says \"Nothing is new.\" Every line in the file is already in your books, so there is nothing to import."
+      ]
+    }
+  ]
+}

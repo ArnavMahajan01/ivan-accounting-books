@@ -3,8 +3,8 @@ import type { BooksProblem } from '@shared/kinds';
 import type { HomeSummary } from '@shared/views';
 import { Button } from '../components/Button';
 import { ErrorMessage } from '../components/ErrorMessage';
+import { useImport } from '../import/ImportProvider';
 import { PageToolbar } from '../layout/PageToolbar';
-import { COMING_LATER } from './EmptyPage';
 import { GettingStarted } from './GettingStarted';
 import { HomeNumbers } from './HomeNumbers';
 import { NextStepsList } from './NextStepsList';
@@ -51,12 +51,21 @@ function Overview({ summary }: { readonly summary: HomeSummary }) {
 
 export function HomePage() {
   const summary = useBridge<HomeSummary>(loadHomeSummary);
+  const { start } = useImport();
   return (
     <>
       <PageToolbar
         title="Home"
         mainAction={
-          <Button variant="main" icon={Upload} disabled title={COMING_LATER}>
+          <Button
+            variant="main"
+            icon={Upload}
+            onClick={() => {
+              // The preview sheet sits over the Bank page, where the new lines will be counted.
+              window.location.hash = '#/bank';
+              start({ kind: 'choose' });
+            }}
+          >
             Import file
           </Button>
         }

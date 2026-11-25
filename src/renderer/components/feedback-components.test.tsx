@@ -2,7 +2,7 @@ import { cleanup, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Inbox } from 'lucide-react';
 import { useState } from 'react';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { Button } from './Button';
 import { ConfirmDialog } from './ConfirmDialog';
 import { EmptyState } from './EmptyState';
@@ -78,6 +78,104 @@ describe('Sheet', () => {
     expect(onClose).toHaveBeenCalledTimes(1);
     expect(screen.queryByRole('dialog')).toBeNull();
     expect(document.activeElement).toBe(opener);
+  });
+});
+
+describe('Sheet with a closed section inside it', () => {
+  // The test page cannot tell what is hidden, so it is told: a field in a closed <details> is hidden.
+  const original = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'checkVisibility');
+  beforeEach(() => {
+    Object.defineProperty(HTMLElement.prototype, 'checkVisibility', {
+      configurable: true,
+      value(this: HTMLElement) {
+        const closed = this.closest('details:not([open])');
+        return closed === null || this.tagName === 'SUMMARY';
+      },
+    });
+  });
+  afterEach(() => {
+    if (original === undefined) {
+      Reflect.deleteProperty(HTMLElement.prototype, 'checkVisibility');
+    } else {
+      Object.defineProperty(HTMLElement.prototype, 'checkVisibility', original);
+    }
+  });
+
+  function WithDetails() {
+    return (
+      <Sheet
+        title="A file"
+        onClose={() => undefined}
+        actions={
+          <>
+            <Button>Cancel</Button>
+            <Button variant="main">Import</Button>
+          </>
+        }
+      >
+        <details>
+          <summary>See all lines</summary>
+          <select aria-label="Show">
+            <option>All</option>
+          </select>
+        </details>
+      </Sheet>
+    );
+  }
+
+  it('focuses what can be focused, and wraps Tab past a field it cannot reach', async () => {
+    const user = userEvent.setup();
+    render(<WithDetails />);
+    const summary = screen.getByText('See all lines');
+    const last = screen.getByRole('button', { name: 'Import' });
+    expect(document.activeElement).toBe(summary);
+    // The wrapping is the sheet's own; the test page's Tab would walk into the hidden field.
+    last.focus();
+    await user.tab();
+    expect(document.activeElement).toBe(summary);
+    await user.tab({ shift: true });
+    expect(document.activeElement).toBe(last);
+  });
+});
+
+describe('Sheet whose content changes', () => {
+  // A preview becomes its result: the button that had focus is gone, and focus must stay inside.
+  function Steps() {
+    const [done, setDone] = useState(false);
+    return done ? (
+      <Sheet
+        title="3 lines added"
+        onClose={() => undefined}
+        actions={<Button variant="main">Done</Button>}
+      />
+    ) : (
+      <Sheet
+        title="A file"
+        onClose={() => undefined}
+        actions={
+          <Button
+            variant="main"
+            onClick={() => {
+              setDone(true);
+            }}
+          >
+            Import
+          </Button>
+        }
+      />
+    );
+  }
+
+  it('moves focus to the new content when the focused button goes away', async () => {
+    const user = userEvent.setup();
+    render(<Steps />);
+    const import_ = screen.getByRole('button', { name: 'Import' });
+    expect(document.activeElement).toBe(import_);
+    await user.keyboard('{Enter}');
+    expect(screen.getByRole('dialog', { name: '3 lines added' })).not.toBeNull();
+    expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Done' }));
+    // Escape still reaches the sheet, because focus is inside it.
+    expect(screen.getByRole('dialog').contains(document.activeElement)).toBe(true);
   });
 });
 

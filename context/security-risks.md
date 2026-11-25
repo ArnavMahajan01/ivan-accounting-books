@@ -2,7 +2,7 @@
 
 The risks in this app, who handles each one, and when. Rules live in `security-context.md`. This file tracks what could go wrong.
 
-**Last reviewed:** 2026-11-23, after folder 03 (the ledger core, specs 030 to 045): L1, L2 and L4 are fixed, and no new risk was found in the code. First written 2026-11-21 from the plan. Review again at the end of each phase, and whenever a new outside service, stored data type or dependency is added.
+**Last reviewed:** 2026-11-24, after folder 05 (importing a statement file, specs 055 to 066): L3 and U1 are fixed for OFX, and U3 was added and mitigated. Before that, 2026-11-23, after folder 03 (the ledger core, specs 030 to 045): L1, L2 and L4 are fixed, and no new risk was found in the code. First written 2026-11-21 from the plan. Review again at the end of each phase, and whenever a new outside service, stored data type or dependency is added.
 
 **Severity:** High means someone could read, change or lose the client's financial records, or act in his Google account. Medium means it weakens a protection, or depends on another failure. Low means the impact is limited.
 
@@ -24,7 +24,7 @@ No code yet.
 |---|---|---|---|---|---|
 | L1 | High | An entry that does not balance is saved, and every report is wrong | One posting service checks every entry. A test posts through every route. A check on launch confirms the trial balance is zero | Developer | Spec 039. **Fixed 2026-11-23:** `postEntry`, `changeEntry` and `removeEntry` (039, 040) are the only writers (guard test 041), every route is tested, and the launch check (043) finds a book that does not balance |
 | L2 | High | Money stored as floats drifts by cents | Integer cents only, with a lint rule against `parseFloat` in `src/domain`, `src/import` and `src/services` | Developer | Spec 005. **Fixed 2026-11-22 (005), re-confirmed 2026-11-23 (045):** no float in `domain`, `data` or `services`, and the GST maths (035) is exact integer arithmetic |
-| L3 | High | Importing a file twice doubles transactions | Unique keys on statement lines, and a test that imports the same file twice | Developer | Spec 060 |
+| L3 | High | Importing a file twice doubles transactions | Unique keys on statement lines, and a test that imports the same file twice | Developer | Spec 060. **Fixed 2026-11-24 (056, 060, 063):** the key is the bank's id or one worked out from the line, unique per account in the table. Tests import the same file twice, an overlapping file, and a 10,000-line file twice, in the service and in the packaged app |
 | L4 | High | A crash or failed migration corrupts the file | Transactions for every write, a copy before each migration, an integrity check after | Developer | Spec 012. **Fixed 2026-11-22 (012), extended 2026-11-23 (039, 043):** every service write is one transaction (tested by forcing a failure halfway), and the books check runs the integrity check on every launch |
 | L5 | Medium | A past period changes after the BAS is done | Period lock, enforced in the posting service | Developer | Spec 096 |
 | L6 | Medium | Wrong GST rounding or basis gives wrong BAS figures | One tested GST helper. BAS tests against figures worked out by hand | Developer | Specs 035, 094 |
@@ -45,7 +45,8 @@ No code yet.
 
 | ID | Severity | Risk | What to do | Owner | Due |
 |---|---|---|---|---|---|
-| U1 | Medium | A huge or malformed bank file freezes or crashes the app | A size limit, a parser that never throws on bad rows, and tests with broken files | Developer | Specs 058 to 060 |
+| U1 | Medium | A huge or malformed bank file freezes or crashes the app | A size limit, a parser that never throws on bad rows, and tests with broken files | Developer | Specs 058 to 060. **Fixed for OFX 2026-11-24 (058, 062):** 5 million characters at most, checked on the file's size before it is read; a line that cannot be read is listed, never thrown; hostile and broken text tested; 10,000 lines read in under a second. The CSV reader (059) waits for the header row, and needs the same tests |
+| U3 | Medium | A compromised screen asks the main process to read any file on the Mac, by passing it as the path of a "statement" | The path is only ever read by the main process after checking it is a plain file under the size limit. Only what a statement reader accepts is ever returned, and a refused file gives a reason code and the last four digits of an account number, never its content. Tested: a text file of notes is refused with nothing of it in the answer | Developer | Specs 062, 064. **Mitigated 2026-11-24.** A screen cannot name a path of its own for anything else, and a dropped file's path comes from the preload's `pathForFile` |
 | U2 | Medium | A restore from a tampered or wrong file replaces good books | Validate before replacing, keep the current file until the restore succeeds | Developer | Spec 138 |
 
 ## 5. Data On The Device

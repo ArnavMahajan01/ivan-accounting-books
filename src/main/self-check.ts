@@ -27,6 +27,46 @@ export function parseSelfCheckArg(
   return { kind: 'run', dir };
 }
 
+const STATEMENT_FLAG = '--self-check-statement=';
+
+/**
+ * The statement files a self-check should "choose" in turn, instead of opening the Mac's file
+ * chooser (which nothing can click). Only absolute paths count, and the caller uses them only when
+ * the self-check itself is running, so no normal launch can be steered to a file this way.
+ */
+export function parseSelfCheckStatements(argv: readonly string[]): string[] {
+  return argv
+    .filter((a) => a.startsWith(STATEMENT_FLAG))
+    .map((a) => a.slice(STATEMENT_FLAG.length))
+    .filter((path) => isAbsolute(path));
+}
+
+/** What the import sheet said for one file, and what the sidebar and Bank page showed after. */
+export interface ImportStepReport {
+  /** The sentences at the top of the sheet. */
+  readonly sentences: string;
+  /** The closing balance check. */
+  readonly check: string;
+  /** The label of the main action, such as `Import 11 lines`, or null if there was none. */
+  readonly mainAction: string | null;
+  /** The sheet's heading after importing, such as `11 lines added to To review`. */
+  readonly done: string | null;
+  /** The sidebar's To review item after the step. */
+  readonly toReview: string;
+}
+
+export interface ImportFlowReport {
+  readonly steps: readonly ImportStepReport[];
+  /** The Bank page's rows after the last step. */
+  readonly bankRows: readonly string[];
+  /** Taking the last import back from the Bank page: what was offered, what was said, and the sidebar after. */
+  readonly undo: {
+    readonly offered: string;
+    readonly notice: string;
+    readonly toReview: string;
+  } | null;
+}
+
 /** What the sample-data flow saw on screen. Every field comes from the real page. */
 export interface SampleFlowReport {
   /** The page said "Sample data" in its toolbar, for each page tried. */
@@ -50,6 +90,8 @@ export interface SelfCheckReport {
   /** The first launch offered the choice between sample data and his own books. */
   readonly startChoiceShown: boolean;
   readonly sample: SampleFlowReport;
+  /** Empty unless statement files were given to import. */
+  readonly imports: ImportFlowReport;
 }
 
 /**
@@ -58,7 +100,11 @@ export interface SelfCheckReport {
  * the Home numbers and the lists, opens a transaction and closes it with Escape, then clears the
  * sample data and looks again. It changes nothing but the sample data, which it clears.
  */
-export const SELF_CHECK_SCRIPT = `(async () => {
+export function selfCheckScript(importCount: number): string {
+  return SELF_CHECK_SOURCE.replace('__IMPORT_COUNT__', String(importCount));
+}
+
+const SELF_CHECK_SOURCE = `(async () => {
   const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   const until = async (test, ms = 15000) => {
     const started = Date.now();
@@ -119,6 +165,67 @@ export const SELF_CHECK_SCRIPT = `(async () => {
   if (panel) panel.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
   const panelClosedByEscape = !!(await until(() => !document.querySelector('.side-panel') && 'gone', 3000));
 
+  const imports = { steps: [], bankRows: [], undo: null };
+  const importCount = __IMPORT_COUNT__;
+  if (importCount > 0) {
+    location.hash = '#/bank';
+    await until(() => rowsOf('Bank accounts').length > 0);
+    const inDialog = (dialog, selector) => { const el = dialog.querySelector(selector); return el ? el.innerText : ''; };
+    for (let i = 0; i < importCount; i += 1) {
+      const start = await until(() => { const b = button('Import file'); return b && !b.disabled ? b : null; });
+      if (!start) break;
+      start.click();
+      const dialog = await until(() => document.querySelector('[role="dialog"]'));
+      if (!dialog) break;
+      const main = dialog.querySelector('.button--main');
+      const step = {
+        sentences: inDialog(dialog, '.import-sheet__plain'),
+        check: inDialog(dialog, '.import-sheet__check'),
+        mainAction: main ? main.textContent.trim() : null,
+        done: null,
+        toReview: '',
+      };
+      if (main && main.textContent.trim().startsWith('Import ')) {
+        main.click();
+        const finished = await until(() => {
+          const h = document.querySelector('[role="dialog"] h2');
+          return h && h.textContent.endsWith('added to To review') ? h : null;
+        });
+        step.done = finished ? finished.textContent : null;
+        const done = await until(() => button('Done', document.querySelector('[role="dialog"]') || document));
+        if (done) done.click();
+      } else {
+        const close = button('Close', dialog);
+        if (close) close.click();
+      }
+      await until(() => !document.querySelector('[role="dialog"]') && 'gone');
+      await wait(150);
+      const link = [...document.querySelectorAll('nav[aria-label="Main"] a')].find((a) => a.textContent.startsWith('To review'));
+      step.toReview = link ? link.textContent.trim() : '';
+      imports.steps.push(step);
+    }
+    imports.bankRows = [...rowsOf('Bank accounts')].map((r) => r.innerText.replace(/\\s+/g, ' ').trim());
+
+    // Take the last import back, as he would: the button, the question, the answer.
+    const undoButton = await until(() => [...document.querySelectorAll('main button')].find((b) => (b.getAttribute('aria-label') || '').startsWith('Undo import of')) || null);
+    if (undoButton) {
+      const offeredEl = document.querySelector('.bank__last-text');
+      const offered = offeredEl ? offeredEl.innerText.replace(/\\s+/g, ' ').trim() : '';
+      undoButton.click();
+      const asking = await until(() => document.querySelector('[role="alertdialog"]'));
+      const confirmUndo = asking ? button('Undo import', asking) : null;
+      if (confirmUndo) confirmUndo.click();
+      const noticeEl = await until(() => document.querySelector('.bank__notice'));
+      await wait(250);
+      const reviewLink = [...document.querySelectorAll('nav[aria-label="Main"] a')].find((a) => a.textContent.startsWith('To review'));
+      imports.undo = {
+        offered,
+        notice: noticeEl ? noticeEl.innerText : '',
+        toReview: reviewLink ? reviewLink.textContent.trim() : '',
+      };
+    }
+  }
+
   location.hash = '#/settings';
   const clear = await until(() => { const b = button('Clear sample data'); return b && !b.disabled ? b : null; });
   if (clear) clear.click();
@@ -135,5 +242,6 @@ export const SELF_CHECK_SCRIPT = `(async () => {
       labelOn, homeNumbers, accountsRows, transactionsRows, panelOpened, panelClosedByEscape,
       labelGoneAfterClear: !!gone, gettingStartedAfterClear,
     },
+    imports,
   };
 })()`;

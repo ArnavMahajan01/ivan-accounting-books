@@ -8,10 +8,11 @@ export type BadgeTone = 'warning' | 'brand' | 'success' | 'muted' | 'error';
 /** The statuses in ui-context.md ("Badges"). Each always shows its words, never colour alone. */
 export const BADGE_STATUSES = {
   'to-review': { label: 'To review', tone: 'warning' },
+  new: { label: 'New', tone: 'brand' },
   posted: { label: 'Posted', tone: 'brand' },
   reconciled: { label: 'Reconciled', tone: 'success' },
   excluded: { label: 'Excluded', tone: 'muted' },
-  duplicate: { label: 'Duplicate', tone: 'muted' },
+  duplicate: { label: 'Duplicate · skipped', tone: 'muted' },
   rejected: { label: 'Rejected', tone: 'error' },
   locked: { label: 'Locked', tone: 'muted', icon: Lock },
   'sample-data': { label: 'Sample data', tone: 'warning' },

@@ -1,6 +1,16 @@
 // Electron main process: one hardened window (context/rules/desktop-app.md, spec 008).
 
-import { app, BrowserWindow, ipcMain, Menu, net, protocol, screen, session } from 'electron';
+import {
+  app,
+  BrowserWindow,
+  dialog,
+  ipcMain,
+  Menu,
+  net,
+  protocol,
+  screen,
+  session,
+} from 'electron';
 import { readdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -16,6 +26,8 @@ import { createBooksSession } from './books-session';
 import { contentSecurityPolicy } from './csp';
 import { createHandlers } from './handlers';
 import { systemClock } from './clock';
+import { systemRandom } from './random';
+import { readStatementFile } from './statement-files';
 import { checkBooks } from '@services/check-books';
 import { debuggingFlags } from './launch-guard';
 import { logFileSink, teeSinks } from './log-file';
@@ -23,7 +35,8 @@ import { menuTemplate } from './menu';
 import { loadWindowBounds, MIN_HEIGHT, MIN_WIDTH, saveWindowBounds } from './window-state';
 import {
   parseSelfCheckArg,
-  SELF_CHECK_SCRIPT,
+  parseSelfCheckStatements,
+  selfCheckScript,
   SELF_CHECK_FILE,
   type SelfCheckReport,
 } from './self-check';
@@ -40,6 +53,9 @@ const selfCheck = parseSelfCheckArg(process.argv, (dir) => {
   }
 });
 const dataDirOverride = parseDataDirArg(process.argv, app.isPackaged);
+// Files a self-check "chooses" in turn, instead of the Mac's file chooser. Empty for any normal launch.
+const selfCheckStatements = selfCheck.kind === 'run' ? parseSelfCheckStatements(process.argv) : [];
+let nextSelfCheckStatement = 0;
 app.setPath(
   'userData',
   selfCheck.kind === 'run'
@@ -161,9 +177,9 @@ function createWindow(): void {
     const { dir } = selfCheck;
     window.webContents.once('did-finish-load', () => {
       void (
-        window.webContents.executeJavaScript(SELF_CHECK_SCRIPT) as Promise<
-          Omit<SelfCheckReport, 'packaged'>
-        >
+        window.webContents.executeJavaScript(
+          selfCheckScript(selfCheckStatements.length),
+        ) as Promise<Omit<SelfCheckReport, 'packaged'>>
       ).then((status) => {
         const report: SelfCheckReport = { ...status, packaged: app.isPackaged };
         writeFileSync(join(dir, SELF_CHECK_FILE), `${JSON.stringify(report, null, 2)}\n`);
@@ -251,7 +267,39 @@ if (refusedFlags.length > 0) {
     });
     registerBridge(
       ipcMain,
-      createHandlers({ app, books, clock: systemClock }),
+      createHandlers({
+        app,
+        books,
+        clock: systemClock,
+        random: systemRandom,
+        files: {
+          choose: async () => {
+            if (selfCheck.kind === 'run') {
+              const next = selfCheckStatements[nextSelfCheckStatement];
+              nextSelfCheckStatement += 1;
+              return next ?? null;
+            }
+            const options = {
+              title: 'Import a bank statement file',
+              properties: ['openFile' as const],
+              filters: [
+                { name: 'Westpac statement (OFX)', extensions: ['ofx', 'qbo'] },
+                { name: 'All files', extensions: ['*'] },
+              ],
+            };
+            const result =
+              mainWindow === null
+                ? await dialog.showOpenDialog(options)
+                : await dialog.showOpenDialog(mainWindow, options);
+            return result.canceled ? null : (result.filePaths[0] ?? null);
+          },
+          read: readStatementFile,
+        },
+        // Counts only: what a file holds is never logged.
+        onImport: (event, counts) => {
+          log.info(`import.${event}`, counts);
+        },
+      }),
       (url) => isAppUrl(url, devServerUrl),
       log,
     );

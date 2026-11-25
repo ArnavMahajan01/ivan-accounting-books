@@ -9,6 +9,8 @@ import { parseCalendarDate } from '@shared/dates';
 import { asCents } from '@shared/money';
 import { addBankAccount } from './add-bank-account';
 import { addContact } from './add-contact';
+import { addAccount } from './manage-accounts';
+import { deactivateBankAccount, renameBankAccount } from './manage-bank-accounts';
 import { postEntry } from './post-journal';
 import { setupBusiness } from './setup-business';
 import { createTestContext } from './test-context';
@@ -108,6 +110,108 @@ describe('addBankAccount', () => {
     expect(addBankAccount(ctx, input).ok).toBe(true);
     expect(addBankAccount(ctx, input)).toEqual({ ok: false, error: 'already-linked' });
     expect(listBankAccounts(ctx.db)).toHaveLength(1);
+  });
+});
+
+describe('managing bank accounts', () => {
+  const ledgerAccount = (code: string) => {
+    const found = getAccountByCode(ctx.db, code);
+    if (found === null) throw new Error(code);
+    return found;
+  };
+  const addOne = (name: string, lastFour: string, ledgerAccountId: string, parentId?: string) => {
+    const result = addBankAccount(ctx, {
+      name,
+      bank: 'Westpac',
+      lastFour,
+      ledgerAccountId,
+      ...(parentId === undefined ? {} : { parentId }),
+    });
+    if (!result.ok) throw new Error(result.error);
+    return result.value;
+  };
+
+  it('renames an account with the old and new names in one audit row', () => {
+    const account = addOne('Business One', '4821', ledgerAccount('1000').id);
+    const before = countAudit(ctx.db);
+    expect(renameBankAccount(ctx, account.id, '  Everyday  ')).toMatchObject({
+      ok: true,
+      value: { name: 'Everyday', lastFour: '4821' },
+    });
+    expect(countAudit(ctx.db)).toBe(before + 1);
+    expect(listAudit(ctx.db, { table: 'bank_account' }).at(-1)).toMatchObject({
+      kind: 'bank-account.rename',
+      before: { name: 'Business One' },
+      after: { name: 'Everyday' },
+    });
+  });
+
+  it('refuses a blank name, the same name, and an account that does not exist, with no audit row', () => {
+    const account = addOne('Business One', '4821', ledgerAccount('1000').id);
+    const before = countAudit(ctx.db);
+    expect(renameBankAccount(ctx, account.id, ' ')).toEqual({ ok: false, error: 'empty-name' });
+    expect(renameBankAccount(ctx, account.id, 'Business One')).toEqual({
+      ok: false,
+      error: 'unchanged',
+    });
+    expect(renameBankAccount(ctx, 'bnk_ghost', 'X')).toEqual({ ok: false, error: 'not-found' });
+    expect(countAudit(ctx.db)).toBe(before);
+  });
+
+  it('deactivates an account once, and keeps the row', () => {
+    const account = addOne('Business One', '4821', ledgerAccount('1000').id);
+    expect(deactivateBankAccount(ctx, account.id)).toMatchObject({
+      ok: true,
+      value: { active: false },
+    });
+    expect(deactivateBankAccount(ctx, account.id)).toEqual({
+      ok: false,
+      error: 'already-inactive',
+    });
+    expect(listBankAccounts(ctx.db)).toMatchObject([{ id: account.id, active: false }]);
+    expect(listAudit(ctx.db, { table: 'bank_account' }).at(-1)).toMatchObject({
+      kind: 'bank-account.deactivate',
+    });
+  });
+
+  it('supports a sub-account under another account, one level deep', () => {
+    const second = addAccount(ctx, { code: '1015', name: 'Savings', type: 'asset' });
+    const third = addAccount(ctx, { code: '1016', name: 'Savings Two', type: 'asset' });
+    if (!second.ok || !third.ok) throw new Error('no accounts');
+    const main = addOne('Business One', '4821', ledgerAccount('1000').id);
+    const sub = addOne('Tax Savings', '9911', second.value.id, main.id);
+    expect(sub.parentId).toBe(main.id);
+    expect(
+      addBankAccount(ctx, {
+        name: 'Deeper',
+        bank: 'Westpac',
+        lastFour: '1234',
+        ledgerAccountId: third.value.id,
+        parentId: sub.id,
+      }),
+    ).toEqual({ ok: false, error: 'parent-is-a-sub-account' });
+    expect(
+      addBankAccount(ctx, {
+        name: 'Lost',
+        bank: 'Westpac',
+        lastFour: '1234',
+        ledgerAccountId: third.value.id,
+        parentId: 'bnk_ghost',
+      }),
+    ).toEqual({ ok: false, error: 'parent-not-found' });
+  });
+
+  it('will not deactivate an account that still has active sub-accounts', () => {
+    const second = addAccount(ctx, { code: '1015', name: 'Savings', type: 'asset' });
+    if (!second.ok) throw new Error('no account');
+    const main = addOne('Business One', '4821', ledgerAccount('1000').id);
+    const sub = addOne('Tax Savings', '9911', second.value.id, main.id);
+    expect(deactivateBankAccount(ctx, main.id)).toEqual({
+      ok: false,
+      error: 'has-active-sub-accounts',
+    });
+    expect(deactivateBankAccount(ctx, sub.id).ok).toBe(true);
+    expect(deactivateBankAccount(ctx, main.id).ok).toBe(true);
   });
 });
 

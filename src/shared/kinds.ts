@@ -41,6 +41,10 @@ export const AUDIT_KINDS = [
   'account.reactivate',
   'contact.add',
   'bank-account.add',
+  'bank-account.rename',
+  'bank-account.deactivate',
+  'import.commit',
+  'import.undo',
   'entry.post',
   'entry.change',
   'entry.remove',
@@ -69,8 +73,27 @@ export type ContactSource = (typeof CONTACT_SOURCES)[number];
 export const BOOKS_PROBLEMS = ['not-open', 'integrity-failed', 'out-of-balance'] as const;
 export type BooksProblem = (typeof BOOKS_PROBLEMS)[number];
 
+/** Where a bank line is in its life. Folder 06 moves a line from `to-review` to `posted` or `excluded`. */
+export const STATEMENT_LINE_STATUSES = ['to-review', 'posted', 'excluded'] as const;
+export type StatementLineStatus = (typeof STATEMENT_LINE_STATUSES)[number];
+
+/** The statement file formats the app can read. A reader adds its own here. */
+export const IMPORT_FORMATS = ['ofx'] as const;
+export type ImportFormat = (typeof IMPORT_FORMATS)[number];
+
 /** The prefix of each kind of id (context/code-standards.md, "Ids"). Later specs add theirs here. */
-export const ID_KINDS = ['acc', 'tax', 'con', 'bnk', 'ent', 'lin', 'aud', 'stl', 'imp'] as const;
+export const ID_KINDS = [
+  'acc',
+  'tax',
+  'con',
+  'bnk',
+  'ent',
+  'lin',
+  'aud',
+  'stl',
+  'imp',
+  'pre',
+] as const;
 export type IdKind = (typeof ID_KINDS)[number];
 
 /** The access a person has to a shared Google Sheet (folder 09). */

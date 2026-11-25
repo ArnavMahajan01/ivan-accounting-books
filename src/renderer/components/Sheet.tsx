@@ -3,7 +3,20 @@ import { createPortal } from 'react-dom';
 import './Sheet.css';
 
 const FOCUSABLE =
-  'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+  'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), summary, [tabindex]:not([tabindex="-1"])';
+
+/**
+ * What can take focus right now. A field inside a closed `<details>` matches the selector but
+ * cannot be focused, so it is left out: otherwise it would be "first", and neither the first focus
+ * nor Tab wrapping round would land anywhere.
+ */
+function focusableIn(panel: HTMLElement | null): HTMLElement[] {
+  const found = [...(panel?.querySelectorAll<HTMLElement>(FOCUSABLE) ?? [])];
+  // Older engines, and the test page, have no way to ask, and then every match counts.
+  return found.filter(
+    (el) => (el as { checkVisibility?: () => boolean }).checkVisibility?.() ?? true,
+  );
+}
 
 export interface SheetProps {
   readonly title: string;
@@ -32,15 +45,22 @@ export function Sheet({
   const titleId = useId();
   const descriptionId = useId();
 
+  // Remembers what had focus, to give it back when the sheet closes.
   useEffect(() => {
     const opener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-    const panel = panelRef.current;
-    const first = panel?.querySelector<HTMLElement>(FOCUSABLE);
-    (first ?? panel)?.focus();
     return () => {
       opener?.focus();
     };
   }, []);
+
+  // Puts focus inside the sheet when it opens, and again whenever what it says changes (a preview
+  // becoming its result): the button that had focus is gone by then, and focus would fall out to
+  // the page behind, where Tab and Escape no longer reach the sheet.
+  useEffect(() => {
+    const panel = panelRef.current;
+    if (panel === null || panel.contains(document.activeElement)) return;
+    (focusableIn(panel)[0] ?? panel).focus();
+  }, [title]);
 
   const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     if (event.key === 'Escape') {
@@ -49,7 +69,7 @@ export function Sheet({
       return;
     }
     if (event.key !== 'Tab') return;
-    const items = [...(panelRef.current?.querySelectorAll<HTMLElement>(FOCUSABLE) ?? [])];
+    const items = focusableIn(panelRef.current);
     const first = items[0];
     const last = items.at(-1);
     if (first === undefined || last === undefined) {

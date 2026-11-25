@@ -13,3 +13,4 @@ export function describeData(data: DataStatus): string {
 export const loadBooksState = () => bridge()['app.getBooksState']({});
 export const loadHomeSummary = () => bridge()['home.getSummary']({});
 export const loadAccounts = () => bridge()['accounts.list']({});
+export const loadBank = () => bridge()['bank.list']({});

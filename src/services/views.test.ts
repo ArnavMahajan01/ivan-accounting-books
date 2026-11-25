@@ -51,12 +51,13 @@ describe('getHomeSummary on the sample books', () => {
     expect(home.profit).toEqual({ amount: 4245350, yearLabel: 'FY 2026–27', from: '2026-07-01' });
   });
 
-  it('matches the sample figures list, and has no jobs and no warnings', () => {
+  it('matches the sample figures list, and has one job, done, and no warnings', () => {
     const home = getHomeSummary(ctx);
     expect(home.bank.balance).toBe(SAMPLE_FIGURES.bankBalance);
     expect(home.gst.owing).toBe(SAMPLE_FIGURES.gstOwingOctToDec);
     expect(home.profit.amount).toBe(SAMPLE_FIGURES.profit);
-    expect(home.nextSteps).toEqual([]);
+    // No bank line has been imported, so the one job there is, reviewing them, is ticked off.
+    expect(home.nextSteps).toEqual([{ id: 'review-lines', state: 'done', count: 0, oldest: null }]);
     expect(home.upToDate).toBe(true);
     expect(home.warnings).toEqual([]);
   });

@@ -5,7 +5,7 @@ import { err, ok } from '@shared/result';
 import { handleBridgeCall, registerBridge, type BridgeHandlers } from './bridge';
 import { createTestDatabase } from '@data/test-database';
 import { createHandlers } from './handlers';
-import { staticBooks } from './test-books';
+import { importDeps, staticBooks } from './test-books';
 import { fixedClock, parseCalendarDate, parseTimestamp } from '@shared/dates';
 
 const clock = (() => {
@@ -20,6 +20,7 @@ const isAllowed = (url: string) => url === appUrl;
 
 function setup(
   handlers: BridgeHandlers = createHandlers({
+    ...importDeps,
     app: { getVersion: () => '1.2.3', isPackaged: false },
     books: staticBooks(ok(createTestDatabase())),
     clock,
@@ -69,6 +70,7 @@ describe('handleBridgeCall', () => {
 
   it('turns a handler that throws into an internal error, without its message', async () => {
     const working = createHandlers({
+      ...importDeps,
       app: { getVersion: () => '1.0.0', isPackaged: true },
       books: staticBooks(ok(createTestDatabase())),
       clock,
@@ -89,6 +91,7 @@ describe('handleBridgeCall', () => {
 describe('createHandlers', () => {
   it('reports a packaged app as not development', async () => {
     const handlers = createHandlers({
+      ...importDeps,
       app: { getVersion: () => '1.0.0', isPackaged: true },
       books: staticBooks(ok(createTestDatabase())),
       clock,
@@ -101,13 +104,17 @@ describe('app.getDataStatus', () => {
   it('reports the schema version of open books, or the problem', async () => {
     const app = { getVersion: () => '1.0.0', isPackaged: true };
     expect(
-      await createHandlers({ app, books: staticBooks(ok(createTestDatabase())), clock })[
-        'app.getDataStatus'
-      ]({}),
+      await createHandlers({
+        ...importDeps,
+        app,
+        books: staticBooks(ok(createTestDatabase())),
+        clock,
+      })['app.getDataStatus']({}),
     ).toEqual(
       ok({ schemaVersion: createTestDatabase().schemaVersion, integrity: 'ok', problem: null }),
     );
     const failed = createHandlers({
+      ...importDeps,
       app,
       books: staticBooks(err({ code: 'applied-migration-changed', message: 'x' })),
       clock,
@@ -122,7 +129,12 @@ describe('books.getHealth', () => {
   const app = { getVersion: () => '1.0.0', isPackaged: true };
 
   it('reports sound books as having no problems', async () => {
-    const handlers = createHandlers({ app, books: staticBooks(ok(createTestDatabase())), clock });
+    const handlers = createHandlers({
+      ...importDeps,
+      app,
+      books: staticBooks(ok(createTestDatabase())),
+      clock,
+    });
     expect(await handlers['books.getHealth']({})).toEqual(
       ok({ problems: [], entries: 0, lines: 0 }),
     );
@@ -130,6 +142,7 @@ describe('books.getHealth', () => {
 
   it('reports books that did not open', async () => {
     const handlers = createHandlers({
+      ...importDeps,
       app,
       books: staticBooks(err({ code: 'integrity-failed', message: 'x' })),
       clock,
@@ -146,7 +159,12 @@ describe('books.getHealth', () => {
       INSERT INTO journal_entry (id, entry_date, source_kind, created_at, updated_at) VALUES ('ent_a', '2026-08-01', 'manual', '2026-01-01T00:00:00.000Z', '2026-01-01T00:00:00.000Z');
       INSERT INTO journal_line (id, entry_id, position, account_id, amount_cents) VALUES ('lin_a', 'ent_a', 0, 'acc_a', 100);
     `);
-    const handlers = createHandlers({ app, books: staticBooks(ok(store)), clock });
+    const handlers = createHandlers({
+      ...importDeps,
+      app,
+      books: staticBooks(ok(store)),
+      clock,
+    });
     expect(await handlers['books.getHealth']({})).toEqual(
       ok({ problems: ['out-of-balance'], entries: 1, lines: 1 }),
     );
@@ -163,6 +181,7 @@ describe('registerBridge', () => {
         },
       },
       createHandlers({
+        ...importDeps,
         app: { getVersion: () => '1.0.0', isPackaged: true },
         books: staticBooks(ok(createTestDatabase())),
         clock,
@@ -183,6 +202,7 @@ describe('the books screens', () => {
       parseCalendarDate('2026-11-23', 'YYYY-MM-DD').ok ? clock.today() : clock.today(),
     );
     return createHandlers({
+      ...importDeps,
       app: { getVersion: () => '1.0.0', isPackaged: true },
       books: staticBooks(ok(store)),
       clock,
@@ -221,6 +241,7 @@ describe('the books screens', () => {
 
   it('answers an error, not a crash, when the books did not open', async () => {
     const h = createHandlers({
+      ...importDeps,
       app: { getVersion: () => '1.0.0', isPackaged: true },
       books: staticBooks(err({ code: 'integrity-failed', message: 'x' })),
       clock,
@@ -231,6 +252,7 @@ describe('the books screens', () => {
 
   it('turns a refused sample change into the right error', async () => {
     const h = createHandlers({
+      ...importDeps,
       app: { getVersion: () => '1.0.0', isPackaged: true },
       books: {
         ...staticBooks(ok(createTestDatabase())),
@@ -251,6 +273,7 @@ describe('the contract’s input checks', () => {
       name,
       { senderUrl: appUrl, input },
       createHandlers({
+        ...importDeps,
         app: { getVersion: () => '1', isPackaged: true },
         books: staticBooks(ok(createTestDatabase())),
         clock,
@@ -273,6 +296,24 @@ describe('the contract’s input checks', () => {
       ok: false,
       error: { code: 'invalid-input' },
     });
+  });
+
+  it.each([
+    ['bank.previewFile', {}],
+    ['bank.previewFile', { path: '' }],
+    ['bank.previewFile', { path: 'x'.repeat(1025) }],
+    ['bank.previewFile', { path: '/a.ofx', extra: 1 }],
+    ['bank.commitImport', {}],
+    ['bank.commitImport', { previewId: 'imp_1' }],
+    ['bank.commitImport', { previewId: 'pre_has space' }],
+    ['bank.undoImport', {}],
+    ['bank.undoImport', { batchId: 'pre_1' }],
+    ['bank.undoImport', { batchId: 'imp_1', extra: 1 }],
+    ['bank.list', { extra: 1 }],
+    ['bank.chooseAndPreview', { path: '/a.ofx' }],
+    ['review.getCount', { extra: 1 }],
+  ] as const)('%s refuses %j', async (name, input) => {
+    expect(await run(name, input)).toEqual({ ok: false, error: { code: 'invalid-input' } });
   });
 
   it('transactions.get needs an entry id', async () => {

@@ -1,0 +1,104 @@
+.import-sheet__plain,
+.import-sheet__message,
+.import-sheet__check p {
+  /* Keeps one word from being left alone on the last line. */
+  text-wrap: pretty;
+}
+
+.import-sheet__plain {
+  margin: 0;
+  padding-inline-start: var(--space-5);
+  display: grid;
+  gap: var(--space-2);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+}
+
+.import-sheet__message {
+  margin: 0;
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+}
+
+.import-sheet__check {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+  margin-top: var(--space-4);
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface-secondary);
+  font-size: var(--font-size-label);
+}
+
+.import-sheet__check p {
+  margin: 0;
+}
+
+.import-sheet__check-icon {
+  flex: none;
+  width: var(--size-icon-button);
+  height: var(--size-icon-button);
+}
+
+.import-sheet__check--ok .import-sheet__check-icon {
+  color: var(--color-success);
+}
+
+.import-sheet__check--warning {
+  border-color: var(--color-warning);
+}
+
+.import-sheet__check--warning .import-sheet__check-icon {
+  color: var(--color-warning);
+}
+
+.import-sheet__check--info .import-sheet__check-icon {
+  color: var(--color-text-muted);
+}
+
+.import-sheet__details {
+  margin-top: var(--space-4);
+}
+
+.import-sheet__details > summary {
+  /* A bigger target than the text alone, for the mouse. */
+  padding-block: var(--space-1);
+  cursor: pointer;
+  color: var(--color-brand);
+  font-size: var(--font-size-label);
+}
+
+.import-sheet__filter {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: var(--space-3) 0;
+  font-size: var(--font-size-label);
+  color: var(--color-text-secondary);
+}
+
+.import-sheet__filter select {
+  padding: var(--space-1) var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  font: inherit;
+}
+
+.import-sheet__lines {
+  max-height: 16rem;
+  display: flex;
+}
+
+.import-sheet__lines > .table-scroll {
+  flex: 1;
+}
+
+.import-sheet__more {
+  margin: var(--space-2) 0 0;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-caption);
+}

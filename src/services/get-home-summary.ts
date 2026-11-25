@@ -7,6 +7,7 @@ import { listAccounts } from '@data/account-repository';
 import { listBankAccounts } from '@data/bank-account-repository';
 import { getBusiness } from '@data/business-repository';
 import { countJournalEntries } from '@data/journal-queries';
+import { summariseLinesToReview } from '@data/statement-repository';
 import { isUpToDate, nextSteps, type NextStepId } from '@domain/next-steps';
 import { basPeriodOf, financialYearOf } from '@domain/periods';
 import { compareDates } from '@shared/dates';
@@ -19,7 +20,7 @@ import type { TodayContext } from './context';
  * The jobs the app can do today. Home shows only these. Each folder that builds a feature adds its
  * job here: review (folder 06), reconcile (07), BAS (08), accountant changes (09), back up (11).
  */
-export const AVAILABLE_NEXT_STEPS: ReadonlySet<NextStepId> = new Set();
+export const AVAILABLE_NEXT_STEPS: ReadonlySet<NextStepId> = new Set<NextStepId>(['review-lines']);
 
 export function getHomeSummary(ctx: TodayContext): HomeSummary {
   const today = ctx.clock.today();
@@ -58,11 +59,12 @@ export function getHomeSummary(ctx: TodayContext): HomeSummary {
   const periodEnd = compareDates(period.end, today) < 0 ? period.end : today;
   const gstTotal = sumGstInRange(ctx.db, period.start, periodEnd);
 
+  const toReview = summariseLinesToReview(ctx.db);
   const steps = nextSteps({
     today,
     available: AVAILABLE_NEXT_STEPS,
-    linesToReview: 0,
-    oldestLineToReview: null,
+    linesToReview: toReview.count,
+    oldestLineToReview: toReview.oldest,
     unreconciled: [],
     daysSinceBackup: null,
     basPeriod: null,
@@ -72,7 +74,7 @@ export function getHomeSummary(ctx: TodayContext): HomeSummary {
   return {
     brandNew: countJournalEntries(ctx.db) === 0,
     bank: { balance: bankBalance, accountCount: banks.length },
-    linesToReview: { count: 0, oldest: null },
+    linesToReview: toReview,
     gst: {
       owing: negateCents(asCents(gstTotal)),
       periodLabel: period.label,

@@ -3,7 +3,16 @@
 // it records its two status lines into the folder and quits.
 
 import { spawn } from 'node:child_process';
-import { existsSync, mkdtempSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
+import {
+  copyFileSync,
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+  statSync,
+  writeFileSync,
+} from 'node:fs';
 import { homedir, tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test } from '@playwright/test';
@@ -44,11 +53,27 @@ test.afterEach(() => {
   expect(realLogTime(), 'A test wrote to the real data folder').toBe(realLogBefore);
 });
 
+// The invented Westpac files, in the order the demo imports them: the clean file, the same file
+// again, the overlapping file, and the file with a line that cannot be read.
+const STATEMENTS = [
+  'business-one-2-13-nov-2026.ofx',
+  'business-one-2-13-nov-2026.ofx',
+  'business-one-9-20-nov-2026.ofx',
+  'business-one-16-23-nov-2026-bad-date.ofx',
+];
+
 test('the packaged app opens new books, and loads and clears the sample data from its own screens', async () => {
   expect(existsSync(binary), `Packaged app missing at ${binary}`).toBe(true);
   const dataDir = join(dir, 'data');
+  const statementDir = join(dir, 'statements');
+  mkdirSync(statementDir);
+  const statementFlags = STATEMENTS.map((name, index) => {
+    const path = join(statementDir, `${String(index)}-${name}`);
+    copyFileSync(join('tests', 'fixtures', 'westpac', name), path);
+    return `--self-check-statement=${path}`;
+  });
 
-  expect(await run([`--self-check=${dataDir}`])).toBe(0);
+  expect(await run([`--self-check=${dataDir}`, ...statementFlags])).toBe(0);
 
   const report = JSON.parse(readFileSync(join(dataDir, 'self-check.json'), 'utf8')) as {
     appInfo: string;
@@ -64,6 +89,17 @@ test('the packaged app opens new books, and loads and clears the sample data fro
       panelClosedByEscape: boolean;
       labelGoneAfterClear: boolean;
       gettingStartedAfterClear: boolean;
+    };
+    imports: {
+      steps: {
+        sentences: string;
+        check: string;
+        mainAction: string | null;
+        done: string | null;
+        toReview: string;
+      }[];
+      bankRows: string[];
+      undo: { offered: string; notice: string; toReview: string } | null;
     };
   };
   expect(report).toMatchObject({
@@ -100,6 +136,52 @@ test('the packaged app opens new books, and loads and clears the sample data fro
   expect(sample.labelGoneAfterClear).toBe(true);
   expect(sample.gettingStartedAfterClear).toBe(true);
 
+  // Importing: each of the four files, as the client would drop them in.
+  const { steps, bankRows } = report.imports;
+  expect(steps).toHaveLength(4);
+  const [clean, again, overlap, problem] = steps;
+  expect(clean?.sentences).toContain(
+    'This file is for Business One ··4821, from 02/11/2026 to 13/11/2026.',
+  );
+  expect(clean?.sentences).toContain('11 new lines will go to To review.');
+  expect(clean?.check).toContain('First file for this account.');
+  expect(clean?.mainAction).toBe('Import 11 lines');
+  expect(clean?.done).toBe('11 lines added to To review');
+  expect(clean?.toReview).toBe('To review11');
+  // The same file again adds nothing, and says so.
+  expect(again?.sentences).toContain('Nothing is new.');
+  expect(again?.sentences).toContain('11 lines are already in your books');
+  expect(again?.mainAction).toBe('Close');
+  expect(again?.toReview).toBe('To review11');
+  // The overlapping file: the days already imported are skipped, and the balance matches.
+  expect(overlap?.sentences).toContain('7 new lines will go to To review.');
+  expect(overlap?.sentences).toContain('6 lines are already in your books');
+  expect(overlap?.check).toContain('Closing balance matches.');
+  expect(overlap?.check).toContain(
+    'File: $18,642.35 on 20/11/2026. Your books after import: $18,642.35.',
+  );
+  expect(overlap?.toReview).toBe('To review18');
+  // The problem file: one line is refused with its reason, and the difference is that line.
+  expect(problem?.sentences).toContain(
+    '1 line could not be read: line 81 has the date "31/11/2026", which is not a real date.',
+  );
+  expect(problem?.sentences).toContain('3 new lines will go to To review.');
+  expect(problem?.check).toContain('Closing balance does not match.');
+  expect(problem?.check).toContain('The difference, $100.00, is the line that could not be read.');
+  expect(problem?.done).toBe('3 lines added to To review');
+  expect(problem?.toReview).toBe('To review21');
+  const businessOne = bankRows.find((row) => row.startsWith('Business One'));
+  expect(businessOne).toContain('21 lines');
+  expect(businessOne).toContain('$20,898.35 as at 23/11/2026');
+  // Taking the last import back: it is offered by name, three lines leave, and the count goes back.
+  expect(report.imports.undo?.offered).toContain(
+    'Business One ··4821: 3-business-one-16-23-nov-2026-bad-date.ofx, 3 lines added',
+  );
+  expect(report.imports.undo?.notice).toBe(
+    '3 lines removed from To review. You can import 3-business-one-16-23-nov-2026-bad-date.ofx again.',
+  );
+  expect(report.imports.undo?.toReview).toBe('To review18');
+
   expect(existsSync(join(dataDir, 'books.db'))).toBe(true);
   expect(existsSync(join(dataDir, 'sample')), 'Clearing leaves no sample folder behind').toBe(
     false,
@@ -109,6 +191,10 @@ test('the packaged app opens new books, and loads and clears the sample data fro
   expect(log).toContain('"event":"books.checked"');
   expect(log).not.toContain('books.check-failed');
   expect(log).toContain('"event":"app.self-check-finished"');
+  // Importing is logged by count, and never by what a statement holds.
+  expect(log).toContain('"event":"import.imported"');
+  expect(log).toContain('"event":"import.undone"');
+  expect(log).not.toMatch(/BUNNINGS|AMPOL|SMITH RENOVATIONS|WORKSHOP RENT|4821/);
   expect(log.indexOf('"event":"sample.loaded"')).toBeGreaterThan(-1);
   expect(log.indexOf('"event":"sample.cleared"')).toBeGreaterThan(
     log.indexOf('"event":"sample.loaded"'),

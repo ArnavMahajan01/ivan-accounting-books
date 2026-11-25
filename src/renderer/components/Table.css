@@ -38,8 +38,18 @@
   border-bottom: 0;
 }
 
-.table__cell--end {
+/* The heading rule above is more specific than a bare class, so it needs the element too, or the
+   heading of a right-aligned column stays on the left while its figures sit on the right. */
+.table th.table__cell--end,
+.table td.table__cell--end {
   text-align: end;
+}
+
+/* A column that takes only what its content needs. The others share the rest. */
+.table th.table__col--fit,
+.table td.table__col--fit {
+  width: 1%;
+  white-space: nowrap;
 }
 
 .table th.table__cell--end .table__sort {
@@ -110,6 +120,7 @@
 
 .table__row--active,
 .table__row--active:hover {
-  background: var(--color-surface-secondary);
-  box-shadow: inset 3px 0 0 var(--color-brand);
+  /* A tint of the brand colour, not a bar down one side. The open panel beside the table also names
+     the row, so the mark is not the only way to tell which it is. */
+  background: color-mix(in srgb, var(--color-brand) 10%, var(--color-surface));
 }

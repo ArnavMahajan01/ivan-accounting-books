@@ -4,7 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { err, ok } from '@shared/result';
 import { App } from '../App';
 import { ROUTES } from '../routes';
-import { installBridge, REAL_STATE, SAMPLE_STATE, settle } from '../test-bridge';
+import { CLEAN_PREVIEW, installBridge, REAL_STATE, SAMPLE_STATE, settle } from '../test-bridge';
 
 afterEach(cleanup);
 beforeEach(() => {
@@ -202,3 +202,53 @@ import { asCents } from '@shared/money';
 import { HOME } from '../test-bridge';
 const HOME_BRAND_NEW = { ...HOME, brandNew: true, bank: { balance: asCents(0), accountCount: 0 } };
 const HOME_SAMPLE = HOME;
+
+describe('the count on To review', () => {
+  const toReview = () =>
+    within(screen.getByRole('navigation', { name: 'Main' })).getByRole('link', {
+      name: /To review/,
+    });
+
+  it('shows how many imported lines are waiting, and nothing when there are none', async () => {
+    installBridge({ 'review.getCount': () => Promise.resolve(ok({ count: 11 })) });
+    render(<App />);
+    await settle();
+    expect(toReview().textContent).toContain('11');
+    cleanup();
+    installBridge({ 'review.getCount': () => Promise.resolve(ok({ count: 0 })) });
+    render(<App />);
+    await settle();
+    expect(toReview().textContent).toBe('To review');
+  });
+
+  it('goes up after an import, without the page being opened again', async () => {
+    const user = userEvent.setup();
+    let waiting = 0;
+    installBridge({
+      'review.getCount': () => Promise.resolve(ok({ count: waiting })),
+      'bank.chooseAndPreview': () =>
+        Promise.resolve(ok({ kind: 'preview' as const, preview: CLEAN_PREVIEW })),
+      'bank.commitImport': () => {
+        waiting = 3;
+        return Promise.resolve(
+          ok({
+            kind: 'imported' as const,
+            added: 3,
+            skipped: 0,
+            rejected: 0,
+            accountName: 'Business One ··4821',
+          }),
+        );
+      },
+    });
+    window.location.hash = '#/bank';
+    render(<App />);
+    await settle();
+    expect(toReview().textContent).toBe('To review');
+    await user.click(screen.getByRole('button', { name: 'Import file' }));
+    await settle();
+    await user.click(screen.getByRole('button', { name: 'Import 3 lines' }));
+    await settle();
+    expect(toReview().textContent).toContain('3');
+  });
+});

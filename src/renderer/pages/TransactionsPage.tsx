@@ -53,7 +53,7 @@ const TYPE_HEADINGS: Record<AccountType, string> = {
 };
 
 const COLUMNS: readonly TableColumn<TransactionRow>[] = [
-  { key: 'date', header: 'Date', cell: (row) => <DateCell date={row.date} /> },
+  { key: 'date', header: 'Date', fit: true, cell: (row) => <DateCell date={row.date} /> },
   {
     key: 'type',
     header: 'Type',
@@ -92,10 +92,17 @@ const COLUMNS: readonly TableColumn<TransactionRow>[] = [
     key: 'before',
     header: 'Before GST',
     align: 'end',
+    fit: true,
     cell: (row) => <Amount cents={row.beforeGst} />,
   },
-  { key: 'gst', header: 'GST', align: 'end', cell: (row) => <Amount cents={row.gst} /> },
-  { key: 'total', header: 'Total', align: 'end', cell: (row) => <Amount cents={row.total} /> },
+  { key: 'gst', header: 'GST', align: 'end', fit: true, cell: (row) => <Amount cents={row.gst} /> },
+  {
+    key: 'total',
+    header: 'Total',
+    align: 'end',
+    fit: true,
+    cell: (row) => <Amount cents={row.total} />,
+  },
 ];
 
 function Footer({

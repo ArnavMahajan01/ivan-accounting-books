@@ -42,7 +42,7 @@ grep -rnE "parseFloat|toFixed\(|Number\(.*(amount|cents)" src/domain src/import 
 grep -rnE "(INSERT( OR [A-Z]+)? INTO|UPDATE|DELETE FROM|REPLACE INTO) +journal_(entry|line)" src/ tools/ --include='*.ts' | grep -v "\.test\.ts" | grep -v "src/data/journal-writes.ts"
 ```
 
-**4. The same or an overlapping bank file never stores a line twice.** Not built yet. From spec 060: the duplicate and overlap tests, and a unique key on statement lines in the migration.
+**4. The same or an overlapping bank file never stores a line twice.** Built at specs 056 to 063. Check `src/data/migrations/0009-statement-lines.sql` still has `UNIQUE (bank_account_id, line_key)`. Check only `src/services/import-file.ts` (through `commitImport`) calls `insertStatementLine`, inside a transaction that works the duplicates out again. Check `src/domain/duplicates.test.ts` and `src/services/import-file.test.ts` still import the same file twice, an overlapping file and two identical lines on one day.
 
 **5. SQLite is the only truth. Nothing from Google changes the ledger until accepted.** Not built yet. From folder 09, this must print nothing, and specs 116 and 117 test the accept step:
 

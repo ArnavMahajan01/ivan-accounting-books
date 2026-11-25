@@ -12,6 +12,13 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Keeps one word from being left alone on the last line of a paragraph (Impeccable's detector). */
+p,
+li,
+dd {
+  text-wrap: pretty;
+}
+
 :focus-visible {
   outline: var(--size-focus-ring) solid var(--color-focus-ring);
   outline-offset: 2px;

@@ -25,6 +25,8 @@ The script and the questions to ask are in `demo-scripts/demo-2-the-sample-book.
 
 ## Demo 3: Importing a Westpac File (spec 067)
 
+The script and the questions to ask are in `demo-scripts/demo-3-importing-a-westpac-file.md`. The demo has not been held yet.
+
 Did he try his own file on his Mac? If yes: the trial book was deleted on [date].
 
 | What he said | Screen | Who and when | Spec |

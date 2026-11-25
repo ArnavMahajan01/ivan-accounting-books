@@ -8,7 +8,7 @@ A private accounting app for the Mac, built for one client: an Australian small 
 
 - **Goals:** correct books that always balance. The client can do his bookkeeping without QuickBooks. The accountant gets the sheets he needs, with the access the client chooses. Nothing leaves the Mac unless the client asks for it.
 - **Out of scope:** web app or server, accounts and logins inside the app, ATO lodgement (BAS e-lodge, STP), payroll, taking payments, live bank feeds, and every "scale version" feature (licensing, many clients, other banks). See `context/project-overview.md`.
-- **Current focus:** the wireframes are signed off (W11). Demo 1 (folder 02, specs 020 to 028) and the ledger core (folder 03, specs 030 to 045) are built, and so is the Demo 2 sample book (folder 04, specs 046 to 053), on branch `feature/03-ledger-core` for now. The Demo 2 demo (054) is prepared, and not yet held. The UI skills Impeccable and UI UX Pro Max are installed (W01a, W01b). The client sees the app grow in 9 demos (`context/feature-specs/README.md`). Progress is in `context/progress-tracker.md`.
+- **Current focus:** the wireframes are signed off (W11). Demo 1 (folder 02, specs 020 to 028), the ledger core (folder 03, specs 030 to 045) and the Demo 2 sample book (folder 04, specs 046 to 053) are built and committed. Importing a Westpac OFX file (folder 05, specs 055 to 066) is built on branch `feature/05-demo-3-bank-import`, except the CSV reader (059), which waits for client question 16. The Demo 2 and Demo 3 demos (054, 067) are prepared, and not yet held. The UI skills Impeccable and UI UX Pro Max are installed (W01a, W01b). The client sees the app grow in 9 demos (`context/feature-specs/README.md`). Progress is in `context/progress-tracker.md`.
 
 **Hard rules.** Never break these. If a task seems to need it, stop and ask.
 
@@ -87,6 +87,7 @@ Created at spec 001 (`context/rules/code-rules.md`, "Scripts"). Update this tabl
 | Test (all) | `npm test` | Yes |
 | Test while editing | `npm run test:watch` | Yes |
 | End-to-end test of the packaged app | `npm run test:e2e` | Yes: packages first, then Playwright (`tests/e2e/`) |
+| Check every page at four window sizes | `npm run test:layout` | Yes: builds, then opens each page, sheet and panel at 1100 to 1700 wide and fails if a column, heading, button or text breaks. Screenshots go to `test-results/layout/` |
 | Typecheck | `npm run typecheck` | Yes |
 | Lint | `npm run lint` | Yes |
 | Format, or check formatting | `npm run format`, `npm run format:check` | Yes. Markdown, `context/` and `wireframe/` are not reformatted |

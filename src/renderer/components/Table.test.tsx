@@ -160,3 +160,32 @@ describe('Table: loading', () => {
     expect(skeletonRows[0]?.querySelectorAll('td')).toHaveLength(2);
   });
 });
+
+describe('column alignment and width', () => {
+  it('gives a right-aligned column the same class on its heading and on every cell, so they line up', () => {
+    render(<Table label="Lines" columns={columns} rows={lines} rowKey={(l) => l.id} />);
+    const heading = screen.getByRole('columnheader', { name: /Amount/ });
+    expect(heading.className).toContain('table__cell--end');
+    for (const row of screen.getAllByRole('row').slice(1)) {
+      expect(row.querySelectorAll('td')[1]?.className).toContain('table__cell--end');
+    }
+    expect(screen.getByRole('columnheader', { name: /Payee/ }).className).not.toContain(
+      'table__cell--end',
+    );
+  });
+
+  it('marks a fit column on its heading and its cells, and leaves the others to share the rest', () => {
+    const fit: TableColumn<Line>[] = [
+      { key: 'payee', header: 'Payee', cell: (l) => l.payee },
+      { key: 'amount', header: 'Amount', align: 'end', fit: true, cell: (l) => String(l.cents) },
+    ];
+    render(<Table label="Lines" columns={fit} rows={lines} rowKey={(l) => l.id} />);
+    expect(screen.getByRole('columnheader', { name: 'Amount' }).className).toBe(
+      'table__cell--end table__col--fit',
+    );
+    expect(screen.getByRole('columnheader', { name: 'Payee' }).className).toBe('');
+    const cells = screen.getAllByRole('row')[1]?.querySelectorAll('td');
+    expect(cells?.[1]?.className).toBe('table__cell--end table__col--fit');
+    expect(cells?.[0]?.className).toBe('');
+  });
+});

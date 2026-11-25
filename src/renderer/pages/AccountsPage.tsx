@@ -80,18 +80,20 @@ const COLUMNS: readonly TableColumn<AccountRow>[] = [
       </span>
     ),
   },
-  { key: 'type', header: 'Type', cell: (account) => TYPE_LABELS[account.type] },
-  { key: 'gst', header: 'Usual GST', cell: usualGstText },
+  { key: 'type', header: 'Type', fit: true, cell: (account) => TYPE_LABELS[account.type] },
+  { key: 'gst', header: 'Usual GST', fit: true, cell: usualGstText },
   {
     key: 'balance',
     header: 'Balance in your books',
     align: 'end',
+    fit: true,
     cell: (account) => <Amount cents={account.balance} />,
   },
   {
     key: 'open',
     header: '',
     align: 'end',
+    fit: true,
     cell: (account) => (
       // Reached from the keyboard with Enter on the row, so it is not another stop in the Tab order.
       <a

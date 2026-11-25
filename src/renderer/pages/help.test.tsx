@@ -49,7 +49,7 @@ describe('Help, the list', () => {
   it('finds Getting started by a word that is only in its steps', async () => {
     const user = userEvent.setup();
     render(<HelpPage />);
-    await user.type(screen.getByRole('searchbox', { name: 'Search guides' }), 'question');
+    await user.type(screen.getByRole('searchbox', { name: 'Search guides' }), 'integrity');
     expect(screen.getByRole('link', { name: /Getting started/ })).not.toBeNull();
     expect(screen.getByRole('status').textContent).toBe('1 guide matches');
   });

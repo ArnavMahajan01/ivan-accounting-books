@@ -9,6 +9,8 @@
   font: inherit;
   font-weight: var(--font-weight-medium);
   line-height: var(--line-height-tight);
+  /* A button's label is one line at any width: the row it is in wraps instead. */
+  white-space: nowrap;
   cursor: pointer;
   transition: background-color var(--motion-duration) var(--motion-easing);
 }

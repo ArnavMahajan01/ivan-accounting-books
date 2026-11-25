@@ -187,3 +187,148 @@ export interface TransactionDetail {
   /** Oldest first. */
   readonly history: readonly TransactionHistoryItem[];
 }
+
+// ---- Bank and importing a statement file ---------------------------------------------------------
+
+export interface BankAccountRow {
+  readonly id: string;
+  readonly name: string;
+  readonly lastFour: string;
+  /** In the books, as at today: what the ledger holds for the account. */
+  readonly balance: Cents;
+  /** The balance the latest imported statement states, and the day it was as at. */
+  readonly lastStatement: { readonly balance: Cents; readonly date: CalendarDate } | null;
+  /** Lines imported for this account that still wait for review. */
+  readonly linesToReview: number;
+  /** Filled in by reconciling (folder 07). */
+  readonly reconciledTo: CalendarDate | null;
+  /** Set for a sub-account: the id of the account it sits under. */
+  readonly parentId: string | null;
+  /** The file imported last, while it can still be taken back (spec 063a). */
+  readonly undoableImport: {
+    readonly batchId: string;
+    readonly fileName: string;
+    /** How many lines it added. */
+    readonly added: number;
+    readonly period: { readonly from: CalendarDate; readonly to: CalendarDate };
+  } | null;
+}
+
+export interface BankView {
+  readonly accounts: readonly BankAccountRow[];
+}
+
+/** Why a file could not be previewed, in terms the page words for him. */
+export const IMPORT_REFUSALS = [
+  'empty',
+  'too-large',
+  'unreadable-file',
+  'unknown-format',
+  'no-account',
+  'several-accounts',
+  'not-aud',
+  'no-transactions',
+  'unknown-account',
+  'ambiguous-account',
+  'inactive-account',
+] as const;
+export type ImportRefusal = (typeof IMPORT_REFUSALS)[number];
+
+export const REJECTION_CODES = [
+  'missing-date',
+  'not-a-date',
+  'impossible-date',
+  'missing-amount',
+  'not-an-amount',
+  'too-many-decimals',
+  'amount-too-large',
+  'zero-amount',
+] as const;
+export type RejectionCode = (typeof REJECTION_CODES)[number];
+
+export type ImportLineView =
+  | {
+      readonly status: 'new' | 'duplicate';
+      readonly position: number;
+      readonly date: CalendarDate;
+      readonly description: string;
+      readonly amount: Cents;
+    }
+  | {
+      readonly status: 'rejected';
+      readonly position: number;
+      /** The line of the file the transaction starts on. */
+      readonly fileLine: number;
+      readonly reason: RejectionCode;
+      /** The text that could not be read, as the file has it. */
+      readonly value: string | null;
+      readonly description: string;
+      readonly amount: Cents | null;
+    };
+
+export type ImportBalanceView =
+  | {
+      readonly kind: 'match';
+      readonly closing: Cents;
+      readonly closingDate: CalendarDate | null;
+    }
+  | {
+      readonly kind: 'difference';
+      readonly closing: Cents;
+      readonly closingDate: CalendarDate | null;
+      /** What the lines held for the account add up to after the import. */
+      readonly expected: Cents;
+      readonly difference: Cents;
+      readonly explainedByRejected: boolean;
+    }
+  | {
+      readonly kind: 'first-file' | 'no-starting-point';
+      readonly closing: Cents;
+      readonly closingDate: CalendarDate | null;
+    }
+  | { readonly kind: 'no-closing-balance' };
+
+export interface ImportPreview {
+  /** Names this preview when the import is confirmed. Held in memory only, never saved. */
+  readonly previewId: string;
+  readonly fileName: string;
+  readonly account: { readonly id: string; readonly name: string; readonly lastFour: string };
+  readonly period: { readonly from: CalendarDate; readonly to: CalendarDate } | null;
+  readonly counts: {
+    readonly new: number;
+    readonly duplicate: number;
+    readonly rejected: number;
+  };
+  readonly balance: ImportBalanceView;
+  /** Every transaction in the file, in the file's order. */
+  readonly lines: readonly ImportLineView[];
+}
+
+export type PreviewOutcome =
+  | { readonly kind: 'preview'; readonly preview: ImportPreview }
+  | {
+      readonly kind: 'refused';
+      readonly reason: ImportRefusal;
+      /** The last four digits of the account the file is for, when that is why it was refused. */
+      readonly lastFour: string | null;
+    }
+  /** The Mac's file chooser was closed without a file. */
+  | { readonly kind: 'cancelled' };
+
+export type UndoOutcome =
+  | { readonly kind: 'undone'; readonly removed: number; readonly fileName: string }
+  | {
+      readonly kind: 'refused';
+      readonly reason: 'not-found' | 'not-the-latest' | 'lines-already-used';
+    };
+
+export type CommitOutcome =
+  | {
+      readonly kind: 'imported';
+      readonly added: number;
+      readonly skipped: number;
+      readonly rejected: number;
+      readonly accountName: string;
+    }
+  /** The preview is gone (the books changed, or it was used already) or there was nothing new in it. */
+  | { readonly kind: 'refused'; readonly reason: 'no-such-preview' | 'nothing-new' };

@@ -17,7 +17,7 @@ The figures below are what the books show on **23 November 2026**, the day they 
    - Lines to review 0. "This fills when you bring in a bank file. That is the next demo."
    - GST owing for the quarter, $3,184.20.
    - Profit for the financial year, $42,453.50.
-   Say the To do box is empty because nothing needs doing yet.
+   Say the To do box has one job, "Bank lines reviewed", ticked, because no bank line has been brought in yet.
 2. Click **GST owing**. It opens **Accounts**. "The same figure is here, as the GST account, with a minus sign because it is money you owe."
 3. **Accounts.** Show the groups: bank accounts first, then assets, liabilities, income and expenses. Type `motor` in the search box. Press Enter on **Motor vehicle expenses**.
 4. **Transactions** opens with only that account. Click **Clear filters**.

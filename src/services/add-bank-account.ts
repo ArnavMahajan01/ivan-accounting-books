@@ -1,9 +1,13 @@
-// Adds one of his bank accounts, linked to the ledger account that holds its balance. Spec 055 adds
-// renaming and deactivating.
+// Adds one of his bank accounts, linked to the ledger account that holds its balance. Renaming and
+// deactivating are in manage-bank-accounts.ts.
 
 import type { BankAccount } from '@domain/bank-accounts';
 import { getAccountById } from '@data/account-repository';
-import { getBankAccountByLedgerAccount, insertBankAccount } from '@data/bank-account-repository';
+import {
+  getBankAccountById,
+  getBankAccountByLedgerAccount,
+  insertBankAccount,
+} from '@data/bank-account-repository';
 import { newId } from '@shared/ids';
 import { err, ok, type Result } from '@shared/result';
 import { recordAudit } from './audit';
@@ -15,6 +19,8 @@ export interface NewBankAccount {
   /** Exactly four digits. The rest of the account number is never stored. */
   readonly lastFour: string;
   readonly ledgerAccountId: string;
+  /** Another of his bank accounts that this one sits under (client question 4). */
+  readonly parentId?: string;
 }
 
 export type AddBankAccountError =
@@ -23,7 +29,9 @@ export type AddBankAccountError =
   | 'bad-last-four'
   | 'account-not-found'
   | 'not-an-asset'
-  | 'already-linked';
+  | 'already-linked'
+  | 'parent-not-found'
+  | 'parent-is-a-sub-account';
 
 export function addBankAccount(
   ctx: ServiceContext,
@@ -39,6 +47,12 @@ export function addBankAccount(
     if (ledger === null) return err('account-not-found');
     if (ledger.type !== 'asset') return err('not-an-asset');
     if (getBankAccountByLedgerAccount(ctx.db, ledger.id) !== null) return err('already-linked');
+    const parent = input.parentId === undefined ? null : getBankAccountById(ctx.db, input.parentId);
+    if (input.parentId !== undefined) {
+      if (parent === null) return err('parent-not-found');
+      // One level only: a sub-account of a sub-account is not something his accounts have.
+      if (parent.parentId !== null) return err('parent-is-a-sub-account');
+    }
     const now = ctx.clock.now();
     const account: BankAccount = {
       id: newId('bnk', ctx.random),
@@ -46,7 +60,7 @@ export function addBankAccount(
       bank,
       lastFour: input.lastFour,
       ledgerAccountId: ledger.id,
-      parentId: null,
+      parentId: parent?.id ?? null,
       active: true,
       createdAt: now,
       updatedAt: now,

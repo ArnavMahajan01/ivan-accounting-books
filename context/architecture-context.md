@@ -111,8 +111,8 @@ A draft. Each table is written in full by the spec that creates it.
 | `account` | The chart of accounts. Unique code, name, type (asset, liability, equity, income, expense), optional parent, default tax code, active flag. Never deleted or merged. Spec 032 |
 | `tax_code` | Four seeded GST codes (`GST` taxable 10%, `FRE` GST-free, `INP` input taxed, `N-T` outside GST), each with a treatment and a rate in basis points. Code branches on the treatment. The BAS label a line feeds is worked out in `src/domain/bas-labels.ts`, not stored. Spec 034 |
 | `bank_account` | One of his bank accounts: its name, bank, the last four digits only, and the ledger `account` that holds its balance. The table was created at spec 046 (the sample books needed it), and spec 055 adds the services around it |
-| `import_batch` | One imported file. Format, a hash of the file text, period covered, counts of new, duplicate and rejected lines, opening and closing balance |
-| `statement_line` | One bank line. Bank account, date, amount in cents, description, the bank's id (`FITID`) or a content hash, status (to review, posted, excluded) |
+| `import_batch` | One imported file (spec 056). Bank account, file name (never its folder), format, a hash of the file text, period covered, counts of new, duplicate and rejected lines, the opening balance worked out from the file and the closing balance it states |
+| `statement_line` | One bank line (spec 056). Bank account, batch, date, amount in cents (in positive, out negative, never zero), description, running balance if the file gives one, the line key, status (`to-review`, `posted`, `excluded`) |
 | `journal_entry` | Id, date, memo, source (manual, bank line, invoice, opening balance, accountant change), source id. Spec 037 |
 | `journal_line` | Entry, position, account, amount in cents (positive debit, negative credit, never zero), tax code, GST in cents (same sign as the amount, which is net), payee, memo. The database checks each line, and the posting service checks that an entry sums to zero. Spec 037 |
 | `rule` | A bank rule. Order, direction, bank accounts, conditions, then account, tax code, payee, split, posts by itself (spec 078) |
@@ -128,18 +128,26 @@ A draft. Each table is written in full by the spec that creates it.
 Rules across models:
 
 - A journal entry's lines sum to zero cents. The posting service refuses anything else, and a test covers every way of posting.
-- `statement_line` has a unique key on (bank account, `FITID`) for OFX, or (bank account, content hash) for CSV, so a repeated import cannot add a line twice.
+- `statement_line` has a unique key on (bank account, line key): the `FITID` when the file has one, or a key worked out from the line when it has not, so a repeated import cannot add a line twice.
 - Only the posting service writes `journal_entry` and `journal_line`, and every write adds an `audit_log` row in the same transaction.
 - No change may touch a date on or before the lock date.
 - **Changing or removing a posted entry (decided 2026-11-23 at spec 040):** `changeEntry` and `removeEntry` in the posting service replace or remove it, and the audit log row keeps its full content before and after (before only, for a removal). Nothing on or before the lock date may be changed or removed. The author said "go for it" to the spec's recommendation without choosing in words, so this is the recommendation, adopted and **awaiting the author's confirmation**. The alternative, never changing an entry and correcting only by a reversing entry, would replace these two functions with one `reverseEntry`.
 
 ## Importing A Bank File
 
-1. The renderer sends the chosen file's path through the bridge. The main process reads it, refusing anything over a size limit (set at spec 058).
-2. The parser in `src/import/` turns the text into statement lines, or a list of rows it could not read, each with a reason. It detects the format from the content, never from the file name alone.
-3. The import service compares each line with what is stored, using the unique key, and builds a preview: new, duplicate, rejected, and whether the file's closing balance equals the stored opening balance plus the new lines.
-4. The client confirms. One transaction saves the batch and the new lines, as "to review".
-5. Rules suggest an account for each new line. A suggestion is never posted until the client accepts it.
+Built at specs 055 to 066 (2026-11-24). OFX only for now: the Westpac CSV reader (spec 059) waits for the header row (client question 16).
+
+1. The screen asks the main process to choose a file (the Mac's file chooser, `bank.chooseAndPreview`) or passes the path of a file dropped on the window (`bank.previewFile`, the path from the preload's `pathForFile`). The screens never read the file. The main process checks it is a plain file and under the size limit (5 million characters), then reads it (`src/main/statement-files.ts`).
+2. The parser in `src/import/` turns the text into statement lines, or a list of lines it could not read, each with a reason. It detects the format from the content, never from the file name. The account comes from the last four digits of the account number in the file, and must match exactly one active bank account.
+3. `previewImport` (`src/services/import-file.ts`) marks each line new or already held, by its key (`src/domain/duplicates.ts`), and runs the closing balance check (`src/domain/balance-check.ts`). It writes nothing. The result is held in memory in the main process (`src/main/preview-store.ts`, the last five, forgotten when the books change), and the screen gets a preview id.
+4. The client confirms. `commitImport` works the duplicates out again inside one transaction, then saves the batch, the new lines (status `to-review`) and an audit row (counts and file name, no descriptions) together, or nothing.
+5. Rules suggest an account for each new line (folder 07). A suggestion is never posted until the client accepts it. Posting a line is folder 06.
+
+**The line key.** The bank's own transaction id (`FITID`) when the file has one, `id:<FITID>`. Otherwise one worked out from the day, amount, description (capitals and spacing ignored) and running balance, `calc:...`. Two lines with the same key in one file get `#2`, `#3` and so on, so two identical coffees on one day are both kept, and the same coffee in an overlapping file gets the same key. The key is unique per bank account in the table.
+
+**The closing balance check** (decided at spec 061, because the spec left it open; the author is asked to confirm). It checks the stream of imported lines, not the ledger. From the first file for an account, its **opening balance** is worked out and stored on the batch: the closing balance less every line the file lists (including a line it could not read, when its amount could be read). For a later file, "your books after import" is that opening balance plus every imported line of the account up to the file's last day, plus the new lines. It matches the file's closing balance, or the difference is shown, and named as the line that could not be read when the lines that could not be read are exactly the difference. The first file for an account has nothing to compare with, and says so. A file older than the first one imported, or after a file that did not state its balance, says it cannot be checked. Reconciling an account to its ledger balance is folder 07.
+
+**What is not decided here.** The sample books' bank movements are posted entries with no statement lines behind them, so importing a file into the sample books puts lines in To review that the ledger already holds as posted entries. The fixtures are built from those entries so the demo reads true. Folders 06 and 07 will decide how a statement line is matched to an entry that exists.
 
 ## Publishing And Sharing A Sheet
 

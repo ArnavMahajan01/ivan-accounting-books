@@ -48,6 +48,21 @@ export function insertBankAccount(db: Db, account: BankAccount): void {
   );
 }
 
+export function getBankAccountById(db: Db, id: string): BankAccount | null {
+  const row = db.prepare(`SELECT ${COLUMNS} FROM bank_account WHERE id = ?`).get(id);
+  return row === undefined ? null : toBankAccount(row);
+}
+
+/** Saves a changed name or active flag. The other columns never change after the account is added. */
+export function updateBankAccount(db: Db, account: BankAccount): void {
+  db.prepare('UPDATE bank_account SET name = ?, active = ?, updated_at = ? WHERE id = ?').run(
+    account.name,
+    account.active ? 1 : 0,
+    account.updatedAt,
+    account.id,
+  );
+}
+
 export function getBankAccountByLedgerAccount(db: Db, ledgerAccountId: string): BankAccount | null {
   const row = db
     .prepare(`SELECT ${COLUMNS} FROM bank_account WHERE ledger_account_id = ?`)

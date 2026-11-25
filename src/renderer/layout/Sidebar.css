@@ -35,9 +35,12 @@
   font-size: var(--font-size-label);
   font-weight: var(--font-weight-semibold);
   color: var(--color-text-primary);
+  /* The business's name is who the books are for, so it wraps to two lines before it is cut. */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
 }
 
 .sidebar__toggle {
