@@ -6,6 +6,7 @@ import { parseAbn } from '@domain/abn';
 import { CHART_TEMPLATE } from '@domain/chart-template';
 import type { Account } from '@domain/accounts';
 import { insertAccount } from '@data/account-repository';
+import { setAccountRole } from '@data/account-role-repository';
 import { getBusiness, insertBusiness } from '@data/business-repository';
 import { getTaxCodeByShortCode } from '@data/tax-code-repository';
 import { newId, type Id } from '@shared/ids';
@@ -71,6 +72,7 @@ export function setupBusiness(
       };
       insertAccount(ctx.db, account);
       idsByCode.set(template.code, account.id);
+      if (template.role !== undefined) setAccountRole(ctx.db, template.role, account.id);
     }
     recordAudit(ctx, {
       kind: 'business.setup',

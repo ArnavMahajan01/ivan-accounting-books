@@ -217,7 +217,7 @@ describe('the books screens', () => {
       value: { brandNew: false, bank: { balance: 4364235 } },
     });
     const accounts = await h['accounts.list']({});
-    expect(accounts.ok && accounts.value.accounts).toHaveLength(39);
+    expect(accounts.ok && accounts.value.accounts).toHaveLength(40);
     const list = await h['transactions.list']({ kind: 'transfers' });
     expect(list.ok && list.value.matching).toBe(3);
   });
@@ -237,6 +237,27 @@ describe('the books screens', () => {
       ok: false,
       error: { code: 'invalid-input' },
     });
+  });
+
+  it('review.list, review.post and review.undo work through the handlers', async () => {
+    const h = await handlers();
+    const empty = await h['review.list']({});
+    expect(empty).toMatchObject({ ok: true, value: { waiting: 0, lines: [] } });
+    expect(empty.ok && empty.value.accounts.length).toBeGreaterThan(30);
+    const missing = await h['review.post']({
+      actions: [
+        { kind: 'account', lineId: 'stl_none', accountId: null, taxCodeId: null, payeeId: null },
+      ],
+    });
+    expect(missing).toEqual(
+      ok({ posted: [], alsoPosted: [], failed: [{ lineId: 'stl_none', reason: 'needs-account' }] }),
+    );
+    expect(await h['review.undo']({ lineIds: ['stl_none'] })).toEqual(
+      ok({ kind: 'refused', reason: 'not-posted' }),
+    );
+    expect(await h['review.savePayee']({ lineId: 'stl_none', name: 'Bunnings' })).toEqual(
+      ok({ kind: 'refused', reason: 'not-found' }),
+    );
   });
 
   it('answers an error, not a crash, when the books did not open', async () => {
@@ -312,6 +333,41 @@ describe('the contract’s input checks', () => {
     ['bank.list', { extra: 1 }],
     ['bank.chooseAndPreview', { path: '/a.ofx' }],
     ['review.getCount', { extra: 1 }],
+    ['review.list', { show: 'everything' }],
+    ['review.list', { bankAccountId: 'acc_1' }],
+    ['review.post', { actions: [] }],
+    ['review.post', { actions: [{ kind: 'post', lineId: 'stl_1' }] }],
+    ['review.post', { actions: [{ kind: 'match', lineId: 'stl_1', entryId: 'acc_1' }] }],
+    [
+      'review.post',
+      {
+        actions: [
+          { kind: 'account', lineId: 'stl_1', accountId: 'acc_1', taxCodeId: null, payeeId: 'x' },
+        ],
+      },
+    ],
+    ['review.split', { lineId: 'stl_1', parts: [], payeeId: null }],
+    [
+      'review.split',
+      {
+        lineId: 'stl_1',
+        parts: [{ accountId: 'acc_1', taxCodeId: null, amount: 0 }],
+        payeeId: null,
+      },
+    ],
+    [
+      'review.split',
+      {
+        lineId: 'stl_1',
+        parts: [{ accountId: 'acc_1', taxCodeId: null, amount: 1.5 }],
+        payeeId: null,
+      },
+    ],
+    ['review.undo', { lineIds: [] }],
+    ['review.undo', { lineIds: ['ent_1'] }],
+    ['review.savePayee', { lineId: 'stl_1', name: '' }],
+    ['review.savePayee', { lineId: 'stl_1', name: 'x'.repeat(101) }],
+    ['review.undoPayee', { contactId: 'con_1' }],
   ] as const)('%s refuses %j', async (name, input) => {
     expect(await run(name, input)).toEqual({ ok: false, error: { code: 'invalid-input' } });
   });

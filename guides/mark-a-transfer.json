@@ -1,0 +1,41 @@
+{
+  "id": "mark-a-transfer",
+  "title": "Mark a transfer between your accounts",
+  "group": "To review",
+  "summary": "How to post money you moved between two of your own bank accounts, so it is not counted as income or an expense.",
+  "sections": [
+    {
+      "heading": "Mark a transfer",
+      "paragraphs": [
+        "A transfer is not income or an expense, and has no GST. When both sides are imported, the app shows Pair on the line and names the other account."
+      ],
+      "steps": [
+        {
+          "text": "In To review, click the Transfer button beside Pair. Or click Transfer under the account box, or select the line and press T."
+        },
+        {
+          "text": "Check the other account. If the app found the matching line there, it says so, with its date and amount.",
+          "image": {
+            "file": "transfer-sheet.png",
+            "description": "The Transfer sheet. It says Move $1,500.00 from Business One to Business Cash Reserve, and that it matches a line in Business Cash Reserve on 23/11/2026, so both lines will be marked as this transfer. Cancel and Save transfer are below."
+          }
+        },
+        {
+          "text": "Click Save transfer. Both lines leave To review together."
+        }
+      ]
+    },
+    {
+      "heading": "When the other side is not imported yet",
+      "paragraphs": [
+        "Save the transfer anyway. The line waits in an account called Transfers in transit. When you import the other account's file, its line shows Pair. Save that transfer too, and Transfers in transit goes back to zero."
+      ]
+    },
+    {
+      "heading": "If something goes wrong",
+      "paragraphs": [
+        "It was not a transfer: click Undo in the message at the top, or press Command and Z. Then click Choose an account instead on the line, and post it with an account."
+      ]
+    }
+  ]
+}

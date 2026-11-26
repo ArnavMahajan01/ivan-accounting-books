@@ -56,6 +56,10 @@ export interface TableProps<Row> {
    * of the chart. The rows should already be in group order, so a table with this has no sorting.
    */
   readonly groupBy?: (row: Row) => string;
+  /** Keys on a focused row besides the table's own (arrows, Home, End, Space, Enter). */
+  readonly onRowKeyDown?: (event: KeyboardEvent<HTMLTableRowElement>, row: Row) => void;
+  /** An extra class for a row, such as one that is leaving the table. */
+  readonly rowClassName?: (row: Row) => string | undefined;
 }
 
 function compare(a: string | number, b: string | number): number {
@@ -77,6 +81,8 @@ export function Table<Row>({
   loading = false,
   skeletonRows = 8,
   groupBy,
+  onRowKeyDown: onOtherKey,
+  rowClassName,
 }: TableProps<Row>) {
   const [sort, setSort] = useState(initialSort);
   const [focusIndex, setFocusIndex] = useState(0);
@@ -151,6 +157,7 @@ export function Table<Row>({
         }
         break;
       default:
+        onOtherKey?.(event, row);
         break;
     }
   };
@@ -255,13 +262,16 @@ export function Table<Row>({
                       tabIndex={index === Math.min(focusIndex, sorted.length - 1) ? 0 : -1}
                       aria-selected={selection === undefined ? undefined : isSelected}
                       aria-current={key === activeRowKey ? 'true' : undefined}
-                      className={
+                      className={[
                         isSelected
                           ? 'table__row table__row--selected'
                           : key === activeRowKey
                             ? 'table__row table__row--active'
-                            : 'table__row'
-                      }
+                            : 'table__row',
+                        rowClassName?.(row) ?? '',
+                      ]
+                        .join(' ')
+                        .trim()}
                       onFocus={() => {
                         setFocusIndex(index);
                       }}

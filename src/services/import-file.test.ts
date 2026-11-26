@@ -37,6 +37,8 @@ const NAMES: Record<WestpacFixture, string> = {
   'business-one-16-23-nov-2026-bad-date': 'Westpac_4821_16-23Nov2026.ofx',
   'business-one-no-transactions': 'Westpac_4821_none.ofx',
   'cash-reserve-jul-nov-2026': 'Westpac_7730_Jul-Nov2026.ofx',
+  'business-one-21-23-nov-2026-demo-4': 'Westpac_4821_21-23Nov2026.ofx',
+  'cash-reserve-21-23-nov-2026-demo-4': 'Westpac_7730_21-23Nov2026.ofx',
   'other-account-16-nov-2026': 'Westpac_9999_16Nov2026.ofx',
   empty: 'empty.ofx',
 };

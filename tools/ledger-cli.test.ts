@@ -142,7 +142,7 @@ describe('init', () => {
     expect(first.out).toContain('Books ready');
     expect(existsSync(file)).toBe(true);
     const before = countRows('account', 'audit_log', 'business');
-    expect(before).toEqual([39, 1, 1]);
+    expect(before).toEqual([40, 1, 1]);
     const second = run('init', '--file', file);
     expect(second).toMatchObject({ code: 1 });
     expect(second.err).toContain('already-set-up');

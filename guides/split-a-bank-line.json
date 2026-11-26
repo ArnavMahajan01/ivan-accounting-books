@@ -1,0 +1,36 @@
+{
+  "id": "split-a-bank-line",
+  "title": "Split a line across accounts",
+  "group": "To review",
+  "summary": "How to share one bank line across several accounts, such as one shop receipt for office supplies and tools.",
+  "sections": [
+    {
+      "heading": "Split a line",
+      "steps": [
+        {
+          "text": "In To review, click Split under the line's account box. Or select the line and press S."
+        },
+        {
+          "text": "For each part, type the account, choose the GST code and type the amount. Amounts include GST, the way they are on the receipt.",
+          "image": {
+            "file": "split-sheet.png",
+            "description": "The Split sheet for OFFICEWORKS 0412, $236.45. Two lines: Office supplies with GST, $86.45, and Tools and small equipment with GST, $150.00. Left to split says $0.00 with a tick. Add line, Cancel and Save split are below."
+          }
+        },
+        {
+          "text": "Click Add line if you need more parts. Left to split shows what is still to share out."
+        },
+        {
+          "text": "When Left to split says $0.00 with a tick, click Save split. The line is posted, with the GST worked out on each part."
+        }
+      ]
+    },
+    {
+      "heading": "If something goes wrong",
+      "paragraphs": [
+        "Save split stays grey: the parts do not add up to the line yet, or a part has no account. Left to split says how much is left, or how much too much.",
+        "You split it wrongly: click Undo in the message at the top, or press Command and Z, and split it again."
+      ]
+    }
+  ]
+}

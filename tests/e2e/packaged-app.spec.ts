@@ -101,6 +101,7 @@ test('the packaged app opens new books, and loads and clears the sample data fro
       bankRows: string[];
       undo: { offered: string; notice: string; toReview: string } | null;
     };
+    review: { posted: string; payee: string; inTransactions: string };
   };
   expect(report).toMatchObject({
     appInfo: 'Version 0.0.0',
@@ -128,7 +129,7 @@ test('the packaged app opens new books, and loads and clears the sample data fro
   expect(sample.homeNumbers[3]).toMatch(
     new RegExp(`^Profit, FY \\d{4}–\\d{2}\\n${money}\\nsince 01/07/\\d{4}$`),
   );
-  expect(sample.accountsRows).toBe(39);
+  expect(sample.accountsRows).toBe(40);
   expect(sample.transactionsRows).toBeGreaterThan(0);
   expect(sample.panelOpened).toBe(true);
   expect(sample.panelClosedByEscape).toBe(true);
@@ -181,6 +182,14 @@ test('the packaged app opens new books, and loads and clears the sample data fro
     '3 lines removed from To review. You can import 3-business-one-16-23-nov-2026-bad-date.ofx again.',
   );
   expect(report.imports.undo?.toReview).toBe('To review18');
+  // To review (specs 069 and 071): a line posted with an account typed and Return is in
+  // Transactions, and a payee saved from a line fills in the other line with the same words.
+  expect(report.review.posted).toContain('1 posted.');
+  expect(report.review.inTransactions).toContain('WORKSHOP RENT MARSH PROPERTY GROUP');
+  expect(report.review.inTransactions).toContain('Rent');
+  expect(report.review.payee).toContain(
+    'Saved Ampol Alexandria as a supplier. 1 more line now shows it.',
+  );
 
   expect(existsSync(join(dataDir, 'books.db'))).toBe(true);
   expect(existsSync(join(dataDir, 'sample')), 'Clearing leaves no sample folder behind').toBe(

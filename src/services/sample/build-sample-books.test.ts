@@ -78,7 +78,7 @@ describe('the sample books on 23 November 2026', () => {
       basFrequency: 'quarterly',
       lockDate: null,
     });
-    expect(listAccounts(db)).toHaveLength(39);
+    expect(listAccounts(db)).toHaveLength(40);
     expect(listBankAccounts(db).map((b) => [b.name, b.bank, b.lastFour])).toEqual([
       ['Business One ··4821', 'Westpac', '4821'],
       ['Business Cash Reserve ··7730', 'Westpac', '7730'],

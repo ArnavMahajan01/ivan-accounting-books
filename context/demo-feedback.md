@@ -35,6 +35,8 @@ Did he try his own file on his Mac? If yes: the trial book was deleted on [date]
 
 ## Demo 4: Categorising (spec 077)
 
+The script and the questions to ask are in `demo-scripts/demo-4-categorising.md`. The demo has not been held yet.
+
 | What he said | Screen | Who and when | Spec |
 |---|---|---|---|
 | | | | |

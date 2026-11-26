@@ -68,6 +68,16 @@ export interface ImportFlowReport {
 }
 
 /** What the sample-data flow saw on screen. Every field comes from the real page. */
+/** To review after the imports (folder 06): a line posted with an account, and a payee saved. */
+export interface ReviewFlowReport {
+  /** The message after posting one line with an account typed and Return. */
+  readonly posted: string;
+  /** The message after saving a From/To. */
+  readonly payee: string;
+  /** Transactions rows found by searching for the posted line's description. */
+  readonly inTransactions: string;
+}
+
 export interface SampleFlowReport {
   /** The page said "Sample data" in its toolbar, for each page tried. */
   readonly labelOn: Readonly<Record<string, boolean>>;
@@ -92,6 +102,8 @@ export interface SelfCheckReport {
   readonly sample: SampleFlowReport;
   /** Empty unless statement files were given to import. */
   readonly imports: ImportFlowReport;
+  /** Empty unless statement files were given to import. */
+  readonly review: ReviewFlowReport;
 }
 
 /**
@@ -226,6 +238,50 @@ const SELF_CHECK_SOURCE = `(async () => {
     }
   }
 
+  // To review, as he would: an account typed on a line instead of its match, then Return; a payee
+  // typed and Return; then the posted line looked up in Transactions.
+  const review = { posted: '', payee: '', inTransactions: '' };
+  if (importCount > 0) {
+    const setValue = (el, value) => {
+      Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set.call(el, value);
+      el.dispatchEvent(new Event('input', { bubbles: true }));
+    };
+    const press = (el, key) => el.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true }));
+    const rowWith = (words) => [...rowsOf('Bank lines')].find((r) => r.textContent.includes(words)) || null;
+    const fieldIn = (words, label) => { const r = rowWith(words); return r ? r.querySelector('input[aria-label^="' + label + '"]') : null; };
+    const noticeSaying = (start) => { const n = document.querySelector('.review__notice'); return n && n.textContent.includes(start) ? n : null; };
+    location.hash = '#/to-review';
+    const rent = await until(() => rowWith('WORKSHOP RENT'));
+    const insteadRent = rent ? button('Choose an account instead', rent) : null;
+    if (insteadRent) insteadRent.click();
+    const account = await until(() => fieldIn('WORKSHOP RENT', 'Account for'));
+    if (account) {
+      setValue(account, '6080');
+      await wait(150);
+      press(fieldIn('WORKSHOP RENT', 'Account for') || account, 'Enter');
+    }
+    const posted = await until(() => noticeSaying('posted'));
+    review.posted = posted ? posted.innerText.replace(/\\s+/g, ' ').trim() : '';
+    await wait(500);
+    const ampol = await until(() => rowWith('AMPOL ALEXANDRIA'));
+    const insteadAmpol = ampol ? button('Choose an account instead', ampol) : null;
+    if (insteadAmpol) insteadAmpol.click();
+    const payee = await until(() => fieldIn('AMPOL ALEXANDRIA', 'From/To for'));
+    if (payee) {
+      payee.focus();
+      setValue(payee, 'Ampol Alexandria');
+      await wait(150);
+      press(fieldIn('AMPOL ALEXANDRIA', 'From/To for') || payee, 'Enter');
+    }
+    const saved = await until(() => noticeSaying('Saved'));
+    review.payee = saved ? saved.innerText.replace(/\\s+/g, ' ').trim() : '';
+    location.hash = '#/transactions';
+    const search = await until(() => document.querySelector('input[aria-label="Search transactions"]'));
+    if (search) setValue(search, 'WORKSHOP RENT');
+    await wait(1000);
+    review.inTransactions = [...rowsOf('Transactions')].map((r) => r.innerText.replace(/\\s+/g, ' ').trim()).join(' | ');
+  }
+
   location.hash = '#/settings';
   const clear = await until(() => { const b = button('Clear sample data'); return b && !b.disabled ? b : null; });
   if (clear) clear.click();
@@ -243,5 +299,6 @@ const SELF_CHECK_SOURCE = `(async () => {
       labelGoneAfterClear: !!gone, gettingStartedAfterClear,
     },
     imports,
+    review,
   };
 })()`;

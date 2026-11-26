@@ -1,0 +1,345 @@
+/* To review (folder 06). The page fills the window's height, so the table scrolls inside its own
+   box and the filters, notice and keys stay in view, as on Transactions. */
+.review {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - var(--space-5) * 2);
+  min-height: 0;
+}
+
+.review__count {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-label);
+}
+
+.review__filters {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.review__filters select,
+.review__search input,
+.review-field {
+  box-sizing: border-box;
+  padding: var(--space-1) var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  font: inherit;
+}
+
+.review__filters select,
+.review__search input {
+  padding: var(--space-2) var(--space-3);
+}
+
+.review-field[aria-invalid='true'] {
+  border-color: var(--color-error);
+}
+
+.review__show {
+  display: inline-flex;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  overflow: hidden;
+}
+
+.review__show-option {
+  position: relative;
+  display: inline-flex;
+}
+
+.review__show-option input {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  margin: 0;
+}
+
+.review__show-option span {
+  padding: var(--space-2) var(--space-3);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-label);
+  white-space: nowrap;
+}
+
+.review__show-option + .review__show-option span {
+  border-inline-start: 1px solid var(--color-border);
+}
+
+.review__show-option input:checked + span {
+  background: var(--color-surface-secondary);
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-semibold);
+}
+
+.review__show-option input:focus-visible + span {
+  outline: var(--size-focus-ring) solid var(--color-focus-ring);
+  outline-offset: calc(var(--size-focus-ring) * -1);
+}
+
+.review__search {
+  position: relative;
+  display: block;
+  width: 190px;
+  margin-inline-start: auto;
+}
+
+.review__search input {
+  width: 100%;
+  padding-inline-start: calc(var(--space-3) + var(--size-icon-inline) + var(--space-2));
+}
+
+.review__search input::placeholder,
+.review-field::placeholder {
+  color: var(--color-text-muted);
+}
+
+.review__search-icon {
+  position: absolute;
+  inset-inline-start: var(--space-3);
+  top: 50%;
+  translate: 0 -50%;
+  width: var(--size-icon-inline);
+  height: var(--size-icon-inline);
+  color: var(--color-text-muted);
+  pointer-events: none;
+}
+
+.review__notice {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin: 0 0 var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-label);
+}
+
+.review__notice--problem {
+  border-color: var(--color-error);
+}
+
+.review__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-height: 0;
+}
+
+.review__table {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+  transition: opacity var(--motion-duration) var(--motion-easing);
+}
+
+.review__table > .table-scroll {
+  flex: 1;
+}
+
+.review__table--busy {
+  opacity: 0.6;
+}
+
+/* Rows are two lines high: the description with From/To under it, the account with GST under it. */
+.review__table .table td {
+  vertical-align: top;
+}
+
+.review__row--leaving {
+  opacity: 0;
+  transition: opacity var(--motion-duration) var(--motion-easing);
+}
+
+.review__stack,
+.review__account-cell {
+  display: grid;
+  gap: var(--space-1);
+  justify-items: start;
+}
+
+.review__description {
+  overflow-wrap: break-word;
+}
+
+.review__sub,
+.review__why {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-caption);
+}
+
+.review__payee {
+  width: 100%;
+  min-width: 0;
+  max-width: 260px;
+}
+
+.review__account {
+  width: 100%;
+}
+
+/* Narrow enough that every column fits at the smallest window, 1100 wide, without scrolling. */
+.review__account-cell {
+  width: max(176px, 14vw);
+}
+
+.review__under {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-2);
+}
+
+.review__gst {
+  width: auto;
+}
+
+.review__found {
+  display: inline-flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.review__tag {
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-full);
+  background: var(--color-surface-secondary);
+  color: var(--color-brand);
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-semibold);
+}
+
+.review__link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-brand);
+  font: inherit;
+  font-size: var(--font-size-caption);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+.review__link:focus-visible {
+  outline: var(--size-focus-ring) solid var(--color-focus-ring);
+  outline-offset: 2px;
+  border-radius: var(--radius-control);
+}
+
+.review__more {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-label);
+}
+
+.review__keys {
+  margin: var(--space-3) 0 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-caption);
+}
+
+.review__keys kbd {
+  display: inline-block;
+  min-width: 1.4em;
+  padding: 0 var(--space-1);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  font: inherit;
+  text-align: center;
+}
+
+/* The Split and Transfer sheets. */
+.split {
+  width: 100%;
+  margin-bottom: var(--space-3);
+  border-collapse: collapse;
+}
+
+.split th,
+.split td {
+  padding: var(--space-1) var(--space-2) var(--space-1) 0;
+  text-align: start;
+  font-weight: var(--font-weight-regular);
+}
+
+.split thead th {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-label);
+}
+
+.split tfoot th,
+.split tfoot td {
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--color-border);
+  font-weight: var(--font-weight-semibold);
+}
+
+.split .split__amount {
+  text-align: end;
+}
+
+.split__amount-field {
+  width: 7em;
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+
+.split__remove {
+  display: inline-flex;
+  padding: var(--space-1);
+  border: 0;
+  border-radius: var(--radius-control);
+  background: none;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+}
+
+.split__remove svg {
+  width: var(--size-icon-inline);
+  height: var(--size-icon-inline);
+}
+
+.split__remove:focus-visible {
+  outline: var(--size-focus-ring) solid var(--color-focus-ring);
+}
+
+.split__problem {
+  margin: var(--space-3) 0 0;
+  color: var(--color-error);
+  font-size: var(--font-size-label);
+}
+
+.transfer__field {
+  display: grid;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
+.transfer__found {
+  margin: 0 0 var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-control);
+  background: var(--color-surface-secondary);
+  font-size: var(--font-size-label);
+}
+
+.transfer__note {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-label);
+}

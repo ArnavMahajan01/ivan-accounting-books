@@ -1,0 +1,72 @@
+{
+  "id": "review-and-post-bank-lines",
+  "title": "Review and post bank lines",
+  "group": "To review",
+  "summary": "How to give each imported bank line an account and a GST code, and post it into your books.",
+  "sections": [
+    {
+      "heading": "What you see in To review",
+      "paragraphs": [
+        "In QuickBooks this was the For review tab. Each bank line you imported waits here until you post it. Spent and Received are separate columns, as in QuickBooks.",
+        "Under the description is From/To: who the money went to or came from. Under Match or account, the app shows what it has for the line, in small words."
+      ],
+      "steps": [
+        {
+          "text": "Click To review in the sidebar. The number beside it is how many lines are waiting.",
+          "image": {
+            "file": "review-table.png",
+            "description": "The To review page with sample data. Each row has a date, the description with From/To under it, the amount under Spent or Received, and an account box with a GST code under it. Some say same as last time. One says Pair, for a transfer."
+          }
+        }
+      ]
+    },
+    {
+      "heading": "Post one line",
+      "steps": [
+        {
+          "text": "Type in the account box: a name, or the account's number, such as 6110. Pick the account from the list. The GST code changes to that account's usual code."
+        },
+        {
+          "text": "Check the GST code, and change it if this purchase or sale was different."
+        },
+        {
+          "text": "Type who it was in From/To, if you like. A new name is saved as a supplier or a customer, and other waiting lines with the same words fill in too. The app says how many, with Undo."
+        },
+        {
+          "text": "Click Post, or press Return. The line leaves To review and appears in Transactions."
+        }
+      ]
+    },
+    {
+      "heading": "When the app already has an answer",
+      "paragraphs": [
+        "Match: the movement is already in your books, for the same amount. Click Match to link the bank line with it. Nothing is added to your books, so it is never counted twice.",
+        "Same as last time, or best guess: you posted lines like this before, and the account and GST code are filled in the same way. Check them, then post.",
+        "Pair: the line looks like money moved to or from another of your accounts. See the guide Mark a transfer between your accounts.",
+        "Click Choose an account instead if the app's answer is wrong."
+      ]
+    },
+    {
+      "heading": "Post many lines at once",
+      "steps": [
+        {
+          "text": "Tick the lines you want, or press Space on each. The button at the top says how many, such as Post 12 selected."
+        },
+        {
+          "text": "Click it, or press Command and Return. The app says how many were posted, and which ones still need something, such as an account."
+        },
+        {
+          "text": "Or click Post all suggested, to post every line with a match, a pair or a suggestion as it is shown."
+        }
+      ]
+    },
+    {
+      "heading": "If something goes wrong",
+      "paragraphs": [
+        "You posted a line by mistake: click Undo in the message at the top, or press Command and Z. The lines go back to To review. Undo works for the last thing you posted, even a batch.",
+        "It says a line needs an account: type an account in that line's box, then post it again.",
+        "It says a line is in a locked period: that quarter's BAS is done, so the line cannot be posted there. Ask your accountant how to record it."
+      ]
+    }
+  ]
+}

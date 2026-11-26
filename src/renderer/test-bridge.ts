@@ -14,6 +14,8 @@ import type {
   HomeSummary,
   ImportLineView,
   ImportPreview,
+  ReviewLineView,
+  ReviewView,
   TransactionDetail,
   TransactionRow,
   TransactionsPage,
@@ -328,6 +330,111 @@ export const PROBLEM_PREVIEW: ImportPreview = {
   ],
 };
 
+export function reviewLine(over: Partial<ReviewLineView> = {}): ReviewLineView {
+  return {
+    id: 'stl_bunnings',
+    date: date('2026-11-04'),
+    description: 'BUNNINGS 4532',
+    amount: asCents(-41260),
+    bankAccountId: 'bnk_one',
+    bankAccountName: 'Business One ··4821',
+    payee: null,
+    suggestion: null,
+    match: null,
+    transfer: null,
+    ...over,
+  };
+}
+
+/** To review with five invented lines: a suggestion, a match, a transfer, money in, and a new one. */
+export const REVIEW: ReviewView = {
+  lines: [
+    reviewLine({
+      id: 'stl_timber',
+      date: date('2026-11-01'),
+      description: 'TIMBERLINK SUPPLIES PTY LTD',
+      amount: asCents(-128470),
+      payee: { contactId: 'con_timber', name: 'Timberlink Supplies' },
+      suggestion: { accountId: 'acc_mat', taxCodeId: 'tax_gst', reason: 'same-as-last-time' },
+    }),
+    reviewLine({
+      id: 'stl_ampol',
+      date: date('2026-11-02'),
+      description: 'AMPOL ALEXANDRIA',
+      amount: asCents(-8820),
+      match: { entryId: 'ent_fuel', date: date('2026-11-02'), text: 'Ampol' },
+    }),
+    reviewLine({
+      id: 'stl_deposit',
+      date: date('2026-11-03'),
+      description: 'DEPOSIT ELLIS BATHROOMS INV 1058',
+      amount: asCents(330000),
+    }),
+    reviewLine(),
+    reviewLine({
+      id: 'stl_transfer',
+      date: date('2026-11-06'),
+      description: 'TRANSFER TO CASH RESERVE 7730',
+      amount: asCents(-200000),
+      transfer: {
+        lineId: 'stl_reserve_in',
+        bankAccountId: 'bnk_reserve',
+        bankAccountName: 'Business Cash Reserve ··7730',
+        date: date('2026-11-06'),
+        alreadyPosted: false,
+      },
+    }),
+  ],
+  counts: { all: 5, suggested: 3, noSuggestion: 2 },
+  waiting: 5,
+  bankAccounts: [
+    { id: 'bnk_one', name: 'Business One ··4821' },
+    { id: 'bnk_reserve', name: 'Business Cash Reserve ··7730' },
+  ],
+  accounts: [
+    { id: 'acc_gst', code: '2200', name: 'GST', type: 'liability', defaultTaxCodeId: 'tax_nt' },
+    { id: 'acc_sales', code: '4000', name: 'Sales', type: 'income', defaultTaxCodeId: 'tax_gst' },
+    {
+      id: 'acc_mat',
+      code: '5000',
+      name: 'Materials and supplies',
+      type: 'expense',
+      defaultTaxCodeId: 'tax_gst',
+    },
+    {
+      id: 'acc_fees',
+      code: '6010',
+      name: 'Bank fees',
+      type: 'expense',
+      defaultTaxCodeId: 'tax_inp',
+    },
+    {
+      id: 'acc_office',
+      code: '6060',
+      name: 'Office supplies',
+      type: 'expense',
+      defaultTaxCodeId: 'tax_gst',
+    },
+    {
+      id: 'acc_tools',
+      code: '6110',
+      name: 'Tools and small equipment',
+      type: 'expense',
+      defaultTaxCodeId: 'tax_gst',
+    },
+  ],
+  taxCodes: [
+    { id: 'tax_gst', shortCode: 'GST', name: 'GST (10%)' },
+    { id: 'tax_fre', shortCode: 'FRE', name: 'GST-free' },
+    { id: 'tax_inp', shortCode: 'INP', name: 'Input taxed' },
+    { id: 'tax_nt', shortCode: 'N-T', name: 'Outside GST' },
+  ],
+  contacts: [
+    { id: 'con_ellis', name: 'Ellis Bathrooms' },
+    { id: 'con_timber', name: 'Timberlink Supplies' },
+  ],
+};
+
 /** Puts a stand-in bridge on `window`, and returns its functions so a test can look at the calls. */
 export function installBridge(overrides: Partial<BridgeApi> = {}): BridgeApi {
   const api: BridgeApi = {
@@ -366,6 +473,32 @@ export function installBridge(overrides: Partial<BridgeApi> = {}): BridgeApi {
       ),
     ),
     'review.getCount': vi.fn(() => Promise.resolve(ok({ count: 0 }))),
+    'review.list': vi.fn(() => Promise.resolve(ok(REVIEW))),
+    'review.post': vi.fn((input: { actions: readonly { lineId: string }[] }) =>
+      Promise.resolve(
+        ok({ posted: input.actions.map((a) => a.lineId), alsoPosted: [], failed: [] }),
+      ),
+    ),
+    'review.split': vi.fn((input: { lineId: string }) =>
+      Promise.resolve(ok({ posted: [input.lineId], alsoPosted: [], failed: [] })),
+    ),
+    'review.undo': vi.fn((input: { lineIds: readonly string[] }) =>
+      Promise.resolve(ok({ kind: 'undone' as const, lines: input.lineIds.length })),
+    ),
+    'review.savePayee': vi.fn((input: { name: string }) =>
+      Promise.resolve(
+        ok({
+          kind: 'saved' as const,
+          contactId: 'con_new',
+          name: input.name,
+          created: true,
+          kindOfContact: 'supplier' as const,
+          words: 'BUNNINGS',
+          alsoFilled: 2,
+        }),
+      ),
+    ),
+    'review.undoPayee': vi.fn(() => Promise.resolve(ok({ undone: true }))),
     pathForFile: vi.fn((file: File) => `/Users/someone/Downloads/${file.name}`),
     ...overrides,
   };

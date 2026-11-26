@@ -332,3 +332,132 @@ export type CommitOutcome =
     }
   /** The preview is gone (the books changed, or it was used already) or there was nothing new in it. */
   | { readonly kind: 'refused'; readonly reason: 'no-such-preview' | 'nothing-new' };
+
+// ---- To review (folder 06) ----------------------------------------------------------------------
+
+export const REVIEW_SHOWS = ['all', 'suggested', 'no-suggestion'] as const;
+export type ReviewShow = (typeof REVIEW_SHOWS)[number];
+
+/** Why the app suggests an account for a line, in the words under the account box. */
+export type SuggestionReason = 'same-as-last-time' | 'best-guess';
+
+export interface ReviewLineView {
+  readonly id: string;
+  readonly date: CalendarDate;
+  readonly description: string;
+  /** Money in is positive, money out negative. Spent and Received are worked out from it. */
+  readonly amount: Cents;
+  readonly bankAccountId: string;
+  readonly bankAccountName: string;
+  /** From/To: the contact saved for these words, or the one used last time. */
+  readonly payee: { readonly contactId: string; readonly name: string } | null;
+  /** An account, GST code and payee from how similar lines were posted before (spec 074). */
+  readonly suggestion: {
+    readonly accountId: string;
+    readonly taxCodeId: string | null;
+    readonly reason: SuggestionReason;
+  } | null;
+  /** An entry already in the books that this line is the bank's record of (spec 069a). */
+  readonly match: {
+    readonly entryId: string;
+    readonly date: CalendarDate;
+    /** The entry's payee, or its memo. */
+    readonly text: string;
+  } | null;
+  /** The other side of a transfer, in another of his accounts (spec 073). */
+  readonly transfer: {
+    readonly lineId: string;
+    readonly bankAccountId: string;
+    readonly bankAccountName: string;
+    readonly date: CalendarDate;
+    /** The other side is already posted, waiting in the transfers account. */
+    readonly alreadyPosted: boolean;
+  } | null;
+}
+
+export interface ReviewAccountChoice {
+  readonly id: string;
+  readonly code: string;
+  readonly name: string;
+  readonly type: AccountType;
+  /** The GST code a line to this account starts with. */
+  readonly defaultTaxCodeId: string | null;
+}
+
+export interface ReviewView {
+  /** The lines that fit the filters, oldest first, up to `REVIEW_PAGE_LIMIT`. */
+  readonly lines: readonly ReviewLineView[];
+  /** How many lines fit the bank account and search filters, by what the app has for them. */
+  readonly counts: {
+    readonly all: number;
+    readonly suggested: number;
+    readonly noSuggestion: number;
+  };
+  /** Every line waiting, whatever the filters: the count beside To review in the sidebar. */
+  readonly waiting: number;
+  readonly bankAccounts: readonly { readonly id: string; readonly name: string }[];
+  /** Accounts a line can be posted to. His bank accounts are reached with Transfer instead. */
+  readonly accounts: readonly ReviewAccountChoice[];
+  readonly taxCodes: readonly {
+    readonly id: string;
+    readonly shortCode: string;
+    readonly name: string;
+  }[];
+  readonly contacts: readonly { readonly id: string; readonly name: string }[];
+}
+
+/** At most this many lines are listed at once, oldest first. Posting them brings up the next. */
+export const REVIEW_PAGE_LIMIT = 200;
+
+/** What to do with one line. */
+export type ReviewAction =
+  | {
+      readonly kind: 'account';
+      readonly lineId: string;
+      /** Null when he has not chosen one: the line is reported as needing an account. */
+      readonly accountId: string | null;
+      readonly taxCodeId: string | null;
+      readonly payeeId: string | null;
+    }
+  | { readonly kind: 'match'; readonly lineId: string; readonly entryId: string }
+  | { readonly kind: 'transfer'; readonly lineId: string; readonly otherBankAccountId: string };
+
+export const POST_FAILURES = [
+  'needs-account',
+  'not-found',
+  'not-waiting',
+  'locked',
+  'inactive-account',
+  'use-transfer',
+  'no-longer-matches',
+  'not-set-up',
+  'invalid',
+] as const;
+export type PostFailure = (typeof POST_FAILURES)[number];
+
+export interface PostOutcome {
+  /** The lines posted, in the order asked. Undo takes these. */
+  readonly posted: readonly string[];
+  /** Lines posted alongside, such as the other side of a transfer. */
+  readonly alsoPosted: readonly string[];
+  readonly failed: readonly { readonly lineId: string; readonly reason: PostFailure }[];
+}
+
+export type UndoPostOutcome =
+  | { readonly kind: 'undone'; readonly lines: number }
+  | { readonly kind: 'refused'; readonly reason: 'locked' | 'not-posted' };
+
+export type SavePayeeOutcome =
+  | {
+      readonly kind: 'saved';
+      readonly contactId: string;
+      readonly name: string;
+      /** A new contact was made, rather than an existing one used. */
+      readonly created: boolean;
+      readonly kindOfContact: 'customer' | 'supplier' | 'both';
+      /** The words that now point to the contact, kept for Undo. */
+      readonly words: string;
+      /** Other waiting lines that now show this contact. */
+      readonly alsoFilled: number;
+    }
+  | { readonly kind: 'refused'; readonly reason: 'not-found' | 'empty-name' | 'no-words' };

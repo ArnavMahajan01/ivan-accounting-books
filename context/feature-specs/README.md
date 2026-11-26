@@ -219,6 +219,7 @@ The client posts bank lines: one at a time or many at once, with payees remember
 |---|---|
 | 068 | [To Review Screen](06-demo-4-to-review/068-review-screen.md) |
 | 069 | [Post One Line With an Account and GST](06-demo-4-to-review/069-post-one.md) |
+| 069a | [Match a Line to an Entry Already in the Books](06-demo-4-to-review/069a-match-existing-entry.md) (added 2026-11-25) |
 | 070 | [Post Many Lines at Once](06-demo-4-to-review/070-post-many.md) |
 | 071 | [Payees Saved and Filled In](06-demo-4-to-review/071-payees.md) |
 | 072 | [Split a Line Across Accounts](06-demo-4-to-review/072-split-line.md) |

@@ -13,6 +13,8 @@ export type WestpacFixture =
   | 'business-one-16-23-nov-2026-bad-date'
   | 'business-one-no-transactions'
   | 'cash-reserve-jul-nov-2026'
+  | 'business-one-21-23-nov-2026-demo-4'
+  | 'cash-reserve-21-23-nov-2026-demo-4'
   | 'other-account-16-nov-2026'
   | 'empty';
 

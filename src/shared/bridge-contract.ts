@@ -6,6 +6,7 @@ import { z } from 'zod';
 import type { BooksProblem, StoreProblem } from './kinds';
 import type { Result } from './result';
 import {
+  REVIEW_SHOWS,
   TRANSACTION_KINDS,
   TRANSACTION_PERIODS,
   type AccountsView,
@@ -13,8 +14,12 @@ import {
   type BooksState,
   type CommitOutcome,
   type HomeSummary,
+  type PostOutcome,
   type PreviewOutcome,
+  type ReviewView,
+  type SavePayeeOutcome,
   type UndoOutcome,
+  type UndoPostOutcome,
   type TransactionDetail,
   type TransactionsPage,
 } from './views';
@@ -33,6 +38,46 @@ export const transactionFiltersSchema = z
     search: z.string().max(100).optional(),
     limit: z.number().int().min(1).max(200).optional(),
     offset: z.number().int().min(0).max(1_000_000).optional(),
+  })
+  .strict();
+
+/** At most this many lines are posted, or undone, in one call. */
+export const REVIEW_BATCH_MAX = 500;
+
+export const reviewFiltersSchema = z
+  .object({
+    bankAccountId: idText('bnk').optional(),
+    show: z.enum(REVIEW_SHOWS).optional(),
+    search: z.string().max(100).optional(),
+  })
+  .strict();
+
+export const reviewActionSchema = z.discriminatedUnion('kind', [
+  z
+    .object({
+      kind: z.literal('account'),
+      lineId: idText('stl'),
+      accountId: idText('acc').nullable(),
+      taxCodeId: idText('tax').nullable(),
+      payeeId: idText('con').nullable(),
+    })
+    .strict(),
+  z.object({ kind: z.literal('match'), lineId: idText('stl'), entryId: idText('ent') }).strict(),
+  z
+    .object({
+      kind: z.literal('transfer'),
+      lineId: idText('stl'),
+      otherBankAccountId: idText('bnk'),
+    })
+    .strict(),
+]);
+
+const splitPartSchema = z
+  .object({
+    accountId: idText('acc'),
+    taxCodeId: idText('tax').nullable(),
+    /** Positive cents, with any GST in it. */
+    amount: z.number().int().min(1).max(Number.MAX_SAFE_INTEGER),
   })
   .strict();
 
@@ -56,6 +101,30 @@ export const bridgeContract = {
   'bank.commitImport': { input: z.object({ previewId: idText('pre') }).strict() },
   'bank.undoImport': { input: z.object({ batchId: idText('imp') }).strict() },
   'review.getCount': { input: noInput },
+  'review.list': { input: reviewFiltersSchema },
+  /** Posts each line in its own transaction: with an account, as a match, or as a transfer. */
+  'review.post': {
+    input: z.object({ actions: z.array(reviewActionSchema).min(1).max(REVIEW_BATCH_MAX) }).strict(),
+  },
+  'review.split': {
+    input: z
+      .object({
+        lineId: idText('stl'),
+        parts: z.array(splitPartSchema).min(1).max(20),
+        payeeId: idText('con').nullable(),
+      })
+      .strict(),
+  },
+  /** Takes back the last post: the lines it named. */
+  'review.undo': {
+    input: z.object({ lineIds: z.array(idText('stl')).min(1).max(REVIEW_BATCH_MAX) }).strict(),
+  },
+  'review.savePayee': {
+    input: z.object({ lineId: idText('stl'), name: z.string().min(1).max(100) }).strict(),
+  },
+  'review.undoPayee': {
+    input: z.object({ contactId: idText('con'), words: z.string().min(1).max(1000) }).strict(),
+  },
 } as const;
 
 export interface AppInfo {
@@ -98,6 +167,13 @@ export interface BridgeResults {
   'bank.undoImport': UndoOutcome;
   /** How many imported lines wait for review: the count on the sidebar. */
   'review.getCount': { readonly count: number };
+  'review.list': ReviewView;
+  'review.post': PostOutcome;
+  'review.split': PostOutcome;
+  'review.undo': UndoPostOutcome;
+  'review.savePayee': SavePayeeOutcome;
+  /** Whether the save was taken back. False when it had already gone. */
+  'review.undoPayee': { readonly undone: boolean };
 }
 
 export type BridgeName = keyof typeof bridgeContract;

@@ -21,7 +21,12 @@ import { commitImport, importPreviewView, previewImport } from '@services/import
 import { getTransaction } from '@services/get-transaction';
 import { listAccountsWithBalances } from '@services/list-accounts';
 import { listTransactions } from '@services/list-transactions';
+import { getReviewView } from '@services/list-review';
+import { postLines, postSplitLine } from '@services/post-line';
+import { savePayeeFromLine, undoSavePayee } from '@services/save-payee';
 import { undoImport } from '@services/undo-import';
+import { undoPost } from '@services/undo-post';
+import { asCents } from '@shared/money';
 import type { BridgeHandlers } from './bridge';
 import type { SessionError } from './books-session';
 import { createPreviewStore } from './preview-store';
@@ -151,5 +156,36 @@ export function createHandlers({
         return ok({ kind: 'undone', ...undone.value });
       }),
     'review.getCount': () => open((store) => ok(getReviewCount({ db: store.db }))),
+    'review.list': (filters) => open((store) => ok(getReviewView({ db: store.db }, filters))),
+    'review.post': ({ actions }) =>
+      open((store) => ok(postLines({ db: store.db, clock, random }, actions))),
+    'review.split': ({ lineId, parts, payeeId }) =>
+      open((store) => {
+        const posted = postSplitLine(
+          { db: store.db, clock, random },
+          { lineId, payeeId, parts: parts.map((p) => ({ ...p, amount: asCents(p.amount) })) },
+        );
+        return ok(
+          posted.ok
+            ? { posted: [lineId], alsoPosted: [], failed: [] }
+            : { posted: [], alsoPosted: [], failed: [{ lineId, reason: posted.error }] },
+        );
+      }),
+    'review.undo': ({ lineIds }) =>
+      open((store) => {
+        const undone = undoPost({ db: store.db, clock, random }, lineIds);
+        return ok(
+          undone.ok
+            ? { kind: 'undone', lines: undone.value.lines }
+            : { kind: 'refused', reason: undone.error },
+        );
+      }),
+    'review.savePayee': (input) =>
+      open((store) => {
+        const saved = savePayeeFromLine({ db: store.db, clock, random }, input);
+        return ok(saved.ok ? saved.value : { kind: 'refused', reason: saved.error });
+      }),
+    'review.undoPayee': (input) =>
+      open((store) => ok({ undone: undoSavePayee({ db: store.db, clock, random }, input).ok })),
   };
 }

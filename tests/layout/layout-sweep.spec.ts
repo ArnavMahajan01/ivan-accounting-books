@@ -24,6 +24,8 @@ const SIZES = [
 ] as const;
 
 const FIXTURE = join('tests', 'fixtures', 'westpac', 'business-one-2-13-nov-2026.ofx');
+// Lines the sample books do not hold, so To review has rows with accounts, splits and transfers.
+const DEMO_4 = join('tests', 'fixtures', 'westpac', 'business-one-21-23-nov-2026-demo-4.ofx');
 const SHOTS = join('test-results', 'layout');
 
 const PAGES = [
@@ -78,10 +80,18 @@ test.beforeAll(async () => {
     join(process.cwd(), FIXTURE),
   );
   await go(page, '#/bank');
-  await page.getByRole('button', { name: 'Import file' }).click();
-  await page.locator('[role="dialog"] .button--main').click();
-  await page.getByRole('dialog').getByRole('button', { name: 'Done' }).click();
-  await page.getByRole('dialog').waitFor({ state: 'detached' });
+  for (const file of [FIXTURE, DEMO_4]) {
+    await app.evaluate(
+      ({ dialog }, path) => {
+        dialog.showOpenDialog = () => Promise.resolve({ canceled: false, filePaths: [path] });
+      },
+      join(process.cwd(), file),
+    );
+    await page.getByRole('button', { name: 'Import file' }).click();
+    await page.locator('[role="dialog"] .button--main').click();
+    await page.getByRole('dialog').getByRole('button', { name: 'Done' }).click();
+    await page.getByRole('dialog').waitFor({ state: 'detached' });
+  }
 });
 
 test.afterAll(async () => {
@@ -111,6 +121,19 @@ test('no page, sheet or panel breaks at any window size', async () => {
     await page.locator('.side-panel').waitFor();
     problems.push(...(await problemsOn(page, 'transaction-panel', size)));
     await page.keyboard.press('Escape');
+
+    // To review's Split and Transfer sheets.
+    await go(page, '#/to-review');
+    await page.getByRole('button', { name: 'Split OFFICEWORKS 0412' }).click();
+    await page.getByRole('dialog').waitFor();
+    problems.push(...(await problemsOn(page, 'split-sheet', size)));
+    await page.keyboard.press('Escape');
+    await page.getByRole('dialog').waitFor({ state: 'detached' });
+    await page.getByRole('button', { name: 'Transfer TRANSFER TO CASH RESERVE 7730' }).click();
+    await page.getByRole('dialog').waitFor();
+    problems.push(...(await problemsOn(page, 'transfer-sheet', size)));
+    await page.keyboard.press('Escape');
+    await page.getByRole('dialog').waitFor({ state: 'detached' });
 
     // The import sheet, and the question about taking an import back.
     await go(page, '#/bank');

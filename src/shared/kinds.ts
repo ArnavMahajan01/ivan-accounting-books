@@ -48,8 +48,19 @@ export const AUDIT_KINDS = [
   'entry.post',
   'entry.change',
   'entry.remove',
+  'line.post',
+  'line.match',
+  'line.unpost',
+  'contact.remove',
 ] as const;
 export type AuditKind = (typeof AUDIT_KINDS)[number];
+
+/**
+ * The accounts the app posts to by itself (`account_role`): where GST goes, and where one side of a
+ * transfer waits for the other. Code finds them by role, never by code or name.
+ */
+export const ACCOUNT_ROLES = ['gst', 'transfers'] as const;
+export type AccountRole = (typeof ACCOUNT_ROLES)[number];
 
 /** Where a journal entry came from. A later spec that adds a source adds its kind here and in the table's CHECK. */
 export const ENTRY_SOURCE_KINDS = [

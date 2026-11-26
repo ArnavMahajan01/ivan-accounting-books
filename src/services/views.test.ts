@@ -118,7 +118,7 @@ describe('listAccountsWithBalances', () => {
     const tb = getTrialBalance(ctx, { from: null, to: day('2026-11-23') });
     if (!tb.ok) throw new Error('trial balance');
     expect(view.asAt).toBe('2026-11-23');
-    expect(view.accounts).toHaveLength(39);
+    expect(view.accounts).toHaveLength(40);
     for (const row of tb.value.rows) {
       const account = view.accounts.find((a) => a.id === row.accountId);
       expect(account?.balance, row.name).toBe(row.debit - row.credit);

@@ -57,7 +57,9 @@
   width: 100%;
 }
 
-.table__select {
+/* Needs the element too, for the same reason as the right-aligned columns above. */
+.table th.table__select,
+.table td.table__select {
   width: var(--space-6);
   text-align: center;
 }
