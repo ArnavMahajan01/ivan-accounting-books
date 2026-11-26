@@ -1,7 +1,7 @@
 // The chart of accounts with each balance as at today (spec 050). A debit balance is positive and
 // a credit balance negative, as in the trial balance, so these agree with it to the cent.
 
-import { listAccounts } from '@data/account-repository';
+import { accountsWithLines, listAccounts } from '@data/account-repository';
 import { sumLinesByAccount } from '@data/balance-queries';
 import { listBankAccounts } from '@data/bank-account-repository';
 import { listTaxCodes } from '@data/tax-code-repository';
@@ -18,6 +18,7 @@ export function listAccountsWithBalances(ctx: TodayContext): AccountsView {
     ]),
   );
   const taxCodes = new Map(listTaxCodes(ctx.db).map((t) => [t.id as string, t]));
+  const used = accountsWithLines(ctx.db);
   const banks = new Map(listBankAccounts(ctx.db).map((b) => [b.ledgerAccountId as string, b]));
   const accounts: AccountRow[] = listAccounts(ctx.db).map((account) => {
     const taxCode =
@@ -35,7 +36,13 @@ export function listAccountsWithBalances(ctx: TodayContext): AccountsView {
           : { shortCode: taxCode.shortCode, treatment: taxCode.treatment },
       balance: balances.get(account.id) ?? ZERO_CENTS,
       bank: bank === undefined ? null : { bank: bank.bank, lastFour: bank.lastFour },
+      usualTaxCodeId: account.defaultTaxCodeId,
+      parentId: account.parentId,
+      hasPostedLines: used.has(account.id),
     };
   });
-  return { asAt, accounts };
+  const codes = [...taxCodes.values()]
+    .filter((t) => t.active)
+    .map((t) => ({ id: t.id, shortCode: t.shortCode, name: t.name }));
+  return { asAt, accounts, taxCodes: codes };
 }

@@ -31,6 +31,8 @@ export interface NewAccount {
   readonly type: AccountType;
   /** The id of the account this one sits under. */
   readonly parentId?: string;
+  /** The GST code a line to it starts with (spec 084). */
+  readonly defaultTaxCodeId?: string | null;
 }
 
 type Outcome = Result<Account, ManageAccountError>;
@@ -72,7 +74,7 @@ export function addAccount(ctx: ServiceContext, input: NewAccount): Outcome {
       name,
       type: input.type,
       parentId: (input.parentId as Account['parentId'] | undefined) ?? null,
-      defaultTaxCodeId: null,
+      defaultTaxCodeId: (input.defaultTaxCodeId as Account['defaultTaxCodeId'] | undefined) ?? null,
       active: true,
       createdAt: now,
       updatedAt: now,
@@ -117,4 +119,26 @@ export function reactivateAccount(ctx: ServiceContext, id: string): Outcome {
   return changeAccount(ctx, id, 'account.reactivate', (existing) =>
     existing.active ? err('already-active') : ok({ ...existing, active: true }),
   );
+}
+
+/** Renames an account and changes its code in one step, from the Edit sheet (spec 084). */
+export function editAccount(
+  ctx: ServiceContext,
+  input: { readonly id: string; readonly code: string; readonly name: string },
+): Outcome {
+  return ctx.db.transaction((): Outcome => {
+    const existing = getAccountById(ctx.db, input.id);
+    if (existing === null) return err('not-found');
+    // Checked before anything is written: a refused code must not leave a new name behind.
+    const code = input.code.trim();
+    if (input.name.trim() === '') return err('empty-name');
+    if (code === '') return err('empty-code');
+    const holder = getAccountByCode(ctx.db, code);
+    if (holder !== null && holder.id !== existing.id) return err('code-in-use');
+    let current: Outcome = ok(existing);
+    if (input.name.trim() !== existing.name) current = renameAccount(ctx, input.id, input.name);
+    if (!current.ok) return current;
+    if (input.code.trim() !== existing.code) current = changeAccountCode(ctx, input.id, input.code);
+    return current;
+  })();
 }

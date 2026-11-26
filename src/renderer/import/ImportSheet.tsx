@@ -18,7 +18,36 @@ import {
   rejectionSentence,
   type RejectedLineView,
 } from './import-text';
+import { bridge } from '../bridge';
+import { useBooksState } from '../books-state';
 import './ImportSheet.css';
+
+/** "9 lines were posted by your rules", with Undo for all of them (spec 081). */
+function RulesPostedNote({ lineIds }: { readonly lineIds: readonly string[] }) {
+  const { refreshReviewCount } = useBooksState();
+  const [state, setState] = useState<'posted' | 'undone' | 'failed'>('posted');
+  const undo = async () => {
+    const api = bridge();
+    const result = await api['review.undo']({ lineIds: [...lineIds] });
+    setState(result.ok && result.value.kind === 'undone' ? 'undone' : 'failed');
+    refreshReviewCount();
+  };
+  return (
+    <li className="import-sheet__rules" aria-live="polite">
+      {state === 'posted' && (
+        <>
+          {plural(lineIds.length, 'line was', 'lines were')} posted by your rules.{' '}
+          <Button size="small" onClick={() => void undo()}>
+            Undo
+          </Button>
+        </>
+      )}
+      {state === 'undone' &&
+        `Undone. ${plural(lineIds.length, 'line waits', 'lines wait')} in To review.`}
+      {state === 'failed' && 'Those lines could not be put back, and nothing was changed.'}
+    </li>
+  );
+}
 
 export type ImportStep =
   | { readonly kind: 'closed' }
@@ -241,6 +270,15 @@ export function ImportSheet({ step, onClose, onConfirm, onChooseAnother }: Impor
               <li>
                 {plural(outcome.rejected, 'line', 'lines')} could not be read and{' '}
                 {outcome.rejected === 1 ? 'was' : 'were'} not imported.
+              </li>
+            )}
+            {outcome.postedByRules.length > 0 && (
+              <RulesPostedNote lineIds={outcome.postedByRules} />
+            )}
+            {outcome.rulesCouldNot > 0 && (
+              <li>
+                {plural(outcome.rulesCouldNot, 'line fits', 'lines fit')} a rule that posts by
+                itself but could not be posted, such as in a locked period. They wait in To review.
               </li>
             )}
           </ul>

@@ -127,6 +127,11 @@ export function Table<Row>({
 
   const onRowKeyDown = (event: KeyboardEvent<HTMLTableRowElement>, index: number, row: Row) => {
     if (event.target !== event.currentTarget) return;
+    // With Option, Command or Control held, a key is the page's own, such as moving a rule.
+    if (event.altKey || event.metaKey || event.ctrlKey) {
+      onOtherKey?.(event, row);
+      return;
+    }
     switch (event.key) {
       case 'ArrowDown':
         event.preventDefault();

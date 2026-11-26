@@ -28,6 +28,7 @@ describe('routes', () => {
       'Transactions',
       'Accounts',
       'Reports',
+      'Rules',
       'Shared sheets',
       'Accountant changes',
       'Settings',
@@ -52,7 +53,7 @@ describe('Sidebar', () => {
       />,
     );
     const nav = screen.getByRole('navigation', { name: 'Main' });
-    expect(nav.querySelectorAll('a')).toHaveLength(10);
+    expect(nav.querySelectorAll('a')).toHaveLength(11);
     expect(screen.getByRole('link', { name: 'Bank' }).getAttribute('aria-current')).toBe('page');
     expect(screen.getByRole('link', { name: 'Bank' }).getAttribute('href')).toBe('#/bank');
     expect(screen.getByRole('link', { name: /To review/ }).textContent).toContain('37');
@@ -158,7 +159,7 @@ describe('page shortcuts', () => {
     render(<Sidebar title="x" current="home" collapsed={false} onToggle={() => undefined} />);
     expect(screen.getByRole('link', { name: 'Home' }).getAttribute('title')).toBe('Home (⌘1)');
     expect(screen.getByRole('link', { name: 'Settings' }).getAttribute('title')).toBe(
-      'Settings (⌘9)',
+      'Settings (⌘,)',
     );
     expect(screen.getByRole('link', { name: 'Help' }).getAttribute('title')).toBe('Help (⌘?)');
     expect(screen.getByRole('button', { name: 'Hide sidebar' }).getAttribute('title')).toBe(

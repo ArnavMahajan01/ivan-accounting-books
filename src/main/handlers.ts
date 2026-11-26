@@ -26,6 +26,51 @@ import { postLines, postSplitLine } from '@services/post-line';
 import { savePayeeFromLine, undoSavePayee } from '@services/save-payee';
 import { undoImport } from '@services/undo-import';
 import { undoPost } from '@services/undo-post';
+import { moveEntries } from '@services/fix-entry';
+import {
+  addAccount,
+  deactivateAccount,
+  editAccount,
+  reactivateAccount,
+} from '@services/manage-accounts';
+import { checkReconcile, finishReconcile, type ReconcileInput } from '@services/reconcile';
+import {
+  getRulesView,
+  moveRule,
+  postByRules,
+  removeRule,
+  ruleOfferFor,
+  saveRule,
+  setRuleActive,
+  testRule,
+} from '@services/rules';
+import type { z } from 'zod';
+import type { reconcileSchema, ruleInputSchema } from '@shared/bridge-contract';
+import type { CalendarDate } from '@shared/dates';
+import type { RuleInput } from '@shared/rule-types';
+
+/** The bridge checked the rule's shape; amounts are whole cents. */
+function toRuleInput(rule: z.output<typeof ruleInputSchema>): RuleInput {
+  return {
+    ...rule,
+    conditions: rule.conditions.map((c) =>
+      c.field === 'description'
+        ? c
+        : c.op === 'equals'
+          ? { ...c, amount: asCents(c.amount) }
+          : { ...c, min: asCents(c.min), max: asCents(c.max) },
+    ),
+  };
+}
+
+/** The bridge checked the date's shape; a day that does not exist is caught by the service's lookups. */
+function toReconcileInput(input: z.output<typeof reconcileSchema>): ReconcileInput {
+  return {
+    bankAccountId: input.bankAccountId,
+    statementDate: input.statementDate as CalendarDate,
+    statementBalance: asCents(input.statementBalance),
+  };
+}
 import { asCents } from '@shared/money';
 import type { BridgeHandlers } from './bridge';
 import type { SessionError } from './books-session';
@@ -145,8 +190,17 @@ export function createHandlers({
         }
         previews.remove(previewId);
         const { added, skipped, rejected, accountName } = saved.value;
-        onImport?.('imported', { added, skipped, rejected });
-        return ok({ kind: 'imported', added, skipped, rejected, accountName });
+        const byRules = postByRules({ db: store.db, clock, random }, saved.value.batch.id);
+        onImport?.('imported', { added, skipped, rejected, postedByRules: byRules.posted.length });
+        return ok({
+          kind: 'imported',
+          added,
+          skipped,
+          rejected,
+          accountName,
+          postedByRules: byRules.posted,
+          rulesCouldNot: byRules.skipped.length,
+        });
       }),
     'bank.undoImport': ({ batchId }) =>
       open((store): Result<UndoOutcome, BridgeError> => {
@@ -187,5 +241,73 @@ export function createHandlers({
       }),
     'review.undoPayee': (input) =>
       open((store) => ok({ undone: undoSavePayee({ db: store.db, clock, random }, input).ok })),
+    'rules.list': () => open((store) => ok(getRulesView({ db: store.db }))),
+    'rules.save': ({ id, rule }) =>
+      open((store) => {
+        const saved = saveRule({ db: store.db, clock, random }, { id, rule: toRuleInput(rule) });
+        return ok(
+          saved.ok
+            ? { kind: 'saved', rule: saved.value }
+            : { kind: 'refused', reason: saved.error },
+        );
+      }),
+    'rules.setActive': ({ id, active }) =>
+      open((store) =>
+        ok({ changed: setRuleActive({ db: store.db, clock, random }, id, active).ok }),
+      ),
+    'rules.move': ({ id, toPosition }) =>
+      open((store) =>
+        ok({ changed: moveRule({ db: store.db, clock, random }, id, toPosition).ok }),
+      ),
+    'rules.remove': ({ id }) =>
+      open((store) => ok({ removed: removeRule({ db: store.db, clock, random }, id).ok })),
+    'rules.test': ({ rule }) => open((store) => ok(testRule({ db: store.db }, toRuleInput(rule)))),
+    'rules.offerFor': ({ lineId }) =>
+      open((store) => ok({ offer: ruleOfferFor({ db: store.db }, lineId) })),
+    'transactions.move': ({ entryIds, accountId }) =>
+      open((store) => ok(moveEntries({ db: store.db, clock, random }, entryIds, accountId))),
+    'accounts.add': (input) =>
+      open((store) => {
+        const added = addAccount(
+          { db: store.db, clock, random },
+          {
+            code: input.code,
+            name: input.name,
+            type: input.type,
+            ...(input.parentId === null ? {} : { parentId: input.parentId }),
+            defaultTaxCodeId: input.defaultTaxCodeId,
+          },
+        );
+        return ok(
+          added.ok
+            ? { kind: 'saved', id: added.value.id }
+            : { kind: 'refused', reason: added.error },
+        );
+      }),
+    'accounts.edit': ({ id, code, name }) =>
+      open((store) => {
+        const edited = editAccount({ db: store.db, clock, random }, { id, code, name });
+        return ok(edited.ok ? { kind: 'saved', id } : { kind: 'refused', reason: edited.error });
+      }),
+    'accounts.setActive': ({ id, active }) =>
+      open((store) => {
+        const ctx = { db: store.db, clock, random };
+        const changed = active ? reactivateAccount(ctx, id) : deactivateAccount(ctx, id);
+        return ok(changed.ok ? { kind: 'saved', id } : { kind: 'refused', reason: changed.error });
+      }),
+    'bank.checkReconcile': (input) =>
+      open((store) => {
+        const checked = checkReconcile({ db: store.db }, toReconcileInput(input));
+        return ok(checked.ok ? checked.value : null);
+      }),
+    'bank.finishReconcile': (input) =>
+      open((store) => {
+        const done = finishReconcile({ db: store.db, clock, random }, toReconcileInput(input));
+        return ok(
+          done.ok
+            ? { kind: 'done', lines: done.value.lines }
+            : { kind: 'refused', reason: done.error },
+        );
+      }),
   };
 }

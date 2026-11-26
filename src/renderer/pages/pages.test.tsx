@@ -23,9 +23,16 @@ describe('every page', () => {
   it.each(
     ROUTES.filter(
       (r) =>
-        !['home', 'settings', 'help', 'accounts', 'transactions', 'bank', 'to-review'].includes(
-          r.id,
-        ),
+        ![
+          'home',
+          'settings',
+          'help',
+          'accounts',
+          'transactions',
+          'bank',
+          'to-review',
+          'rules',
+        ].includes(r.id),
     ).map((r) => r.id),
   )('%s says in plain words that it is coming in a later version', (id) => {
     render(<Page route={id} />);

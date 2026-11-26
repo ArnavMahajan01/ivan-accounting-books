@@ -5,19 +5,30 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { getAccountByCode } from '@data/account-repository';
 import { sumLinesByAccount } from '@data/balance-queries';
+import { listBankAccounts } from '@data/bank-account-repository';
 import { countJournalEntries, countUnbalancedEntries } from '@data/journal-queries';
+import { listRules } from '@data/rule-repository';
 import { parseCalendarDate } from '@shared/dates';
+import { asCents } from '@shared/money';
 import type { ReviewAction } from '@shared/views';
 import { fixtureText, type WestpacFixture } from '../../tests/fixtures/westpac/fixtures';
 import { commitImport, importPreviewView, previewImport } from './import-file';
 import { getReviewView } from './list-review';
 import { postLines } from './post-line';
+import { checkReconcile, finishReconcile } from './reconcile';
+import { postByRules, saveRule } from './rules';
 import { buildSampleBooks } from './sample/build-sample-books';
 import { createTestContext } from './test-context';
 
 let ctx: ReturnType<typeof createTestContext>;
 const today = (() => {
   const parsed = parseCalendarDate('2026-11-23', 'YYYY-MM-DD');
+  if (!parsed.ok) throw new Error('date');
+  return parsed.value;
+})();
+
+const today20 = (() => {
+  const parsed = parseCalendarDate('2026-11-20', 'YYYY-MM-DD');
   if (!parsed.ok) throw new Error('date');
   return parsed.value;
 })();
@@ -135,5 +146,79 @@ describe('the Demo 4 files, after the earlier November files are matched', () =>
     const { preview } = demo4('2026-11-23');
     const view = importPreviewView(preview, 'pre_demo');
     expect(view.balance).toMatchObject({ kind: 'match', closing: 2123320 });
+  });
+});
+
+describe('Demo 5: rules posting on import, and reconciling (folder 07)', () => {
+  it('rules that post by themselves post the new lines they fit, and the rest wait', () => {
+    const rules = listRules(ctx.db);
+    const timber = rules.find((r) => r.name === 'Timberlink is always materials');
+    if (timber === undefined) throw new Error('sample rule');
+    saveRule(ctx, { id: timber.id, rule: { ...timber, autoPost: true } });
+    const bunnings = saveRule(ctx, {
+      id: null,
+      rule: {
+        name: 'Bunnings',
+        direction: 'out',
+        bankAccountIds: [],
+        matchMode: 'all',
+        conditions: [{ field: 'description', op: 'contains', text: 'BUNNINGS' }],
+        target: {
+          kind: 'account',
+          accountId: timber.target.kind === 'account' ? timber.target.accountId : '',
+          taxCodeId: 'tax_gst',
+        },
+        payeeId: null,
+        autoPost: true,
+      },
+    });
+    expect(bunnings.ok).toBe(true);
+    const prepared = previewImport(ctx, {
+      fileName: 'demo-5.ofx',
+      text: fixtureText('business-one-24-26-nov-2026-demo-5'),
+    });
+    if (!prepared.ok) throw new Error(prepared.error.reason);
+    const saved = commitImport(ctx, prepared.value);
+    if (!saved.ok) throw new Error(saved.error);
+    const byRules = postByRules(ctx, saved.value.batch.id);
+    expect(byRules.posted).toHaveLength(3);
+    expect(getReviewView(ctx).lines.map((l) => l.description)).toEqual([
+      'DEPOSIT SMITH RENOVATIONS INV 1063',
+      'WESTPAC ACCOUNT KEEPING FEE',
+    ]);
+    expect(countUnbalancedEntries(ctx.db)).toBe(0);
+  });
+
+  it('Business One reconciles to the 9 to 20 November statement with no difference', () => {
+    importFile('business-one-9-20-nov-2026');
+    const bank = listBankAccounts(ctx.db).find((b) => b.lastFour === '4821');
+    if (bank === undefined) throw new Error('bank');
+    const input = {
+      bankAccountId: bank.id,
+      statementDate: today20,
+      statementBalance: asCents(1864235),
+    };
+    expect(checkReconcile(ctx, input)).toMatchObject({ ok: true, value: { difference: 0 } });
+    expect(finishReconcile(ctx, input).ok).toBe(true);
+  });
+
+  it('a difference is explained only by lines the books do not hold yet', () => {
+    importFile('business-one-2-13-nov-2026');
+    importFile('business-one-9-20-nov-2026');
+    importFile('business-one-21-23-nov-2026-demo-4');
+    const bank = listBankAccounts(ctx.db).find((b) => b.lastFour === '4821');
+    if (bank === undefined) throw new Error('bank');
+    const day23 = parseCalendarDate('2026-11-23', 'YYYY-MM-DD');
+    if (!day23.ok) throw new Error('date');
+    const checked = checkReconcile(ctx, {
+      bankAccountId: bank.id,
+      statementDate: day23.value,
+      statementBalance: asCents(2123320),
+    });
+    expect(checked).toMatchObject({
+      ok: true,
+      value: { difference: 259085, explainedByWaiting: true },
+    });
+    expect(checked.ok && checked.value.waiting).toHaveLength(12);
   });
 });

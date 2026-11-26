@@ -40,7 +40,13 @@ describe('the shortcut list', () => {
       '⌘9',
     ]);
     expect(shortcutForPage('home')?.key).toBe('1');
-    expect(shortcutForPage('settings')?.key).toBe('9');
+    expect(shortcutForPage('accountant-changes')?.key).toBe('9');
+  });
+
+  it('gives Settings the Mac Settings key, Command-comma', () => {
+    const settings = shortcutForPage('settings');
+    expect(settings && formatShortcut(settings)).toBe('⌘,');
+    expect(settings && toAccelerator(settings)).toBe('Cmd+,');
   });
 
   it('gives Help the Mac Help key, Command-?', () => {

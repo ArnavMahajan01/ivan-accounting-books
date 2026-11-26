@@ -179,6 +179,8 @@ From `2211-bank-rules/`, Option 1, List and Edit Panel, with Option 2's "Do this
 - **The edit panel** has the same fields as his QuickBooks rule panel: name, money in or out, which accounts, conditions, then account, GST, payee, split, and whether it posts by itself. **Test** shows how many lines it would catch before saving.
 - **Rules from a line:** after he posts a line in To review, the app offers "Do this every time?" with the rule filled in.
 
+- **Built at specs 078 to 087 (2026-11-26):** the Rules page (Command-7) with the order (arrows, or Option with up or down), when, then, post by itself, On and Edit; the Edit rule panel beside the list on a wide window and over it on a narrower one, with Test and "See them"; To review shows "from your rule", a split rule's parts, a **Rules** button, and after a post "Do this every time for …?" with **New rule from this line**; the import sheet says how many lines rules posted, with Undo. Settings is Command-comma.
+
 ### Transactions and Accounts (folders 04 and 07)
 
 From `2211-transactions-and-accounts/`, Option 1, Tables, with Option 2's history panel and Option 3's "Move to".
@@ -189,7 +191,8 @@ From `2211-transactions-and-accounts/`, Option 1, Tables, with Option 2's histor
   - **Accounts:** his bank accounts first, then other assets, liabilities, equity, income and expenses. Columns: account (code and name), type, usual GST and balance in the books, with a Transactions link per row (reached by Enter on the row from the keyboard). Search by name or code. Inactive accounts are hidden behind a checkbox that appears only when there are some. A balance is a debit when positive and a credit when negative, so a credit shows with a minus sign (client question 29). The last statement balance joins bank accounts in folder 05.
   - **Transactions:** columns date, type (with Money in, Money out or Transfer beneath), payee (with the description beneath), account, before GST, GST and total. Filters: kind, dates (last 12 months to start with), account and search (a name, a word or an amount). 100 rows a page, with the totals of everything that matches underneath. Clicking a row, or Enter on it, opens the panel. A locked entry shows "Locked".
   - **The panel:** a side panel, not a dialog: the date, payee, description and amounts, "What it did to the books" (debits and credits, which are equal), and History (Posted, and each change in words). Escape or Close closes it, and focus goes back to the row. It floats over the list in windows narrower than 1500 wide, and sits beside it in wider ones.
-  - Moving entries between accounts in the row, "Move to…", and export wait for later specs.
+  - **Built at specs 083 and 084 (2026-11-26):** under each account name, **Change** opens a list of accounts (only for an entry through one bank account for one account, and never when locked); **Select** shows tick boxes and **Move N to…**. The table keeps its columns at 1100 wide because the list and the tick boxes appear only on asking. Accounts has **New account** and **Edit** on each row (name, code, stop or start using, with what happens to its transactions). Export waits for folder 08.
+  - **Reconcile (spec 086):** a Reconcile button beside each account on the Bank page opens a sheet: the statement's day and balance (from the last import), statement, books and difference, the difference in words with the waiting lines that explain it, and Finish at zero.
 
 ### Invoices and Customers (folder 10)
 

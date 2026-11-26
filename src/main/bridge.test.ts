@@ -260,6 +260,43 @@ describe('the books screens', () => {
     );
   });
 
+  it('rules.list, rules.save and bank.checkReconcile work through the handlers', async () => {
+    const h = await handlers();
+    const listed = await h['rules.list']({});
+    expect(listed.ok && listed.value.rules.map((r) => r.name)).toEqual([
+      'Timberlink is always materials',
+      'Westpac account fee',
+      'Phone and internet',
+    ]);
+    const refused = await h['rules.save']({
+      id: null,
+      rule: {
+        name: 'Half and half',
+        direction: 'out',
+        bankAccountIds: [],
+        matchMode: 'all',
+        conditions: [{ field: 'description', op: 'contains', text: 'X' }],
+        target: {
+          kind: 'split',
+          parts: [
+            { accountId: 'acc_none', taxCodeId: null, percentBp: 5000 },
+            { accountId: 'acc_none', taxCodeId: null, percentBp: 4000 },
+          ],
+        },
+        payeeId: null,
+        autoPost: false,
+      },
+    });
+    expect(refused).toEqual(ok({ kind: 'refused', reason: 'split-not-100' }));
+    expect(
+      await h['bank.checkReconcile']({
+        bankAccountId: 'bnk_none',
+        statementDate: '2026-11-20',
+        statementBalance: 0,
+      }),
+    ).toEqual(ok(null));
+  });
+
   it('answers an error, not a crash, when the books did not open', async () => {
     const h = createHandlers({
       ...importDeps,
@@ -368,6 +405,27 @@ describe('the contract’s input checks', () => {
     ['review.savePayee', { lineId: 'stl_1', name: '' }],
     ['review.savePayee', { lineId: 'stl_1', name: 'x'.repeat(101) }],
     ['review.undoPayee', { contactId: 'con_1' }],
+    ['rules.save', { id: null, rule: {} }],
+    ['rules.setActive', { id: 'acc_1', active: true }],
+    ['rules.move', { id: 'rul_1', toPosition: -1 }],
+    ['rules.offerFor', { lineId: 'ent_1' }],
+    ['transactions.move', { entryIds: [], accountId: 'acc_1' }],
+    [
+      'accounts.add',
+      { code: '', name: 'x', type: 'expense', parentId: null, defaultTaxCodeId: null },
+    ],
+    [
+      'accounts.add',
+      { code: '6200', name: 'x', type: 'stuff', parentId: null, defaultTaxCodeId: null },
+    ],
+    [
+      'bank.checkReconcile',
+      { bankAccountId: 'bnk_1', statementDate: '20/11/2026', statementBalance: 1 },
+    ],
+    [
+      'bank.finishReconcile',
+      { bankAccountId: 'bnk_1', statementDate: '2026-11-20', statementBalance: 1.5 },
+    ],
   ] as const)('%s refuses %j', async (name, input) => {
     expect(await run(name, input)).toEqual({ ok: false, error: { code: 'invalid-input' } });
   });

@@ -13,18 +13,17 @@ import { listBankAccounts } from '@data/bank-account-repository';
 import { listContacts } from '@data/contact-repository';
 import {
   listContactMatches,
-  listMatchableEntries,
   listOpenTransferLines,
   listPostedLineHistory,
   listWaitingLines,
   type ReviewLine,
 } from '@data/review-repository';
+import { listRules } from '@data/rule-repository';
 import { listTaxCodes } from '@data/tax-code-repository';
-import { MATCH_WINDOW_DAYS, findEntryMatch } from '@domain/entry-match';
+import { firstFittingRule } from '@domain/rules';
 import { contactForWords, descriptionWords } from '@domain/payees';
 import { suggestFor, type PastPosting } from '@domain/suggest';
 import { findTransferMatch } from '@domain/transfer-match';
-import { addDays, compareDates } from '@shared/dates';
 import { parseCents } from '@shared/money';
 import {
   REVIEW_PAGE_LIMIT,
@@ -32,7 +31,26 @@ import {
   type ReviewShow,
   type ReviewView,
 } from '@shared/views';
+import type { Rule } from '@shared/rule-types';
 import type { ReadContext } from './context';
+import { entryMatchesFor } from './line-matches';
+
+/** What a rule gives a line, as a suggestion: its account (the first, for a split) and GST code. */
+function ruleSuggestion(rule: Rule) {
+  const first =
+    rule.target.kind === 'account'
+      ? rule.target
+      : {
+          accountId: rule.target.parts[0]?.accountId ?? '',
+          taxCodeId: rule.target.parts[0]?.taxCodeId ?? null,
+        };
+  return {
+    accountId: first.accountId,
+    taxCodeId: first.taxCodeId,
+    payeeId: rule.payeeId,
+    reason: 'from-your-rule' as const,
+  };
+}
 
 export interface ReviewFilters {
   readonly bankAccountId?: string | undefined;
@@ -71,39 +89,28 @@ export function getReviewView(ctx: ReadContext, filters: ReviewFilters = {}): Re
     date: h.date,
   }));
 
-  // Entries that may be a waiting line's match: dated within the window of any waiting line.
-  const dates = waiting.map((l) => l.date).sort(compareDates);
-  const first = dates[0];
-  const last = dates.at(-1);
-  const matchable =
-    first === undefined || last === undefined
-      ? []
-      : listMatchableEntries(
-          db,
-          addDays(first, -MATCH_WINDOW_DAYS),
-          addDays(last, MATCH_WINDOW_DAYS),
-        );
+  const matches = entryMatchesFor(ctx, waiting);
+  const rules = listRules(db);
+  const accountNames = new Map<string, string>(listAccounts(db).map((a) => [a.id, a.name]));
   const openTransfers =
     transfersAccount === null ? [] : listOpenTransferLines(db, transfersAccount);
-  const claimed = new Set<string>();
 
   const views: ReviewLineView[] = waiting.map((line) => {
     const words = descriptionWords(line.description);
-    const entries = matchable.filter(
-      (e) => e.ledgerAccountId === line.bankLedgerAccountId && !claimed.has(e.id),
-    );
-    const entry = findEntryMatch(line, entries);
-    // Two lines for the same amount on nearby days must not both offer the same entry.
-    if (entry !== null) claimed.add(entry.id);
+    const entry = matches.get(line.id) ?? null;
 
     const otherSide =
       entry === null
         ? (findTransferMatch(line, waiting) ?? findTransferMatch(line, openTransfers))
         : null;
+    // A rule he made comes before a guess from past lines (spec 079).
+    const rule = entry === null && otherSide === null ? firstFittingRule(rules, line) : null;
     const suggestion =
-      entry === null && otherSide === null
-        ? suggestFor({ words, direction: direction(line.amount) }, history)
-        : null;
+      rule !== null
+        ? ruleSuggestion(rule)
+        : entry === null && otherSide === null
+          ? suggestFor({ words, direction: direction(line.amount) }, history)
+          : null;
     const savedContact = contactForWords(words, contactMatches)?.contactId ?? null;
     const payeeId = savedContact ?? suggestion?.payeeId ?? null;
     const payeeName = payeeId === null ? undefined : contactName.get(payeeId);
@@ -126,6 +133,20 @@ export function getReviewView(ctx: ReadContext, filters: ReviewFilters = {}): Re
               accountId: suggestion.accountId,
               taxCodeId: suggestion.taxCodeId,
               reason: suggestion.reason,
+              rule:
+                rule === null
+                  ? null
+                  : {
+                      id: rule.id,
+                      name: rule.name,
+                      split:
+                        rule.target.kind === 'split'
+                          ? rule.target.parts.map((p) => ({
+                              accountName: accountNames.get(p.accountId) ?? '',
+                              percentBp: p.percentBp,
+                            }))
+                          : null,
+                    },
             },
       match:
         entry === null

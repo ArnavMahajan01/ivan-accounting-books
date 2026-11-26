@@ -68,6 +68,14 @@ export interface ImportFlowReport {
 }
 
 /** What the sample-data flow saw on screen. Every field comes from the real page. */
+/** Reconciling Business One to the last statement from the Bank page (spec 086). */
+export interface ReconcileFlowReport {
+  /** The sheet's sentence about the difference. */
+  readonly said: string;
+  /** The Bank page's message after Finish. */
+  readonly notice: string;
+}
+
 /** To review after the imports (folder 06): a line posted with an account, and a payee saved. */
 export interface ReviewFlowReport {
   /** The message after posting one line with an account typed and Return. */
@@ -104,6 +112,8 @@ export interface SelfCheckReport {
   readonly imports: ImportFlowReport;
   /** Empty unless statement files were given to import. */
   readonly review: ReviewFlowReport;
+  /** Empty unless statement files were given to import. */
+  readonly reconcile: ReconcileFlowReport;
 }
 
 /**
@@ -238,6 +248,23 @@ const SELF_CHECK_SOURCE = `(async () => {
     }
   }
 
+  // Reconcile Business One to its last statement, filled in from the import, as he would.
+  const reconcile = { said: '', notice: '' };
+  if (importCount > 0) {
+    location.hash = '#/bank';
+    const open = await until(() => [...document.querySelectorAll('main button')].find((b) => (b.getAttribute('aria-label') || '').startsWith('Reconcile Business One')) || null);
+    if (open) {
+      open.click();
+      const sheet = await until(() => document.querySelector('[role="dialog"]'));
+      const said = sheet ? await until(() => sheet.querySelector('.transfer__found')) : null;
+      reconcile.said = said ? said.innerText.replace(/\\s+/g, ' ').trim() : '';
+      const finish = sheet ? await until(() => { const b = button('Finish', sheet); return b && !b.disabled ? b : null; }) : null;
+      if (finish) finish.click();
+      const notice = await until(() => { const n = document.querySelector('.bank__notice'); return n && n.textContent.includes('reconciled') ? n : null; });
+      reconcile.notice = notice ? notice.innerText.replace(/\\s+/g, ' ').trim() : '';
+    }
+  }
+
   // To review, as he would: an account typed on a line instead of its match, then Return; a payee
   // typed and Return; then the posted line looked up in Transactions.
   const review = { posted: '', payee: '', inTransactions: '' };
@@ -300,5 +327,6 @@ const SELF_CHECK_SOURCE = `(async () => {
     },
     imports,
     review,
+    reconcile,
   };
 })()`;

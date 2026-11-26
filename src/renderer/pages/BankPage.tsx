@@ -13,6 +13,7 @@ import { ConfirmDialog } from '../components/ConfirmDialog';
 import { EmptyState } from '../components/EmptyState';
 import { ErrorMessage } from '../components/ErrorMessage';
 import { Table, type TableColumn } from '../components/Table';
+import { ReconcileSheet } from '../bank/ReconcileSheet';
 import { useImport } from '../import/ImportProvider';
 import { periodText, plural } from '../import/import-text';
 import { PageToolbar } from '../layout/PageToolbar';
@@ -73,18 +74,39 @@ const COLUMNS: readonly TableColumn<BankAccountRow>[] = [
         </a>
       ),
   },
-  {
-    key: 'reconciled',
-    fit: true,
-    header: 'Reconciled',
-    cell: (account) =>
-      account.reconciledTo === null ? (
-        <span className="bank__none">Not yet</span>
-      ) : (
-        `to ${formatDateAU(account.reconciledTo)}`
-      ),
-  },
 ];
+
+/** The columns, with Reconcile in the last (spec 086). */
+function columnsWith(
+  onReconcile: (account: BankAccountRow) => void,
+): readonly TableColumn<BankAccountRow>[] {
+  return [
+    ...COLUMNS,
+    {
+      key: 'reconciled',
+      fit: true,
+      header: 'Reconciled',
+      cell: (account) => (
+        <span className="bank__reconciled">
+          {account.reconciledTo === null ? (
+            <span className="bank__none">Not yet</span>
+          ) : (
+            `to ${formatDateAU(account.reconciledTo)}`
+          )}
+          <Button
+            size="small"
+            aria-label={`Reconcile ${account.name}`}
+            onClick={() => {
+              onReconcile(account);
+            }}
+          >
+            Reconcile
+          </Button>
+        </span>
+      ),
+    },
+  ];
+}
 
 const UNDO_REFUSED: Record<Extract<UndoOutcome, { kind: 'refused' }>['reason'], string> = {
   'not-found': 'That import has already been taken back.',
@@ -97,6 +119,7 @@ const UNDO_REFUSED: Record<Extract<UndoOutcome, { kind: 'refused' }>['reason'], 
 /** What the page tells him after he tries to take an import back. */
 type UndoNotice =
   | { readonly kind: 'done'; readonly removed: number; readonly fileName: string }
+  | { readonly kind: 'reconciled'; readonly text: string }
   | { readonly kind: 'refused'; readonly text: string }
   | { readonly kind: 'failed' };
 
@@ -145,16 +168,18 @@ function LastImports({
 function Accounts({
   view,
   onUndo,
+  onReconcile,
 }: {
   readonly view: BankView;
   readonly onUndo: (account: BankAccountRow) => void;
+  readonly onReconcile: (account: BankAccountRow) => void;
 }) {
   const hasStatements = view.accounts.some((a) => a.lastStatement !== null || a.linesToReview > 0);
   return (
     <>
       <Table
         label="Bank accounts"
-        columns={COLUMNS}
+        columns={columnsWith(onReconcile)}
         rows={view.accounts}
         rowKey={(account) => account.id}
       />
@@ -178,6 +203,7 @@ export function BankPage() {
   const { refreshReviewCount } = useBooksState();
   const [confirming, setConfirming] = useState<BankAccountRow | null>(null);
   const [notice, setNotice] = useState<UndoNotice | null>(null);
+  const [reconciling, setReconciling] = useState<BankAccountRow | null>(null);
 
   const undo = (account: BankAccountRow) => {
     const last = account.undoableImport;
@@ -240,6 +266,10 @@ export function BankPage() {
         ) : (
           <Accounts
             view={state.value}
+            onReconcile={(account) => {
+              setNotice(null);
+              setReconciling(account);
+            }}
             onUndo={(account) => {
               setNotice(null);
               setConfirming(account);
@@ -247,13 +277,30 @@ export function BankPage() {
           />
         ))}
       {notice !== null && (
-        <p className="bank__notice" role={notice.kind === 'done' ? 'status' : 'alert'}>
+        <p
+          className="bank__notice"
+          role={notice.kind === 'done' || notice.kind === 'reconciled' ? 'status' : 'alert'}
+        >
+          {notice.kind === 'reconciled' && notice.text}
           {notice.kind === 'done' &&
             `${plural(notice.removed, 'line', 'lines')} removed from To review. You can import ${notice.fileName} again.`}
           {notice.kind === 'refused' && notice.text}
           {notice.kind === 'failed' &&
             'The import could not be taken back, and nothing was changed. Try again.'}
         </p>
+      )}
+      {reconciling !== null && (
+        <ReconcileSheet
+          account={reconciling}
+          onClose={() => {
+            setReconciling(null);
+          }}
+          onDone={(text) => {
+            setReconciling(null);
+            setNotice({ kind: 'reconciled', text });
+            reload();
+          }}
+        />
       )}
       {confirming?.undoableImport != null && (
         <ConfirmDialog

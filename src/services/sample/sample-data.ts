@@ -555,3 +555,43 @@ export function continuationItems(fy: number): SampleItem[] {
   }
   return items;
 }
+
+/** Three invented bank rules (spec 079), as in the signed-off wireframe. None posts by itself. */
+export const SAMPLE_RULES: readonly {
+  readonly name: string;
+  readonly contains: string;
+  readonly account: string;
+  readonly tax: TaxShort;
+  readonly payee: string | null;
+  readonly split?: readonly {
+    readonly account: string;
+    readonly tax: TaxShort;
+    readonly percentBp: number;
+  }[];
+}[] = [
+  {
+    name: 'Timberlink is always materials',
+    contains: 'TIMBERLINK',
+    account: '5000',
+    tax: 'GST',
+    payee: 'Timberlink',
+  },
+  {
+    name: 'Westpac account fee',
+    contains: 'WESTPAC ACCOUNT KEEPING',
+    account: '6010',
+    tax: 'INP',
+    payee: null,
+  },
+  {
+    name: 'Phone and internet',
+    contains: 'TELSTRA',
+    account: '6100',
+    tax: 'GST',
+    payee: null,
+    split: [
+      { account: '6100', tax: 'GST', percentBp: 7000 },
+      { account: '3200', tax: 'N-T', percentBp: 3000 },
+    ],
+  },
+];

@@ -78,3 +78,9 @@ export function updateAccount(db: Db, account: Account): void {
     account.id,
   );
 }
+
+/** The accounts that have at least one posted line, by id. */
+export function accountsWithLines(db: Db): Set<string> {
+  const rows = db.prepare('SELECT DISTINCT account_id FROM journal_line').all();
+  return new Set(rows.map((r) => z.object({ account_id: z.string() }).parse(r).account_id));
+}

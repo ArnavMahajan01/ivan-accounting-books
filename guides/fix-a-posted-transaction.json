@@ -1,0 +1,44 @@
+{
+  "id": "fix-a-posted-transaction",
+  "title": "Fix a posted transaction",
+  "group": "Your books",
+  "summary": "How to change the account of a transaction you have already posted, one at a time or several at once.",
+  "sections": [
+    {
+      "heading": "Change one",
+      "steps": [
+        {
+          "text": "Click Transactions in the sidebar, and find the transaction. Search by a word or an amount if there are many.",
+          "image": {
+            "file": "transactions-change.png",
+            "description": "The Transactions list with sample data. In the first row the account list is open, to choose another account. The other rows show their account's name with Change underneath."
+          }
+        },
+        {
+          "text": "Click Change under its account, and choose the right account. The GST is worked out again from that account's usual GST code."
+        },
+        {
+          "text": "Click the row to see the transaction. Its History says what changed and when."
+        }
+      ]
+    },
+    {
+      "heading": "Move several at once",
+      "steps": [
+        {
+          "text": "Click Select, and tick the transactions you want to move."
+        },
+        {
+          "text": "Choose the account under Move to, and click Move. Each one is changed on its own, with its own history."
+        }
+      ]
+    },
+    {
+      "heading": "If something goes wrong",
+      "paragraphs": [
+        "There is no Change: the transaction is shared across several accounts, such as a split, or it is in a locked period. A locked one says Locked, because its BAS is done.",
+        "You chose the wrong account: click Change again and choose the right one."
+      ]
+    }
+  ]
+}

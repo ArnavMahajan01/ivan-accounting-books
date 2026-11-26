@@ -35,6 +35,7 @@ const PAGES = [
   ['transactions', '#/transactions'],
   ['accounts', '#/accounts'],
   ['reports', '#/reports'],
+  ['rules', '#/rules'],
   ['shared-sheets', '#/shared-sheets'],
   ['accountant-changes', '#/accountant-changes'],
   ['settings', '#/settings'],
@@ -117,7 +118,13 @@ test('no page, sheet or panel breaks at any window size', async () => {
     // The transaction panel, over the list.
     await go(page, '#/transactions');
     await page.locator('table[aria-label="Transactions"] .table__row').first().waitFor();
-    await page.locator('table[aria-label="Transactions"] .table__row').nth(1).click();
+    // The date cell: the middle of a row is now the account picker (spec 083).
+    await page
+      .locator('table[aria-label="Transactions"] .table__row')
+      .nth(1)
+      .locator('td')
+      .nth(1)
+      .click();
     await page.locator('.side-panel').waitFor();
     problems.push(...(await problemsOn(page, 'transaction-panel', size)));
     await page.keyboard.press('Escape');
@@ -132,6 +139,25 @@ test('no page, sheet or panel breaks at any window size', async () => {
     await page.getByRole('button', { name: 'Transfer TRANSFER TO CASH RESERVE 7730' }).click();
     await page.getByRole('dialog').waitFor();
     problems.push(...(await problemsOn(page, 'transfer-sheet', size)));
+    await page.keyboard.press('Escape');
+    await page.getByRole('dialog').waitFor({ state: 'detached' });
+
+    // Folder 07: the rule panel, a new account, and reconciling.
+    await go(page, '#/rules');
+    await page.getByRole('button', { name: 'Edit Phone and internet' }).click();
+    await page.locator('.side-panel').waitFor();
+    problems.push(...(await problemsOn(page, 'rule-panel', size)));
+    await page.keyboard.press('Escape');
+    await go(page, '#/accounts');
+    await page.getByRole('button', { name: 'New account' }).click();
+    await page.getByRole('dialog').waitFor();
+    problems.push(...(await problemsOn(page, 'account-sheet', size)));
+    await page.keyboard.press('Escape');
+    await page.getByRole('dialog').waitFor({ state: 'detached' });
+    await go(page, '#/bank');
+    await page.getByRole('button', { name: /^Reconcile Business One/ }).click();
+    await page.getByRole('dialog').waitFor();
+    problems.push(...(await problemsOn(page, 'reconcile-sheet', size)));
     await page.keyboard.press('Escape');
     await page.getByRole('dialog').waitFor({ state: 'detached' });
 

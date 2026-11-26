@@ -97,3 +97,46 @@
   color: var(--color-text-secondary);
   font-size: var(--font-size-label);
 }
+
+.bank__reconciled {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.reconcile {
+  display: grid;
+  gap: var(--space-3);
+  min-width: 420px;
+}
+
+.reconcile__inputs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.reconcile__balance {
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+
+.reconcile__figures {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: start;
+  gap: var(--space-1) var(--space-5);
+  margin: 0;
+  font-size: var(--font-size-label);
+}
+
+.reconcile__figures dd {
+  margin: 0;
+  text-align: end;
+}
+
+.reconcile__lines {
+  margin: 0;
+  padding-inline-start: var(--space-4);
+  font-size: var(--font-size-label);
+}

@@ -43,6 +43,8 @@ The script and the questions to ask are in `demo-scripts/demo-4-categorising.md`
 
 ## Demo 5: Rules, Fixing Entries and Reconciling (spec 088)
 
+The script and the questions to ask are in `demo-scripts/demo-5-rules-and-reconciling.md`. The demo has not been held yet.
+
 | What he said | Screen | Who and when | Spec |
 |---|---|---|---|
 | | | | |

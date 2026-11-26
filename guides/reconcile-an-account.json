@@ -1,0 +1,34 @@
+{
+  "id": "reconcile-an-account",
+  "title": "Reconcile an account",
+  "group": "Bank",
+  "summary": "How to check that your books agree with a Westpac statement, so you know nothing is missing.",
+  "sections": [
+    {
+      "heading": "Reconcile",
+      "steps": [
+        {
+          "text": "Click Bank in the sidebar, then Reconcile beside the account."
+        },
+        {
+          "text": "Check the statement date and the closing balance. They are filled in from the last file you imported; change them to match a paper or PDF statement if you like.",
+          "image": {
+            "file": "reconcile-sheet.png",
+            "description": "The Reconcile sheet for Business One with sample data. The statement date is 20/11/2026 and the closing balance $18,642.35. Statement, your books and the difference are listed, the difference is $0.00, and it says your books agree with the statement. Cancel and Finish are at the bottom."
+          }
+        },
+        {
+          "text": "Read the difference. At $0.00 your books agree with the statement: click Finish. The Bank page then says the date it is reconciled to."
+        }
+      ]
+    },
+    {
+      "heading": "If there is a difference",
+      "paragraphs": [
+        "Lines from the statement that are not posted yet are listed under it. Post them in To review, then reconcile again.",
+        "If nothing is listed, check the balance you typed, and look for a line missing from your books or posted to the wrong bank account.",
+        "Once reconciled, a line it covered cannot be undone from To review. Change its account in Transactions if you need to."
+      ]
+    }
+  ]
+}

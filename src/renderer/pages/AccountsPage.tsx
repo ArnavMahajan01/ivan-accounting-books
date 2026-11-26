@@ -1,6 +1,6 @@
 import { Search } from 'lucide-react';
 import { useMemo, useState } from 'react';
-import { BookOpen } from 'lucide-react';
+import { BookOpen, Plus } from 'lucide-react';
 import type { AccountType } from '@shared/kinds';
 import { formatDateAU } from '@shared/dates';
 import type { AccountRow, AccountsView } from '@shared/views';
@@ -11,7 +11,9 @@ import { Table, type TableColumn } from '../components/Table';
 import { PageToolbar } from '../layout/PageToolbar';
 import { transactionsHref } from '../routes';
 import { loadAccounts } from './data-status';
-import { useBridge } from './use-bridge';
+import { AccountSheet } from '../accounts/AccountSheet';
+import { Button } from '../components/Button';
+import { useBridgeQuery } from './use-bridge';
 import './AccountsPage.css';
 
 // The chart is grouped as his QuickBooks page is, with his bank accounts first (wireframe W05b).
@@ -108,7 +110,32 @@ const COLUMNS: readonly TableColumn<AccountRow>[] = [
   },
 ];
 
-function Chart({ view }: { readonly view: AccountsView }) {
+function Chart({
+  view,
+  onEdit,
+}: {
+  readonly view: AccountsView;
+  readonly onEdit: (account: AccountRow) => void;
+}) {
+  const columns: readonly TableColumn<AccountRow>[] = [
+    ...COLUMNS,
+    {
+      key: 'edit',
+      header: '',
+      fit: true,
+      cell: (account) => (
+        <Button
+          size="small"
+          aria-label={`Edit ${account.name}`}
+          onClick={() => {
+            onEdit(account);
+          }}
+        >
+          Edit
+        </Button>
+      ),
+    },
+  ];
   const [query, setQuery] = useState('');
   const [showInactive, setShowInactive] = useState(false);
 
@@ -164,7 +191,7 @@ function Chart({ view }: { readonly view: AccountsView }) {
         <div className="accounts__table">
           <Table
             label="Chart of accounts"
-            columns={COLUMNS}
+            columns={columns}
             rows={rows}
             rowKey={(account) => account.id}
             groupBy={(account) => groupOf(account)}
@@ -183,10 +210,47 @@ function Chart({ view }: { readonly view: AccountsView }) {
 }
 
 export function AccountsPage() {
-  const accounts = useBridge<AccountsView>(loadAccounts);
+  const { state: accounts, reload } = useBridgeQuery<AccountsView>(loadAccounts, 'accounts');
+  // Null: no sheet. 'new': New account. Otherwise the account being edited.
+  const [editing, setEditing] = useState<AccountRow | 'new' | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
   return (
     <>
-      <PageToolbar title="Accounts" />
+      <PageToolbar
+        title="Accounts"
+        mainAction={
+          accounts.status === 'ready' ? (
+            <Button
+              variant="main"
+              icon={Plus}
+              onClick={() => {
+                setEditing('new');
+              }}
+            >
+              New account
+            </Button>
+          ) : undefined
+        }
+      />
+      {notice !== null && (
+        <p className="accounts__notice" role="status">
+          {notice}
+        </p>
+      )}
+      {editing !== null && accounts.status === 'ready' && (
+        <AccountSheet
+          view={accounts.value}
+          account={editing === 'new' ? null : editing}
+          onClose={() => {
+            setEditing(null);
+          }}
+          onSaved={(text) => {
+            setEditing(null);
+            setNotice(text);
+            reload();
+          }}
+        />
+      )}
       {accounts.status === 'loading' && (
         <section
           className="page-surface accounts__loading"
@@ -208,7 +272,7 @@ export function AccountsPage() {
             />
           </section>
         ) : (
-          <Chart view={accounts.value} />
+          <Chart view={accounts.value} onEdit={setEditing} />
         ))}
     </>
   );

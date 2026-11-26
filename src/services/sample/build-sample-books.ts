@@ -25,6 +25,7 @@ import { addContact } from '../add-contact';
 import type { ServiceContext } from '../context';
 import { renameAccount } from '../manage-accounts';
 import { changeEntry, postEntry } from '../post-journal';
+import { saveRule } from '../rules';
 import { setupBusiness } from '../setup-business';
 import {
   continuationItems,
@@ -33,6 +34,7 @@ import {
   SAMPLE_BANK_ACCOUNTS,
   SAMPLE_BUSINESS,
   SAMPLE_CONTACTS,
+  SAMPLE_RULES,
   SAMPLE_SEED,
   type SampleEntryItem,
   type SampleItem,
@@ -245,6 +247,39 @@ export function buildSampleBooks(
     .forEach(({ operation }) => {
       operation.run();
     });
+
+  // His rules, as he might have made them in QuickBooks (spec 079). Made last, so the entries
+  // above keep the ids they had before rules existed. None posts by itself: Demo 5 shows that.
+  for (const rule of SAMPLE_RULES) {
+    const saved = saveRule(sctx, {
+      id: null,
+      rule: {
+        name: rule.name,
+        direction: 'out',
+        bankAccountIds: [],
+        matchMode: 'all',
+        conditions: [{ field: 'description', op: 'contains', text: rule.contains }],
+        target:
+          rule.split === undefined
+            ? {
+                kind: 'account',
+                accountId: accountId(rule.account),
+                taxCodeId: taxCode(rule.tax).taxCodeId,
+              }
+            : {
+                kind: 'split',
+                parts: rule.split.map((p) => ({
+                  accountId: accountId(p.account),
+                  taxCodeId: taxCode(p.tax).taxCodeId,
+                  percentBp: p.percentBp,
+                })),
+              },
+        payeeId: rule.payee === null ? null : (contactIds.get(rule.payee) ?? null),
+        autoPost: false,
+      },
+    });
+    if (!saved.ok) fail('add rule', saved.error);
+  }
 
   const lastEntryDate = items.at(-1)?.date ?? today;
   return {

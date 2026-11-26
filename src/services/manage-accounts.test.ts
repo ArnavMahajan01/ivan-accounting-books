@@ -154,6 +154,7 @@ describe('deactivateAccount and reactivateAccount', () => {
       'addAccount',
       'changeAccountCode',
       'deactivateAccount',
+      'editAccount',
       'reactivateAccount',
       'renameAccount',
     ]);

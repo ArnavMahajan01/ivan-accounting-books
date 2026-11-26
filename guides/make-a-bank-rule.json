@@ -1,0 +1,50 @@
+{
+  "id": "make-a-bank-rule",
+  "title": "Make a bank rule",
+  "group": "Rules",
+  "summary": "How to tell the app what to do with bank lines like these every time, so you do not choose the account again.",
+  "sections": [
+    {
+      "heading": "Make a rule",
+      "paragraphs": [
+        "In QuickBooks these were the Rules under Banking. A rule says which lines it is for, and what to give them: an account and a GST code, or a split, and a payee."
+      ],
+      "steps": [
+        {
+          "text": "Click Rules in the sidebar, then New rule. Or, after you post a line in To review, click New rule from this line when the app asks Do this every time.",
+          "image": {
+            "file": "rules-page.png",
+            "description": "The Rules page with sample data: three rules in order, and the Edit rule panel open for Timberlink is always materials, with its name, money out in all bank accounts, description contains TIMBERLINK, Materials and supplies with GST, and the payee Timberlink."
+          }
+        },
+        {
+          "text": "Give it a name, and choose money in or out, and which bank accounts."
+        },
+        {
+          "text": "Under When, choose what the line's description contains, is, or starts with. Click Condition to add another, such as an amount."
+        },
+        {
+          "text": "Under Then, type the account and choose the GST code. Click Add a split to share each line by percentages that add up to 100%."
+        },
+        {
+          "text": "Click Test. It says how many lines in To review, and how many posted lines, the rule would catch. Click See them to check."
+        },
+        {
+          "text": "Click Save. Lines in To review that the rule fits now show from your rule under the account."
+        }
+      ]
+    },
+    {
+      "heading": "Rules that post by themselves",
+      "paragraphs": [
+        "Tick Post matching lines by themselves, and the lines the rule fits are posted as soon as you import a file. The import says how many, with Undo. A line in a locked period is never posted this way: it waits in To review."
+      ]
+    },
+    {
+      "heading": "The order of your rules",
+      "paragraphs": [
+        "Rules are tried in order, and the first that fits a line wins. Use the arrows in the Order column, or press Option with the up or down key on a rule, to move it. Untick On to stop using a rule without deleting it."
+      ]
+    }
+  ]
+}

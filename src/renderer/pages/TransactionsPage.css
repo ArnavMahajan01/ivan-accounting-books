@@ -145,3 +145,46 @@
     box-shadow: var(--shadow-raised);
   }
 }
+
+.transactions__move {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.transactions__account {
+  /* As wide as its column, not its longest account name, so the table never scrolls sideways. */
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  padding: var(--space-1) var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  font: inherit;
+}
+
+.transactions__notice {
+  margin: 0 0 var(--space-3);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-label);
+}
+
+.transactions__change {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-brand);
+  font: inherit;
+  font-size: var(--font-size-caption);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+.transactions__change:focus-visible {
+  outline: var(--size-focus-ring) solid var(--color-focus-ring);
+  outline-offset: 2px;
+  border-radius: var(--radius-control);
+}

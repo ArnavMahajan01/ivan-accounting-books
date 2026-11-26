@@ -20,6 +20,7 @@ Business One's closing balance on 20 November is the sample books' $18,642.35, s
 | `cash-reserve-jul-nov-2026.ofx` | Business Cash Reserve ··7730: three transfers in, closing balance $25,000.00 | A second account, matched by its last four digits |
 | `business-one-21-23-nov-2026-demo-4.ofx` | Business One, 21 to 23 November: 12 lines that are **not** in the sample books, for Demo 4 (To review). Three from TOTAL TOOLS MASCOT, a shop the sample books have never seen; OFFICEWORKS to split; a transfer of $1,500.00 to Cash Reserve; deposits and purchases from places the earlier files have. Closing balance $21,233.20, which is the 9 to 20 November file's $18,642.35 plus these lines | Posting with an account, payees filling in, a split, a transfer pair, suggestions from the lines matched earlier |
 | `cash-reserve-21-23-nov-2026-demo-4.ofx` | Business Cash Reserve, 23 November: the other side of that transfer, $1,500.00 in. Closing balance $26,500.00 | The transfer pairs across two accounts |
+| `business-one-24-26-nov-2026-demo-5.ofx` | Business One, 24 to 26 November: 5 lines for Demo 5 (rules). Two BUNNINGS, one TIMBERLINK, a deposit and the Westpac fee. Closing balance $22,373.35, following the Demo 4 file | Rules that post by themselves on import |
 | `other-account-16-nov-2026.ofx` | An account ending 9999, which is not one of his | "This file is for an account that is not in your books" |
 | `business-one-no-transactions.ofx` | The right shape, with no transactions | A statement with nothing in it |
 | `empty.ofx` | A file of zero bytes | An empty file |

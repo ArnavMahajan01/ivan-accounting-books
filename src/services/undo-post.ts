@@ -8,6 +8,7 @@
 
 import { getBusiness } from '@data/business-repository';
 import { getJournalEntry } from '@data/journal-queries';
+import { reconciledLineIds } from '@data/reconcile-repository';
 import {
   getReviewLine,
   linesForEntry,
@@ -21,7 +22,7 @@ import { recordAudit } from './audit';
 import type { ServiceContext } from './context';
 import { removeEntry } from './post-journal';
 
-export type UndoPostRefusal = 'locked' | 'not-posted';
+export type UndoPostRefusal = 'locked' | 'not-posted' | 'reconciled';
 
 export function undoPost(
   ctx: ServiceContext,
@@ -46,6 +47,8 @@ export function undoPost(
     for (const entry of entries.values()) {
       for (const line of linesForEntry(ctx.db, entry.id)) back.set(line.id, line);
     }
+    // A line a reconciliation covers stays as it is (spec 085).
+    if (reconciledLineIds(ctx.db, [...back.keys()]).size > 0) return err('reconciled');
     for (const line of back.values()) {
       markLineWaiting(ctx.db, line.id);
       if (line.pairedLineId !== null && !back.has(line.pairedLineId)) {

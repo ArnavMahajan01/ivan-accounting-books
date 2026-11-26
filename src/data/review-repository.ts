@@ -15,6 +15,7 @@ import { calendarDateColumn, centsColumn, timestampColumn } from './row-types';
 export interface ReviewLine {
   readonly id: Id<'stl'>;
   readonly bankAccountId: Id<'bnk'>;
+  readonly batchId: Id<'imp'>;
   readonly bankAccountName: string;
   readonly bankLedgerAccountId: Id<'acc'>;
   readonly date: CalendarDate;
@@ -26,13 +27,14 @@ export interface ReviewLine {
   readonly pairedLineId: Id<'stl'> | null;
 }
 
-const LINE_SELECT = `SELECT s.id, s.bank_account_id, b.name AS bank_name, b.ledger_account_id,
+const LINE_SELECT = `SELECT s.id, s.bank_account_id, s.batch_id, b.name AS bank_name, b.ledger_account_id,
     s.line_date, s.description, s.amount_cents, s.status, s.entry_id, s.paired_line_id
   FROM statement_line s JOIN bank_account b ON b.id = s.bank_account_id`;
 
 const lineRow = z.object({
   id: z.string().regex(/^stl_/),
   bank_account_id: z.string().regex(/^bnk_/),
+  batch_id: z.string().regex(/^imp_/),
   bank_name: z.string(),
   ledger_account_id: z.string().regex(/^acc_/),
   line_date: calendarDateColumn,
@@ -48,6 +50,7 @@ function toReviewLine(row: unknown): ReviewLine {
   return {
     id: r.id as Id<'stl'>,
     bankAccountId: r.bank_account_id as Id<'bnk'>,
+    batchId: r.batch_id as Id<'imp'>,
     bankAccountName: r.bank_name,
     bankLedgerAccountId: r.ledger_account_id as Id<'acc'>,
     date: r.line_date,
@@ -70,6 +73,11 @@ export function listWaitingLines(db: Db): ReviewLine[] {
     .prepare(`${LINE_SELECT} WHERE s.status = 'to-review' ORDER BY s.line_date, s.rowid`)
     .all()
     .map(toReviewLine);
+}
+
+/** Every imported line, oldest first: for testing a rule against them all (spec 080). */
+export function listAllLines(db: Db): ReviewLine[] {
+  return db.prepare(`${LINE_SELECT} ORDER BY s.line_date, s.rowid`).all().map(toReviewLine);
 }
 
 /** The lines posted with this entry: one, or two for a transfer posted as a pair. */

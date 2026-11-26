@@ -5,7 +5,13 @@
 import { z } from 'zod';
 
 /** The feature groups Help lists guides under, in the order shown. A new folder adds its group here. */
-export const GUIDE_GROUPS = ['Getting started', 'Your books', 'Bank', 'To review'] as const;
+export const GUIDE_GROUPS = [
+  'Getting started',
+  'Your books',
+  'Bank',
+  'To review',
+  'Rules',
+] as const;
 export type GuideGroup = (typeof GUIDE_GROUPS)[number];
 
 /** An image is a file in `guides/images/`. SVG is not allowed, because it can carry script. */

@@ -102,6 +102,7 @@ test('the packaged app opens new books, and loads and clears the sample data fro
       undo: { offered: string; notice: string; toReview: string } | null;
     };
     review: { posted: string; payee: string; inTransactions: string };
+    reconcile: { said: string; notice: string };
   };
   expect(report).toMatchObject({
     appInfo: 'Version 0.0.0',
@@ -184,6 +185,9 @@ test('the packaged app opens new books, and loads and clears the sample data fro
   expect(report.imports.undo?.toReview).toBe('To review18');
   // To review (specs 069 and 071): a line posted with an account typed and Return is in
   // Transactions, and a payee saved from a line fills in the other line with the same words.
+  // Reconciling (spec 086): the last statement is filled in, the books agree, and it is finished.
+  expect(report.reconcile.said).toContain('Your books agree with the statement on 20/11/2026');
+  expect(report.reconcile.notice).toBe('Business One ··4821 is reconciled to 20/11/2026.');
   expect(report.review.posted).toContain('1 posted.');
   expect(report.review.inTransactions).toContain('WORKSHOP RENT MARSH PROPERTY GROUP');
   expect(report.review.inTransactions).toContain('Rent');

@@ -1,0 +1,136 @@
+/* The Rules page and its Edit rule panel (folder 07). */
+.rules__order {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.rules__order button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.rules__search {
+  margin-inline-start: 0;
+}
+
+.rule-editor {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.rule-editor__field {
+  display: grid;
+  gap: var(--space-1);
+  font-size: var(--font-size-label);
+}
+
+.rule-editor__group {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.rule-editor__group legend {
+  margin-bottom: var(--space-2);
+  font-weight: var(--font-weight-semibold);
+}
+
+.rule-editor__row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.rule-editor__grow {
+  flex: 1;
+  min-width: 140px;
+}
+
+.rule-editor__amount {
+  width: 7em;
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+
+.rule-editor__percent {
+  width: 4em;
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+
+.rule-editor__mode {
+  justify-self: start;
+}
+
+.rule-editor__check {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  font-size: var(--font-size-label);
+}
+
+.rule-editor__test {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  font-size: var(--font-size-label);
+}
+
+.rule-editor__lines {
+  margin: 0;
+  padding: 0 0 0 var(--space-4);
+  font-size: var(--font-size-label);
+}
+
+.rule-editor__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.rule-editor__space {
+  flex: 1;
+}
+
+/* As on Transactions: the page fills the window, the list scrolls in its box, and the Edit rule
+   panel sits beside it on a wide window and floats over its right side on a narrower one. */
+.rules {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - var(--space-5) * 2);
+  min-height: 0;
+}
+
+.rules__body {
+  position: relative;
+  display: flex;
+  flex: 1;
+  gap: var(--space-4);
+  min-height: 0;
+}
+
+.rules__list {
+  flex: 1;
+  min-width: 0;
+  overflow: auto;
+}
+
+.rules__body > .side-panel {
+  width: 420px;
+  overflow: auto;
+}
+
+@media (max-width: 1499px) {
+  .rules__body > .side-panel {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-end: 0;
+    z-index: 2;
+    box-shadow: var(--shadow-raised);
+  }
+}

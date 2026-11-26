@@ -40,6 +40,7 @@ import {
   payeeIdFor,
   payeeSavedText,
   spentAndReceived,
+  splitRuleText,
   type RowDraft,
 } from '../review/review-text';
 import { useBridgeQuery } from './use-bridge';
@@ -103,6 +104,7 @@ export function ToReviewPage() {
   const [leaving, setLeaving] = useState<ReadonlySet<string>>(new Set());
   const [notice, setNotice] = useState<Notice | null>(null);
   const [busy, setBusy] = useState(false);
+  const [offer, setOffer] = useState<{ lineId: string; words: string } | null>(null);
   const [sheet, setSheet] = useState<{ kind: 'split' | 'transfer'; lineId: string } | null>(null);
   const accountInputs = useRef(new Map<string, HTMLInputElement>());
 
@@ -160,6 +162,19 @@ export function ToReviewPage() {
         return;
       }
       report(result.value);
+      // One line posted with an account he chose: offer to do it every time (spec 082).
+      const only = actions[0];
+      if (
+        actions.length === 1 &&
+        only?.kind === 'account' &&
+        result.value.posted.includes(only.lineId)
+      ) {
+        const api = bridge();
+        const offered = await api['rules.offerFor']({ lineId: only.lineId });
+        if (offered.ok && offered.value.offer !== null) {
+          setOffer({ lineId: only.lineId, words: offered.value.offer.words });
+        }
+      }
     } catch {
       setNotice({ kind: 'problem', text: COULD_NOT });
     } finally {
@@ -168,6 +183,7 @@ export function ToReviewPage() {
   };
 
   const report = (outcome: PostOutcome) => {
+    setOffer(null);
     const gone = [...outcome.posted, ...outcome.alsoPosted];
     setNotice(
       gone.length === 0
@@ -444,6 +460,18 @@ export function ToReviewPage() {
         </span>
       );
     }
+    const splitRule = draft.mode === 'auto' ? (line.suggestion?.rule?.split ?? null) : null;
+    if (splitRule !== null) {
+      return (
+        <span className="review__account-cell">
+          <span className="review__found">
+            <span className="review__tag">Split</span> {splitRuleText(splitRule)}
+          </span>
+          <span className="review__why">from your rule</span>
+          {useAccount}
+        </span>
+      );
+    }
     const account = findAccount(draft.accountText, view.accounts);
     const why =
       draft.accountText.trim() !== '' && account === null
@@ -487,7 +515,10 @@ export function ToReviewPage() {
             aria-label={`GST code for ${line.description}`}
             value={draft.taxCodeId ?? ''}
             onChange={(event) => {
-              setDraft(line, { taxCodeId: event.target.value === '' ? null : event.target.value });
+              setDraft(line, {
+                mode: 'account',
+                taxCodeId: event.target.value === '' ? null : event.target.value,
+              });
             }}
           >
             <option value="">No code</option>
@@ -565,11 +596,20 @@ export function ToReviewPage() {
           ) : undefined
         }
         actions={
-          count > 0 && suggestedHere.length > 0 ? (
-            <Button disabled={busy} onClick={postSuggested}>
-              Post all suggested ({suggestedHere.length})
+          <>
+            <Button
+              onClick={() => {
+                window.location.hash = pageHash('rules');
+              }}
+            >
+              Rules
             </Button>
-          ) : undefined
+            {count > 0 && suggestedHere.length > 0 && (
+              <Button disabled={busy} onClick={postSuggested}>
+                Post all suggested ({suggestedHere.length})
+              </Button>
+            )}
+          </>
         }
         mainAction={
           view !== null && view.waiting > 0 ? (
@@ -669,6 +709,27 @@ export function ToReviewPage() {
             >
               Undo
             </Button>
+          )}
+          {offer !== null && notice.kind === 'posted' && (
+            <span className="review__offer">
+              Do this every time for &ldquo;{offer.words}&rdquo;?
+              <Button
+                size="small"
+                onClick={() => {
+                  window.location.hash = `${pageHash('rules')}?from=${offer.lineId}`;
+                }}
+              >
+                New rule from this line
+              </Button>
+              <Button
+                size="small"
+                onClick={() => {
+                  setOffer(null);
+                }}
+              >
+                Not now
+              </Button>
+            </span>
           )}
         </div>
       )}

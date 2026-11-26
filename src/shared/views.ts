@@ -100,11 +100,22 @@ export interface AccountRow {
   readonly balance: Cents;
   /** Set for one of his bank accounts. */
   readonly bank: { readonly bank: string; readonly lastFour: string } | null;
+  /** The GST code a line to it starts with, by id (spec 084). */
+  readonly usualTaxCodeId: string | null;
+  readonly parentId: string | null;
+  /** Lines are posted to it, so deactivating it warns (spec 084). */
+  readonly hasPostedLines: boolean;
 }
 
 export interface AccountsView {
   readonly asAt: CalendarDate;
   readonly accounts: readonly AccountRow[];
+  /** The GST codes, for an account's usual code (spec 084). */
+  readonly taxCodes: readonly {
+    readonly id: string;
+    readonly shortCode: string;
+    readonly name: string;
+  }[];
 }
 
 // ---- Transactions -----------------------------------------------------------------------------
@@ -138,6 +149,8 @@ export interface TransactionRow {
   readonly total: Cents;
   /** On or before the lock date, so it cannot change. */
   readonly locked: boolean;
+  /** Money through one bank account for one account, so the account can be changed in the row. */
+  readonly movable: boolean;
 }
 
 export interface TransactionsPage {
@@ -329,6 +342,10 @@ export type CommitOutcome =
       readonly skipped: number;
       readonly rejected: number;
       readonly accountName: string;
+      /** Lines a "post by itself" rule posted straight away (spec 081), for Undo. */
+      readonly postedByRules: readonly string[];
+      /** Lines a rule fitted but could not post, such as in a locked period. They wait in To review. */
+      readonly rulesCouldNot: number;
     }
   /** The preview is gone (the books changed, or it was used already) or there was nothing new in it. */
   | { readonly kind: 'refused'; readonly reason: 'no-such-preview' | 'nothing-new' };
@@ -339,7 +356,7 @@ export const REVIEW_SHOWS = ['all', 'suggested', 'no-suggestion'] as const;
 export type ReviewShow = (typeof REVIEW_SHOWS)[number];
 
 /** Why the app suggests an account for a line, in the words under the account box. */
-export type SuggestionReason = 'same-as-last-time' | 'best-guess';
+export type SuggestionReason = 'from-your-rule' | 'same-as-last-time' | 'best-guess';
 
 export interface ReviewLineView {
   readonly id: string;
@@ -356,6 +373,13 @@ export interface ReviewLineView {
     readonly accountId: string;
     readonly taxCodeId: string | null;
     readonly reason: SuggestionReason;
+    /** The rule it came from (spec 079). A split rule gives its parts, and posts them all. */
+    readonly rule: {
+      readonly id: string;
+      readonly name: string;
+      readonly split:
+        readonly { readonly accountName: string; readonly percentBp: number }[] | null;
+    } | null;
   } | null;
   /** An entry already in the books that this line is the bank's record of (spec 069a). */
   readonly match: {
@@ -420,6 +444,13 @@ export type ReviewAction =
       readonly payeeId: string | null;
     }
   | { readonly kind: 'match'; readonly lineId: string; readonly entryId: string }
+  /** Posts the line the way the rule says. A payee he typed comes before the rule's. */
+  | {
+      readonly kind: 'rule';
+      readonly lineId: string;
+      readonly ruleId: string;
+      readonly payeeId: string | null;
+    }
   | { readonly kind: 'transfer'; readonly lineId: string; readonly otherBankAccountId: string };
 
 export const POST_FAILURES = [
@@ -445,7 +476,7 @@ export interface PostOutcome {
 
 export type UndoPostOutcome =
   | { readonly kind: 'undone'; readonly lines: number }
-  | { readonly kind: 'refused'; readonly reason: 'locked' | 'not-posted' };
+  | { readonly kind: 'refused'; readonly reason: 'locked' | 'not-posted' | 'reconciled' };
 
 export type SavePayeeOutcome =
   | {
@@ -461,3 +492,69 @@ export type SavePayeeOutcome =
       readonly alsoFilled: number;
     }
   | { readonly kind: 'refused'; readonly reason: 'not-found' | 'empty-name' | 'no-words' };
+
+// ---- Bank rules (folder 07) ---------------------------------------------------------------------
+
+/** What testing a rule found (spec 080): how many lines it fits, and the first of them. */
+export interface RuleTestResult {
+  readonly waiting: number;
+  readonly posted: number;
+  readonly lines: readonly {
+    readonly id: string;
+    readonly date: CalendarDate;
+    readonly description: string;
+    readonly amount: Cents;
+    readonly status: 'to-review' | 'posted';
+  }[];
+}
+
+/** What moving entries to another account did (spec 083). */
+export interface MoveOutcome {
+  readonly moved: readonly string[];
+  readonly failed: readonly {
+    readonly entryId: string;
+    readonly reason: 'not-found' | 'locked' | 'not-movable' | 'unchanged' | 'invalid';
+  }[];
+}
+
+// ---- Reconciling (folder 07) --------------------------------------------------------------------
+
+export interface ReconcileView {
+  readonly accountName: string;
+  readonly statementDate: CalendarDate;
+  readonly statementBalance: Cents;
+  /** What the posted lines in the books add up to on that day. */
+  readonly booksBalance: Cents;
+  /** Statement less books. Zero means it can be finished. */
+  readonly difference: Cents;
+  /** Lines of the account still in To review on or before the day: what usually explains a difference. */
+  readonly waiting: readonly {
+    readonly id: string;
+    readonly date: CalendarDate;
+    readonly description: string;
+    readonly amount: Cents;
+  }[];
+  /** Posting the waiting lines would make the difference zero. */
+  readonly explainedByWaiting: boolean;
+  readonly lastReconciled: CalendarDate | null;
+}
+
+export type ReconcileOutcome =
+  | { readonly kind: 'done'; readonly lines: number }
+  | { readonly kind: 'refused'; readonly reason: 'not-found' | 'before-last' | 'difference' };
+
+export type AccountEditOutcome =
+  | { readonly kind: 'saved'; readonly id: string }
+  | {
+      readonly kind: 'refused';
+      readonly reason:
+        | 'empty-code'
+        | 'empty-name'
+        | 'code-in-use'
+        | 'not-found'
+        | 'parent-not-found'
+        | 'unchanged'
+        | 'already-inactive'
+        | 'already-active'
+        | 'bank-account';
+    };

@@ -24,10 +24,12 @@ import {
   setPairedLine,
   type ReviewLine,
 } from '@data/review-repository';
+import { getRule } from '@data/rule-repository';
 import { getTaxCodeById } from '@data/tax-code-repository';
 import { findEntryMatch } from '@domain/entry-match';
 import type { EntryInput, EntryProblem } from '@domain/journal';
 import { lineToEntry, type LinePart } from '@domain/line-to-entry';
+import { ruleFits, shareByPercent } from '@domain/rules';
 import type { SimpleEntryTax } from '@domain/simple-entry';
 import { findTransferMatch } from '@domain/transfer-match';
 import type { Id } from '@shared/ids';
@@ -280,6 +282,34 @@ export function postTransfer(
   })();
 }
 
+/**
+ * Posts a line the way a rule says (specs 079, 081): its account and GST code, or its split shared
+ * by percentage, and its payee unless he typed another. The rule must still fit the line.
+ */
+export function applyRule(
+  ctx: ServiceContext,
+  input: { readonly lineId: string; readonly ruleId: string; readonly payeeId: string | null },
+): Result<Posted, PostFailure> {
+  const line = getReviewLine(ctx.db, input.lineId);
+  if (line === null) return err('not-found');
+  const rule = getRule(ctx.db, input.ruleId);
+  if (rule === null || !rule.active || !ruleFits(rule, line)) return err('no-longer-matches');
+  const gross = asCents(Math.abs(line.amount));
+  const parts: SplitPart[] =
+    rule.target.kind === 'account'
+      ? [{ accountId: rule.target.accountId, taxCodeId: rule.target.taxCodeId, amount: gross }]
+      : shareByPercent(gross, rule.target.parts)
+          .map((amount, i) => ({
+            accountId: rule.target.kind === 'split' ? (rule.target.parts[i]?.accountId ?? '') : '',
+            taxCodeId:
+              rule.target.kind === 'split' ? (rule.target.parts[i]?.taxCodeId ?? null) : null,
+            amount,
+          }))
+          // A share of a very small line can round to nothing, and a part of nothing is not posted.
+          .filter((p) => p.amount > 0);
+  return postParts(ctx, line.id, parts, input.payeeId ?? rule.payeeId);
+}
+
 /** Does one action. Returns what was posted, or why not. */
 function runAction(ctx: ServiceContext, action: ReviewAction): Result<Posted, PostFailure> {
   switch (action.kind) {
@@ -297,6 +327,12 @@ function runAction(ctx: ServiceContext, action: ReviewAction): Result<Posted, Po
       return postTransfer(ctx, {
         lineId: action.lineId,
         otherBankAccountId: action.otherBankAccountId,
+      });
+    case 'rule':
+      return applyRule(ctx, {
+        lineId: action.lineId,
+        ruleId: action.ruleId,
+        payeeId: action.payeeId,
       });
   }
 }

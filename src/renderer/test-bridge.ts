@@ -2,7 +2,8 @@
 // replaces only the functions it cares about.
 
 import { vi } from 'vitest';
-import type { BridgeApi } from '@shared/bridge-contract';
+import type { BridgeApi, RulesView } from '@shared/bridge-contract';
+import type { Rule } from '@shared/rule-types';
 import type { CalendarDate, Timestamp } from '@shared/dates';
 import { asCents } from '@shared/money';
 import { ok } from '@shared/result';
@@ -51,6 +52,12 @@ export const HOME: HomeSummary = {
 
 export const ACCOUNTS: AccountsView = {
   asAt: date('2026-11-23'),
+  taxCodes: [
+    { id: 'tax_gst', shortCode: 'GST', name: 'GST (10%)' },
+    { id: 'tax_fre', shortCode: 'FRE', name: 'GST-free' },
+    { id: 'tax_inp', shortCode: 'INP', name: 'Input taxed' },
+    { id: 'tax_nt', shortCode: 'N-T', name: 'Outside GST' },
+  ],
   accounts: [
     {
       id: 'acc_one',
@@ -61,6 +68,9 @@ export const ACCOUNTS: AccountsView = {
       usualGst: { shortCode: 'N-T', treatment: 'outside-gst' },
       balance: asCents(1864235),
       bank: { bank: 'Westpac', lastFour: '4821' },
+      usualTaxCodeId: null,
+      parentId: null,
+      hasPostedLines: true,
     },
     {
       id: 'acc_reserve',
@@ -71,6 +81,9 @@ export const ACCOUNTS: AccountsView = {
       usualGst: { shortCode: 'N-T', treatment: 'outside-gst' },
       balance: asCents(2500000),
       bank: { bank: 'Westpac', lastFour: '7730' },
+      usualTaxCodeId: null,
+      parentId: null,
+      hasPostedLines: true,
     },
     {
       id: 'acc_prepay',
@@ -81,6 +94,9 @@ export const ACCOUNTS: AccountsView = {
       usualGst: null,
       balance: asCents(0),
       bank: null,
+      usualTaxCodeId: null,
+      parentId: null,
+      hasPostedLines: true,
     },
     {
       id: 'acc_gst',
@@ -91,6 +107,9 @@ export const ACCOUNTS: AccountsView = {
       usualGst: { shortCode: 'N-T', treatment: 'outside-gst' },
       balance: asCents(-318420),
       bank: null,
+      usualTaxCodeId: null,
+      parentId: null,
+      hasPostedLines: true,
     },
     {
       id: 'acc_sales',
@@ -101,6 +120,9 @@ export const ACCOUNTS: AccountsView = {
       usualGst: { shortCode: 'GST', treatment: 'taxable' },
       balance: asCents(-8183993),
       bank: null,
+      usualTaxCodeId: null,
+      parentId: null,
+      hasPostedLines: true,
     },
     {
       id: 'acc_interest',
@@ -111,6 +133,9 @@ export const ACCOUNTS: AccountsView = {
       usualGst: { shortCode: 'INP', treatment: 'input-taxed' },
       balance: asCents(0),
       bank: null,
+      usualTaxCodeId: null,
+      parentId: null,
+      hasPostedLines: true,
     },
     {
       id: 'acc_mat',
@@ -121,6 +146,9 @@ export const ACCOUNTS: AccountsView = {
       usualGst: { shortCode: 'GST', treatment: 'taxable' },
       balance: asCents(981240),
       bank: null,
+      usualTaxCodeId: null,
+      parentId: null,
+      hasPostedLines: true,
     },
     {
       id: 'acc_old',
@@ -131,6 +159,9 @@ export const ACCOUNTS: AccountsView = {
       usualGst: null,
       balance: asCents(0),
       bank: null,
+      usualTaxCodeId: null,
+      parentId: null,
+      hasPostedLines: true,
     },
   ],
 };
@@ -148,6 +179,7 @@ export function row(over: Partial<TransactionRow> = {}): TransactionRow {
     gst: asCents(3110),
     total: asCents(34215),
     locked: false,
+    movable: true,
     ...over,
   };
 }
@@ -176,6 +208,7 @@ export const TRANSACTIONS: TransactionsPage = {
       gst: asCents(19455),
       total: asCents(214000),
       locked: true,
+      movable: false,
     }),
   ],
   range: { from: date('2025-11-24'), to: date('2026-11-23') },
@@ -355,7 +388,12 @@ export const REVIEW: ReviewView = {
       description: 'TIMBERLINK SUPPLIES PTY LTD',
       amount: asCents(-128470),
       payee: { contactId: 'con_timber', name: 'Timberlink Supplies' },
-      suggestion: { accountId: 'acc_mat', taxCodeId: 'tax_gst', reason: 'same-as-last-time' },
+      suggestion: {
+        accountId: 'acc_mat',
+        taxCodeId: 'tax_gst',
+        reason: 'same-as-last-time',
+        rule: null,
+      },
     }),
     reviewLine({
       id: 'stl_ampol',
@@ -435,6 +473,64 @@ export const REVIEW: ReviewView = {
   ],
 };
 
+/** The Rules page with three invented rules, as in the wireframe. */
+export const RULES: RulesView = {
+  rules: [
+    {
+      id: 'rul_timber',
+      name: 'Timberlink is always materials',
+      position: 0,
+      active: true,
+      direction: 'out',
+      bankAccountIds: [],
+      matchMode: 'all',
+      conditions: [{ field: 'description', op: 'contains', text: 'TIMBERLINK' }],
+      target: { kind: 'account', accountId: 'acc_mat', taxCodeId: 'tax_gst' },
+      payeeId: 'con_timber',
+      autoPost: true,
+    },
+    {
+      id: 'rul_fuel',
+      name: 'Fuel',
+      position: 1,
+      active: true,
+      direction: 'out',
+      bankAccountIds: ['bnk_one'],
+      matchMode: 'any',
+      conditions: [
+        { field: 'description', op: 'contains', text: 'AMPOL' },
+        { field: 'description', op: 'contains', text: 'SHELL' },
+      ],
+      target: { kind: 'account', accountId: 'acc_fees', taxCodeId: 'tax_gst' },
+      payeeId: null,
+      autoPost: false,
+    },
+    {
+      id: 'rul_phone',
+      name: 'Phone and internet',
+      position: 2,
+      active: false,
+      direction: 'out',
+      bankAccountIds: [],
+      matchMode: 'all',
+      conditions: [{ field: 'description', op: 'contains', text: 'SKYLINK' }],
+      target: {
+        kind: 'split',
+        parts: [
+          { accountId: 'acc_office', taxCodeId: 'tax_gst', percentBp: 7000 },
+          { accountId: 'acc_tools', taxCodeId: 'tax_nt', percentBp: 3000 },
+        ],
+      },
+      payeeId: null,
+      autoPost: false,
+    },
+  ],
+  accounts: REVIEW.accounts,
+  taxCodes: REVIEW.taxCodes,
+  contacts: REVIEW.contacts,
+  bankAccounts: REVIEW.bankAccounts,
+};
+
 /** Puts a stand-in bridge on `window`, and returns its functions so a test can look at the calls. */
 export function installBridge(overrides: Partial<BridgeApi> = {}): BridgeApi {
   const api: BridgeApi = {
@@ -464,6 +560,8 @@ export function installBridge(overrides: Partial<BridgeApi> = {}): BridgeApi {
           skipped: 0,
           rejected: 0,
           accountName: 'Business One ··4821',
+          postedByRules: [],
+          rulesCouldNot: 0,
         }),
       ),
     ),
@@ -499,6 +597,40 @@ export function installBridge(overrides: Partial<BridgeApi> = {}): BridgeApi {
       ),
     ),
     'review.undoPayee': vi.fn(() => Promise.resolve(ok({ undone: true }))),
+    'rules.list': vi.fn(() => Promise.resolve(ok(RULES))),
+    'rules.save': vi.fn(() =>
+      Promise.resolve(ok({ kind: 'saved' as const, rule: RULES.rules[0] as Rule })),
+    ),
+    'rules.setActive': vi.fn(() => Promise.resolve(ok({ changed: true }))),
+    'rules.move': vi.fn(() => Promise.resolve(ok({ changed: true }))),
+    'rules.remove': vi.fn(() => Promise.resolve(ok({ removed: true }))),
+    'rules.test': vi.fn(() => Promise.resolve(ok({ waiting: 9, posted: 41, lines: [] }))),
+    'rules.offerFor': vi.fn(() => Promise.resolve(ok({ offer: null }))),
+    'transactions.move': vi.fn((input: { entryIds: readonly string[] }) =>
+      Promise.resolve(ok({ moved: [...input.entryIds], failed: [] })),
+    ),
+    'accounts.add': vi.fn(() => Promise.resolve(ok({ kind: 'saved' as const, id: 'acc_new' }))),
+    'accounts.edit': vi.fn((input: { id: string }) =>
+      Promise.resolve(ok({ kind: 'saved' as const, id: input.id })),
+    ),
+    'accounts.setActive': vi.fn((input: { id: string }) =>
+      Promise.resolve(ok({ kind: 'saved' as const, id: input.id })),
+    ),
+    'bank.checkReconcile': vi.fn(() =>
+      Promise.resolve(
+        ok({
+          accountName: 'Business One ··4821',
+          statementDate: date('2026-11-20'),
+          statementBalance: asCents(1864235),
+          booksBalance: asCents(1864235),
+          difference: asCents(0),
+          waiting: [],
+          explainedByWaiting: false,
+          lastReconciled: null,
+        }),
+      ),
+    ),
+    'bank.finishReconcile': vi.fn(() => Promise.resolve(ok({ kind: 'done' as const, lines: 18 }))),
     pathForFile: vi.fn((file: File) => `/Users/someone/Downloads/${file.name}`),
     ...overrides,
   };

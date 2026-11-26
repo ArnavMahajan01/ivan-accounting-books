@@ -1,6 +1,7 @@
 // The Transactions list: every posted entry as one row, newest first, with filters and paging
 // (spec 051). Each row is worked out from the entry's lines by `summariseEntry`.
 
+import { accountForRole } from '@data/account-role-repository';
 import { getBusiness } from '@data/business-repository';
 import { queryTransactions } from '@data/transaction-queries';
 import { isLocked } from '@domain/journal';
@@ -105,9 +106,12 @@ export function listTransactions(
     offset,
   });
   const lockDate = business?.lockDate ?? null;
+  const gstAccount = accountForRole(ctx.db, 'gst');
 
   const rows: TransactionRow[] = result.entries.map((entry) => {
-    const summary = summariseEntry(result.lines.get(entry.id) ?? []);
+    const lines = result.lines.get(entry.id) ?? [];
+    const summary = summariseEntry(lines);
+    const locked = isLocked(entry.date, lockDate);
     return {
       id: entry.id,
       date: entry.date,
@@ -119,7 +123,12 @@ export function listTransactions(
       beforeGst: summary.beforeGst,
       gst: summary.gst,
       total: summary.total,
-      locked: isLocked(entry.date, lockDate),
+      locked,
+      // One bank line and one account it was for: the account can be changed in the row (spec 083).
+      movable:
+        !locked &&
+        lines.filter((l) => l.isBank).length === 1 &&
+        lines.filter((l) => !l.isBank && l.accountId !== gstAccount).length === 1,
     };
   });
   return ok({

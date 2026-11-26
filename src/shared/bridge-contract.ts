@@ -3,7 +3,14 @@
 // validates every input against the schema before doing anything.
 
 import { z } from 'zod';
-import type { BooksProblem, StoreProblem } from './kinds';
+import { ACCOUNT_TYPES, type BooksProblem, type StoreProblem } from './kinds';
+import {
+  DESCRIPTION_OPS,
+  RULE_DIRECTIONS,
+  RULE_MATCH_MODES,
+  type Rule,
+  type RuleInput,
+} from './rule-types';
 import type { Result } from './result';
 import {
   REVIEW_SHOWS,
@@ -14,7 +21,13 @@ import {
   type BooksState,
   type CommitOutcome,
   type HomeSummary,
+  type AccountEditOutcome,
+  type MoveOutcome,
   type PostOutcome,
+  type ReconcileOutcome,
+  type ReconcileView,
+  type ReviewAccountChoice,
+  type RuleTestResult,
   type PreviewOutcome,
   type ReviewView,
   type SavePayeeOutcome,
@@ -65,6 +78,14 @@ export const reviewActionSchema = z.discriminatedUnion('kind', [
   z.object({ kind: z.literal('match'), lineId: idText('stl'), entryId: idText('ent') }).strict(),
   z
     .object({
+      kind: z.literal('rule'),
+      lineId: idText('stl'),
+      ruleId: idText('rul'),
+      payeeId: idText('con').nullable(),
+    })
+    .strict(),
+  z
+    .object({
       kind: z.literal('transfer'),
       lineId: idText('stl'),
       otherBankAccountId: idText('bnk'),
@@ -79,6 +100,74 @@ const splitPartSchema = z
     /** Positive cents, with any GST in it. */
     amount: z.number().int().min(1).max(Number.MAX_SAFE_INTEGER),
   })
+  .strict();
+
+const centsInput = z.number().int().min(0).max(Number.MAX_SAFE_INTEGER);
+const signedCents = z.number().int().min(-Number.MAX_SAFE_INTEGER).max(Number.MAX_SAFE_INTEGER);
+
+export const ruleInputSchema = z
+  .object({
+    name: z.string().max(100),
+    direction: z.enum(RULE_DIRECTIONS),
+    bankAccountIds: z.array(idText('bnk')).max(50),
+    matchMode: z.enum(RULE_MATCH_MODES),
+    conditions: z
+      .array(
+        z.union([
+          z
+            .object({
+              field: z.literal('description'),
+              op: z.enum(DESCRIPTION_OPS),
+              text: z.string().max(100),
+            })
+            .strict(),
+          z
+            .object({ field: z.literal('amount'), op: z.literal('equals'), amount: centsInput })
+            .strict(),
+          z
+            .object({
+              field: z.literal('amount'),
+              op: z.literal('between'),
+              min: centsInput,
+              max: centsInput,
+            })
+            .strict(),
+        ]),
+      )
+      .max(20),
+    target: z.discriminatedUnion('kind', [
+      z
+        .object({
+          kind: z.literal('account'),
+          accountId: idText('acc'),
+          taxCodeId: idText('tax').nullable(),
+        })
+        .strict(),
+      z
+        .object({
+          kind: z.literal('split'),
+          parts: z
+            .array(
+              z
+                .object({
+                  accountId: idText('acc'),
+                  taxCodeId: idText('tax').nullable(),
+                  percentBp: z.number().int().min(0).max(10_000),
+                })
+                .strict(),
+            )
+            .min(1)
+            .max(10),
+        })
+        .strict(),
+    ]),
+    payeeId: idText('con').nullable(),
+    autoPost: z.boolean(),
+  })
+  .strict();
+
+export const reconcileSchema = z
+  .object({ bankAccountId: idText('bnk'), statementDate: dateText, statementBalance: signedCents })
   .strict();
 
 export const bridgeContract = {
@@ -122,6 +211,44 @@ export const bridgeContract = {
   'review.savePayee': {
     input: z.object({ lineId: idText('stl'), name: z.string().min(1).max(100) }).strict(),
   },
+  'rules.list': { input: noInput },
+  'rules.save': {
+    input: z.object({ id: idText('rul').nullable(), rule: ruleInputSchema }).strict(),
+  },
+  'rules.setActive': { input: z.object({ id: idText('rul'), active: z.boolean() }).strict() },
+  'rules.move': {
+    input: z
+      .object({ id: idText('rul'), toPosition: z.number().int().min(0).max(10_000) })
+      .strict(),
+  },
+  'rules.remove': { input: z.object({ id: idText('rul') }).strict() },
+  'rules.test': { input: z.object({ rule: ruleInputSchema }).strict() },
+  /** After a post: a rule filled in from the line, when he has posted lines like it twice (spec 082). */
+  'rules.offerFor': { input: z.object({ lineId: idText('stl') }).strict() },
+  'transactions.move': {
+    input: z
+      .object({ entryIds: z.array(idText('ent')).min(1).max(500), accountId: idText('acc') })
+      .strict(),
+  },
+  'accounts.add': {
+    input: z
+      .object({
+        code: z.string().min(1).max(20),
+        name: z.string().min(1).max(100),
+        type: z.enum(ACCOUNT_TYPES),
+        parentId: idText('acc').nullable(),
+        defaultTaxCodeId: idText('tax').nullable(),
+      })
+      .strict(),
+  },
+  'accounts.edit': {
+    input: z
+      .object({ id: idText('acc'), code: z.string().max(20), name: z.string().max(100) })
+      .strict(),
+  },
+  'accounts.setActive': { input: z.object({ id: idText('acc'), active: z.boolean() }).strict() },
+  'bank.checkReconcile': { input: reconcileSchema },
+  'bank.finishReconcile': { input: reconcileSchema },
   'review.undoPayee': {
     input: z.object({ contactId: idText('con'), words: z.string().min(1).max(1000) }).strict(),
   },
@@ -174,6 +301,37 @@ export interface BridgeResults {
   'review.savePayee': SavePayeeOutcome;
   /** Whether the save was taken back. False when it had already gone. */
   'review.undoPayee': { readonly undone: boolean };
+  'rules.list': RulesView;
+  'rules.save':
+    | { readonly kind: 'saved'; readonly rule: Rule }
+    | { readonly kind: 'refused'; readonly reason: string };
+  'rules.setActive': { readonly changed: boolean };
+  'rules.move': { readonly changed: boolean };
+  'rules.remove': { readonly removed: boolean };
+  'rules.test': RuleTestResult;
+  'rules.offerFor': {
+    readonly offer: { readonly words: string; readonly rule: RuleInput } | null;
+  };
+  'transactions.move': MoveOutcome;
+  'accounts.add': AccountEditOutcome;
+  'accounts.edit': AccountEditOutcome;
+  'accounts.setActive': AccountEditOutcome;
+  /** Null when there is no such bank account. */
+  'bank.checkReconcile': ReconcileView | null;
+  'bank.finishReconcile': ReconcileOutcome;
+}
+
+/** The Rules page: every rule in order, and the choices its editor offers. */
+export interface RulesView {
+  readonly rules: readonly Rule[];
+  readonly accounts: readonly ReviewAccountChoice[];
+  readonly taxCodes: readonly {
+    readonly id: string;
+    readonly shortCode: string;
+    readonly name: string;
+  }[];
+  readonly contacts: readonly { readonly id: string; readonly name: string }[];
+  readonly bankAccounts: readonly { readonly id: string; readonly name: string }[];
 }
 
 export type BridgeName = keyof typeof bridgeContract;

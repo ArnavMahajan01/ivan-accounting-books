@@ -92,6 +92,15 @@ export function actionFor(line: ReviewLineView, draft: RowDraft, view: ReviewVie
   if (found === 'transfer' && line.transfer !== null) {
     return { kind: 'transfer', lineId: line.id, otherBankAccountId: line.transfer.bankAccountId };
   }
+  // Untouched, a line a rule fits is posted the way the rule says, split and all.
+  if (draft.mode === 'auto' && line.suggestion?.rule != null) {
+    return {
+      kind: 'rule',
+      lineId: line.id,
+      ruleId: line.suggestion.rule.id,
+      payeeId: payeeIdFor(line, draft, view.contacts),
+    };
+  }
   return {
     kind: 'account',
     lineId: line.id,
@@ -101,12 +110,20 @@ export function actionFor(line: ReviewLineView, draft: RowDraft, view: ReviewVie
   };
 }
 
+/** A split rule's parts in words: "70% Telephone and internet, 30% Owner drawings". */
+export function splitRuleText(
+  split: readonly { readonly accountName: string; readonly percentBp: number }[],
+): string {
+  return split.map((p) => `${String(p.percentBp / 100)}% ${p.accountName}`).join(', ');
+}
+
 /** Whether the app has something for the line: a match, a transfer or a suggestion. */
 export function hasSuggestion(line: ReviewLineView): boolean {
   return line.match !== null || line.transfer !== null || line.suggestion !== null;
 }
 
 export const REASON_TEXT: Record<SuggestionReason, string> = {
+  'from-your-rule': 'from your rule',
   'same-as-last-time': 'same as last time',
   'best-guess': 'best guess',
 };

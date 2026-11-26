@@ -96,6 +96,9 @@ describe('the bank functions', () => {
         skipped: 0,
         rejected: 0,
         accountName: 'Business One ··4821',
+        // The sample books have no rule that posts by itself, so every line waits.
+        postedByRules: [],
+        rulesCouldNot: 0,
       }),
     );
     expect(await handlers['review.getCount']({})).toEqual(ok({ count: 11 }));
@@ -113,7 +116,7 @@ describe('the bank functions', () => {
     // Counts are reported, and nothing a statement holds.
     expect(onImport.mock.calls).toEqual([
       ['previewed', { new: 11, duplicate: 0, rejected: 0 }],
-      ['imported', { added: 11, skipped: 0, rejected: 0 }],
+      ['imported', { added: 11, skipped: 0, rejected: 0, postedByRules: 0 }],
     ]);
     expect(JSON.stringify(onImport.mock.calls)).not.toContain('RENT');
   });

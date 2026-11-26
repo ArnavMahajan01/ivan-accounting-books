@@ -1,5 +1,5 @@
 import { ChevronLeft, ChevronRight, ReceiptText, Search } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, type ReactNode } from 'react';
 import { formatDateAU } from '@shared/dates';
 import type { AccountType } from '@shared/kinds';
 import type {
@@ -16,6 +16,7 @@ import { DateCell } from '../components/DateCell';
 import { EmptyState } from '../components/EmptyState';
 import { ErrorMessage } from '../components/ErrorMessage';
 import { Table, type TableColumn } from '../components/Table';
+import { plural } from '../import/import-text';
 import { PageToolbar } from '../layout/PageToolbar';
 import { queryFromHash } from '../routes';
 import { TransactionPanel } from './TransactionPanel';
@@ -51,6 +52,12 @@ const TYPE_HEADINGS: Record<AccountType, string> = {
   income: 'Income',
   expense: 'Expenses',
 };
+
+function columnsWith(
+  accountCell: (row: TransactionRow) => ReactNode,
+): readonly TableColumn<TransactionRow>[] {
+  return COLUMNS.map((c) => (c.key === 'account' ? { ...c, cell: accountCell } : c));
+}
 
 const COLUMNS: readonly TableColumn<TransactionRow>[] = [
   { key: 'date', header: 'Date', fit: true, cell: (row) => <DateCell date={row.date} /> },
@@ -187,6 +194,12 @@ export function TransactionsPage() {
   const [search, setSearch] = useState('');
   const [offset, setOffset] = useState(0);
   const [openId, setOpenId] = useState<string | null>(null);
+  const [selected, setSelected] = useState<ReadonlySet<string>>(new Set());
+  const [moveTo, setMoveTo] = useState('');
+  const [moveNotice, setMoveNotice] = useState<string | null>(null);
+  const [changingId, setChangingId] = useState<string | null>(null);
+  // Tick boxes appear only when he asks to select, so the list keeps its columns at 1100 wide.
+  const [selecting, setSelecting] = useState(false);
   const settledSearch = useDebounced(search.trim(), 250);
 
   const input = useMemo(
@@ -237,6 +250,88 @@ export function TransactionsPage() {
       ),
     })).filter((group) => group.accounts.length > 0);
   }, [accounts, accountId]);
+
+  // Changing the account (spec 083): one row from its picker, or the ticked rows with Move to.
+  const move = async (entryIds: readonly string[], accountId: string) => {
+    if (entryIds.length === 0 || accountId === '') return;
+    const api = bridge();
+    const result = await api['transactions.move']({ entryIds: [...entryIds], accountId });
+    if (!result.ok) {
+      setMoveNotice('The change could not be saved, and nothing was changed. Try again.');
+      return;
+    }
+    const name = choices.find((a) => a.id === accountId)?.name ?? 'the account';
+    const { moved, failed } = result.value;
+    setMoveNotice(
+      [
+        moved.length > 0
+          ? `${plural(moved.length, 'transaction', 'transactions')} moved to ${name}.`
+          : '',
+        failed.length > 0
+          ? `${plural(failed.length, 'was', 'were')} not moved: locked, or shared across accounts.`
+          : '',
+      ]
+        .filter((t) => t !== '')
+        .join(' '),
+    );
+    setSelected(new Set());
+    setMoveTo('');
+    reload();
+  };
+  const choices = useMemo(
+    () =>
+      accounts.status === 'ready'
+        ? accounts.value.accounts.filter((a) => a.active && a.bank === null)
+        : [],
+    [accounts],
+  );
+  // The account's name, with Change: the picker opens only when he asks for it, so the column
+  // keeps the width of a name and the table fits the smallest window.
+  const accountCell = (row: TransactionRow): ReactNode => {
+    if (row.account === null) return null;
+    if (changingId === row.id && choices.length > 0) {
+      return (
+        <select
+          className="transactions__account"
+          aria-label={`Account for ${row.payee ?? row.memo}`}
+          value={row.account.id}
+          // Focus goes straight to the list he asked for.
+          ref={(el) => el?.focus()}
+          onBlur={() => {
+            setChangingId(null);
+          }}
+          onChange={(event) => {
+            setChangingId(null);
+            void move([row.id], event.target.value);
+          }}
+        >
+          {choices.map((a) => (
+            <option key={a.id} value={a.id}>
+              {a.code} {a.name}
+            </option>
+          ))}
+        </select>
+      );
+    }
+    return (
+      <span className="transactions__stack">
+        {row.account.name}
+        {row.locked && <Badge status="locked" />}
+        {row.movable && (
+          <button
+            type="button"
+            className="transactions__change"
+            aria-label={`Change account for ${row.payee ?? row.memo}`}
+            onClick={() => {
+              setChangingId(row.id);
+            }}
+          >
+            Change
+          </button>
+        )}
+      </span>
+    );
+  };
 
   return (
     <div
@@ -340,7 +435,46 @@ export function TransactionsPage() {
             Clear filters
           </Button>
         )}
+        <Button
+          size="small"
+          onClick={() => {
+            setSelecting((on) => !on);
+            setSelected(new Set());
+          }}
+        >
+          {selecting ? 'Done selecting' : 'Select'}
+        </Button>
+        {selected.size > 0 && (
+          <span className="transactions__move">
+            <select
+              aria-label={`Move ${String(selected.size)} to`}
+              value={moveTo}
+              onChange={(event) => {
+                setMoveTo(event.target.value);
+              }}
+            >
+              <option value="">Move {selected.size} to…</option>
+              {choices.map((a) => (
+                <option key={a.id} value={a.id}>
+                  {a.code} {a.name}
+                </option>
+              ))}
+            </select>
+            <Button
+              size="small"
+              disabled={moveTo === ''}
+              onClick={() => void move([...selected], moveTo)}
+            >
+              Move
+            </Button>
+          </span>
+        )}
       </div>
+      {moveNotice !== null && (
+        <p className="transactions__notice" role="status">
+          {moveNotice}
+        </p>
+      )}
 
       <div className="transactions__body">
         <div className="transactions__list">
@@ -386,9 +520,24 @@ export function TransactionsPage() {
               >
                 <Table
                   label="Transactions"
-                  columns={COLUMNS}
+                  columns={columnsWith(accountCell)}
                   rows={state.value.rows}
                   rowKey={(row) => row.id}
+                  rowLabel={(row) => row.payee ?? row.memo}
+                  {...(selecting
+                    ? {
+                        selection: {
+                          // Only rows whose account can change are ticked; the others stay as they are.
+                          selected,
+                          onChange: (next) => {
+                            const movable = new Set(
+                              state.value.rows.filter((r) => r.movable).map((r) => r.id),
+                            );
+                            setSelected(new Set([...next].filter((id) => movable.has(id))));
+                          },
+                        },
+                      }
+                    : {})}
                   activeRowKey={openId}
                   onRowClick={(row) => {
                     setOpenId(row.id);

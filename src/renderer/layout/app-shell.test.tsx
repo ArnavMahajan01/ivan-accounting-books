@@ -237,6 +237,8 @@ describe('the count on To review', () => {
             skipped: 0,
             rejected: 0,
             accountName: 'Business One ··4821',
+            postedByRules: [],
+            rulesCouldNot: 0,
           }),
         );
       },

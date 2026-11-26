@@ -21,11 +21,13 @@ describe('the Mac menu', () => {
     expect(names).toEqual(['appMenu', 'fileMenu', 'editMenu', 'View', 'windowMenu', 'help']);
   });
 
-  it('lists the pages in View with Command-1 to Command-9, Home first', () => {
+  it('lists the pages in View with Command-1 to Command-9, Home first, and Settings on Command-comma', () => {
     const items = submenu(build(false), 'View').filter((i) => i.id?.startsWith('page-'));
-    expect(items.map((i) => [i.label, i.accelerator])).toEqual(
-      PAGES.filter((p) => p.id !== 'help').map((p, index) => [p.label, `Cmd+${String(index + 1)}`]),
-    );
+    const pages = PAGES.filter((p) => p.id !== 'help' && p.id !== 'settings');
+    expect(items.map((i) => [i.label, i.accelerator])).toEqual([
+      ...pages.map((p, index) => [p.label, `Cmd+${String(index + 1)}`]),
+      ['Settings', 'Cmd+,'],
+    ]);
   });
 
   it('opens the page when a page item is chosen', () => {

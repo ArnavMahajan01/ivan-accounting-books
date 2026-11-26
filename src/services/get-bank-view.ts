@@ -2,6 +2,7 @@
 // bank accounts with what the ledger holds for it, the balance its latest imported statement
 // states, and how many imported lines wait for review.
 
+import { lastReconciledDate } from '@data/reconcile-repository';
 import { sumLinesByAccount } from '@data/balance-queries';
 import { listBankAccounts } from '@data/bank-account-repository';
 import {
@@ -48,7 +49,7 @@ export function getBankView(ctx: TodayContext): BankView {
             ? null
             : { balance: batch.closingBalance.amount, date: batch.closingBalance.date },
         linesToReview: waiting.get(b.id) ?? 0,
-        reconciledTo: null,
+        reconciledTo: lastReconciledDate(ctx.db, b.id),
         parentId: b.parentId,
         undoableImport:
           undoable === null

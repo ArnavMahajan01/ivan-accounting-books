@@ -20,9 +20,18 @@ export interface Shortcut {
 
 const PAGE_SHORTCUT_COUNT = 9;
 
-// Command-1 to Command-9 open the first nine pages. Help is the tenth, so it takes the Mac's
-// own Help key, Command-?.
+// Command-1 to Command-9 open the first nine pages. Settings and Help come after them, so they take
+// the Mac's own keys: Command-comma for Settings, Command-? for Help.
 const pageShortcuts: Shortcut[] = PAGES.map((page, index): Shortcut | null => {
+  if (page.id === 'settings') {
+    return {
+      id: 'go-settings',
+      label: 'Settings',
+      key: ',',
+      modifiers: ['command'],
+      action: { kind: 'go', page: 'settings' },
+    };
+  }
   if (page.id === 'help') {
     return {
       id: 'go-help',

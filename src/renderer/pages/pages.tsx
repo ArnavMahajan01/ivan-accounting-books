@@ -7,6 +7,7 @@ import { BankPage } from './BankPage';
 import { HelpPage } from './HelpPage';
 import { HomePage } from './HomePage';
 import { SettingsPage } from './SettingsPage';
+import { RulesPage } from './RulesPage';
 import { ToReviewPage } from './ToReviewPage';
 import { TransactionsPage } from './TransactionsPage';
 
@@ -31,6 +32,8 @@ export function Page({ route }: { readonly route: RouteId }) {
           message="Profit and loss, balance sheet, trial balance and the BAS worksheet appear here once there are transactions."
         />
       );
+    case 'rules':
+      return <RulesPage />;
     case 'shared-sheets':
       return (
         <EmptyPage

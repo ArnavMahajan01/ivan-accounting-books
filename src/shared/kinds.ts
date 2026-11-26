@@ -52,6 +52,11 @@ export const AUDIT_KINDS = [
   'line.match',
   'line.unpost',
   'contact.remove',
+  'rule.add',
+  'rule.change',
+  'rule.remove',
+  'rule.reorder',
+  'reconcile.finish',
 ] as const;
 export type AuditKind = (typeof AUDIT_KINDS)[number];
 
@@ -104,6 +109,8 @@ export const ID_KINDS = [
   'stl',
   'imp',
   'pre',
+  'rul',
+  'rec',
 ] as const;
 export type IdKind = (typeof ID_KINDS)[number];
 
