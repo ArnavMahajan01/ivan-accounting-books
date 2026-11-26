@@ -1,0 +1,40 @@
+{
+  "id": "make-your-own-report",
+  "title": "Make your own report",
+  "group": "Reports and BAS",
+  "summary": "How to add comparison columns, your own notes or calculations to the profit and loss, and save it to use again.",
+  "sections": [
+    {
+      "heading": "Customise",
+      "steps": [
+        {
+          "text": "Open the profit and loss and click Customise. Every tick changes the report straight away.",
+          "image": {
+            "file": "customise-report.png",
+            "description": "The profit and loss with the Customise panel open. Last period and percent of income are ticked, so the report shows two periods and a percent of income column. The panel also lists Same period last year, Month by month, the rows, and New column."
+          }
+        },
+        {
+          "text": "Under Start from, click Compare quarters, Month by month, or For the accountant to begin from a ready layout."
+        },
+        {
+          "text": "Tick columns: Last period, Same period last year, % of income, or Month by month. Tick rows: accounts with no amounts, small expenses grouped as Other, or account codes."
+        },
+        {
+          "text": "Click New column to add your own: notes you type in each row, or a calculation picked from a list, such as the difference between two columns. Check the preview, then click Add column."
+        }
+      ]
+    },
+    {
+      "heading": "Save it",
+      "steps": [
+        {
+          "text": "Click Save as my report and give it a name, such as Quarterly P&L for accountant. It is listed under My reports, above the standard ones."
+        },
+        {
+          "text": "Open it from Reports at any time: its figures always come from your books. Rename or Delete it from the list."
+        }
+      ]
+    }
+  ]
+}

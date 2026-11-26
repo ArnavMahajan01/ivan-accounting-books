@@ -103,6 +103,7 @@ test('the packaged app opens new books, and loads and clears the sample data fro
     };
     review: { posted: string; payee: string; inTransactions: string };
     reconcile: { said: string; notice: string };
+    reports: { reopenedColumns: string; locked: string };
   };
   expect(report).toMatchObject({
     appInfo: 'Version 0.0.0',
@@ -189,6 +190,11 @@ test('the packaged app opens new books, and loads and clears the sample data fro
   expect(report.reconcile.said).toContain('Your books agree with the statement on 20/11/2026');
   expect(report.reconcile.notice).toBe('Business One ··4821 is reconciled to 20/11/2026.');
   expect(report.review.posted).toContain('1 posted.');
+  // Reports (specs 097, 101): a saved report reopens with its columns, and the quarter locks.
+  expect(report.reports.reopenedColumns).toMatch(/^Account Oct–Dec \d{4} Jul–Sep \d{4}$/);
+  expect(report.reports.locked).toMatch(
+    /^Jul–Sep \d{4} is locked\. Nothing dated on or before 30\/09\/\d{4} can change\.$/,
+  );
   expect(report.review.inTransactions).toContain('WORKSHOP RENT MARSH PROPERTY GROUP');
   expect(report.review.inTransactions).toContain('Rent');
   expect(report.review.payee).toContain(

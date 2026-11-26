@@ -36,6 +36,11 @@ const PAGES = [
   ['accounts', '#/accounts'],
   ['reports', '#/reports'],
   ['rules', '#/rules'],
+  ['report-pl', '#/reports/profit-and-loss'],
+  ['report-bs', '#/reports/balance-sheet'],
+  ['report-tb', '#/reports/trial-balance'],
+  ['report-bas', '#/reports/bas'],
+  ['report-close', '#/reports/close'],
   ['shared-sheets', '#/shared-sheets'],
   ['accountant-changes', '#/accountant-changes'],
   ['settings', '#/settings'],
@@ -141,6 +146,17 @@ test('no page, sheet or panel breaks at any window size', async () => {
     problems.push(...(await problemsOn(page, 'transfer-sheet', size)));
     await page.keyboard.press('Escape');
     await page.getByRole('dialog').waitFor({ state: 'detached' });
+
+    // Folder 08: a figure's lines, and the customise panel.
+    await go(page, '#/reports/profit-and-loss');
+    await page.locator('button.report__figure').first().click();
+    await page.getByRole('dialog').waitFor();
+    problems.push(...(await problemsOn(page, 'drill-sheet', size)));
+    await page.keyboard.press('Escape');
+    await page.getByRole('dialog').waitFor({ state: 'detached' });
+    await page.getByRole('button', { name: 'Customise' }).click();
+    await page.locator('.side-panel').waitFor();
+    problems.push(...(await problemsOn(page, 'customise-panel', size)));
 
     // Folder 07: the rule panel, a new account, and reconciling.
     await go(page, '#/rules');

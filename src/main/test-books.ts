@@ -1,5 +1,6 @@
 // A fixed set of books for tests that need handlers but not file switching.
 
+import type { ReportExports } from './report-exports';
 import type { OpenError, Store } from '@data/database';
 import { seededRandom } from '@shared/ids';
 import { err, ok, type Result } from '@shared/result';
@@ -27,4 +28,5 @@ export const importDeps = {
     choose: () => Promise.resolve(null),
     read: () => Promise.resolve(err('unreadable-file' as const)),
   } satisfies StatementFiles,
+  exports: { save: () => Promise.resolve('cancelled' as const) } satisfies ReportExports,
 };

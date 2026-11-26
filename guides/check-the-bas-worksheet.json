@@ -1,0 +1,33 @@
+{
+  "id": "check-the-bas-worksheet",
+  "title": "Check the BAS worksheet",
+  "group": "Reports and BAS",
+  "summary": "How to see G1, 1A and 1B for a quarter, and the GST to pay or be refunded.",
+  "sections": [
+    {
+      "heading": "Check the figures",
+      "steps": [
+        {
+          "text": "Click Reports, then BAS worksheet. It opens on last quarter.",
+          "image": {
+            "file": "bas-worksheet.png",
+            "description": "The BAS worksheet with sample data for July to September 2026: G1 total sales including GST, 1A GST on sales, 1B GST on purchases, and GST to pay, with a note that the app does not lodge anything with the ATO."
+          }
+        },
+        {
+          "text": "Click a figure to see every line in it. A line that looks wrong is fixed in Transactions, and the worksheet changes with it."
+        },
+        {
+          "text": "Export a PDF for your records, or for your accountant."
+        }
+      ]
+    },
+    {
+      "heading": "What it does not do",
+      "paragraphs": [
+        "This worksheet is for you or your accountant to fill in the BAS. The app does not lodge anything with the ATO.",
+        "It is the simpler BAS, on the basis set for the business. Ask your accountant if you are not sure which labels apply to you."
+      ]
+    }
+  ]
+}

@@ -558,3 +558,56 @@ export type AccountEditOutcome =
         | 'already-active'
         | 'bank-account';
     };
+
+// ---- Reports (folder 08) ------------------------------------------------------------------------
+
+/** The lines behind a report figure (spec 093). `total` is always the figure clicked. */
+export interface DrillView {
+  readonly title: string;
+  readonly lines: readonly {
+    readonly entryId: string;
+    readonly date: CalendarDate;
+    readonly payee: string | null;
+    readonly description: string;
+    readonly account: string;
+    readonly beforeGst: Cents;
+    readonly gst: Cents;
+    readonly total: Cents;
+  }[];
+  readonly total: Cents;
+  readonly totalLabel: string;
+  /** For "Open in Transactions". Null for a BAS label, which spans accounts. */
+  readonly accountId: string | null;
+}
+
+/** Closing a quarter (spec 097): each step, then the lock. */
+export interface QuarterCloseView {
+  readonly period: {
+    readonly from: CalendarDate;
+    readonly to: CalendarDate;
+    readonly label: string;
+  };
+  /** Bank lines dated in the quarter still waiting in To review. */
+  readonly linesWaiting: number;
+  readonly accounts: readonly {
+    readonly id: string;
+    readonly name: string;
+    readonly reconciledTo: CalendarDate | null;
+    /** Reconciled to the quarter's end or later. */
+    readonly done: boolean;
+  }[];
+  readonly bas: { readonly g1: Cents; readonly a1: Cents; readonly b1: Cents; readonly net: Cents };
+  /** The quarter is locked already. */
+  readonly locked: boolean;
+  readonly lockDate: CalendarDate | null;
+}
+
+export type LockOutcome =
+  | { readonly kind: 'locked'; readonly lockDate: CalendarDate }
+  | { readonly kind: 'refused'; readonly reason: 'not-forwards' | 'not-set-up' };
+
+export interface LayoutSummary {
+  readonly id: string;
+  readonly name: string;
+  readonly report: 'profit-and-loss' | 'balance-sheet' | 'trial-balance' | 'bas';
+}

@@ -32,6 +32,7 @@ describe('every page', () => {
           'bank',
           'to-review',
           'rules',
+          'reports',
         ].includes(r.id),
     ).map((r) => r.id),
   )('%s says in plain words that it is coming in a later version', (id) => {

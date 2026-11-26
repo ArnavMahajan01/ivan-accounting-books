@@ -52,3 +52,8 @@ export function insertBusiness(db: Db, business: Business): void {
     business.updatedAt,
   );
 }
+
+/** Moves the lock date (spec 096). The service allows only forwards. */
+export function setLockDate(db: Db, lockDate: string, at: string): void {
+  db.prepare('UPDATE business SET lock_date = ?, updated_at = ? WHERE id = 1').run(lockDate, at);
+}

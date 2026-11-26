@@ -51,6 +51,8 @@ The script and the questions to ask are in `demo-scripts/demo-5-rules-and-reconc
 
 ## Demo 6: Reports and the BAS (spec 104)
 
+The script and the questions to ask are in `demo-scripts/demo-6-reports-and-bas.md`. The demo has not been held yet.
+
 | What he said | Screen | Who and when | Spec |
 |---|---|---|---|
 | | | | |

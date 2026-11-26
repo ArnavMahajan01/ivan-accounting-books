@@ -3,6 +3,8 @@
 // validates every input against the schema before doing anything.
 
 import { z } from 'zod';
+import type { ReportRequest, ReportView } from './reports';
+import { reportRequestSchema } from './report-request-schema';
 import { ACCOUNT_TYPES, type BooksProblem, type StoreProblem } from './kinds';
 import {
   DESCRIPTION_OPS,
@@ -22,6 +24,10 @@ import {
   type CommitOutcome,
   type HomeSummary,
   type AccountEditOutcome,
+  type DrillView,
+  type LayoutSummary,
+  type LockOutcome,
+  type QuarterCloseView,
   type MoveOutcome,
   type PostOutcome,
   type ReconcileOutcome,
@@ -166,6 +172,26 @@ export const ruleInputSchema = z
   })
   .strict();
 
+export const drillSchema = z.discriminatedUnion('kind', [
+  z
+    .object({
+      kind: z.literal('account'),
+      accountId: idText('acc'),
+      side: z.enum(['natural', 'debit', 'credit']),
+      from: dateText.nullable(),
+      to: dateText,
+    })
+    .strict(),
+  z
+    .object({
+      kind: z.literal('bas'),
+      label: z.enum(['G1', '1A', '1B']),
+      from: dateText,
+      to: dateText,
+    })
+    .strict(),
+]);
+
 export const reconcileSchema = z
   .object({ bankAccountId: idText('bnk'), statementDate: dateText, statementBalance: signedCents })
   .strict();
@@ -249,6 +275,27 @@ export const bridgeContract = {
   'accounts.setActive': { input: z.object({ id: idText('acc'), active: z.boolean() }).strict() },
   'bank.checkReconcile': { input: reconcileSchema },
   'bank.finishReconcile': { input: reconcileSchema },
+  'reports.get': { input: z.object({ request: reportRequestSchema }).strict() },
+  'reports.lines': { input: z.object({ drill: drillSchema }).strict() },
+  /** The BAS period to close: the one ending on `end`, or the last one that has ended. */
+  'reports.close': { input: z.object({ end: dateText.nullable() }).strict() },
+  'reports.lock': { input: z.object({ endDate: dateText }).strict() },
+  'reports.layouts': { input: noInput },
+  'reports.openLayout': { input: z.object({ id: idText('lay') }).strict() },
+  'reports.saveLayout': {
+    input: z
+      .object({
+        id: idText('lay').nullable(),
+        name: z.string().min(1).max(80),
+        request: reportRequestSchema,
+      })
+      .strict(),
+  },
+  'reports.removeLayout': { input: z.object({ id: idText('lay') }).strict() },
+  /** Opens the Mac's save sheet, then writes the report there. */
+  'reports.export': {
+    input: z.object({ request: reportRequestSchema, format: z.enum(['csv', 'pdf']) }).strict(),
+  },
   'review.undoPayee': {
     input: z.object({ contactId: idText('con'), words: z.string().min(1).max(1000) }).strict(),
   },
@@ -319,6 +366,21 @@ export interface BridgeResults {
   /** Null when there is no such bank account. */
   'bank.checkReconcile': ReconcileView | null;
   'bank.finishReconcile': ReconcileOutcome;
+  'reports.get':
+    | { readonly kind: 'report'; readonly view: ReportView }
+    | { readonly kind: 'refused'; readonly reason: 'bad-period' | 'not-set-up' };
+  'reports.lines': DrillView;
+  /** Null before the books are set up. */
+  'reports.close': QuarterCloseView | null;
+  'reports.lock': LockOutcome;
+  'reports.layouts': readonly LayoutSummary[];
+  /** Null when there is no such layout. */
+  'reports.openLayout': { readonly name: string; readonly request: ReportRequest } | null;
+  'reports.saveLayout':
+    | { readonly kind: 'saved'; readonly id: string }
+    | { readonly kind: 'refused'; readonly reason: 'empty-name' | 'name-in-use' | 'not-found' };
+  'reports.removeLayout': { readonly removed: boolean };
+  'reports.export': { readonly result: 'saved' | 'cancelled' | 'failed' | 'bad-period' };
 }
 
 /** The Rules page: every rule in order, and the choices its editor offers. */

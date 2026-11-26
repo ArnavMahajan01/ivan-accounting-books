@@ -3,6 +3,7 @@
 
 import { vi } from 'vitest';
 import type { BridgeApi, RulesView } from '@shared/bridge-contract';
+import type { ReportCell, ReportView } from '@shared/reports';
 import type { Rule } from '@shared/rule-types';
 import type { CalendarDate, Timestamp } from '@shared/dates';
 import { asCents } from '@shared/money';
@@ -12,6 +13,8 @@ import type {
   BankAccountRow,
   BankView,
   BooksState,
+  DrillView,
+  QuarterCloseView,
   HomeSummary,
   ImportLineView,
   ImportPreview,
@@ -531,6 +534,107 @@ export const RULES: RulesView = {
   bankAccounts: REVIEW.bankAccounts,
 };
 
+const money = (cents: number, accountId: string | null = null): ReportCell => ({
+  kind: 'money',
+  cents: asCents(cents),
+  drill:
+    accountId === null
+      ? null
+      : {
+          kind: 'account',
+          accountId,
+          side: 'natural',
+          from: date('2026-10-01'),
+          to: date('2026-11-21'),
+        },
+});
+
+/** An invented profit and loss for Oct–Dec 2026 so far, as in the wireframe. */
+export const PROFIT_AND_LOSS: ReportView = {
+  title: 'Profit and loss',
+  periodText: 'Oct–Dec 2026, 01/10/2026 to 21/11/2026',
+  from: date('2026-10-01'),
+  to: date('2026-11-21'),
+  columns: [{ key: 'p0', label: 'Oct–Dec 2026' }],
+  rows: [
+    { kind: 'heading', key: 'income', label: 'Income', code: null, cells: [{ kind: 'empty' }] },
+    {
+      kind: 'account',
+      key: 'acc_sales',
+      label: 'Sales',
+      code: null,
+      cells: [money(3845000, 'acc_sales')],
+    },
+    {
+      kind: 'total',
+      key: 'total-income',
+      label: 'Total income',
+      code: null,
+      cells: [money(3845000)],
+    },
+    { kind: 'heading', key: 'expenses', label: 'Expenses', code: null, cells: [{ kind: 'empty' }] },
+    {
+      kind: 'account',
+      key: 'acc_mat',
+      label: 'Materials and supplies',
+      code: null,
+      cells: [money(981240, 'acc_mat')],
+    },
+    {
+      kind: 'total',
+      key: 'total-expenses',
+      label: 'Total expenses',
+      code: null,
+      cells: [money(981240)],
+    },
+    { kind: 'grand', key: 'net-profit', label: 'Net profit', code: null, cells: [money(2863760)] },
+  ],
+  check: null,
+  note: null,
+  locked: false,
+};
+
+export const DRILL: DrillView = {
+  title: 'Materials and supplies, 01/10/2026 to 21/11/2026',
+  lines: [
+    {
+      entryId: 'ent_timber',
+      date: date('2026-10-02'),
+      payee: 'Timberlink',
+      description: 'TIMBERLINK SUPPLIES PTY LTD',
+      account: 'Materials and supplies',
+      beforeGst: asCents(800000),
+      gst: asCents(80000),
+      total: asCents(880000),
+    },
+    {
+      entryId: 'ent_bunnings',
+      date: date('2026-10-15'),
+      payee: 'Bunnings',
+      description: 'BUNNINGS 4532',
+      account: 'Materials and supplies',
+      beforeGst: asCents(181240),
+      gst: asCents(18124),
+      total: asCents(199364),
+    },
+  ],
+  total: asCents(981240),
+  totalLabel: 'Total, before GST',
+  accountId: 'acc_mat',
+};
+
+export const CLOSE: QuarterCloseView = {
+  period: { from: date('2026-07-01'), to: date('2026-09-30'), label: 'Jul–Sep 2026' },
+  linesWaiting: 0,
+  accounts: [
+    { id: 'bnk_one', name: 'Business One ··4821', reconciledTo: date('2026-09-30'), done: true },
+    { id: 'bnk_reserve', name: 'Business Cash Reserve ··7730', reconciledTo: null, done: false },
+  ],
+  bas: { g1: asCents(5280000), a1: asCents(480000), b1: asCents(192640), net: asCents(287360) },
+  locked: false,
+  lockDate: null,
+};
+
 /** Puts a stand-in bridge on `window`, and returns its functions so a test can look at the calls. */
 export function installBridge(overrides: Partial<BridgeApi> = {}): BridgeApi {
   const api: BridgeApi = {
@@ -631,6 +735,31 @@ export function installBridge(overrides: Partial<BridgeApi> = {}): BridgeApi {
       ),
     ),
     'bank.finishReconcile': vi.fn(() => Promise.resolve(ok({ kind: 'done' as const, lines: 18 }))),
+    'reports.get': vi.fn(() =>
+      Promise.resolve(ok({ kind: 'report' as const, view: PROFIT_AND_LOSS })),
+    ),
+    'reports.lines': vi.fn(() => Promise.resolve(ok(DRILL))),
+    'reports.close': vi.fn(() => Promise.resolve(ok(CLOSE))),
+    'reports.lock': vi.fn(() =>
+      Promise.resolve(ok({ kind: 'locked' as const, lockDate: date('2026-09-30') })),
+    ),
+    'reports.layouts': vi.fn(() =>
+      Promise.resolve(
+        ok([
+          {
+            id: 'lay_acct',
+            name: 'Quarterly P&L for accountant',
+            report: 'profit-and-loss' as const,
+          },
+        ]),
+      ),
+    ),
+    'reports.openLayout': vi.fn(() => Promise.resolve(ok(null))),
+    'reports.saveLayout': vi.fn(() =>
+      Promise.resolve(ok({ kind: 'saved' as const, id: 'lay_new' })),
+    ),
+    'reports.removeLayout': vi.fn(() => Promise.resolve(ok({ removed: true }))),
+    'reports.export': vi.fn(() => Promise.resolve(ok({ result: 'saved' as const }))),
     pathForFile: vi.fn((file: File) => `/Users/someone/Downloads/${file.name}`),
     ...overrides,
   };

@@ -1,0 +1,33 @@
+{
+  "id": "read-your-profit-and-loss",
+  "title": "Read your profit and loss",
+  "group": "Reports and BAS",
+  "summary": "How to see what the business earned and spent for a period, and the lines behind any figure.",
+  "sections": [
+    {
+      "heading": "Open it",
+      "steps": [
+        {
+          "text": "Click Reports in the sidebar, then Profit and loss.",
+          "image": {
+            "file": "profit-and-loss.png",
+            "description": "The profit and loss with sample data for this quarter so far: income, then expenses, each account with its amount, the totals and net profit at the bottom. Customise and Save as my report are at the top, Export CSV and Export PDF beside the period."
+          }
+        },
+        {
+          "text": "Choose the period: this quarter, last quarter, this financial year, last financial year, or your own dates. The financial year runs 1 July to 30 June."
+        },
+        {
+          "text": "Click any figure to see the lines that make it up. Their total is always the figure. Click Open in Transactions to fix one."
+        }
+      ]
+    },
+    {
+      "heading": "The other reports",
+      "paragraphs": [
+        "The balance sheet shows what the business owns and owes on a day, and says in words whether assets equal liabilities plus equity. The trial balance lists every account's balance as debits and credits, for your accountant.",
+        "Export CSV saves a file to open in Numbers, Excel or Google Sheets. Export PDF saves a printable copy with the business's name and page numbers. Publish to Google Sheets comes in a later version."
+      ]
+    }
+  ]
+}

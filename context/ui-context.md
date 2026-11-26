@@ -215,6 +215,7 @@ From `2211-contacts/`, Option 1, List and Contact Page, with Option 2's saving a
 
 From `2111-reports-and-bas/`, Option 3, Quarter Close.
 
+- **Built at specs 089 to 103 (2026-11-26):** Reports lists My reports above the four reports, with **Close the last quarter** as the main action. A report has ‹ Reports, its period (This quarter, Last quarter, This financial year, Last financial year, Choose dates; an as-at day for the balance sheet), Export CSV, Export PDF and a greyed Publish to Google Sheets beside the period, and for the profit and loss **Customise** (panel: ready layouts, columns, rows, New column…) and **Save as my report**. Every figure is a button opening its lines. The balance sheet and trial balance say their check in words; the BAS worksheet says the app does not lodge anything. The close page lists the four steps with Done or To do, and Lock asks first and needs "The BAS for this quarter is done" ticked.
 - **The reports list:** profit and loss, balance sheet, trial balance, the BAS worksheet. Each report has a date range, and the actions Export CSV, Export PDF and Publish to Google Sheets. Every figure links to the lines behind it.
 - **Closing a quarter:** the BAS is reached through a short checklist. The first steps tick themselves from the books. The BAS worksheet is step 3. The lock is the last step, and asks to confirm.
 

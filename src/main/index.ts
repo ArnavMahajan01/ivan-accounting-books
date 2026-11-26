@@ -28,6 +28,7 @@ import { createHandlers } from './handlers';
 import { systemClock } from './clock';
 import { systemRandom } from './random';
 import { readStatementFile } from './statement-files';
+import { createReportExports } from './report-exports';
 import { checkBooks } from '@services/check-books';
 import { debuggingFlags } from './launch-guard';
 import { logFileSink, teeSinks } from './log-file';
@@ -295,6 +296,7 @@ if (refusedFlags.length > 0) {
           },
           read: readStatementFile,
         },
+        exports: createReportExports(() => mainWindow),
         // Counts only: what a file holds is never logged.
         onImport: (event, counts) => {
           log.info(`import.${event}`, counts);

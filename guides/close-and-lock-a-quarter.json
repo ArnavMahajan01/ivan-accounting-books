@@ -1,0 +1,38 @@
+{
+  "id": "close-and-lock-a-quarter",
+  "title": "Close and lock a quarter",
+  "group": "Reports and BAS",
+  "summary": "How to finish a quarter in order and lock it, so its figures never change after the BAS is done.",
+  "sections": [
+    {
+      "heading": "Close the quarter",
+      "steps": [
+        {
+          "text": "Click Reports, then Close the last quarter. Four steps are listed, each saying whether it is done.",
+          "image": {
+            "file": "close-quarter.png",
+            "description": "Close July to September 2026 with sample data: every bank line reviewed is done, the bank accounts are not reconciled yet, the BAS worksheet figures are shown, and Lock July to September 2026 is at the bottom."
+          }
+        },
+        {
+          "text": "Post any bank lines still waiting in To review for the quarter."
+        },
+        {
+          "text": "Reconcile each bank account to the quarter's last day, from the Bank page."
+        },
+        {
+          "text": "Check the BAS worksheet, and do the BAS with your accountant."
+        },
+        {
+          "text": "Click Lock, tick The BAS for this quarter is done, and click Lock again."
+        }
+      ]
+    },
+    {
+      "heading": "After locking",
+      "paragraphs": [
+        "Nothing dated in the quarter can be added, changed or deleted, and its reports always show the same figures. Locked transactions say Locked. A lock cannot be undone: a correction found later is entered in the next quarter."
+      ]
+    }
+  ]
+}

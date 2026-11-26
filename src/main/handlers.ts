@@ -45,8 +45,35 @@ import {
   testRule,
 } from '@services/rules';
 import type { z } from 'zod';
-import type { reconcileSchema, ruleInputSchema } from '@shared/bridge-contract';
-import type { CalendarDate } from '@shared/dates';
+import type { drillSchema, reconcileSchema, ruleInputSchema } from '@shared/bridge-contract';
+import { parseCalendarDate, type CalendarDate } from '@shared/dates';
+import type { Drill } from '@shared/reports';
+import { reportCsv } from '@domain/csv';
+import { getQuarterClose, lockPeriod } from '@services/quarter-close';
+import {
+  listReportLayouts,
+  openReportLayout,
+  removeReportLayout,
+  saveReportLayout,
+} from '@services/report-layouts';
+import { getReport, getReportLines } from '@services/reports';
+import type { ReportExports } from './report-exports';
+import { reportHtml } from './report-html';
+
+/** A day the bridge checked the shape of, or null when it does not exist, such as 31 November. */
+function calendarDate(text: string): CalendarDate | null {
+  const parsed = parseCalendarDate(text, 'YYYY-MM-DD');
+  return parsed.ok ? parsed.value : null;
+}
+
+/** A figure's lines, with real days, or null. */
+function toDrill(drill: z.output<typeof drillSchema>): Drill | null {
+  const to = calendarDate(drill.to);
+  const from = drill.from === null ? null : calendarDate(drill.from);
+  if (to === null || (drill.from !== null && from === null)) return null;
+  if (drill.kind === 'account') return { ...drill, from, to };
+  return from === null ? null : { ...drill, from, to };
+}
 import type { RuleInput } from '@shared/rule-types';
 
 /** The bridge checked the rule's shape; amounts are whole cents. */
@@ -99,6 +126,8 @@ export interface HandlerDeps {
   readonly clock: Clock;
   readonly random: RandomSource;
   readonly files: StatementFiles;
+  /** Saving a report as CSV or PDF (specs 098, 099). */
+  readonly exports: ReportExports;
   /** Told how many lines each step added, skipped or could not read. Never given descriptions. */
   readonly onImport?: (
     event: 'previewed' | 'imported' | 'undone',
@@ -119,6 +148,7 @@ export function createHandlers({
   clock,
   random,
   files,
+  exports,
   onImport,
 }: HandlerDeps): BridgeHandlers {
   // Files read and checked but not yet saved. Forgotten when the books change.
@@ -295,6 +325,71 @@ export function createHandlers({
         const changed = active ? reactivateAccount(ctx, id) : deactivateAccount(ctx, id);
         return ok(changed.ok ? { kind: 'saved', id } : { kind: 'refused', reason: changed.error });
       }),
+    'reports.get': ({ request }) =>
+      open((store) => {
+        const built = getReport({ db: store.db, clock }, request);
+        return ok(
+          built.ok
+            ? { kind: 'report', view: built.value }
+            : { kind: 'refused', reason: built.error },
+        );
+      }),
+    'reports.lines': ({ drill }) =>
+      open((store) => {
+        const typed = toDrill(drill);
+        return typed === null
+          ? err({ code: 'invalid-input' })
+          : ok(getReportLines({ db: store.db, clock }, typed));
+      }),
+    'reports.close': ({ end }) =>
+      open((store) => {
+        const day = end === null ? null : calendarDate(end);
+        if (end !== null && day === null) return err({ code: 'invalid-input' });
+        const view = getQuarterClose({ db: store.db, clock }, day);
+        return ok(view.ok ? view.value : null);
+      }),
+    'reports.lock': ({ endDate }) =>
+      open((store) => {
+        const day = calendarDate(endDate);
+        if (day === null) return err({ code: 'invalid-input' });
+        const locked = lockPeriod({ db: store.db, clock, random }, day);
+        return ok(
+          locked.ok
+            ? { kind: 'locked', lockDate: locked.value }
+            : { kind: 'refused', reason: locked.error },
+        );
+      }),
+    'reports.layouts': () => open((store) => ok(listReportLayouts({ db: store.db }))),
+    'reports.openLayout': ({ id }) =>
+      open((store) => {
+        const layout = openReportLayout({ db: store.db }, id);
+        return ok(layout === null ? null : { name: layout.name, request: layout.request });
+      }),
+    'reports.saveLayout': (input) =>
+      open((store) => {
+        const saved = saveReportLayout({ db: store.db, clock, random }, input);
+        return ok(
+          saved.ok
+            ? { kind: 'saved', id: saved.value.id }
+            : { kind: 'refused', reason: saved.error },
+        );
+      }),
+    'reports.removeLayout': ({ id }) =>
+      open((store) => ok({ removed: removeReportLayout({ db: store.db, clock, random }, id).ok })),
+    'reports.export': async ({ request, format }) => {
+      const store = books.store();
+      if (!store.ok) return err(INTERNAL);
+      const built = getReport({ db: store.value.db, clock }, request);
+      if (!built.ok) return ok({ result: 'bad-period' as const });
+      const business = books.state().businessName ?? '';
+      const view = built.value;
+      const name = `${view.title} ${view.periodText}`.replace(/[^A-Za-z0-9 –-]+/g, '-').trim();
+      const result =
+        format === 'csv'
+          ? await exports.save('csv', `${name}.csv`, reportCsv(view, business))
+          : await exports.save('pdf', `${name}.pdf`, reportHtml(view, business));
+      return ok({ result });
+    },
     'bank.checkReconcile': (input) =>
       open((store) => {
         const checked = checkReconcile({ db: store.db }, toReconcileInput(input));

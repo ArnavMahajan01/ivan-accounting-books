@@ -76,6 +76,14 @@ export interface ReconcileFlowReport {
   readonly notice: string;
 }
 
+/** Reports (folder 08): a report saved and reopened, and the last quarter closed and locked. */
+export interface ReportsFlowReport {
+  /** The saved report's columns, read again after opening it from My reports. */
+  readonly reopenedColumns: string;
+  /** The message after locking the quarter. */
+  readonly locked: string;
+}
+
 /** To review after the imports (folder 06): a line posted with an account, and a payee saved. */
 export interface ReviewFlowReport {
   /** The message after posting one line with an account typed and Return. */
@@ -114,6 +122,7 @@ export interface SelfCheckReport {
   readonly review: ReviewFlowReport;
   /** Empty unless statement files were given to import. */
   readonly reconcile: ReconcileFlowReport;
+  readonly reports: ReportsFlowReport;
 }
 
 /**
@@ -309,6 +318,56 @@ const SELF_CHECK_SOURCE = `(async () => {
     review.inTransactions = [...rowsOf('Transactions')].map((r) => r.innerText.replace(/\\s+/g, ' ').trim()).join(' | ');
   }
 
+  // Reports, as he would: save the profit and loss with a column, reopen it, then close the quarter.
+  const reports = { reopenedColumns: '', locked: '' };
+  {
+    const field = (name) => [...document.querySelectorAll('input')].find((i) => {
+      const label = i.closest('label');
+      return label && label.textContent.trim().startsWith(name);
+    }) || null;
+    const setText = (el, value) => {
+      Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set.call(el, value);
+      el.dispatchEvent(new Event('input', { bubbles: true }));
+    };
+    location.hash = '#/reports/profit-and-loss';
+    await until(() => document.querySelector('table.report'));
+    const customise = await until(() => button('Customise'));
+    if (customise) customise.click();
+    const last = await until(() => field('Last period'));
+    if (last) last.click();
+    await wait(400);
+    const saveAs = await until(() => button('Save as my report'));
+    if (saveAs) saveAs.click();
+    const name = await until(() => field('Name'));
+    if (name) {
+      setText(name, 'Self-check report');
+      await wait(100);
+      const sheet = name.closest('[role="dialog"]');
+      const save = sheet ? button('Save', sheet) : null;
+      if (save) save.click();
+    }
+    await until(() => document.querySelector('.review__notice'));
+    location.hash = '#/reports';
+    const link = await until(() => [...document.querySelectorAll('a')].find((a) => a.textContent === 'Self-check report') || null);
+    if (link) link.click();
+    await until(() => document.querySelectorAll('table.report thead th').length > 2);
+    await wait(300);
+    const head = document.querySelector('table.report thead');
+    reports.reopenedColumns = head ? head.innerText.replace(/\\s+/g, ' ').trim() : '';
+
+    location.hash = '#/reports/close';
+    const lock = await until(() => [...document.querySelectorAll('button')].find((b) => b.textContent.trim().startsWith('Lock ') && b.textContent.trim().endsWith('…')) || null);
+    if (lock) lock.click();
+    const ask = await until(() => document.querySelector('[role="alertdialog"]'));
+    const tick = ask ? ask.querySelector('input[type="checkbox"]') : null;
+    if (tick) tick.click();
+    await wait(100);
+    const confirmLock = ask ? [...ask.querySelectorAll('button')].find((b) => b.textContent.trim().startsWith('Lock ') && !b.disabled) : null;
+    if (confirmLock) confirmLock.click();
+    const notice = await until(() => { const n = document.querySelector('.review__notice'); return n && n.textContent.includes('locked') ? n : null; });
+    reports.locked = notice ? notice.innerText.replace(/\\s+/g, ' ').trim() : '';
+  }
+
   location.hash = '#/settings';
   const clear = await until(() => { const b = button('Clear sample data'); return b && !b.disabled ? b : null; });
   if (clear) clear.click();
@@ -328,5 +387,6 @@ const SELF_CHECK_SOURCE = `(async () => {
     imports,
     review,
     reconcile,
+    reports,
   };
 })()`;

@@ -1,4 +1,4 @@
-import { ChartColumn, Share2, UserCheck } from 'lucide-react';
+import { Share2, UserCheck } from 'lucide-react';
 import { assertNever } from '@shared/kinds';
 import type { RouteId } from '../routes';
 import { EmptyPage } from './EmptyPage';
@@ -7,6 +7,7 @@ import { BankPage } from './BankPage';
 import { HelpPage } from './HelpPage';
 import { HomePage } from './HomePage';
 import { SettingsPage } from './SettingsPage';
+import { ReportsPage } from '../reports/ReportsPage';
 import { RulesPage } from './RulesPage';
 import { ToReviewPage } from './ToReviewPage';
 import { TransactionsPage } from './TransactionsPage';
@@ -25,13 +26,7 @@ export function Page({ route }: { readonly route: RouteId }) {
     case 'accounts':
       return <AccountsPage />;
     case 'reports':
-      return (
-        <EmptyPage
-          title="Reports"
-          icon={ChartColumn}
-          message="Profit and loss, balance sheet, trial balance and the BAS worksheet appear here once there are transactions."
-        />
-      );
+      return <ReportsPage />;
     case 'rules':
       return <RulesPage />;
     case 'shared-sheets':

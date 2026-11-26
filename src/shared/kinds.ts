@@ -57,6 +57,10 @@ export const AUDIT_KINDS = [
   'rule.remove',
   'rule.reorder',
   'reconcile.finish',
+  'business.lock',
+  'layout.add',
+  'layout.change',
+  'layout.remove',
 ] as const;
 export type AuditKind = (typeof AUDIT_KINDS)[number];
 
@@ -111,6 +115,7 @@ export const ID_KINDS = [
   'pre',
   'rul',
   'rec',
+  'lay',
 ] as const;
 export type IdKind = (typeof ID_KINDS)[number];
 

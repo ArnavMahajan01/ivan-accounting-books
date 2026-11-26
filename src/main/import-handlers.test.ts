@@ -10,7 +10,7 @@ import { ok } from '@shared/result';
 import { fixtureText, type WestpacFixture } from '../../tests/fixtures/westpac/fixtures';
 import { createHandlers, type HandlerDeps } from './handlers';
 import { readStatementFile } from './statement-files';
-import { staticBooks } from './test-books';
+import { importDeps, staticBooks } from './test-books';
 
 const clock = (() => {
   const today = parseCalendarDate('2026-11-23', 'YYYY-MM-DD');
@@ -47,6 +47,7 @@ function setup() {
     clock,
     random: seededRandom(11),
     files: { choose: () => Promise.resolve(chosen), read: readStatementFile },
+    exports: importDeps.exports,
     onImport,
   });
   return { handlers, onImport };

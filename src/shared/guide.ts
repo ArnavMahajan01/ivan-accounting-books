@@ -11,6 +11,7 @@ export const GUIDE_GROUPS = [
   'Bank',
   'To review',
   'Rules',
+  'Reports and BAS',
 ] as const;
 export type GuideGroup = (typeof GUIDE_GROUPS)[number];
 
