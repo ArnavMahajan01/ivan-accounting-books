@@ -1,0 +1,151 @@
+/* Contacts (spec 123; W08b, Options 1 and 3). */
+
+/* A contact's name that opens their page or summary: reads as a name, not a button. */
+.contact-name {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-brand);
+  font: inherit;
+  text-align: start;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.contact-name:hover {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.contact-name:focus-visible {
+  outline: var(--size-focus-ring) solid var(--color-focus-ring);
+  outline-offset: 2px;
+  border-radius: var(--radius-control);
+}
+
+.contact__added {
+  color: var(--color-text-secondary);
+}
+
+.contact__kind {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-label);
+}
+
+.contact__tabs {
+  align-self: flex-start;
+}
+
+.contact__notice,
+.contact__empty,
+.contact__words {
+  margin: 0;
+  font-size: var(--font-size-label);
+}
+
+.contact__empty,
+.contact__words {
+  color: var(--color-text-secondary);
+}
+
+.contact__details {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding: var(--space-4);
+}
+
+.contact__details div {
+  display: grid;
+  grid-template-columns: minmax(96px, 160px) 1fr;
+  gap: var(--space-3);
+}
+
+.contact__details dt {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-label);
+}
+
+.contact__details dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+  white-space: pre-line;
+}
+
+.contact-sheet {
+  display: grid;
+  gap: var(--space-3);
+  min-width: 360px;
+}
+
+.contact-sheet textarea {
+  resize: vertical;
+  font: inherit;
+}
+
+/* The summary beside a page (W08b, Option 3). */
+.contact-panel {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.contact-panel__kind {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-label);
+}
+
+.contact-panel__figures {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+}
+
+.contact-panel__figures div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.contact-panel__figures dt {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-label);
+}
+
+.contact-panel__figures dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.contact-panel__heading {
+  margin: var(--space-2) 0 0;
+  font-size: var(--font-size-label);
+  font-weight: var(--font-weight-semibold);
+}
+
+.contact-panel__invoices {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--font-size-label);
+}
+
+.contact-panel__invoices li {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  gap: var(--space-3);
+  align-items: baseline;
+}
+
+.contact-panel__invoices li > :last-child {
+  text-align: end;
+}
+
+.contact-panel__open {
+  justify-self: start;
+  color: var(--color-brand);
+  font-size: var(--font-size-label);
+}

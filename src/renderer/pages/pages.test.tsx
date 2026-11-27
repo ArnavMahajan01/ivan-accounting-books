@@ -19,29 +19,6 @@ describe('every page', () => {
       expect(screen.getByRole('heading', { level: 1, name: label })).not.toBeNull();
     },
   );
-
-  it.each(
-    ROUTES.filter(
-      (r) =>
-        ![
-          'home',
-          'settings',
-          'help',
-          'accounts',
-          'transactions',
-          'bank',
-          'to-review',
-          'rules',
-          'reports',
-          'invoices',
-          'shared-sheets',
-          'accountant-changes',
-        ].includes(r.id),
-    ).map((r) => r.id),
-  )('%s says in plain words that it is coming in a later version', (id) => {
-    render(<Page route={id} />);
-    expect(screen.getByText('Coming in a later version.')).not.toBeNull();
-  });
 });
 
 describe('keyboard and screen readers', () => {

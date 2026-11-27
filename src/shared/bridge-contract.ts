@@ -25,7 +25,14 @@ import {
   type ShareRefusal,
 } from './sheets';
 import { reportRequestSchema } from './report-request-schema';
-import { ACCOUNT_TYPES, SHARE_ROLES, type BooksProblem, type StoreProblem } from './kinds';
+import type { ContactPageView, ContactSaveOutcome, ContactsView } from './contacts';
+import {
+  ACCOUNT_TYPES,
+  CONTACT_KINDS,
+  SHARE_ROLES,
+  type BooksProblem,
+  type StoreProblem,
+} from './kinds';
 import {
   DESCRIPTION_OPS,
   RULE_DIRECTIONS,
@@ -86,6 +93,18 @@ export const transactionFiltersSchema = z
     search: z.string().max(100).optional(),
     limit: z.number().int().min(1).max(200).optional(),
     offset: z.number().int().min(0).max(1_000_000).optional(),
+  })
+  .strict();
+
+/** A contact typed or changed by hand (specs 122, 123). Checked again by the service. */
+export const contactInputSchema = z
+  .object({
+    name: z.string().max(120),
+    kind: z.enum(CONTACT_KINDS),
+    email: z.string().max(254),
+    phone: z.string().max(40),
+    abn: z.string().max(20),
+    notes: z.string().max(1000),
   })
   .strict();
 
@@ -392,6 +411,10 @@ export const bridgeContract = {
   'invoices.unlinkFolder': { input: noInput },
   'invoices.checkFolder': { input: noInput },
   'invoices.openPdf': { input: z.object({ id: idText('inv') }).strict() },
+  'contacts.list': { input: noInput },
+  'contacts.get': { input: z.object({ id: idText('con') }).strict() },
+  'contacts.add': { input: contactInputSchema },
+  'contacts.edit': { input: contactInputSchema.extend({ id: idText('con') }).strict() },
   'changes.check': { input: noInput },
   'changes.list': { input: noInput },
   'changes.count': { input: noInput },
@@ -517,6 +540,11 @@ export interface BridgeResults {
   'invoices.unlinkFolder': { readonly folderName: null };
   'invoices.checkFolder': FolderCheck;
   'invoices.openPdf': { readonly opened: boolean };
+  'contacts.list': ContactsView;
+  /** Null when there is no contact with that id. */
+  'contacts.get': ContactPageView | null;
+  'contacts.add': ContactSaveOutcome;
+  'contacts.edit': ContactSaveOutcome;
   'changes.check': ChangesCheck;
   'changes.list': AccountantChangesView;
   /** Waiting changes: the count beside Accountant changes in the sidebar. */

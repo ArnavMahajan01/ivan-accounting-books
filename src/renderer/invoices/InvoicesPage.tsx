@@ -3,7 +3,7 @@
 // in a file the Admin Dashboard wrote, with a preview first.
 
 import { Receipt, Upload } from 'lucide-react';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { formatDateAU } from '@shared/dates';
 import type {
   FolderCheck,
@@ -22,6 +22,7 @@ import { Table, type TableColumn } from '../components/Table';
 import { plural } from '../import/import-text';
 import { PageToolbar } from '../layout/PageToolbar';
 import { useBridgeQuery } from '../pages/use-bridge';
+import { ContactPanel } from '../contacts/ContactPanel';
 import { InvoiceImportSheet } from './InvoiceImportSheet';
 import './invoices.css';
 
@@ -46,53 +47,81 @@ export function statusText(status: InvoiceStatus): string {
   }
 }
 
-const COLUMNS: readonly TableColumn<InvoiceRowView>[] = [
-  {
-    key: 'number',
-    header: 'Invoice',
-    fit: true,
-    cell: (r) => (
-      <span className="invoices__number">
-        {r.number}
-        {r.hasPdf && (
-          <Button
-            size="small"
-            aria-label={`Open the PDF of ${r.number}`}
-            onClick={() => {
-              void bridge()['invoices.openPdf']({ id: r.id });
+/**
+ * The invoice table's columns. With `onCustomer`, the customer's name opens their summary (spec
+ * 123; W08b, Option 3); without it, on a contact's own page, there is no customer column.
+ */
+export function invoiceColumns(
+  onCustomer: ((row: InvoiceRowView) => void) | null,
+): readonly TableColumn<InvoiceRowView>[] {
+  const columns: TableColumn<InvoiceRowView>[] = [
+    {
+      key: 'number',
+      header: 'Invoice',
+      fit: true,
+      cell: (r) => (
+        <span className="invoices__number">
+          {r.number}
+          {r.hasPdf && (
+            <Button
+              size="small"
+              aria-label={`Open the PDF of ${r.number}`}
+              onClick={() => {
+                void bridge()['invoices.openPdf']({ id: r.id });
+              }}
+            >
+              PDF
+            </Button>
+          )}
+        </span>
+      ),
+    },
+    { key: 'date', header: 'Date', fit: true, cell: (r) => <DateCell date={r.issueDate} /> },
+    {
+      key: 'customer',
+      header: 'Customer',
+      cell: (r) =>
+        onCustomer === null ? (
+          r.customer
+        ) : (
+          <button
+            type="button"
+            className="contact-name"
+            onClick={(event) => {
+              event.stopPropagation();
+              onCustomer(r);
             }}
           >
-            PDF
-          </Button>
-        )}
-      </span>
-    ),
-  },
-  { key: 'date', header: 'Date', fit: true, cell: (r) => <DateCell date={r.issueDate} /> },
-  { key: 'customer', header: 'Customer', cell: (r) => r.customer },
-  {
-    key: 'total',
-    header: 'Total',
-    align: 'end',
-    fit: true,
-    cell: (r) => <Amount cents={r.total} />,
-  },
-  { key: 'gst', header: 'GST', align: 'end', fit: true, cell: (r) => <Amount cents={r.gst} /> },
-  {
-    key: 'status',
-    header: 'Status',
-    fit: true,
-    cell: (r) => (
-      <span
-        className={
-          r.status.kind === 'overdue' ? 'invoice-status invoice-status--overdue' : 'invoice-status'
-        }
-      >
-        {statusText(r.status)}
-      </span>
-    ),
-  },
-];
+            {r.customer}
+          </button>
+        ),
+    },
+    {
+      key: 'total',
+      header: 'Total',
+      align: 'end',
+      fit: true,
+      cell: (r) => <Amount cents={r.total} />,
+    },
+    { key: 'gst', header: 'GST', align: 'end', fit: true, cell: (r) => <Amount cents={r.gst} /> },
+    {
+      key: 'status',
+      header: 'Status',
+      cell: (r) => (
+        <span
+          className={
+            r.status.kind === 'overdue'
+              ? 'invoice-status invoice-status--overdue'
+              : 'invoice-status'
+          }
+        >
+          {statusText(r.status)}
+        </span>
+      ),
+    },
+  ];
+  return onCustomer === null ? columns.filter((c) => c.key !== 'customer') : columns;
+}
 
 export function InvoicesPage() {
   const load = useCallback(() => bridge()['invoices.list']({}), []);
@@ -103,6 +132,14 @@ export function InvoicesPage() {
   const [problem, setProblem] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [folder, setFolder] = useState<FolderCheck | null>(null);
+  const [panel, setPanel] = useState<{ id: string; name: string } | null>(null);
+  const columns = useMemo(
+    () =>
+      invoiceColumns((r) => {
+        setPanel({ id: r.contactId, name: r.customer });
+      }),
+    [],
+  );
 
   // The linked folder is checked when the page opens, when the window comes back, and every few
   // minutes while it is open (spec 127). Nothing is added without his click.
@@ -250,7 +287,21 @@ export function InvoicesPage() {
               </dd>
             </div>
           </dl>
-          <Table label="Invoices" columns={COLUMNS} rows={view.rows} rowKey={(r) => r.id} />
+          <div className="invoices__body">
+            <div className="invoices__list">
+              <Table label="Invoices" columns={columns} rows={view.rows} rowKey={(r) => r.id} />
+            </div>
+            {panel !== null && (
+              <ContactPanel
+                key={panel.id}
+                id={panel.id}
+                name={panel.name}
+                onClose={() => {
+                  setPanel(null);
+                }}
+              />
+            )}
+          </div>
         </>
       )}
       {preview !== null && (

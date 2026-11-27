@@ -26,6 +26,7 @@ const SIZES = [
 const FIXTURE = join('tests', 'fixtures', 'westpac', 'business-one-2-13-nov-2026.ofx');
 // Lines the sample books do not hold, so To review has rows with accounts, splits and transfers.
 const DEMO_4 = join('tests', 'fixtures', 'westpac', 'business-one-21-23-nov-2026-demo-4.ofx');
+const INVOICES = join('tests', 'fixtures', 'invoices', 'admin-dashboard-invoices-2026-11-22.json');
 const SHOTS = join('test-results', 'layout');
 
 const PAGES = [
@@ -36,6 +37,8 @@ const PAGES = [
   ['accounts', '#/accounts'],
   ['reports', '#/reports'],
   ['rules', '#/rules'],
+  ['invoices', '#/invoices'],
+  ['contacts', '#/contacts'],
   ['report-pl', '#/reports/profit-and-loss'],
   ['report-bs', '#/reports/balance-sheet'],
   ['report-tb', '#/reports/trial-balance'],
@@ -98,6 +101,24 @@ test.beforeAll(async () => {
     await page.getByRole('dialog').getByRole('button', { name: 'Done' }).click();
     await page.getByRole('dialog').waitFor({ state: 'detached' });
   }
+  // Invoices from the Admin Dashboard, so Invoices and Contacts have their figures (folder 10).
+  await app.evaluate(
+    ({ dialog }, path) => {
+      dialog.showOpenDialog = () => Promise.resolve({ canceled: false, filePaths: [path] });
+    },
+    join(process.cwd(), INVOICES),
+  );
+  await go(page, '#/invoices');
+  await page.getByRole('button', { name: 'Import file' }).click();
+  await page.locator('[role="dialog"] .button--main').click();
+  await page.getByRole('dialog').waitFor({ state: 'detached' });
+  // The sweep's own Import file, on the Bank page, opens the bank file again.
+  await app.evaluate(
+    ({ dialog }, path) => {
+      dialog.showOpenDialog = () => Promise.resolve({ canceled: false, filePaths: [path] });
+    },
+    join(process.cwd(), FIXTURE),
+  );
 });
 
 test.afterAll(async () => {
@@ -165,6 +186,17 @@ test('no page, sheet or panel breaks at any window size', async () => {
     problems.push(...(await problemsOn(page, 'publish-sheet', size)));
     await page.keyboard.press('Escape');
     await page.getByRole('dialog').waitFor({ state: 'detached' });
+
+    // Folder 10: a contact's page, and a customer's summary beside the invoices.
+    await go(page, '#/contacts');
+    await page.getByRole('link', { name: 'Smith Renovations' }).click();
+    await page.locator('h1', { hasText: 'Smith Renovations' }).waitFor();
+    problems.push(...(await problemsOn(page, 'contact-page', size)));
+    await go(page, '#/invoices');
+    await page.getByRole('button', { name: 'Coastal Body Corporate' }).click();
+    await page.getByRole('link', { name: 'Open full page' }).waitFor();
+    problems.push(...(await problemsOn(page, 'contact-panel', size)));
+    await page.keyboard.press('Escape');
 
     // Folder 07: the rule panel, a new account, and reconciling.
     await go(page, '#/rules');

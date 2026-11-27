@@ -9,6 +9,7 @@ import type { CalendarDate, Timestamp } from '@shared/dates';
 import { asCents } from '@shared/money';
 import { ok } from '@shared/result';
 import type { AccountantChangesView, PublishPreview, SharedPeopleView } from '@shared/sheets';
+import type { ContactPageView, ContactsView } from '@shared/contacts';
 import type { InvoicePreview, InvoiceRowView, InvoicesView } from '@shared/invoices';
 import type {
   AccountsView,
@@ -703,7 +704,7 @@ const invoiceRow = (
   kind: 'invoice',
   number,
   version: 1,
-  contactId: 'con_x',
+  contactId: `con_${customer.toLowerCase().replace(/\W/g, '')}`,
   customer,
   issueDate: date('2026-11-10'),
   dueDate: date('2026-11-24'),
@@ -730,6 +731,88 @@ export const INVOICES: InvoicesView = {
   unpaid: { cents: asCents(231000), count: 1 },
   overdue: { cents: asCents(660000), count: 1 },
   paidLast30: { cents: asCents(495000), count: 1 },
+};
+
+export const CONTACTS: ContactsView = {
+  yearLabel: 'FY 2026–27',
+  rows: [
+    {
+      id: 'con_coastalbodycorporate',
+      name: 'Coastal Body Corporate',
+      kind: 'customer',
+      createdFrom: 'invoice',
+      createdAt: '2026-10-15T01:00:00.000Z',
+      owing: asCents(660000),
+      oldestUnpaid: { kind: 'overdue', days: 22 },
+      spentThisYear: asCents(0),
+      lastLine: null,
+    },
+    {
+      id: 'con_smithrenovations',
+      name: 'Smith Renovations',
+      kind: 'customer',
+      createdFrom: 'invoice',
+      createdAt: '2026-10-20T01:00:00.000Z',
+      owing: asCents(165000),
+      oldestUnpaid: { kind: 'unpaid', due: date('2026-11-24') },
+      spentThisYear: asCents(0),
+      lastLine: date('2026-11-15'),
+    },
+    {
+      id: 'con_bunnings',
+      name: 'Bunnings',
+      kind: 'supplier',
+      createdFrom: 'bank-line',
+      createdAt: '2026-10-21T01:00:00.000Z',
+      owing: asCents(0),
+      oldestUnpaid: null,
+      spentThisYear: asCents(85285),
+      lastLine: date('2026-11-18'),
+    },
+  ],
+};
+
+export const CONTACT_PAGE: ContactPageView = {
+  contact: {
+    id: 'con_smithrenovations',
+    name: 'Smith Renovations',
+    kind: 'customer',
+    createdFrom: 'invoice',
+    createdAt: '2026-10-20T01:00:00.000Z',
+    email: 'accounts@smith.example.com',
+    phone: null,
+    abn: null,
+    notes: '',
+  },
+  yearLabel: 'FY 2026–27',
+  owing: { cents: asCents(165000), count: 1, nextDue: date('2026-11-24') },
+  invoiced: { cents: asCents(660000), count: 2 },
+  paid: { cents: asCents(495000), count: 1 },
+  invoices: [
+    invoiceRow('INV-1043', 'Smith Renovations', 165000, 15000, {
+      kind: 'unpaid',
+      due: date('2026-11-24'),
+    }),
+    invoiceRow(
+      'INV-1042',
+      'Smith Renovations',
+      495000,
+      45000,
+      { kind: 'paid', on: date('2026-11-15') },
+      0,
+    ),
+  ],
+  payments: [
+    {
+      entryId: 'ent_smith',
+      date: date('2026-11-15'),
+      invoiceNumber: 'INV-1042',
+      amount: asCents(495000),
+    },
+  ],
+  bankLines: [],
+  moreBankLines: 0,
+  words: ['SMITH RENOVATIONS', 'SMITH RENOV'],
 };
 
 export const INVOICE_PREVIEW: InvoicePreview = {
@@ -1043,6 +1126,12 @@ export function installBridge(overrides: Partial<BridgeApi> = {}): BridgeApi {
     'invoices.unlinkFolder': vi.fn(() => Promise.resolve(ok({ folderName: null }))),
     'invoices.checkFolder': vi.fn(() => Promise.resolve(ok({ kind: 'not-linked' as const }))),
     'invoices.openPdf': vi.fn(() => Promise.resolve(ok({ opened: true }))),
+    'contacts.list': vi.fn(() => Promise.resolve(ok(CONTACTS))),
+    'contacts.get': vi.fn(() => Promise.resolve(ok(CONTACT_PAGE))),
+    'contacts.add': vi.fn(() => Promise.resolve(ok({ kind: 'saved' as const, id: 'con_new' }))),
+    'contacts.edit': vi.fn(() =>
+      Promise.resolve(ok({ kind: 'saved' as const, id: 'con_smithrenovations' })),
+    ),
     'changes.check': vi.fn(() => Promise.resolve(ok({ added: 0, problem: null }))),
     'changes.list': vi.fn(() => Promise.resolve(ok(CHANGES))),
     'changes.count': vi.fn(() => Promise.resolve(ok({ count: CHANGES.waiting.length }))),

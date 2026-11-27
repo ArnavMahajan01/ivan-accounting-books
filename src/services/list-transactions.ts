@@ -26,6 +26,8 @@ export interface TransactionFilters {
   readonly from?: string | undefined;
   readonly to?: string | undefined;
   readonly accountId?: string | undefined;
+  readonly contactId?: string | undefined;
+  readonly bankOnly?: boolean | undefined;
   readonly kind?: TransactionKind | undefined;
   readonly search?: string | undefined;
   readonly limit?: number | undefined;
@@ -99,6 +101,8 @@ export function listTransactions(
     from,
     to,
     accountId: filters.accountId ?? null,
+    contactId: filters.contactId ?? null,
+    bankOnly: filters.bankOnly === true,
     kind: filters.kind ?? 'all',
     search: search === '' ? null : search,
     amountCents: amount?.ok === true ? amount.value : null,

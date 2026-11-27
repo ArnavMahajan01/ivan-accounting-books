@@ -15,6 +15,10 @@ export interface TransactionQuery {
   readonly from: CalendarDate | null;
   readonly to: CalendarDate | null;
   readonly accountId: string | null;
+  /** Entries with a line for this contact (the contact page, spec 123). */
+  readonly contactId?: string | null;
+  /** Only entries that moved money through one of his bank accounts. */
+  readonly bankOnly?: boolean;
   readonly kind: TransactionKind;
   /** A word or phrase to find in the description, a payee or an account. */
   readonly search: string | null;
@@ -68,10 +72,13 @@ WITH facts AS (
     AND (@to IS NULL OR e.entry_date <= @to)
     AND (@account IS NULL
          OR EXISTS (SELECT 1 FROM journal_line l WHERE l.entry_id = e.id AND l.account_id = @account))
+    AND (@contact IS NULL
+         OR EXISTS (SELECT 1 FROM journal_line l WHERE l.entry_id = e.id AND l.payee_id = @contact))
 ),
 matched AS (
   SELECT * FROM facts
   WHERE (@pattern IS NULL OR text_match = 1 OR (@cents IS NOT NULL AND total_cents = @cents))
+    AND (@bankOnly = 0 OR bank_lines > 0)
     AND (@kind = 'all'
          OR (@kind = 'money-in' AND bank_lines > 0 AND bank_net > 0)
          OR (@kind = 'money-out' AND bank_lines > 0 AND bank_net < 0)
@@ -109,6 +116,8 @@ export function queryTransactions(db: Db, query: TransactionQuery): TransactionQ
     from: query.from,
     to: query.to,
     account: query.accountId,
+    contact: query.contactId ?? null,
+    bankOnly: query.bankOnly === true ? 1 : 0,
     kind: query.kind,
     pattern: search === '' ? null : `%${search.replace(LIKE_ESCAPE, '\\$&')}%`,
     cents: query.amountCents,

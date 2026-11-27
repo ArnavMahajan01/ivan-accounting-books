@@ -63,6 +63,8 @@ import type { SheetPanel } from './sheet-panel';
 import type { InvoiceFile, InvoiceFileRefusal } from './invoice-files';
 import { commitInvoiceFile, previewInvoiceFile } from '@services/invoice-import';
 import { invoicesView } from '@services/invoices-view';
+import { contactPage, contactsView } from '@services/contacts-view';
+import { addContactByHand, editContact } from '@services/contacts';
 import {
   linkedInvoiceFolder,
   mergeExchangeFiles,
@@ -623,6 +625,22 @@ export function createHandlers({
     'sheets.readyFormulas': () =>
       ok(readyFormulas(clock.today()).map(({ name, what, formula }) => ({ name, what, formula }))),
     'invoices.list': () => open((store) => ok(invoicesView({ db: store.db, clock }))),
+    'contacts.list': () => open((store) => ok(contactsView({ db: store.db, clock }))),
+    'contacts.get': ({ id }) => open((store) => ok(contactPage({ db: store.db, clock }, id))),
+    'contacts.add': (input) =>
+      open((store) => {
+        const added = addContactByHand({ db: store.db, clock, random }, input);
+        return ok(
+          added.ok
+            ? { kind: 'saved', id: added.value.id }
+            : { kind: 'refused', reason: added.error },
+        );
+      }),
+    'contacts.edit': ({ id, ...input }) =>
+      open((store) => {
+        const edited = editContact({ db: store.db, clock, random }, id, input);
+        return ok(edited.ok ? { kind: 'saved', id } : { kind: 'refused', reason: edited.error });
+      }),
     'invoices.chooseAndPreview': async () => {
       const path = await invoiceFiles.choose();
       if (path === null) return ok({ kind: 'cancelled' as const });

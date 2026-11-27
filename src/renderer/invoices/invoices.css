@@ -107,3 +107,27 @@
   margin: var(--space-3) 0;
   font-size: var(--font-size-label);
 }
+
+/* The invoices beside a customer's summary (spec 123). */
+.invoices__body {
+  position: relative;
+  display: flex;
+  gap: var(--space-4);
+  min-height: 0;
+}
+
+.invoices__list {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Unless the window is wide, the summary floats over the right of the list, as in Transactions. */
+@media (max-width: 1499px) {
+  .invoices__body > .side-panel {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-end: 0;
+    z-index: 2;
+    box-shadow: var(--shadow-raised);
+  }
+}
