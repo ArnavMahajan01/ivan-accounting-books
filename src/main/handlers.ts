@@ -59,7 +59,16 @@ import {
 import { getReport, getReportLines } from '@services/reports';
 import type { ReportExports } from './report-exports';
 import type { GoogleAccess } from './google-setup';
-import type { ConnectProblem } from '@shared/sheets';
+import type { ConnectProblem, ShareOutcome, ShareRefusal } from '@shared/sheets';
+import { readyFormulas } from '@domain/ready-formulas';
+import {
+  changeRole,
+  sharedPeople,
+  shareWorkbook,
+  stopSharing,
+  stopSharingEverything,
+  type SharingDeps,
+} from '@google/sharing';
 import type { ConnectFailure } from '@google/connection';
 import { sheetUrl } from '@google/google-api';
 import { publishWorkbook } from '@google/publish';
@@ -131,6 +140,8 @@ export interface HandlerDeps {
   readonly app: Pick<App, 'getVersion' | 'isPackaged'>;
   /** Google: the connection, the Drive and Sheets calls, and the browser (folder 09). */
   readonly google: GoogleAccess;
+  /** The Mac's clipboard, for Copy on the Ready formulas (spec 113). */
+  readonly clipboard: { writeText(text: string): void };
   readonly books: BooksAccess;
   readonly clock: Clock;
   readonly random: RandomSource;
@@ -145,6 +156,10 @@ export interface HandlerDeps {
 }
 
 const INTERNAL: BridgeError = { code: 'internal' };
+
+function shareOutcome(done: Result<void, ShareRefusal>): ShareOutcome {
+  return done.ok ? { kind: 'done' } : { kind: 'refused', reason: done.error };
+}
 
 /** What Settings says when connecting did not work. */
 function connectProblem(failure: ConnectFailure): ConnectProblem {
@@ -178,7 +193,19 @@ export function createHandlers({
   exports,
   onImport,
   google,
+  clipboard,
 }: HandlerDeps): BridgeHandlers {
+  /** The books and Google, for the sharing calls. */
+  const sharing = async (): Promise<Result<SharingDeps, BridgeError>> => {
+    const store = books.store();
+    if (!store.ok) return err(INTERNAL);
+    const status = await google.connection.status();
+    return ok({
+      ctx: { db: store.value.db, clock, random },
+      api: google.api,
+      connected: status.kind === 'connected',
+    });
+  };
   // Files read and checked but not yet saved. Forgotten when the books change.
   const previews = createPreviewStore(random);
   const open = <T>(read: (store: Store) => Result<T, BridgeError>): Result<T, BridgeError> => {
@@ -467,6 +494,41 @@ export function createHandlers({
             : { kind: 'refused' as const, reason: preview.error },
         );
       }),
+    'sheets.people': async () => {
+      const deps = await sharing();
+      return deps.ok ? ok(await sharedPeople(deps.value)) : deps;
+    },
+    'sheets.share': async ({ linkId, email, role }) => {
+      const deps = await sharing();
+      if (!deps.ok) return deps;
+      return ok(shareOutcome(await shareWorkbook(deps.value, linkId, email, role)));
+    },
+    'sheets.changeRole': async ({ linkId, permissionId, role }) => {
+      const deps = await sharing();
+      if (!deps.ok) return deps;
+      return ok(shareOutcome(await changeRole(deps.value, linkId, permissionId, role)));
+    },
+    'sheets.unshare': async ({ linkId, permissionId }) => {
+      const deps = await sharing();
+      if (!deps.ok) return deps;
+      return ok(shareOutcome(await stopSharing(deps.value, linkId, permissionId)));
+    },
+    'sheets.unshareAll': async ({ email }) => {
+      const deps = await sharing();
+      if (!deps.ok) return deps;
+      const done = await stopSharingEverything(deps.value, email);
+      return ok(
+        done.ok
+          ? { kind: 'done' as const, stopped: done.value.stopped }
+          : { kind: 'refused' as const, reason: done.error },
+      );
+    },
+    'sheets.readyFormulas': () =>
+      ok(readyFormulas(clock.today()).map(({ name, what, formula }) => ({ name, what, formula }))),
+    'app.copyText': ({ text }) => {
+      clipboard.writeText(text);
+      return ok({ copied: true });
+    },
     'sheets.open': async ({ linkId }) => {
       const store = books.store();
       if (!store.ok) return err(INTERNAL);

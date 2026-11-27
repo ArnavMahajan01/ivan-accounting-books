@@ -49,6 +49,7 @@ function setup() {
     files: { choose: () => Promise.resolve(chosen), read: readStatementFile },
     exports: importDeps.exports,
     google: importDeps.google,
+    clipboard: importDeps.clipboard,
     onImport,
   });
   return { handlers, onImport };

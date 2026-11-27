@@ -3,6 +3,7 @@
 import {
   app,
   BrowserWindow,
+  clipboard,
   dialog,
   ipcMain,
   Menu,
@@ -290,6 +291,7 @@ if (refusedFlags.length > 0) {
       ipcMain,
       createHandlers({
         google,
+        clipboard,
         app,
         books,
         clock: systemClock,

@@ -3,12 +3,12 @@
 
 import { vi } from 'vitest';
 import type { BridgeApi, RulesView } from '@shared/bridge-contract';
-import type { ReportCell, ReportView } from '@shared/reports';
+import { plainRequest, type ReportCell, type ReportView } from '@shared/reports';
 import type { Rule } from '@shared/rule-types';
 import type { CalendarDate, Timestamp } from '@shared/dates';
 import { asCents } from '@shared/money';
 import { ok } from '@shared/result';
-import type { PublishPreview } from '@shared/sheets';
+import type { PublishPreview, SharedPeopleView } from '@shared/sheets';
 import type {
   AccountsView,
   BankAccountRow,
@@ -664,6 +664,46 @@ export const PREVIEW: PublishPreview = {
   kept: [],
 };
 
+const PL_SHEET = {
+  linkId: 'shl_pl',
+  title: 'Profit and loss · Oct–Dec 2026',
+  publishedAt: '2026-11-13T01:00:00.000Z',
+  missing: false,
+  request: { kind: 'report' as const, request: plainRequest('profit-and-loss') },
+};
+const TX_SHEET = {
+  linkId: 'shl_tx',
+  title: 'Transactions · Oct–Dec 2026',
+  publishedAt: '2026-11-13T01:00:00.000Z',
+  missing: false,
+  request: {
+    kind: 'transactions' as const,
+    period: { choice: 'custom' as const, from: '2026-10-01', to: '2026-12-31' },
+  },
+};
+const BAS_SHEET = {
+  linkId: 'shl_bas',
+  title: 'BAS worksheet · Jul–Sep 2026',
+  publishedAt: '2026-10-27T01:00:00.000Z',
+  missing: false,
+  request: { kind: 'report' as const, request: plainRequest('bas') },
+};
+
+export const PEOPLE: SharedPeopleView = {
+  sheets: [PL_SHEET, TX_SHEET, BAS_SHEET],
+  people: [
+    {
+      email: 'accountant@example.com',
+      sheets: [
+        { ...TX_SHEET, permissionId: 'perm-1', role: 'editor' },
+        { ...PL_SHEET, permissionId: 'perm-2', role: 'viewer' },
+      ],
+    },
+  ],
+  onlyYou: [BAS_SHEET],
+  problem: null,
+};
+
 export function installBridge(overrides: Partial<BridgeApi> = {}): BridgeApi {
   const api: BridgeApi = {
     'app.getInfo': vi.fn(() => Promise.resolve(ok({ version: '1.2.3', development: false }))),
@@ -811,6 +851,23 @@ export function installBridge(overrides: Partial<BridgeApi> = {}): BridgeApi {
       ),
     ),
     'sheets.open': vi.fn(() => Promise.resolve(ok({ opened: true }))),
+    'sheets.people': vi.fn(() => Promise.resolve(ok(PEOPLE))),
+    'sheets.share': vi.fn(() => Promise.resolve(ok({ kind: 'done' as const }))),
+    'sheets.changeRole': vi.fn(() => Promise.resolve(ok({ kind: 'done' as const }))),
+    'sheets.unshare': vi.fn(() => Promise.resolve(ok({ kind: 'done' as const }))),
+    'sheets.unshareAll': vi.fn(() => Promise.resolve(ok({ kind: 'done' as const, stopped: 2 }))),
+    'sheets.readyFormulas': vi.fn(() =>
+      Promise.resolve(
+        ok([
+          {
+            name: 'Change from last quarter',
+            what: 'This quarter minus last quarter.',
+            formula: '=B3-C3',
+          },
+        ]),
+      ),
+    ),
+    'app.copyText': vi.fn(() => Promise.resolve(ok({ copied: true }))),
     'sheets.preview': vi.fn(() =>
       Promise.resolve(ok({ kind: 'preview' as const, preview: PREVIEW })),
     ),

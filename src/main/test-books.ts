@@ -43,4 +43,5 @@ export const importDeps = {
   } satisfies StatementFiles,
   exports: { save: () => Promise.resolve('cancelled' as const) } satisfies ReportExports,
   google: testGoogle(),
+  clipboard: { writeText: () => undefined },
 };

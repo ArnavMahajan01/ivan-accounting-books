@@ -2,6 +2,7 @@
 
 import { z } from 'zod';
 import { reportRequestSchema } from './report-request-schema';
+import type { ShareRole } from './kinds';
 import { PERIOD_CHOICES, type ReportPeriod, type ReportRequest } from './reports';
 
 /** What a workbook can hold: one of the reports, or the transaction list for a period. */
@@ -109,4 +110,53 @@ export interface PublishPreview {
   }[];
   /** His own tabs, as they were at the last publish: left alone. */
   readonly kept: readonly string[];
+}
+
+/** Why sharing, changing a role or stopping did not happen. */
+export type ShareRefusal =
+  | 'not-connected'
+  | 'needs-sign-in'
+  | 'offline'
+  /** The workbook has gone from Drive. */
+  | 'missing'
+  | 'bad-email'
+  | 'failed';
+
+export type ShareOutcome =
+  { readonly kind: 'done' } | { readonly kind: 'refused'; readonly reason: ShareRefusal };
+
+/** A published workbook, as the Shared sheets page lists it. */
+export interface PublishedSheet {
+  readonly linkId: string;
+  readonly title: string;
+  readonly publishedAt: string | null;
+  /** Gone from Drive: "Publish as new". */
+  readonly missing: boolean;
+  /** What it holds, to publish it again from the page. */
+  readonly request: PublishedRequest;
+}
+
+/** The Shared sheets page (spec 115; W07, Option 2): by person, then the ones only he can see. */
+export interface SharedPeopleView {
+  readonly sheets: readonly PublishedSheet[];
+  readonly people: readonly {
+    readonly email: string;
+    readonly sheets: readonly {
+      readonly linkId: string;
+      readonly title: string;
+      readonly publishedAt: string | null;
+      readonly permissionId: string;
+      readonly role: ShareRole;
+    }[];
+  }[];
+  readonly onlyYou: readonly PublishedSheet[];
+  /** Why who can see what is not shown: Google not connected, offline, and so on. */
+  readonly problem: ShareRefusal | null;
+}
+
+/** A ready formula as the app lists it, with Copy (spec 113). */
+export interface ReadyFormulaView {
+  readonly name: string;
+  readonly what: string;
+  readonly formula: string;
 }

@@ -104,7 +104,7 @@ The lowest are muted text on the light background (4.75) and warning text on the
 
 ## Typography
 
-The system font (San Francisco on the Mac). Nothing to load or license. All amounts use tabular figures (`font-variant-numeric: tabular-nums`).
+The system font (San Francisco on the Mac). Nothing to load or license. All amounts use tabular figures (`font-variant-numeric: tabular-nums`). Spreadsheet formulas he copies (Ready formulas, spec 113) use the system's monospace font (`--font-family-mono`), so every character reads as typed.
 
 | Element | Size | Weight | Colour token |
 |---|---|---|---|

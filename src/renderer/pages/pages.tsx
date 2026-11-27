@@ -1,4 +1,4 @@
-import { Share2, UserCheck } from 'lucide-react';
+import { UserCheck } from 'lucide-react';
 import { assertNever } from '@shared/kinds';
 import type { RouteId } from '../routes';
 import { EmptyPage } from './EmptyPage';
@@ -11,6 +11,7 @@ import { ReportsPage } from '../reports/ReportsPage';
 import { RulesPage } from './RulesPage';
 import { ToReviewPage } from './ToReviewPage';
 import { TransactionsPage } from './TransactionsPage';
+import { SharedSheetsPage } from '../sheets/SharedSheetsPage';
 
 /** The page for each route. Pages not built yet say what they will hold. */
 export function Page({ route }: { readonly route: RouteId }) {
@@ -30,13 +31,7 @@ export function Page({ route }: { readonly route: RouteId }) {
     case 'rules':
       return <RulesPage />;
     case 'shared-sheets':
-      return (
-        <EmptyPage
-          title="Shared sheets"
-          icon={Share2}
-          message="Nothing is shared. Reports you publish to Google Sheets, and who can see them, appear here."
-        />
-      );
+      return <SharedSheetsPage />;
     case 'accountant-changes':
       return (
         <EmptyPage

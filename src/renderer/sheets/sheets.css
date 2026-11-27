@@ -171,3 +171,137 @@
   width: 0;
   overflow: visible;
 }
+
+.ready {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-label);
+}
+
+.ready th,
+.ready td {
+  padding: var(--space-2) var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+  text-align: start;
+  vertical-align: middle;
+}
+
+.ready thead th {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-medium);
+}
+
+.ready__name {
+  font-weight: var(--font-weight-semibold);
+  white-space: nowrap;
+}
+
+.ready__what {
+  color: var(--color-text-secondary);
+}
+
+.ready__formula {
+  font-family: var(--font-family-mono);
+  white-space: nowrap;
+}
+
+.share {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.share__field {
+  display: grid;
+  gap: var(--space-1);
+  font-size: var(--font-size-label);
+}
+
+.share__roles {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: var(--font-size-label);
+}
+
+.share__roles legend {
+  margin-bottom: var(--space-1);
+  padding: 0;
+}
+
+.share__role {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.share__check {
+  margin: 0 0 var(--space-3);
+}
+
+/* Shared sheets (spec 115): a card per person, a row per sheet. */
+.shared {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.shared__card {
+  padding: var(--space-4) var(--space-5);
+}
+
+.shared__person {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+
+.shared__email {
+  margin: 0;
+  font-size: var(--font-size-section);
+  font-weight: var(--font-weight-semibold);
+}
+
+.shared__count {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-label);
+  font-weight: var(--font-weight-regular);
+}
+
+.shared__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.shared__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  padding: var(--space-2) 0;
+  border-top: 1px solid var(--color-border);
+}
+
+.shared__row:first-child {
+  border-top: 0;
+}
+
+.shared__title {
+  flex: 1 1 16em;
+  font-weight: var(--font-weight-medium);
+}
+
+.shared__when {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-label);
+}
+
+.shared a {
+  color: var(--color-brand);
+}

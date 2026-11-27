@@ -10,9 +10,13 @@ import {
   type GoogleStatus,
   type PublishOutcome,
   type PublishPreview,
+  type ReadyFormulaView,
+  type SharedPeopleView,
+  type ShareOutcome,
+  type ShareRefusal,
 } from './sheets';
 import { reportRequestSchema } from './report-request-schema';
-import { ACCOUNT_TYPES, type BooksProblem, type StoreProblem } from './kinds';
+import { ACCOUNT_TYPES, SHARE_ROLES, type BooksProblem, type StoreProblem } from './kinds';
 import {
   DESCRIPTION_OPS,
   RULE_DIRECTIONS,
@@ -314,6 +318,28 @@ export const bridgeContract = {
   },
   'sheets.open': { input: z.object({ linkId: idText('shl') }).strict() },
   'sheets.preview': { input: z.object({ request: publishRequestSchema }).strict() },
+  'sheets.people': { input: noInput },
+  'sheets.share': {
+    input: z
+      .object({ linkId: idText('shl'), email: z.string().max(254), role: z.enum(SHARE_ROLES) })
+      .strict(),
+  },
+  'sheets.changeRole': {
+    input: z
+      .object({
+        linkId: idText('shl'),
+        permissionId: z.string().min(1).max(200),
+        role: z.enum(SHARE_ROLES),
+      })
+      .strict(),
+  },
+  'sheets.unshare': {
+    input: z.object({ linkId: idText('shl'), permissionId: z.string().min(1).max(200) }).strict(),
+  },
+  'sheets.unshareAll': { input: z.object({ email: z.string().min(3).max(254) }).strict() },
+  'sheets.readyFormulas': { input: noInput },
+  /** Puts text on the Mac's clipboard: the screens may not reach it themselves. */
+  'app.copyText': { input: z.object({ text: z.string().min(1).max(2000) }).strict() },
 } as const;
 
 export interface AppInfo {
@@ -408,6 +434,15 @@ export interface BridgeResults {
   'sheets.preview':
     | { readonly kind: 'preview'; readonly preview: PublishPreview }
     | { readonly kind: 'refused'; readonly reason: 'bad-period' | 'not-set-up' };
+  'sheets.people': SharedPeopleView;
+  'sheets.share': ShareOutcome;
+  'sheets.changeRole': ShareOutcome;
+  'sheets.unshare': ShareOutcome;
+  'sheets.unshareAll':
+    | { readonly kind: 'done'; readonly stopped: number }
+    | { readonly kind: 'refused'; readonly reason: ShareRefusal };
+  'sheets.readyFormulas': readonly ReadyFormulaView[];
+  'app.copyText': { readonly copied: boolean };
 }
 
 /** The Rules page: every rule in order, and the choices its editor offers. */

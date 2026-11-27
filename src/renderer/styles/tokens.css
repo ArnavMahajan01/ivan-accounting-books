@@ -34,6 +34,8 @@
 
   /* Type: the system font (San Francisco on the Mac). Amounts use tabular figures. */
   --font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  /* Formulas to copy (spec 113): every character readable, as typed into a cell. */
+  --font-family-mono: ui-monospace, 'SF Mono', Menlo, monospace;
   --font-size-page-title: 24px;
   --font-size-summary: 28px;
   --font-size-section: 16px;
