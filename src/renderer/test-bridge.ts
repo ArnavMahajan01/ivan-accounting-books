@@ -761,6 +761,16 @@ export function installBridge(overrides: Partial<BridgeApi> = {}): BridgeApi {
     ),
     'reports.removeLayout': vi.fn(() => Promise.resolve(ok({ removed: true }))),
     'reports.export': vi.fn(() => Promise.resolve(ok({ result: 'saved' as const }))),
+    'google.getStatus': vi.fn(() => Promise.resolve(ok({ kind: 'not-connected' as const }))),
+    'google.connect': vi.fn(() =>
+      Promise.resolve(
+        ok({
+          kind: 'connected' as const,
+          status: { kind: 'connected' as const, email: 'owner@example.com' },
+        }),
+      ),
+    ),
+    'google.disconnect': vi.fn(() => Promise.resolve(ok({ outcome: 'disconnected' as const }))),
     pathForFile: vi.fn((file: File) => `/Users/someone/Downloads/${file.name}`),
     ...overrides,
   };

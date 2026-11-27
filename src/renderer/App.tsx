@@ -1,5 +1,6 @@
 import { BooksStateProvider, useBooksState } from './books-state';
 import { ImportProvider } from './import/ImportProvider';
+import { GoogleStateProvider } from './sheets/google-state';
 import { AppLayout } from './layout/AppLayout';
 import { StartChoice } from './layout/StartChoice';
 import { Page } from './pages/pages';
@@ -27,9 +28,11 @@ function Shell() {
 export function App() {
   return (
     <BooksStateProvider>
-      <ImportProvider>
-        <Shell />
-      </ImportProvider>
+      <GoogleStateProvider>
+        <ImportProvider>
+          <Shell />
+        </ImportProvider>
+      </GoogleStateProvider>
     </BooksStateProvider>
   );
 }

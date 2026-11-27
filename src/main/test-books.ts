@@ -5,6 +5,19 @@ import type { OpenError, Store } from '@data/database';
 import { seededRandom } from '@shared/ids';
 import { err, ok, type Result } from '@shared/result';
 import type { BooksAccess, StatementFiles } from './handlers';
+import { createFakeGoogle, type FakeGoogle } from '@google/fake-google';
+import type { GoogleAccess } from './google-setup';
+
+/** The in-memory Google, kept in memory only, with the browser never opened. */
+export function testGoogle(): GoogleAccess & { readonly fake: FakeGoogle } {
+  const fake = createFakeGoogle({ path: null, now: () => '2026-11-23T01:00:00.000Z' });
+  return {
+    connection: fake.connection,
+    api: fake.api,
+    fake,
+    openInBrowser: () => Promise.resolve(true),
+  };
+}
 
 export function staticBooks(store: Result<Store, OpenError>): BooksAccess {
   return {
@@ -29,4 +42,5 @@ export const importDeps = {
     read: () => Promise.resolve(err('unreadable-file' as const)),
   } satisfies StatementFiles,
   exports: { save: () => Promise.resolve('cancelled' as const) } satisfies ReportExports,
+  google: testGoogle(),
 };

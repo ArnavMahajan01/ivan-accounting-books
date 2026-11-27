@@ -22,6 +22,7 @@
     "test:e2e": "npm run package && playwright test",
     "test:layout": "npm run build && playwright test -c playwright.layout.config.ts",
     "ledger": "vite build --config tools/vite.ledger.config.ts --logLevel warn && node dist/ledger/ledger-run.js",
+    "google:check": "vite build --config tools/vite.google-check.config.ts --logLevel warn && node --env-file-if-exists=.env dist/google-check/google-check-run.js",
     "check": "npm run typecheck && npm run lint && npm test"
   },
   "devDependencies": {

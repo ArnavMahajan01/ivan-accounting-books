@@ -36,8 +36,34 @@ describe('parseEnv', () => {
 });
 
 describe('loadEnv', () => {
-  it('accepts the current environment, which needs no variables yet', () => {
+  it('needs no variable: Google is then "not set up"', () => {
     expect(loadEnv({}).ok).toBe(true);
-    expect(loadEnv().ok).toBe(true);
+    // As copied from .env.example, every value empty.
+    expect(
+      loadEnv({
+        MAIN_VITE_GOOGLE_CLIENT_ID: '',
+        MAIN_VITE_GOOGLE_CLIENT_SECRET: '',
+        GOOGLE_FAKE: '',
+      }),
+    ).toEqual({ ok: true, value: {} });
+  });
+
+  it('reads the Google client id, and refuses one that is not a Google client id', () => {
+    expect(
+      loadEnv({
+        MAIN_VITE_GOOGLE_CLIENT_ID: '123-abc.apps.googleusercontent.com',
+        GOOGLE_FAKE: '1',
+      }),
+    ).toEqual({
+      ok: true,
+      value: { MAIN_VITE_GOOGLE_CLIENT_ID: '123-abc.apps.googleusercontent.com', GOOGLE_FAKE: '1' },
+    });
+    expect(loadEnv({ MAIN_VITE_GOOGLE_CLIENT_ID: 'https://example.com' })).toEqual({
+      ok: false,
+      error: {
+        code: 'invalid-env',
+        problems: [{ variable: 'MAIN_VITE_GOOGLE_CLIENT_ID', problem: 'invalid' }],
+      },
+    });
   });
 });

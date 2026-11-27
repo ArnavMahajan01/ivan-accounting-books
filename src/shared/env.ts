@@ -5,8 +5,26 @@
 import { z } from 'zod';
 import { err, ok, type Result } from './result';
 
-/** The variables the app reads. None yet. Folder 09 adds the Google OAuth client id. */
-export const envSchema = z.object({});
+/** A variable left empty, as `.env.example` has them, counts as not set. */
+function unlessEmpty<T extends z.ZodType>(schema: T) {
+  return z.preprocess((value) => (value === '' ? undefined : value), schema.optional());
+}
+
+/**
+ * The variables the app reads. The Google ones come from `.env` at build time (electron-vite puts
+ * `MAIN_VITE_` variables into the main process build), so the packaged app has them too. Without a
+ * client id, Google shows as "not set up" (spec 106). A desktop client's id and secret are not
+ * private: Google treats a desktop app as a public client that cannot keep a secret, and the
+ * sign-in is protected by PKCE instead. `GOOGLE_FAKE` is read at run time, and only by an
+ * unpackaged build: it swaps Google for the in-memory one in `src/google/fake-google.ts`.
+ */
+export const envSchema = z.object({
+  MAIN_VITE_GOOGLE_CLIENT_ID: unlessEmpty(
+    z.string().regex(/^[\w.-]+\.apps\.googleusercontent\.com$/),
+  ),
+  MAIN_VITE_GOOGLE_CLIENT_SECRET: unlessEmpty(z.string().regex(/^[\w-]{10,100}$/)),
+  GOOGLE_FAKE: unlessEmpty(z.literal('1')),
+});
 
 export type Env = z.infer<typeof envSchema>;
 

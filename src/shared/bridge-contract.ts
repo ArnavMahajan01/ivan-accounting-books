@@ -4,6 +4,7 @@
 
 import { z } from 'zod';
 import type { ReportRequest, ReportView } from './reports';
+import type { ConnectProblem, GoogleStatus } from './sheets';
 import { reportRequestSchema } from './report-request-schema';
 import { ACCOUNT_TYPES, type BooksProblem, type StoreProblem } from './kinds';
 import {
@@ -299,6 +300,9 @@ export const bridgeContract = {
   'review.undoPayee': {
     input: z.object({ contactId: idText('con'), words: z.string().min(1).max(1000) }).strict(),
   },
+  'google.getStatus': { input: noInput },
+  'google.connect': { input: noInput },
+  'google.disconnect': { input: noInput },
 } as const;
 
 export interface AppInfo {
@@ -381,6 +385,12 @@ export interface BridgeResults {
     | { readonly kind: 'refused'; readonly reason: 'empty-name' | 'name-in-use' | 'not-found' };
   'reports.removeLayout': { readonly removed: boolean };
   'reports.export': { readonly result: 'saved' | 'cancelled' | 'failed' | 'bad-period' };
+  'google.getStatus': GoogleStatus;
+  'google.connect':
+    | { readonly kind: 'connected'; readonly status: GoogleStatus }
+    | { readonly kind: 'failed'; readonly reason: ConnectProblem };
+  /** `not-revoked`: forgotten on this Mac, but Google could not be reached to take the access back. */
+  'google.disconnect': { readonly outcome: 'disconnected' | 'not-revoked' };
 }
 
 /** The Rules page: every rule in order, and the choices its editor offers. */

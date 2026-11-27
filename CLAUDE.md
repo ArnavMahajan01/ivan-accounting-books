@@ -93,6 +93,8 @@ Created at spec 001 (`context/rules/code-rules.md`, "Scripts"). Update this tabl
 | Format, or check formatting | `npm run format`, `npm run format:check` | Yes. Markdown, `context/` and `wireframe/` are not reformatted |
 | Every check in one go | `npm run check` | Yes: typecheck, lint, test |
 | Work with a books file from the terminal | `npm run ledger -- init\|trial-balance\|check --file <path>` | Yes: a development tool, never packaged. Needs `--file`, and refuses the app's own data folder |
+| Check the Google client id (spec 106) | `npm run google:check` | Yes, once `.env` has `MAIN_VITE_GOOGLE_CLIENT_ID`: signs in to the test project in the browser, lists the files the app can see (none), and revokes the sign-in |
+| Run the app against the in-memory Google | `GOOGLE_FAKE=1 npm run dev` | Yes: development only, never the packaged app (`src/google/fake-google.ts`) |
 
 ## 5. How to work here
 

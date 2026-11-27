@@ -1,6 +1,7 @@
 import { Info } from 'lucide-react';
 import type { AppInfo, DataStatus } from '@shared/bridge-contract';
 import { PageToolbar } from '../layout/PageToolbar';
+import { GoogleCard } from '../sheets/GoogleCard';
 import { DeveloperCard } from './DeveloperCard';
 import { COMING_LATER } from './EmptyPage';
 import { describeData, loadDataStatus, loadInfo } from './data-status';
@@ -8,10 +9,9 @@ import { useBridge } from './use-bridge';
 import './SettingsPage.css';
 
 // Option 3, Status Cards (wireframe/2111-settings/): Backups and Google first, because they are the
-// two things that can quietly go wrong. Only About works in Demo 1.
+// two things that can quietly go wrong. Google works from folder 09.
 const LATER_CARDS = [
   { title: 'Backups', detail: 'Encrypted copies of your books, and restoring from one.' },
-  { title: 'Google', detail: 'The Google account used to share sheets with your accountant.' },
   { title: 'Business', detail: 'Business name, ABN, GST basis, BAS frequency and financial year.' },
   { title: 'Bank accounts', detail: 'Your Westpac accounts.' },
   { title: 'Appearance', detail: 'Light, dark, or following your Mac.' },
@@ -24,7 +24,15 @@ export function SettingsPage() {
     <>
       <PageToolbar title="Settings" />
       <div className="settings-cards">
-        {LATER_CARDS.map((card) => (
+        {LATER_CARDS.slice(0, 1).map((card) => (
+          <section key={card.title} className="page-surface settings-card" aria-label={card.title}>
+            <h2 className="settings-card__title">{card.title}</h2>
+            <p className="settings-card__line settings-card__line--secondary">{card.detail}</p>
+            <p className="settings-card__later">{COMING_LATER}</p>
+          </section>
+        ))}
+        <GoogleCard />
+        {LATER_CARDS.slice(1).map((card) => (
           <section key={card.title} className="page-surface settings-card" aria-label={card.title}>
             <h2 className="settings-card__title">{card.title}</h2>
             <p className="settings-card__line settings-card__line--secondary">{card.detail}</p>

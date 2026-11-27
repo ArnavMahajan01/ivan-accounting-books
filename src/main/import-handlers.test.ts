@@ -48,6 +48,7 @@ function setup() {
     random: seededRandom(11),
     files: { choose: () => Promise.resolve(chosen), read: readStatementFile },
     exports: importDeps.exports,
+    google: importDeps.google,
     onImport,
   });
   return { handlers, onImport };

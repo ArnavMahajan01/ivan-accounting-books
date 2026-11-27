@@ -58,6 +58,9 @@ import {
 } from '@services/report-layouts';
 import { getReport, getReportLines } from '@services/reports';
 import type { ReportExports } from './report-exports';
+import type { GoogleAccess } from './google-setup';
+import type { ConnectProblem } from '@shared/sheets';
+import type { ConnectFailure } from '@google/connection';
 import { reportHtml } from './report-html';
 
 /** A day the bridge checked the shape of, or null when it does not exist, such as 31 November. */
@@ -122,6 +125,8 @@ export interface StatementFiles {
 
 export interface HandlerDeps {
   readonly app: Pick<App, 'getVersion' | 'isPackaged'>;
+  /** Google: the connection, the Drive and Sheets calls, and the browser (folder 09). */
+  readonly google: GoogleAccess;
   readonly books: BooksAccess;
   readonly clock: Clock;
   readonly random: RandomSource;
@@ -137,6 +142,24 @@ export interface HandlerDeps {
 
 const INTERNAL: BridgeError = { code: 'internal' };
 
+/** What Settings says when connecting did not work. */
+function connectProblem(failure: ConnectFailure): ConnectProblem {
+  switch (failure) {
+    case 'not-set-up':
+    case 'cancelled':
+    case 'offline':
+    case 'scope-refused':
+    case 'no-keychain':
+    case 'busy':
+      return failure;
+    case 'no-port':
+    case 'needs-sign-in':
+    case 'not-found':
+    case 'failed':
+      return 'failed';
+  }
+}
+
 /** A refused request is the page's mistake, and anything else is ours. */
 function failure(error: SessionError): BridgeError {
   return error === 'switch-off' || error === 'wrong-mode' ? { code: 'not-allowed' } : INTERNAL;
@@ -150,6 +173,7 @@ export function createHandlers({
   files,
   exports,
   onImport,
+  google,
 }: HandlerDeps): BridgeHandlers {
   // Files read and checked but not yet saved. Forgotten when the books change.
   const previews = createPreviewStore(random);
@@ -404,5 +428,15 @@ export function createHandlers({
             : { kind: 'refused', reason: done.error },
         );
       }),
+    'google.getStatus': async () => ok(await google.connection.status()),
+    'google.connect': async () => {
+      const connected = await google.connection.connect();
+      return ok(
+        connected.ok
+          ? { kind: 'connected' as const, status: connected.value }
+          : { kind: 'failed' as const, reason: connectProblem(connected.error) },
+      );
+    },
+    'google.disconnect': async () => ok({ outcome: await google.connection.disconnect() }),
   };
 }

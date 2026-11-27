@@ -1,5 +1,6 @@
 import { useState, type ReactNode } from 'react';
 import type { RouteId } from '../routes';
+import { GoogleBanner } from '../sheets/GoogleBanner';
 import { Sidebar } from './Sidebar';
 import { useShortcuts } from './use-shortcuts';
 import './AppLayout.css';
@@ -51,7 +52,10 @@ export function AppLayout({ title, current, counts, children }: AppLayoutProps) 
         onToggle={toggle}
         {...(counts === undefined ? {} : { counts })}
       />
-      <main className="app-layout__page">{children}</main>
+      <main className="app-layout__page">
+        <GoogleBanner />
+        {children}
+      </main>
     </div>
   );
 }

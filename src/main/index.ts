@@ -42,6 +42,8 @@ import {
   type SelfCheckReport,
 } from './self-check';
 import { isAppUrl } from './navigation';
+import { createGoogleAccess } from './google-setup';
+import { loadEnv } from '@shared/env';
 
 // The name decides the data folder and the instance lock, so it is set before anything else.
 const name = runName(app.getName(), app.isPackaged);
@@ -266,9 +268,28 @@ if (refusedFlags.length > 0) {
     app.on('will-quit', () => {
       books.close();
     });
+    // The Google client id comes from the build (spec 106); GOOGLE_FAKE from the shell.
+    const env = loadEnv({
+      ...process.env,
+      MAIN_VITE_GOOGLE_CLIENT_ID: import.meta.env.MAIN_VITE_GOOGLE_CLIENT_ID,
+      MAIN_VITE_GOOGLE_CLIENT_SECRET: import.meta.env.MAIN_VITE_GOOGLE_CLIENT_SECRET,
+    });
+    if (!env.ok) log.error('env.invalid', { problems: env.error.problems.length });
+    const google = createGoogleAccess({
+      dataDir: app.getPath('userData'),
+      packaged: app.isPackaged,
+      env: env.ok ? env.value : {},
+      random: systemRandom,
+      now: () => systemClock.now(),
+      log,
+      onStatus: (status) => {
+        log.info('google.status', { kind: status.kind });
+      },
+    });
     registerBridge(
       ipcMain,
       createHandlers({
+        google,
         app,
         books,
         clock: systemClock,

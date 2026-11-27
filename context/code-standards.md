@@ -123,6 +123,7 @@ Created at spec 001. Names follow `context/rules/code-rules.md`.
 - `npm run typecheck`, `npm run lint`, `npm test`.
 - `npm run format` / `npm run format:check`.
 - `npm run check`: typecheck, lint and test in sequence.
+- `npm run google:check`: the check for spec 106. Builds `tools/google-check-run.ts` with Vite into `dist/google-check/`, reads `.env`, signs in to the test Google Cloud project in the browser, lists the files the app can see in Drive (none, with `drive.file` and nothing published), and revokes the sign-in. Saves nothing.
 - `npm run ledger -- <command> --file <path>`: a development tool (spec 044): `init` makes new books with the sample business, `trial-balance [--from D] [--to D]` prints the trial balance, `check` runs the books check. It builds `tools/ledger-run.ts` with Vite into `dist/ledger/` and runs it. It refuses to run without `--file`, and refuses any file in the Mac's application data folder.
 - An unpackaged run honours `--data-dir=/absolute/path`, which keeps the books somewhere other than the usual data folder, for trying the app without touching its own data. The packaged app ignores it.
 - `npm run test:e2e`: packages the app (with the package contents check, `tools/check-package.ts`), then runs the Playwright tests in `tests/e2e/` against the packaged app in self-check mode (spec 014).
