@@ -52,6 +52,8 @@ export const AUDIT_KINDS = [
   'line.match',
   'line.unpost',
   'contact.remove',
+  'contact.change',
+  'contact.merge',
   'rule.add',
   'rule.change',
   'rule.remove',

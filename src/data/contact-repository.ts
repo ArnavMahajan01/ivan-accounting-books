@@ -56,3 +56,49 @@ export function getContactByName(db: Db, name: string): Contact | null {
 export function listContacts(db: Db): Contact[] {
   return db.prepare(`SELECT ${COLUMNS} FROM contact ORDER BY name`).all().map(toContact);
 }
+
+/** A contact's details (spec 122). Kept beside the contact, so everything that makes one stays as it was. */
+export interface ContactDetails {
+  readonly email: string | null;
+  readonly phone: string | null;
+  /** 11 digits, checked. */
+  readonly abn: string | null;
+  readonly notes: string;
+}
+
+const detailsSchema = z.object({
+  email: z.string().nullable(),
+  phone: z.string().nullable(),
+  abn: z
+    .string()
+    .regex(/^\d{11}$/)
+    .nullable(),
+  notes: z.string(),
+});
+
+export function getContactDetails(db: Db, id: string): ContactDetails | null {
+  const row = db.prepare('SELECT email, phone, abn, notes FROM contact WHERE id = ?').get(id);
+  return row === undefined ? null : detailsSchema.parse(row);
+}
+
+export function updateContactDetails(
+  db: Db,
+  id: string,
+  details: ContactDetails,
+  at: string,
+): void {
+  db.prepare(
+    'UPDATE contact SET email = ?, phone = ?, abn = ?, notes = ?, updated_at = ? WHERE id = ?',
+  ).run(details.email, details.phone, details.abn, details.notes, at, id);
+}
+
+/** Changes a contact's name or kind: editing it by hand (spec 123). */
+export function updateContact(db: Db, contact: Contact): void {
+  db.prepare('UPDATE contact SET name = ?, kind = ?, active = ?, updated_at = ? WHERE id = ?').run(
+    contact.name,
+    contact.kind,
+    contact.active ? 1 : 0,
+    contact.updatedAt,
+    contact.id,
+  );
+}

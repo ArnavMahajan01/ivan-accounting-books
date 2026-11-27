@@ -23,6 +23,7 @@ import { getReviewView } from './list-review';
 import { postEntry } from './post-journal';
 import { matchLine, postLineToAccount, postLines, postSplitLine, postTransfer } from './post-line';
 import { savePayeeFromLine, undoSavePayee } from './save-payee';
+import { getContactByName } from '@data/contact-repository';
 import { setupBusiness } from './setup-business';
 import { createTestContext } from './test-context';
 import { undoPost } from './undo-post';
@@ -532,6 +533,8 @@ describe('payees saved and filled in (spec 071)', () => {
         alsoFilled: 2,
       },
     });
+    // Spec 122: a contact saved this way says it came from a bank line.
+    expect(getContactByName(ctx.db, 'Bunnings')?.createdFrom).toBe('bank-line');
     expect(getReviewView(ctx).lines.map((l) => l.payee?.name ?? null)).toEqual([
       'Bunnings',
       'Bunnings',

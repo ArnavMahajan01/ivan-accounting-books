@@ -1,8 +1,14 @@
-// Adds a customer or supplier, with an audit row. The sample books and, later, saving a payee from
-// a bank line (spec 071) and from an invoice (spec 126) all come through here.
+// Adds a customer or supplier, with an audit row. The sample books, adding one by hand (spec 122)
+// and bringing in an invoice (spec 126) come through here; saving a payee from a bank line (spec 071)
+// has its own path, with Undo.
 
 import type { Contact } from '@domain/contacts';
-import { getContactByName, insertContact } from '@data/contact-repository';
+import {
+  getContactByName,
+  insertContact,
+  updateContactDetails,
+  type ContactDetails,
+} from '@data/contact-repository';
 import { newId } from '@shared/ids';
 import type { ContactKind, ContactSource } from '@shared/kinds';
 import { err, ok, type Result } from '@shared/result';
@@ -13,6 +19,8 @@ export interface NewContact {
   readonly name: string;
   readonly kind: ContactKind;
   readonly createdFrom: ContactSource;
+  /** Email, phone, ABN and notes (spec 122), when they are known: from an invoice, or typed. */
+  readonly details?: ContactDetails;
 }
 
 export type AddContactError = 'empty-name' | 'name-in-use';
@@ -36,12 +44,13 @@ export function addContact(
       updatedAt: now,
     };
     insertContact(ctx.db, contact);
+    if (input.details !== undefined) updateContactDetails(ctx.db, contact.id, input.details, now);
     recordAudit(ctx, {
       kind: 'contact.add',
       table: 'contact',
       rowId: contact.id,
       before: null,
-      after: contact,
+      after: input.details === undefined ? contact : { ...contact, ...input.details },
     });
     return ok(contact);
   })();
