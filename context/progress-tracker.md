@@ -38,6 +38,9 @@ Update this file whenever the current phase, the active spec or the implementati
 | W02 | [Wireframe Design Context](feature-specs/W-wireframes/W02-wireframe-design-context.md) | Written from the context files. No screenshots were supplied, so there are none to check |
 | W08 | [Wireframe: Invoices and Bills](feature-specs/W-wireframes/W08-wireframe-invoices-and-bills.md), if question 1 says so | W |
 | 029 | [Demo 1: The App Opens](feature-specs/02-demo-1-the-app-opens/029-demo-1.md), skipped while the ledger core and Demo 2 were built | 02 |
+| 112 | [Sheet-Style Preview](feature-specs/09-demo-7-google-sheets/112-sheet-preview.md) | The grid Google will get, new or updated, his tabs kept; works offline | Implemented, real-Google check waits for 106 | 2026-11-27 |
+| 111 | [Publish Again](feature-specs/09-demo-7-google-sheets/111-publish-again.md) | Same workbook in place, his tabs and columns kept, changes counted, Publish as new | Implemented, real-Google check waits for 106 | 2026-11-27 |
+| 110 | [Publish to a New Workbook](feature-specs/09-demo-7-google-sheets/110-publish-new.md) | Migration 0013, folder and workbook, RAW values, protections; Publish on reports and Transactions | Implemented, real-Google check waits for 106 | 2026-11-27 |
 | 109 | [Workbook Layout](feature-specs/09-demo-7-google-sheets/109-workbook-layout.md) | Pure plan: app tabs by marker, his tabs, columns and rows kept | Done | 2026-11-27 |
 | 108 | [Disconnect and Banner](feature-specs/09-demo-7-google-sheets/108-disconnect-google.md) | Revoke and forget; the sign-in-again banner | Implemented, real-Google check waits for 106 | 2026-11-27 |
 | 107 | [Connect a Google Account](feature-specs/09-demo-7-google-sheets/107-connect-google.md) | PKCE, loopback, Keychain token; Settings card; in-memory Google for development | Implemented, real-Google check waits for 106 | 2026-11-27 |

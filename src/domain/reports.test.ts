@@ -58,6 +58,13 @@ describe('report periods', () => {
       resolvePeriod('custom', today, { from: d('2026-11-15'), to: d('2026-11-01') }),
     ).toBeNull();
     expect(resolvePeriod('custom', today, none)).toBeNull();
+    // Days that are exactly a quarter or a financial year are named after it.
+    expect(
+      resolvePeriod('custom', today, { from: d('2026-10-01'), to: d('2026-12-31') })?.label,
+    ).toBe('Oct–Dec 2026');
+    expect(
+      resolvePeriod('custom', today, { from: d('2026-07-01'), to: d('2027-06-30') })?.label,
+    ).toBe('FY 2026–27');
   });
 
   it('the period before, and the same period last year', () => {

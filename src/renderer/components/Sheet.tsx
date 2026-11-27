@@ -27,6 +27,8 @@ export interface SheetProps {
   /** `alertdialog` for a confirmation that needs an answer. */
   readonly role?: 'dialog' | 'alertdialog';
   readonly description?: string;
+  /** `wide` for a sheet that shows a grid, such as the preview before publishing. */
+  readonly size?: 'regular' | 'wide';
 }
 
 /**
@@ -40,6 +42,7 @@ export function Sheet({
   actions,
   role = 'dialog',
   description,
+  size = 'regular',
 }: SheetProps) {
   const panelRef = useRef<HTMLDivElement>(null);
   const titleId = useId();
@@ -89,7 +92,7 @@ export function Sheet({
     <div className="sheet-backdrop">
       <div
         ref={panelRef}
-        className="sheet"
+        className={size === 'wide' ? 'sheet sheet--wide' : 'sheet'}
         role={role}
         aria-modal="true"
         aria-labelledby={titleId}

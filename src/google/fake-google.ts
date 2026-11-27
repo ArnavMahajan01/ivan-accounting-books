@@ -10,9 +10,9 @@ import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { z } from 'zod';
 import { err, ok, type Result } from '@shared/result';
 import type { GoogleStatus } from '@shared/sheets';
-import { columnLetters } from '@domain/workbook';
+import { columnLetters, shownText } from '@domain/workbook';
 import type { GoogleConnection } from './connection';
-import { shownText, type DriveRole, type GoogleApi } from './google-api';
+import type { DriveRole, GoogleApi } from './google-api';
 import type { GoogleFailure } from './oauth';
 
 export const FAKE_OWNER = 'owner@example.com';

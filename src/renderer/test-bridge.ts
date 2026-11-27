@@ -8,6 +8,7 @@ import type { Rule } from '@shared/rule-types';
 import type { CalendarDate, Timestamp } from '@shared/dates';
 import { asCents } from '@shared/money';
 import { ok } from '@shared/result';
+import type { PublishPreview } from '@shared/sheets';
 import type {
   AccountsView,
   BankAccountRow,
@@ -637,6 +638,32 @@ export const CLOSE: QuarterCloseView = {
 };
 
 /** Puts a stand-in bridge on `window`, and returns its functions so a test can look at the calls. */
+const cell = (text: string, figure = false) => ({ text, figure });
+
+export const PREVIEW: PublishPreview = {
+  title: 'Profit and loss · Oct–Dec 2026',
+  target: 'new',
+  linkId: null,
+  publishedAt: null,
+  tabs: [
+    {
+      title: 'Profit and loss',
+      columns: 2,
+      rows: [
+        [cell('Harbour Lane Joinery Pty Ltd'), cell('')],
+        [cell('Account'), cell('Oct–Dec 2026')],
+        [cell('Sales'), cell('47,881.45', true)],
+      ],
+    },
+    {
+      title: 'Ready formulas',
+      columns: 1,
+      rows: [[cell('Ready formulas from Accounting Books.')]],
+    },
+  ],
+  kept: [],
+};
+
 export function installBridge(overrides: Partial<BridgeApi> = {}): BridgeApi {
   const api: BridgeApi = {
     'app.getInfo': vi.fn(() => Promise.resolve(ok({ version: '1.2.3', development: false }))),
@@ -771,6 +798,22 @@ export function installBridge(overrides: Partial<BridgeApi> = {}): BridgeApi {
       ),
     ),
     'google.disconnect': vi.fn(() => Promise.resolve(ok({ outcome: 'disconnected' as const }))),
+    'sheets.publish': vi.fn(() =>
+      Promise.resolve(
+        ok({
+          kind: 'published' as const,
+          linkId: 'shl_pl',
+          title: 'Profit and loss · Oct–Dec 2026',
+          isNew: true,
+          kept: [],
+          changes: null,
+        }),
+      ),
+    ),
+    'sheets.open': vi.fn(() => Promise.resolve(ok({ opened: true }))),
+    'sheets.preview': vi.fn(() =>
+      Promise.resolve(ok({ kind: 'preview' as const, preview: PREVIEW })),
+    ),
     pathForFile: vi.fn((file: File) => `/Users/someone/Downloads/${file.name}`),
     ...overrides,
   };

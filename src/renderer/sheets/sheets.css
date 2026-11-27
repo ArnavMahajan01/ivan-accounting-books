@@ -28,3 +28,146 @@
   font-weight: var(--font-weight-medium);
   white-space: nowrap;
 }
+
+.publish__line {
+  margin: 0 0 var(--space-2);
+  font-size: var(--font-size-label);
+}
+
+.publish__line--note {
+  color: var(--color-text-secondary);
+}
+
+.publish__line a {
+  color: var(--color-brand);
+}
+
+.publish__result p {
+  margin: 0 0 var(--space-2);
+}
+
+/* The preview: a spreadsheet the app draws, so it reads as the sheet Google will show. */
+.sheet-grid {
+  margin: var(--space-3) 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  overflow: hidden;
+}
+
+.sheet-grid__scroll {
+  max-height: 46vh;
+  overflow: auto;
+}
+
+.sheet-grid__scroll:focus-visible {
+  outline: var(--size-focus-ring) solid var(--color-focus-ring);
+  outline-offset: calc(var(--size-focus-ring) * -1);
+}
+
+.sheet-grid__table {
+  border-collapse: collapse;
+  font-size: var(--font-size-caption);
+  font-variant-numeric: tabular-nums;
+}
+
+.sheet-grid__letter,
+.sheet-grid__number,
+.sheet-grid__corner {
+  position: sticky;
+  background: var(--color-surface-secondary);
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-regular);
+  text-align: center;
+}
+
+.sheet-grid__letter,
+.sheet-grid__corner {
+  inset-block-start: 0;
+  z-index: 1;
+}
+
+.sheet-grid__number {
+  inset-inline-start: 0;
+  min-width: 2.5em;
+}
+
+.sheet-grid__corner {
+  inset-inline-start: 0;
+  z-index: 2;
+}
+
+.sheet-grid__table th,
+.sheet-grid__table td {
+  padding: var(--space-1) var(--space-2);
+  border: 1px solid var(--color-border);
+  white-space: nowrap;
+}
+
+.sheet-grid__cell {
+  max-width: 28em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sheet-grid__cell--figure {
+  text-align: end;
+}
+
+.sheet-grid__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-2);
+  border-top: 1px solid var(--color-border);
+  background: var(--color-surface-secondary);
+}
+
+.sheet-grid__tab {
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
+  background: none;
+  color: var(--color-text-secondary);
+  font: inherit;
+  font-size: var(--font-size-caption);
+  cursor: pointer;
+}
+
+.sheet-grid__tab[aria-selected='true'] {
+  border-color: var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-medium);
+}
+
+.sheet-grid__tab:focus-visible {
+  outline: var(--size-focus-ring) solid var(--color-focus-ring);
+  outline-offset: 1px;
+}
+
+.sheet-grid__tab--kept {
+  color: var(--color-text-muted);
+  font-style: italic;
+  cursor: default;
+}
+
+.publish__period {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+  font-size: var(--font-size-label);
+}
+
+.sheet-grid__cell--spill {
+  max-width: none;
+  overflow: visible;
+}
+
+/* Takes no width, so a long heading never widens column A; it runs over the empty cells. */
+.sheet-grid__spill {
+  display: block;
+  width: 0;
+  overflow: visible;
+}

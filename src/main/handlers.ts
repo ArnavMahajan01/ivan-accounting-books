@@ -61,6 +61,10 @@ import type { ReportExports } from './report-exports';
 import type { GoogleAccess } from './google-setup';
 import type { ConnectProblem } from '@shared/sheets';
 import type { ConnectFailure } from '@google/connection';
+import { sheetUrl } from '@google/google-api';
+import { publishWorkbook } from '@google/publish';
+import { getSheetLink } from '@services/sheet-links';
+import { previewWorkbook } from '@services/sheet-preview';
 import { reportHtml } from './report-html';
 
 /** A day the bridge checked the shape of, or null when it does not exist, such as 31 November. */
@@ -438,5 +442,37 @@ export function createHandlers({
       );
     },
     'google.disconnect': async () => ok({ outcome: await google.connection.disconnect() }),
+    'sheets.publish': async ({ request, asNew }) => {
+      const store = books.store();
+      if (!store.ok) return err(INTERNAL);
+      const status = await google.connection.status();
+      return ok(
+        await publishWorkbook(
+          {
+            ctx: { db: store.value.db, clock, random },
+            api: google.api,
+            connected: status.kind === 'connected',
+          },
+          request,
+          { asNew },
+        ),
+      );
+    },
+    'sheets.preview': ({ request }) =>
+      open((store) => {
+        const preview = previewWorkbook({ db: store.db, clock }, request);
+        return ok(
+          preview.ok
+            ? { kind: 'preview' as const, preview: preview.value }
+            : { kind: 'refused' as const, reason: preview.error },
+        );
+      }),
+    'sheets.open': async ({ linkId }) => {
+      const store = books.store();
+      if (!store.ok) return err(INTERNAL);
+      const link = getSheetLink(store.value.db, linkId);
+      if (link === null) return ok({ opened: false });
+      return ok({ opened: await google.openInBrowser(sheetUrl(link.fileId)) });
+    },
   };
 }

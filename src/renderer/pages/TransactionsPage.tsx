@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight, ReceiptText, Search } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ReceiptText, Search, Share2 } from 'lucide-react';
 import { useMemo, useState, type ReactNode } from 'react';
 import { formatDateAU } from '@shared/dates';
 import type { AccountType } from '@shared/kinds';
@@ -18,6 +18,7 @@ import { ErrorMessage } from '../components/ErrorMessage';
 import { Table, type TableColumn } from '../components/Table';
 import { plural } from '../import/import-text';
 import { PageToolbar } from '../layout/PageToolbar';
+import { PublishSheet } from '../sheets/PublishSheet';
 import { queryFromHash } from '../routes';
 import { TransactionPanel } from './TransactionPanel';
 import { loadAccounts } from './data-status';
@@ -186,6 +187,8 @@ export function TransactionsPage() {
   const accounts = useBridge<AccountsView>(loadAccounts);
   const [kind, setKind] = useState<TransactionKind>('all');
   const [period, setPeriod] = useState<PeriodChoice>('last-12-months');
+  // Publishing the transactions for a quarter or year, for the accountant (spec 110).
+  const [publishing, setPublishing] = useState(false);
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   const [accountId, setAccountId] = useState(
@@ -340,7 +343,30 @@ export function TransactionsPage() {
         if (event.key === 'Escape' && openId !== null) setOpenId(null);
       }}
     >
-      <PageToolbar title="Transactions" />
+      <PageToolbar
+        title="Transactions"
+        actions={
+          <Button
+            icon={Share2}
+            onClick={() => {
+              setPublishing(true);
+            }}
+          >
+            Publish to Google Sheets
+          </Button>
+        }
+      />
+      {publishing && (
+        <PublishSheet
+          request={{
+            kind: 'transactions',
+            period: { choice: 'this-quarter', from: null, to: null },
+          }}
+          onClose={() => {
+            setPublishing(false);
+          }}
+        />
+      )}
       <div className="transactions__filters" role="search" aria-label="Filter transactions">
         <select
           aria-label="Kind of transaction"

@@ -128,3 +128,25 @@ export function basPeriodsOfYear(year: FinancialYear, frequency: BasFrequency): 
       return assertNever(frequency);
   }
 }
+
+/**
+ * The usual day a BAS period's statement is due when he lodges it himself (ATO, "Due dates for
+ * lodging and paying your BAS", in .claude/skills/au-bookkeeping-rules): a quarter ending in
+ * September, March or June is due on the 28th of the month after; the October to December quarter
+ * on 28 February; a month on the 21st of the next month. A day on a weekend or public holiday moves
+ * to the next business day, and an agent may have later dates: this is the usual date only.
+ */
+export function basDueDate(period: BasPeriod): CalendarDate {
+  const { year, month } = yearAndMonth(period.end);
+  if (period.frequency === 'monthly')
+    return dayOf(year + Math.floor(month / 12), (month % 12) + 1, 21);
+  if (month === 12) return dayOf(year + 1, 2, 28);
+  return dayOf(year, month + 1, 28);
+}
+
+function dayOf(year: number, month: number, day: number): CalendarDate {
+  const text = `${String(year).padStart(4, '0')}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+  const parsed = parseCalendarDate(text, 'YYYY-MM-DD');
+  if (!parsed.ok) throw new RangeError(`Not a real date: ${text}`);
+  return parsed.value;
+}

@@ -64,11 +64,15 @@ describe('a report (specs 090, 093)', () => {
     expect(within(sheet).getByRole('button', { name: 'Open in Transactions' })).not.toBeNull();
   });
 
-  it('Publish to Google Sheets waits for a later version, and says so', async () => {
+  it('Publish to Google Sheets opens the preview of this report (spec 110)', async () => {
+    const api = installBridge();
     await at(reportHref(plainRequest('profit-and-loss')));
-    const publish = screen.getByRole('button', { name: 'Publish to Google Sheets' });
-    expect(publish).toHaveProperty('disabled', true);
-    expect(publish.getAttribute('title')).toBe('Comes with Google Sheets, in a later version.');
+    await userEvent.click(screen.getByRole('button', { name: 'Publish to Google Sheets' }));
+    await settle();
+    expect(screen.getByRole('dialog', { name: 'Publish to Google Sheets' })).toBeTruthy();
+    expect(vi.mocked(api['sheets.preview']).mock.calls[0]?.[0]).toMatchObject({
+      request: { kind: 'report', request: { report: 'profit-and-loss' } },
+    });
   });
 
   it('exports, and asks for the report again when a column is ticked', async () => {

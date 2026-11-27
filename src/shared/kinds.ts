@@ -61,6 +61,8 @@ export const AUDIT_KINDS = [
   'layout.add',
   'layout.change',
   'layout.remove',
+  'sheet.publish',
+  'sheet.missing',
 ] as const;
 export type AuditKind = (typeof AUDIT_KINDS)[number];
 
@@ -116,6 +118,7 @@ export const ID_KINDS = [
   'rul',
   'rec',
   'lay',
+  'shl',
 ] as const;
 export type IdKind = (typeof ID_KINDS)[number];
 

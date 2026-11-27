@@ -23,6 +23,10 @@
   animation: sheet-rise var(--motion-duration) var(--motion-easing);
 }
 
+.sheet--wide {
+  width: min(960px, calc(100% - var(--space-7)));
+}
+
 .sheet:focus-visible {
   outline: none;
 }

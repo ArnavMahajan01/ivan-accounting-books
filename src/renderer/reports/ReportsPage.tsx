@@ -14,7 +14,8 @@ import { PageToolbar } from '../layout/PageToolbar';
 import { useBridgeQuery } from '../pages/use-bridge';
 import { useHash } from '../use-route';
 import { QuarterClose } from './QuarterClose';
-import { ReportScreen, toBridge } from './ReportScreen';
+import { ReportScreen } from './ReportScreen';
+import { toBridge } from './to-bridge';
 import { layoutHref, reportHref, reportsRouteFromHash } from './report-routes';
 import './reports.css';
 

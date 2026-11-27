@@ -1,6 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import { asCents } from '@shared/money';
-import { GST_RATE_BP, gstFromInclusive, gstOnExclusive, splitInclusive } from './gst';
+import {
+  GST_RATE_BP,
+  gstFromInclusive,
+  gstInsideFormula,
+  gstOnExclusive,
+  splitInclusive,
+} from './gst';
 
 const c = asCents;
 
@@ -103,5 +109,11 @@ describe('refusing what cannot be worked out exactly', () => {
 
   it('refuses an amount too large to be exact', () => {
     expect(() => gstFromInclusive(c(Number.MAX_SAFE_INTEGER))).toThrow(RangeError);
+  });
+});
+
+describe('gstInsideFormula (spec 113)', () => {
+  it('writes the one-eleventh rule as a spreadsheet formula, rounded to the cent', () => {
+    expect(gstInsideFormula('B2')).toBe('ROUND(B2/11, 2)');
   });
 });

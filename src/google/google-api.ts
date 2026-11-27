@@ -3,7 +3,7 @@
 // (fake-google.ts). Every call needs a signed-in connection, and fails with a GoogleFailure.
 
 import type { Result } from '@shared/result';
-import type { SheetCell, TabNow, WorkbookPlan } from '@domain/workbook';
+import type { TabNow, WorkbookPlan } from '@domain/workbook';
 import type { GoogleFailure } from './oauth';
 
 /** Drive's names for the roles: viewer, commenter and editor in the app's words. */
@@ -52,26 +52,4 @@ export interface GoogleApi {
 /** Where a published workbook opens in the browser. */
 export function sheetUrl(fileId: string): string {
   return `https://docs.google.com/spreadsheets/d/${encodeURIComponent(fileId)}/edit`;
-}
-
-/** The text a cell shows, as `read` gives it back: used by the fake and by tests. */
-export function shownText(cell: SheetCell): string {
-  switch (cell.kind) {
-    case 'text':
-      return cell.text;
-    case 'amount': {
-      const sign = cell.cents < 0 ? '-' : '';
-      const size = String(Math.abs(cell.cents)).padStart(3, '0');
-      const whole = size.slice(0, -2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-      return `${sign}${whole}.${size.slice(-2)}`;
-    }
-    case 'date': {
-      const [y, m, d] = cell.date.split('-');
-      return `${d ?? ''}/${m ?? ''}/${y ?? ''}`;
-    }
-    case 'formula':
-      return cell.formula;
-    case 'empty':
-      return '';
-  }
 }

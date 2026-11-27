@@ -1,6 +1,6 @@
 // One report on screen (specs 090 to 095, 098 to 102): the period, the figures (each opening its
 // lines), Export CSV and PDF, and for the profit and loss, Customise and Save as my report.
-// Publish to Google Sheets waits for folder 09, so it is shown greyed with the reason.
+// Publish to Google Sheets opens the preview and publishes (folder 09).
 
 import { ChevronLeft, Download, FileText, Settings2, Share2 } from 'lucide-react';
 import { useMemo, useState } from 'react';
@@ -17,6 +17,8 @@ import { CustomisePanel } from './CustomisePanel';
 import { DrillSheet } from './DrillSheet';
 import { NewColumnSheet } from './NewColumnSheet';
 import { ReportTable } from './ReportTable';
+import { toBridge } from './to-bridge';
+import { PublishSheet } from '../sheets/PublishSheet';
 import { PERIOD_WORDS } from './ready-layouts';
 
 const EXPORT_WORDS = {
@@ -37,6 +39,7 @@ export function ReportScreen({
   const [request, setRequest] = useState(initial);
   const [drill, setDrill] = useState<Drill | null>(null);
   const [customising, setCustomising] = useState(false);
+  const [publishing, setPublishing] = useState(false);
   const [newColumn, setNewColumn] = useState(false);
   const [saving, setSaving] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
@@ -195,7 +198,12 @@ export function ReportScreen({
           <Button icon={FileText} onClick={() => void exportAs('pdf')}>
             Export PDF
           </Button>
-          <Button icon={Share2} disabled title="Comes with Google Sheets, in a later version.">
+          <Button
+            icon={Share2}
+            onClick={() => {
+              setPublishing(true);
+            }}
+          >
             Publish to Google Sheets
           </Button>
         </span>
@@ -339,19 +347,14 @@ export function ReportScreen({
           )}
         </Sheet>
       )}
+      {publishing && (
+        <PublishSheet
+          request={{ kind: 'report', request }}
+          onClose={() => {
+            setPublishing(false);
+          }}
+        />
+      )}
     </div>
   );
-}
-
-/** A request as the bridge takes it: the same request, with plain arrays and objects. */
-export function toBridge(request: ReportRequest) {
-  return {
-    ...request,
-    period: { ...request.period },
-    columns: { ...request.columns },
-    rows: { ...request.rows },
-    ownColumns: request.ownColumns.map((c) =>
-      c.kind === 'notes' ? { ...c, notes: { ...c.notes } } : { ...c },
-    ),
-  };
 }

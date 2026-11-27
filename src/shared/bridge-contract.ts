@@ -4,7 +4,13 @@
 
 import { z } from 'zod';
 import type { ReportRequest, ReportView } from './reports';
-import type { ConnectProblem, GoogleStatus } from './sheets';
+import {
+  publishRequestSchema,
+  type ConnectProblem,
+  type GoogleStatus,
+  type PublishOutcome,
+  type PublishPreview,
+} from './sheets';
 import { reportRequestSchema } from './report-request-schema';
 import { ACCOUNT_TYPES, type BooksProblem, type StoreProblem } from './kinds';
 import {
@@ -303,6 +309,11 @@ export const bridgeContract = {
   'google.getStatus': { input: noInput },
   'google.connect': { input: noInput },
   'google.disconnect': { input: noInput },
+  'sheets.publish': {
+    input: z.object({ request: publishRequestSchema, asNew: z.boolean() }).strict(),
+  },
+  'sheets.open': { input: z.object({ linkId: idText('shl') }).strict() },
+  'sheets.preview': { input: z.object({ request: publishRequestSchema }).strict() },
 } as const;
 
 export interface AppInfo {
@@ -391,6 +402,12 @@ export interface BridgeResults {
     | { readonly kind: 'failed'; readonly reason: ConnectProblem };
   /** `not-revoked`: forgotten on this Mac, but Google could not be reached to take the access back. */
   'google.disconnect': { readonly outcome: 'disconnected' | 'not-revoked' };
+  'sheets.publish': PublishOutcome;
+  /** False when there is no such workbook. */
+  'sheets.open': { readonly opened: boolean };
+  'sheets.preview':
+    | { readonly kind: 'preview'; readonly preview: PublishPreview }
+    | { readonly kind: 'refused'; readonly reason: 'bad-period' | 'not-set-up' };
 }
 
 /** The Rules page: every rule in order, and the choices its editor offers. */

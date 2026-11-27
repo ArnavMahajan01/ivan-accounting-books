@@ -76,9 +76,21 @@ export function resolvePeriod(
     case 'custom': {
       const { from, to } = custom;
       if (from === null || to === null || compareDates(from, to) > 0) return null;
-      return { from, to, label: customLabel(from, to) };
+      return { from, to, label: wholeLabel(from, to) ?? customLabel(from, to) };
     }
   }
+}
+
+/**
+ * The quarter's or year's own name when his days are exactly one, so a whole quarter he picked
+ * (or one a published workbook keeps) is headed `Oct–Dec 2026`, as the quarter itself is.
+ */
+function wholeLabel(from: CalendarDate, to: CalendarDate): string | null {
+  const quarter = basPeriodOf(from, 'quarterly');
+  if (quarter.start === from && quarter.end === to) return quarter.label;
+  const year = financialYearOf(from);
+  if (year.start === from && year.end === to) return year.label;
+  return null;
 }
 
 /** The same date a year earlier. 29 February becomes 28 February. */

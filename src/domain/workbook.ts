@@ -186,3 +186,25 @@ export function a1Range(title: string, columns: number, rows: number, fromRow = 
 export function cellA1(title: string, column: number, row: number): string {
   return `'${title.replace(/'/g, "''")}'!${columnLetters(column)}${String(row + 1)}`;
 }
+
+/** The text a cell shows in the sheet: for the preview, the in-memory Google and tests. */
+export function shownText(cell: SheetCell): string {
+  switch (cell.kind) {
+    case 'text':
+      return cell.text;
+    case 'amount': {
+      const sign = cell.cents < 0 ? '-' : '';
+      const size = String(Math.abs(cell.cents)).padStart(3, '0');
+      const whole = size.slice(0, -2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      return `${sign}${whole}.${size.slice(-2)}`;
+    }
+    case 'date': {
+      const [y, m, d] = cell.date.split('-');
+      return `${d ?? ''}/${m ?? ''}/${y ?? ''}`;
+    }
+    case 'formula':
+      return cell.formula;
+    case 'empty':
+      return '';
+  }
+}

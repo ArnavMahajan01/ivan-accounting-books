@@ -58,3 +58,12 @@ export function splitInclusive(cents: Cents, rateBp: number = GST_RATE_BP): Incl
   const gst = gstFromInclusive(cents, rateBp);
   return { net: asCents(cents - gst), gst };
 }
+
+/**
+ * The same rule as a spreadsheet formula, for the Ready formulas (spec 113): the GST inside a
+ * GST-inclusive amount in `cell` is one eleventh, rounded to the cent. Kept here, beside the rule,
+ * so GST is written in one place only.
+ */
+export function gstInsideFormula(cell: string): string {
+  return `ROUND(${cell}/11, 2)`;
+}
