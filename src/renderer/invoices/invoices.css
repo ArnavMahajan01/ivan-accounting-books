@@ -131,3 +131,7 @@
     box-shadow: var(--shadow-raised);
   }
 }
+
+.invoice-split__note {
+  margin-block-start: var(--space-3);
+}

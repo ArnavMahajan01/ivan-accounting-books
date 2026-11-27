@@ -169,7 +169,7 @@ export function InvoiceSplitSheet({
           </select>
         </label>
       )}
-      <p className="publish__line publish__line--note">
+      <p className="publish__line publish__line--note invoice-split__note">
         A part payment leaves the rest of that invoice owing. Anything left over can go to an
         account instead.
       </p>
