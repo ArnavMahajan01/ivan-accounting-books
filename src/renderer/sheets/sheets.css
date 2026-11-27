@@ -160,16 +160,18 @@
   font-size: var(--font-size-label);
 }
 
-.sheet-grid__cell--spill {
+.sheet-grid__table .sheet-grid__cell--spill {
   max-width: none;
-  overflow: visible;
+  white-space: normal;
 }
 
-/* Takes no width, so a long heading never widens column A; it runs over the empty cells. */
+/* Adds no width of its own, so a long heading never widens column A: it runs over the empty
+   cells, and wraps at the grid's edge instead of being cut off. */
 .sheet-grid__spill {
   display: block;
   width: 0;
-  overflow: visible;
+  min-width: 100%;
+  white-space: normal;
 }
 
 .ready {

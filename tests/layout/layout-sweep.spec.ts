@@ -157,6 +157,14 @@ test('no page, sheet or panel breaks at any window size', async () => {
     await page.getByRole('button', { name: 'Customise' }).click();
     await page.locator('.side-panel').waitFor();
     problems.push(...(await problemsOn(page, 'customise-panel', size)));
+    await page.getByRole('button', { name: 'Customise' }).click();
+
+    // Folder 09: the publish preview, which needs no Google account.
+    await page.getByRole('button', { name: 'Publish to Google Sheets' }).click();
+    await page.getByText('Goes to: ').waitFor();
+    problems.push(...(await problemsOn(page, 'publish-sheet', size)));
+    await page.keyboard.press('Escape');
+    await page.getByRole('dialog').waitFor({ state: 'detached' });
 
     // Folder 07: the rule panel, a new account, and reconciling.
     await go(page, '#/rules');
