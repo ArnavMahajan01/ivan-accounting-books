@@ -1,0 +1,102 @@
+{
+  "format": "accounting-books-invoices",
+  "version": 1,
+  "exportedAt": "2026-11-25T09:00:00+11:00",
+  "documents": [
+    {
+      "kind": "invoice",
+      "number": "INV-1061",
+      "version": 1,
+      "status": "issued",
+      "issueDate": "2026-11-08",
+      "dueDate": "2026-11-22",
+      "customer": {
+        "name": "Harbourview Developments",
+        "email": "accounts@harbourview.example.com",
+        "abn": null
+      },
+      "lines": [
+        {
+          "description": "Kitchen island and pantry",
+          "quantity": "1",
+          "unitPriceCents": 418000,
+          "gstCode": "GST",
+          "totalCents": 418000,
+          "gstCents": 38000
+        }
+      ],
+      "totals": {
+        "totalCents": 418000,
+        "gstCents": 38000
+      },
+      "creditFor": null,
+      "pdf": "INV-1061.pdf"
+    },
+    {
+      "kind": "invoice",
+      "number": "INV-1064",
+      "version": 2,
+      "status": "issued",
+      "issueDate": "2026-10-15",
+      "dueDate": "2026-10-29",
+      "customer": {
+        "name": "Coastal Body Corporate",
+        "email": "strata@coastal.example.com",
+        "abn": "51824753556"
+      },
+      "lines": [
+        {
+          "description": "Common room storage",
+          "quantity": "1",
+          "unitPriceCents": 660000,
+          "gstCode": "GST",
+          "totalCents": 660000,
+          "gstCents": 60000
+        },
+        {
+          "description": "Extra shelf",
+          "quantity": "1",
+          "unitPriceCents": 55000,
+          "gstCode": "GST",
+          "totalCents": 55000,
+          "gstCents": 5000
+        }
+      ],
+      "totals": {
+        "totalCents": 715000,
+        "gstCents": 65000
+      },
+      "creditFor": null,
+      "pdf": null
+    },
+    {
+      "kind": "credit-note",
+      "number": "CN-0012",
+      "version": 1,
+      "status": "issued",
+      "issueDate": "2026-11-24",
+      "dueDate": null,
+      "customer": {
+        "name": "Ellis Bathrooms",
+        "email": null,
+        "abn": null
+      },
+      "lines": [
+        {
+          "description": "Credit for a damaged mirror cabinet",
+          "quantity": "1",
+          "unitPriceCents": 66000,
+          "gstCode": "GST",
+          "totalCents": 66000,
+          "gstCents": 6000
+        }
+      ],
+      "totals": {
+        "totalCents": 66000,
+        "gstCents": 6000
+      },
+      "creditFor": "INV-1062",
+      "pdf": null
+    }
+  ]
+}

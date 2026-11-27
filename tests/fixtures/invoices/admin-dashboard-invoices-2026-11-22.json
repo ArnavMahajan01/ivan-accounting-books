@@ -1,0 +1,160 @@
+{
+  "format": "accounting-books-invoices",
+  "version": 1,
+  "exportedAt": "2026-11-22T09:00:00+11:00",
+  "documents": [
+    {
+      "kind": "invoice",
+      "number": "INV-1061",
+      "version": 1,
+      "status": "issued",
+      "issueDate": "2026-11-08",
+      "dueDate": "2026-11-22",
+      "customer": {
+        "name": "Harbourview Developments",
+        "email": "accounts@harbourview.example.com",
+        "abn": null
+      },
+      "lines": [
+        {
+          "description": "Kitchen island and pantry",
+          "quantity": "1",
+          "unitPriceCents": 418000,
+          "gstCode": "GST",
+          "totalCents": 418000,
+          "gstCents": 38000
+        }
+      ],
+      "totals": {
+        "totalCents": 418000,
+        "gstCents": 38000
+      },
+      "creditFor": null,
+      "pdf": "INV-1061.pdf"
+    },
+    {
+      "kind": "invoice",
+      "number": "INV-1062",
+      "version": 1,
+      "status": "issued",
+      "issueDate": "2026-11-09",
+      "dueDate": "2026-11-23",
+      "customer": {
+        "name": "Ellis Bathrooms",
+        "email": null,
+        "abn": null
+      },
+      "lines": [
+        {
+          "description": "Vanity units",
+          "quantity": "2",
+          "unitPriceCents": 99000,
+          "gstCode": "GST",
+          "totalCents": 198000,
+          "gstCents": 18000
+        },
+        {
+          "description": "Mirror cabinet",
+          "quantity": "1",
+          "unitPriceCents": 66000,
+          "gstCode": "GST",
+          "totalCents": 66000,
+          "gstCents": 6000
+        }
+      ],
+      "totals": {
+        "totalCents": 264000,
+        "gstCents": 24000
+      },
+      "creditFor": null,
+      "pdf": null
+    },
+    {
+      "kind": "invoice",
+      "number": "INV-1063",
+      "version": 1,
+      "status": "issued",
+      "issueDate": "2026-11-12",
+      "dueDate": "2026-11-26",
+      "customer": {
+        "name": "Smith Renovations",
+        "email": "office@smithreno.example.com",
+        "abn": null
+      },
+      "lines": [
+        {
+          "description": "Laundry cabinetry",
+          "quantity": "1",
+          "unitPriceCents": 396000,
+          "gstCode": "GST",
+          "totalCents": 396000,
+          "gstCents": 36000
+        }
+      ],
+      "totals": {
+        "totalCents": 396000,
+        "gstCents": 36000
+      },
+      "creditFor": null,
+      "pdf": null
+    },
+    {
+      "kind": "invoice",
+      "number": "INV-1064",
+      "version": 1,
+      "status": "issued",
+      "issueDate": "2026-10-15",
+      "dueDate": "2026-10-29",
+      "customer": {
+        "name": "Coastal Body Corporate",
+        "email": "strata@coastal.example.com",
+        "abn": "51824753556"
+      },
+      "lines": [
+        {
+          "description": "Common room storage",
+          "quantity": "1",
+          "unitPriceCents": 660000,
+          "gstCode": "GST",
+          "totalCents": 660000,
+          "gstCents": 60000
+        }
+      ],
+      "totals": {
+        "totalCents": 660000,
+        "gstCents": 60000
+      },
+      "creditFor": null,
+      "pdf": null
+    },
+    {
+      "kind": "quote",
+      "number": "Q-0201",
+      "version": 1,
+      "status": "issued",
+      "issueDate": "2026-11-20",
+      "dueDate": null,
+      "customer": {
+        "name": "K Patel",
+        "email": null,
+        "abn": null
+      },
+      "lines": [
+        {
+          "description": "Wardrobe doors",
+          "quantity": "4",
+          "unitPriceCents": 57750,
+          "gstCode": "GST",
+          "totalCents": 231000,
+          "gstCents": 21000
+        }
+      ],
+      "totals": {
+        "totalCents": 231000,
+        "gstCents": 21000
+      },
+      "creditFor": null,
+      "pdf": null
+    }
+  ]
+}
