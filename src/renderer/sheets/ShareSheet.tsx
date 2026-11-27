@@ -135,6 +135,7 @@ export function ShareSheet({
           <label className="share__field">
             <span>Sheet</span>
             <select
+              className="review-field"
               value={linkId}
               onChange={(e) => {
                 setLinkId(e.target.value);

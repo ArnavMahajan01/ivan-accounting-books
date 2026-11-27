@@ -12,6 +12,7 @@ export const GUIDE_GROUPS = [
   'To review',
   'Rules',
   'Reports and BAS',
+  'Google Sheets',
 ] as const;
 export type GuideGroup = (typeof GUIDE_GROUPS)[number];
 

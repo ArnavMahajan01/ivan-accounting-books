@@ -1,0 +1,49 @@
+{
+  "id": "connect-google",
+  "title": "Connect Google",
+  "group": "Google Sheets",
+  "summary": "How to connect your Google account, so you can publish reports to Google Sheets and share them with your accountant.",
+  "sections": [
+    {
+      "heading": "Connect",
+      "steps": [
+        {
+          "text": "Click Settings in the sidebar, then Connect Google in the Google card."
+        },
+        {
+          "text": "Your web browser opens Google's sign-in page. Sign in with your own Google account, the one in your business's Google Workspace."
+        },
+        {
+          "text": "Google asks whether Accounting Books may see, edit, create and delete only the Google Drive files you use with this app. Leave that ticked, and allow it. The app cannot see any of your other files."
+        },
+        {
+          "text": "Go back to the app. The Google card says Connected as, with your email address.",
+          "image": {
+            "file": "google-connected.png",
+            "description": "The Google card in Settings with sample data: Connected as owner@example.com, a sentence saying published sheets go in the Accounting Books folder in your Google Drive, a Disconnect button, and a tick box to open sheets inside the app."
+          }
+        }
+      ]
+    },
+    {
+      "heading": "Open sheets inside the app",
+      "paragraphs": [
+        "Tick Open sheets inside the app to see a published sheet in the app, from Shared sheets. Google does not always allow signing in there. If it does not, the app says so and offers Open in Chrome instead. Leave it unticked to always use your web browser."
+      ]
+    },
+    {
+      "heading": "Disconnect",
+      "paragraphs": [
+        "Click Disconnect in the Google card, check what it says, then click Disconnect again. Your published sheets stay in your Google Drive, and the people you shared them with keep their access: stop sharing first in Shared sheets if you want that. The app stops publishing and checking for your accountant's changes until you connect again."
+      ]
+    },
+    {
+      "heading": "If something goes wrong",
+      "paragraphs": [
+        "Signing in was not finished: you closed the browser page or took too long. Click Connect Google and try again.",
+        "A banner says Google needs you to sign in again: click Sign in again in Settings, then Sign in again in the Google card. Your sheets are safe in Google Drive.",
+        "The card says Google sign-in is not set up in this copy of the app: ask the person who installed it. Everything else works without Google."
+      ]
+    }
+  ]
+}

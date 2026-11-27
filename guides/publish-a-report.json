@@ -1,0 +1,56 @@
+{
+  "id": "publish-a-report",
+  "title": "Publish a report to Google Sheets",
+  "group": "Google Sheets",
+  "summary": "How to put a report, or your transactions, into a Google Sheet in your Google Drive, and update it later.",
+  "sections": [
+    {
+      "heading": "Publish a report",
+      "steps": [
+        {
+          "text": "Open the report you want in Reports, with the period you want, such as the profit and loss for this quarter."
+        },
+        {
+          "text": "Click Publish to Google Sheets. A preview shows exactly what Google will get: where it goes, its tabs, and every cell. Nothing is sent yet.",
+          "image": {
+            "file": "publish-preview.png",
+            "description": "The Publish to Google Sheets preview with sample data for Profit and loss, Oct to Dec 2026: it goes to a new workbook in the Accounting Books folder, with the tabs Profit and loss and Ready formulas, shown as a grid with column letters and row numbers. Cancel and Publish are at the bottom."
+          }
+        },
+        {
+          "text": "Click Publish. It says where it went. Click Open in Google Sheets to see it, or Open side by side to see it beside the app."
+        }
+      ]
+    },
+    {
+      "heading": "Publish your transactions",
+      "steps": [
+        {
+          "text": "Click Transactions in the sidebar, then Publish to Google Sheets."
+        },
+        {
+          "text": "Choose the quarter or year under Transactions for, check the preview, then click Publish."
+        },
+        {
+          "text": "Share it with your accountant as an editor if you want them to suggest accounts, GST codes or notes. Their changes come back to you to accept."
+        }
+      ]
+    },
+    {
+      "heading": "Publish again",
+      "paragraphs": [
+        "Publish the same report for the same period again, from the report or from Shared sheets, and the same workbook is updated in place: Publish again says so. The link and the people it is shared with stay the same, and so do your own tabs and any columns you added to the right. The result says how many rows changed since last time.",
+        "A quarter is kept whole, so the profit and loss for Oct to Dec 2026 published in November and again in December is the same workbook."
+      ]
+    },
+    {
+      "heading": "If something goes wrong",
+      "paragraphs": [
+        "Publish is greyed: connect Google first, in Settings.",
+        "Offline: nothing was sent. Publish again when you are online.",
+        "It says the workbook is no longer in your Google Drive: it was deleted. Click Publish as new to make it again with the same name. Share it again afterwards.",
+        "In QuickBooks you gave your accountant a login. Here they only ever see the sheets you publish and share."
+      ]
+    }
+  ]
+}

@@ -155,6 +155,7 @@ export function PublishSheet({
         <label className="publish__period">
           <span>Transactions for</span>
           <select
+            className="review-field"
             value={request.period.choice}
             onChange={(e) => {
               const choice =

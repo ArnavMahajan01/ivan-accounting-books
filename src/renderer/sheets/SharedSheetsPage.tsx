@@ -199,6 +199,7 @@ export function SharedSheetsPage() {
                   <span className="shared__title">{s.title}</span>
                   <span className="shared__when">{published(s.publishedAt)}</span>
                   <select
+                    className="review-field"
                     aria-label={`What ${person.email} can do with ${s.title}`}
                     value={s.role}
                     onChange={(e) => {

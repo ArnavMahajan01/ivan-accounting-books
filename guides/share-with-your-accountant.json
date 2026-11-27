@@ -1,0 +1,56 @@
+{
+  "id": "share-with-your-accountant",
+  "title": "Share a sheet with your accountant",
+  "group": "Google Sheets",
+  "summary": "How to let your accountant, or anyone you choose, see a published sheet, and how to change or stop that.",
+  "sections": [
+    {
+      "heading": "Share",
+      "steps": [
+        {
+          "text": "Click Shared sheets in the sidebar, then Share."
+        },
+        {
+          "text": "Choose the sheet, type their email address, and choose what they can do: Viewer can see it, Commenter can also leave comments, and Editor can change the Account, GST and Note columns of the Transactions sheet.",
+          "image": {
+            "file": "share-dialog.png",
+            "description": "The Share dialog with sample data: the sheet Transactions, Oct to Dec 2026, the email accountant@example.com, and Editor chosen, with what each role can do. Cancel and Continue are at the bottom."
+          }
+        },
+        {
+          "text": "Click Continue. Check the email address and the role very carefully before you click Share: that person will be able to see everything in this sheet.",
+          "image": {
+            "file": "share-check.png",
+            "description": "Check before sharing, with sample data: Share Transactions, Oct to Dec 2026 with accountant@example.com as Editor. Google will email them a link. Back and Share are at the bottom."
+          }
+        },
+        {
+          "text": "Click Share. Google emails them a link. Only this sheet is shared, never your books or your other sheets."
+        }
+      ]
+    },
+    {
+      "heading": "See and change who can see what",
+      "steps": [
+        {
+          "text": "Shared sheets lists each person once, with the sheets they can see. Change what they can do in the row.",
+          "image": {
+            "file": "shared-sheets.png",
+            "description": "Shared sheets with sample data: accountant@example.com can see 1 sheet, the Transactions sheet as Editor, with Open in Google Sheets and Stop sharing. Under Only you, the Profit and loss sheet, published but not shared, with Open in Google Sheets, Publish again and Share."
+          }
+        },
+        {
+          "text": "Click Stop sharing on a row, or Stop sharing everything beside a person, then confirm. The sheets stay in your Google Drive."
+        }
+      ]
+    },
+    {
+      "heading": "If something goes wrong",
+      "paragraphs": [
+        "Share is greyed: connect Google in Settings, and publish a sheet first.",
+        "It says the address does not look like an email address: check it for spaces or a missing @.",
+        "Your accountant cannot open it: if their email is not in your business's Google Workspace, your Workspace may need to allow sharing outside it. Ask whoever looks after your Workspace."
+      ]
+    }
+  ]
+}

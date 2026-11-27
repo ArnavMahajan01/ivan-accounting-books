@@ -1,0 +1,39 @@
+{
+  "id": "use-ready-formulas",
+  "title": "Use ready formulas",
+  "group": "Google Sheets",
+  "summary": "How to copy a ready-made formula, such as the GST in an amount, into your own Google Sheet.",
+  "sections": [
+    {
+      "heading": "Copy a formula",
+      "steps": [
+        {
+          "text": "Click Shared sheets in the sidebar, then Ready formulas."
+        },
+        {
+          "text": "Find the one you want. Each says what it does in plain words. Click Copy.",
+          "image": {
+            "file": "ready-formulas.png",
+            "description": "The Ready formulas list: GST in an amount, Amount without GST, % of income, Change from last quarter, Flag if over an amount, and Days until the BAS is due, each with what it does, its formula and a Copy button. It says GST in an amount was copied."
+          }
+        },
+        {
+          "text": "In your Google Sheet, click a cell and paste. Change the cells it points at, such as B2, to the ones with your figures."
+        }
+      ]
+    },
+    {
+      "heading": "In every workbook",
+      "paragraphs": [
+        "Every workbook you publish has a Ready formulas tab with the same list, and a working example of each, so your accountant sees what you used.",
+        "GST in an amount is one eleventh of a price that includes GST, rounded to the cent, as the ATO works it out. It is never 10% of that price."
+      ]
+    },
+    {
+      "heading": "If something goes wrong",
+      "paragraphs": [
+        "The formula shows as text in your sheet: make sure it starts with = and that you pasted it into a cell, not into a comment."
+      ]
+    }
+  ]
+}

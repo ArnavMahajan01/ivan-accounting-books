@@ -1,0 +1,40 @@
+{
+  "id": "accept-accountant-changes",
+  "title": "Accept or reject your accountant's changes",
+  "group": "Google Sheets",
+  "summary": "How to look at the changes your accountant made in a shared Transactions sheet, and choose which go into your books.",
+  "sections": [
+    {
+      "heading": "Look at the changes",
+      "steps": [
+        {
+          "text": "When your accountant changes an account, GST code or note in the Transactions sheet, the count beside Accountant changes in the sidebar goes up. The app checks your shared sheets every two minutes while it is open."
+        },
+        {
+          "text": "Click Accountant changes. Each change shows the line, what it was, crossed out, what your accountant typed, who and when, and what accepting would do to your accounts.",
+          "image": {
+            "file": "accountant-changes.png",
+            "description": "One waiting change with sample data: Timber order, minus $880.00, row 9. Account Materials and supplies, crossed out, now Tools and small equipment, by accountant@example.com. Accepting moves $800.00 from Materials and supplies to Tools and small equipment. Reject and Accept buttons."
+          }
+        },
+        {
+          "text": "Click Accept to make the change in your books, or Reject to keep them as they are. Nothing in your books changes until you accept."
+        }
+      ]
+    },
+    {
+      "heading": "Afterwards",
+      "paragraphs": [
+        "Accepted and rejected changes are listed under Done. An accepted change is in the line's history in Transactions, with who suggested it. A rejected one stays in the sheet until you publish it again, which puts back what your books hold."
+      ]
+    },
+    {
+      "heading": "If Accept is greyed",
+      "paragraphs": [
+        "It says the account or GST code is not in your books: the name was typed differently. Reject it, or add the account in Accounts and click Check now.",
+        "It says the line is in a period you locked: it cannot change. Reject it, and enter a correction in an open period.",
+        "It says the line went to more than one account: change it in Transactions instead."
+      ]
+    }
+  ]
+}
