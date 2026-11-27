@@ -77,3 +77,16 @@ export interface InvoicesView {
   readonly overdue: { readonly cents: Cents; readonly count: number };
   readonly paidLast30: { readonly cents: Cents; readonly count: number };
 }
+
+/** The linked folder (spec 127): what is waiting in it, to add with one click. */
+export type FolderCheck =
+  | { readonly kind: 'not-linked' }
+  | { readonly kind: 'nothing-new'; readonly folderName: string }
+  | {
+      readonly kind: 'waiting';
+      readonly folderName: string;
+      readonly previewId: string;
+      readonly preview: InvoicePreview;
+    }
+  /** The folder is gone or cannot be read. */
+  | { readonly kind: 'unreadable'; readonly folderName: string };

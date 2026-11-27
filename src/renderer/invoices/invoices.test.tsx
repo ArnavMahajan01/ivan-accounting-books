@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { ok } from '@shared/result';
 import { BooksStateProvider } from '../books-state';
-import { installBridge, INVOICES, settle } from '../test-bridge';
+import { installBridge, INVOICE_PREVIEW, INVOICES, settle } from '../test-bridge';
 import { InvoicesPage } from './InvoicesPage';
 
 afterEach(cleanup);
@@ -78,5 +78,34 @@ describe('the Invoices page (specs 126, 128)', () => {
     });
     await show();
     expect(screen.getByText(/No invoices yet/)).toBeTruthy();
+  });
+});
+
+describe('the linked folder (spec 127)', () => {
+  it('says what arrived from the Admin Dashboard, and adds it only on Add to books', async () => {
+    const api = installBridge({
+      'invoices.checkFolder': vi.fn(() =>
+        Promise.resolve(
+          ok({
+            kind: 'waiting' as const,
+            folderName: 'Admin Dashboard exports',
+            previewId: 'pre_folder',
+            preview: { ...INVOICE_PREVIEW, replaced: [] },
+          }),
+        ),
+      ),
+    });
+    await show();
+    const banner = screen.getAllByRole('status').find((s) => s.textContent.includes('arrived'));
+    expect(banner?.textContent).toContain(
+      '2 new invoices arrived from the Admin Dashboard. INV-1043 and INV-1044.',
+    );
+    expect(api['invoices.commit']).not.toHaveBeenCalled();
+    await userEvent.click(screen.getByRole('button', { name: 'Add to books' }));
+    await userEvent.click(
+      within(screen.getByRole('dialog')).getByRole('button', { name: 'Import 2 invoices' }),
+    );
+    await settle();
+    expect(api['invoices.commit']).toHaveBeenCalledWith({ previewId: 'pre_folder' });
   });
 });

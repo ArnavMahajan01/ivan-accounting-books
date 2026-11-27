@@ -63,6 +63,13 @@ import type { SheetPanel } from './sheet-panel';
 import type { InvoiceFile, InvoiceFileRefusal } from './invoice-files';
 import { commitInvoiceFile, previewInvoiceFile } from '@services/invoice-import';
 import { invoicesView } from '@services/invoices-view';
+import {
+  linkedInvoiceFolder,
+  mergeExchangeFiles,
+  setInvoiceFolder,
+} from '@services/invoice-folder';
+import { getInvoice } from '@data/invoice-repository';
+import { basename, join } from 'node:path';
 import { newId } from '@shared/ids';
 import type { InvoiceCommitOutcome, InvoicePreviewOutcome } from '@shared/invoices';
 import { setSheetPanelOn, sheetPanelOn } from '@services/sheet-panel-setting';
@@ -159,6 +166,11 @@ export interface HandlerDeps {
   readonly invoiceFiles: {
     choose(): Promise<string | null>;
     read(path: string): Promise<Result<InvoiceFile, InvoiceFileRefusal>>;
+    /** The linked folder (spec 127): choose it, list its exchange files, open a PDF in it. */
+    chooseFolder(): Promise<string | null>;
+    /** Null when the folder is gone or cannot be read. */
+    list(folder: string): Promise<string[] | null>;
+    openFile(path: string): Promise<boolean>;
   };
   /** Reads the sheets for the accountant's changes now (spec 116). */
   readonly checkSheets: () => Promise<ChangesCheck>;
@@ -627,6 +639,61 @@ export function createHandlers({
         }
         return ok({ kind: 'added', ...saved.value });
       }),
+    'invoices.folder': () =>
+      open((store) => {
+        const folder = linkedInvoiceFolder({ db: store.db });
+        return ok({ folderName: folder === null ? null : basename(folder) });
+      }),
+    'invoices.chooseFolder': async () => {
+      const store = books.store();
+      if (!store.ok) return err(INTERNAL);
+      const folder = await invoiceFiles.chooseFolder();
+      if (folder === null) {
+        const current = linkedInvoiceFolder({ db: store.value.db });
+        return ok({ folderName: current === null ? null : basename(current) });
+      }
+      setInvoiceFolder({ db: store.value.db }, folder);
+      return ok({ folderName: basename(folder) });
+    },
+    'invoices.unlinkFolder': () =>
+      open((store) => {
+        setInvoiceFolder({ db: store.db }, null);
+        return ok({ folderName: null });
+      }),
+    'invoices.checkFolder': async () => {
+      const store = books.store();
+      if (!store.ok) return err(INTERNAL);
+      const folder = linkedInvoiceFolder({ db: store.value.db });
+      if (folder === null) return ok({ kind: 'not-linked' as const });
+      const folderName = basename(folder);
+      const paths = await invoiceFiles.list(folder);
+      if (paths === null) return ok({ kind: 'unreadable' as const, folderName });
+      if (paths.length === 0) return ok({ kind: 'nothing-new' as const, folderName });
+      const texts: string[] = [];
+      for (const path of paths) {
+        const file = await invoiceFiles.read(path);
+        if (file.ok) texts.push(file.value.text);
+      }
+      const merged = mergeExchangeFiles(texts);
+      const preview = previewInvoiceFile({ db: store.value.db }, merged.text, folderName);
+      if (!preview.ok) return ok({ kind: 'unreadable' as const, folderName });
+      if (preview.value.added.length + preview.value.replaced.length === 0) {
+        return ok({ kind: 'nothing-new' as const, folderName });
+      }
+      const previewId = newId('pre', random);
+      invoicePreviews.clear();
+      invoicePreviews.set(previewId, { fileName: folderName, text: merged.text });
+      return ok({ kind: 'waiting' as const, folderName, previewId, preview: preview.value });
+    },
+    'invoices.openPdf': async ({ id }) => {
+      const store = books.store();
+      if (!store.ok) return err(INTERNAL);
+      const folder = linkedInvoiceFolder({ db: store.value.db });
+      const invoice = getInvoice(store.value.db, id);
+      const pdf = invoice?.pdf ?? null;
+      if (folder === null || pdf === null) return ok({ opened: false });
+      return ok({ opened: await invoiceFiles.openFile(join(folder, pdf)) });
+    },
     'changes.check': async () => ok(await checkSheets()),
     'changes.list': () => open((store) => ok(changesView({ db: store.db, clock, random }))),
     'changes.count': () => open((store) => ok({ count: waitingCount({ db: store.db }) })),

@@ -3,9 +3,15 @@
 // in a file the Admin Dashboard wrote, with a preview first.
 
 import { Receipt, Upload } from 'lucide-react';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { formatDateAU } from '@shared/dates';
-import type { InvoicePreview, InvoiceRowView, InvoicesView, InvoiceStatus } from '@shared/invoices';
+import type {
+  FolderCheck,
+  InvoicePreview,
+  InvoiceRowView,
+  InvoicesView,
+  InvoiceStatus,
+} from '@shared/invoices';
 import { bridge } from '../bridge';
 import { Amount } from '../components/Amount';
 import { Button } from '../components/Button';
@@ -18,6 +24,14 @@ import { PageToolbar } from '../layout/PageToolbar';
 import { useBridgeQuery } from '../pages/use-bridge';
 import { InvoiceImportSheet } from './InvoiceImportSheet';
 import './invoices.css';
+
+const FOLDER_EVERY_MS = 5 * 60 * 1000;
+
+/** "INV-1043 and INV-1044", "INV-1, INV-2 and INV-3". */
+function joinNumbers(numbers: readonly string[]): string {
+  if (numbers.length <= 1) return numbers.join('');
+  return `${numbers.slice(0, -1).join(', ')} and ${numbers.at(-1) ?? ''}`;
+}
 
 export function statusText(status: InvoiceStatus): string {
   switch (status.kind) {
@@ -33,7 +47,27 @@ export function statusText(status: InvoiceStatus): string {
 }
 
 const COLUMNS: readonly TableColumn<InvoiceRowView>[] = [
-  { key: 'number', header: 'Invoice', fit: true, cell: (r) => r.number },
+  {
+    key: 'number',
+    header: 'Invoice',
+    fit: true,
+    cell: (r) => (
+      <span className="invoices__number">
+        {r.number}
+        {r.hasPdf && (
+          <Button
+            size="small"
+            aria-label={`Open the PDF of ${r.number}`}
+            onClick={() => {
+              void bridge()['invoices.openPdf']({ id: r.id });
+            }}
+          >
+            PDF
+          </Button>
+        )}
+      </span>
+    ),
+  },
   { key: 'date', header: 'Date', fit: true, cell: (r) => <DateCell date={r.issueDate} /> },
   { key: 'customer', header: 'Customer', cell: (r) => r.customer },
   {
@@ -68,6 +102,25 @@ export function InvoicesPage() {
   const [message, setMessage] = useState<string | null>(null);
   const [problem, setProblem] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [folder, setFolder] = useState<FolderCheck | null>(null);
+
+  // The linked folder is checked when the page opens, when the window comes back, and every few
+  // minutes while it is open (spec 127). Nothing is added without his click.
+  const checkFolder = useCallback(() => {
+    const api = bridge();
+    void api['invoices.checkFolder']({}).then((result) => {
+      if (result.ok) setFolder(result.value);
+    });
+  }, []);
+  useEffect(() => {
+    checkFolder();
+    window.addEventListener('focus', checkFolder);
+    const timer = window.setInterval(checkFolder, FOLDER_EVERY_MS);
+    return () => {
+      window.removeEventListener('focus', checkFolder);
+      window.clearInterval(timer);
+    };
+  }, [checkFolder]);
 
   const choose = async () => {
     setMessage(null);
@@ -104,6 +157,7 @@ export function InvoicesPage() {
             .join(', ') + '.',
         );
         setVersion((v) => v + 1);
+        checkFolder();
       }
     } finally {
       setBusy(false);
@@ -115,12 +169,48 @@ export function InvoicesPage() {
     <div className="invoices">
       <PageToolbar
         title="Invoices"
-        mainAction={
-          <Button variant="main" icon={Upload} onClick={() => void choose()}>
+        status={
+          folder !== null && folder.kind !== 'not-linked' ? (
+            <span className="invoices__from">From Admin Dashboard · {folder.folderName}</span>
+          ) : undefined
+        }
+        actions={
+          <Button icon={Upload} onClick={() => void choose()}>
             Import file
           </Button>
         }
       />
+      {folder?.kind === 'waiting' && (
+        <div className="invoices__arrived" role="status">
+          <p>
+            <strong>
+              {plural(
+                folder.preview.added.length + folder.preview.replaced.length,
+                'new invoice',
+                'new invoices',
+              )}{' '}
+              arrived from the Admin Dashboard.
+            </strong>{' '}
+            {joinNumbers(
+              [...folder.preview.added, ...folder.preview.replaced].map((d) => d.number),
+            )}
+            .
+          </p>
+          <Button
+            variant="main"
+            onClick={() => {
+              setPreview({ id: folder.previewId, preview: folder.preview });
+            }}
+          >
+            Add to books
+          </Button>
+        </div>
+      )}
+      {folder?.kind === 'unreadable' && (
+        <ErrorMessage
+          message={`The linked folder "${folder.folderName}" cannot be read. Choose it again in Settings.`}
+        />
+      )}
       {message !== null && (
         <p className="publish__line" role="status">
           {message}

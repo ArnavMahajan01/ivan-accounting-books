@@ -4,7 +4,12 @@
 
 import { z } from 'zod';
 import type { ReportRequest, ReportView } from './reports';
-import type { InvoiceCommitOutcome, InvoicePreviewOutcome, InvoicesView } from './invoices';
+import type {
+  FolderCheck,
+  InvoiceCommitOutcome,
+  InvoicePreviewOutcome,
+  InvoicesView,
+} from './invoices';
 import {
   publishRequestSchema,
   type ConnectProblem,
@@ -359,6 +364,11 @@ export const bridgeContract = {
   'invoices.list': { input: noInput },
   'invoices.chooseAndPreview': { input: noInput },
   'invoices.commit': { input: z.object({ previewId: idText('pre') }).strict() },
+  'invoices.folder': { input: noInput },
+  'invoices.chooseFolder': { input: noInput },
+  'invoices.unlinkFolder': { input: noInput },
+  'invoices.checkFolder': { input: noInput },
+  'invoices.openPdf': { input: z.object({ id: idText('inv') }).strict() },
   'changes.check': { input: noInput },
   'changes.list': { input: noInput },
   'changes.count': { input: noInput },
@@ -477,6 +487,12 @@ export interface BridgeResults {
   'invoices.list': InvoicesView;
   'invoices.chooseAndPreview': InvoicePreviewOutcome;
   'invoices.commit': InvoiceCommitOutcome;
+  /** The linked folder's name, never its path; null when none is linked. */
+  'invoices.folder': { readonly folderName: string | null };
+  'invoices.chooseFolder': { readonly folderName: string | null };
+  'invoices.unlinkFolder': { readonly folderName: null };
+  'invoices.checkFolder': FolderCheck;
+  'invoices.openPdf': { readonly opened: boolean };
   'changes.check': ChangesCheck;
   'changes.list': AccountantChangesView;
   /** Waiting changes: the count beside Accountant changes in the sidebar. */

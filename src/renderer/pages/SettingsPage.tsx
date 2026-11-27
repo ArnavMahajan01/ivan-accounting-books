@@ -2,6 +2,7 @@ import { Info } from 'lucide-react';
 import type { AppInfo, DataStatus } from '@shared/bridge-contract';
 import { PageToolbar } from '../layout/PageToolbar';
 import { GoogleCard } from '../sheets/GoogleCard';
+import { AdminDashboardCard } from '../invoices/AdminDashboardCard';
 import { DeveloperCard } from './DeveloperCard';
 import { COMING_LATER } from './EmptyPage';
 import { describeData, loadDataStatus, loadInfo } from './data-status';
@@ -32,6 +33,7 @@ export function SettingsPage() {
           </section>
         ))}
         <GoogleCard />
+        <AdminDashboardCard />
         {LATER_CARDS.slice(1).map((card) => (
           <section key={card.title} className="page-surface settings-card" aria-label={card.title}>
             <h2 className="settings-card__title">{card.title}</h2>

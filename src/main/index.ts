@@ -11,6 +11,7 @@ import {
   protocol,
   screen,
   session,
+  shell,
 } from 'electron';
 import { readdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -46,7 +47,7 @@ import { isAppUrl, isGooglePageUrl } from './navigation';
 import { createGoogleAccess } from './google-setup';
 import { createSheetCheck } from './sheet-check';
 import { createSheetPanel } from './sheet-panel';
-import { readInvoiceFile } from './invoice-files';
+import { listInvoiceFiles, readInvoiceFile } from './invoice-files';
 import { loadEnv } from '@shared/env';
 
 // The name decides the data folder and the instance lock, so it is set before anything else.
@@ -326,6 +327,21 @@ if (refusedFlags.length > 0) {
             return result.canceled ? null : (result.filePaths[0] ?? null);
           },
           read: readInvoiceFile,
+          chooseFolder: async () => {
+            const options = {
+              title: 'Choose the folder the Admin Dashboard writes invoices to',
+              properties: ['openDirectory' as const],
+            };
+            const result =
+              mainWindow === null
+                ? await dialog.showOpenDialog(options)
+                : await dialog.showOpenDialog(mainWindow, options);
+            return result.canceled ? null : (result.filePaths[0] ?? null);
+          },
+          list: listInvoiceFiles,
+          // Only a PDF in the linked folder is ever opened, with the Mac's own app for it.
+          openFile: async (path) =>
+            path.toLowerCase().endsWith('.pdf') && (await shell.openPath(path)) === '',
         },
         app,
         books,

@@ -67,8 +67,14 @@ function plan(
   accounts: InvoiceAccounts,
 ): Plan[] {
   const lockDate = getBusiness(ctx.db)?.lockDate ?? null;
+  // Within one batch, only the newest issued version of each number counts: two versions of the
+  // same invoice must never both be added.
+  const newest = new Map<string, number>();
+  for (const d of docs) {
+    if (d.status === 'issued') newest.set(d.number, Math.max(newest.get(d.number) ?? 0, d.version));
+  }
   return docs
-    .filter((d) => d.status === 'issued')
+    .filter((d) => d.status === 'issued' && newest.get(d.number) === d.version)
     .map((doc): Plan => {
       if (doc.lines.some((l) => accounts.taxCode(l.gstCode) === null)) {
         return { kind: 'refused', number: doc.number, reason: 'unknown-gst-code' };

@@ -39,6 +39,7 @@ Update this file whenever the current phase, the active spec or the implementati
 | W02 | [Wireframe Design Context](feature-specs/W-wireframes/W02-wireframe-design-context.md) | Written from the context files. No screenshots were supplied, so there are none to check |
 | W08 | [Wireframe: Invoices and Bills](feature-specs/W-wireframes/W08-wireframe-invoices-and-bills.md), if question 1 says so | W |
 | 029 | [Demo 1: The App Opens](feature-specs/02-demo-1-the-app-opens/029-demo-1.md), skipped while the ledger core and Demo 2 were built | 02 |
+| 127 | [Linked Folder](feature-specs/10-demo-8-contacts-and-invoices/127-linked-folder.md) | Settings card, the folder checked on open and every five minutes, Add to books, PDF; a double-version bug fixed | Done | 2026-11-28 |
 | 126 | [Import Invoices](feature-specs/10-demo-8-contacts-and-invoices/126-invoice-import.md) | Migration 0016, posting through the posting service, versions, credit notes, the Invoices page; cash-basis BAS leaves unpaid invoices out | Done | 2026-11-28 |
 | 125 | [Invoice Exchange File](feature-specs/10-demo-8-contacts-and-invoices/125-invoice-format.md) | Versioned JSON, Zod reader naming the field, fixtures, note for the Admin Dashboard | Done (decision still to sign) | 2026-11-28 |
 | 122 | [Contacts: Data](feature-specs/10-demo-8-contacts-and-invoices/122-contacts-data.md) | Migration 0015: email, phone, ABN, notes; add by hand and edit, audited | Done | 2026-11-27 |

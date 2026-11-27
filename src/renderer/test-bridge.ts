@@ -1032,6 +1032,13 @@ export function installBridge(overrides: Partial<BridgeApi> = {}): BridgeApi {
     'invoices.commit': vi.fn(() =>
       Promise.resolve(ok({ kind: 'added' as const, added: 3, replaced: 1 })),
     ),
+    'invoices.folder': vi.fn(() => Promise.resolve(ok({ folderName: null }))),
+    'invoices.chooseFolder': vi.fn(() =>
+      Promise.resolve(ok({ folderName: 'Admin Dashboard exports' })),
+    ),
+    'invoices.unlinkFolder': vi.fn(() => Promise.resolve(ok({ folderName: null }))),
+    'invoices.checkFolder': vi.fn(() => Promise.resolve(ok({ kind: 'not-linked' as const }))),
+    'invoices.openPdf': vi.fn(() => Promise.resolve(ok({ opened: true }))),
     'changes.check': vi.fn(() => Promise.resolve(ok({ added: 0, problem: null }))),
     'changes.list': vi.fn(() => Promise.resolve(ok(CHANGES))),
     'changes.count': vi.fn(() => Promise.resolve(ok({ count: CHANGES.waiting.length }))),

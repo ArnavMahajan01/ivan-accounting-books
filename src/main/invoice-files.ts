@@ -29,8 +29,8 @@ export async function readInvoiceFile(
   }
 }
 
-/** The exchange files in the linked folder (spec 127): `.json` files only, by name. */
-export async function listInvoiceFiles(folder: string): Promise<string[]> {
+/** The exchange files in the linked folder (spec 127): `.json` files only, by name. Null if unreadable. */
+export async function listInvoiceFiles(folder: string): Promise<string[] | null> {
   try {
     const names = await readdir(folder);
     return names
@@ -38,6 +38,6 @@ export async function listInvoiceFiles(folder: string): Promise<string[]> {
       .sort()
       .map((n) => join(folder, n));
   } catch {
-    return [];
+    return null;
   }
 }

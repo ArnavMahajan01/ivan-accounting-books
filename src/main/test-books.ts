@@ -48,6 +48,9 @@ export const importDeps = {
   invoiceFiles: {
     choose: () => Promise.resolve(null),
     read: () => Promise.resolve(err('unreadable-file' as const)),
+    chooseFolder: () => Promise.resolve(null),
+    list: () => Promise.resolve(null),
+    openFile: () => Promise.resolve(false),
   },
   sheetPanel: {
     open: () => Promise.resolve('failed' as const),
