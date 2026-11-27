@@ -40,7 +40,7 @@ describe('the shortcut list', () => {
       '⌘9',
     ]);
     expect(shortcutForPage('home')?.key).toBe('1');
-    expect(shortcutForPage('accountant-changes')?.key).toBe('9');
+    expect(shortcutForPage('contacts')?.key).toBe('9');
   });
 
   it('gives Settings the Mac Settings key, Command-comma', () => {
@@ -55,8 +55,13 @@ describe('the shortcut list', () => {
     expect(help && toAccelerator(help)).toBe('Cmd+?');
   });
 
-  it('has a shortcut for every page, and no two shortcuts on the same keys', () => {
-    for (const page of PAGES) expect(shortcutForPage(page.id), page.id).toBeDefined();
+  it('has a shortcut for the first nine pages, Settings and Help, and no two on the same keys', () => {
+    // Folder 10 made it eleven pages before Settings: Shared sheets and Accountant changes are in
+    // the menu and the sidebar without a number key (the author decides, see the tracker).
+    for (const page of PAGES) {
+      const expected = PAGES.indexOf(page) < 9 || page.id === 'settings' || page.id === 'help';
+      expect(shortcutForPage(page.id) !== undefined, page.id).toBe(expected);
+    }
     const keys = SHORTCUTS.map((s) => toAccelerator(s));
     expect(new Set(keys).size).toBe(keys.length);
   });

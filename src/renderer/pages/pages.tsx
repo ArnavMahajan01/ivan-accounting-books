@@ -10,6 +10,9 @@ import { RulesPage } from './RulesPage';
 import { ToReviewPage } from './ToReviewPage';
 import { TransactionsPage } from './TransactionsPage';
 import { SharedSheetsPage } from '../sheets/SharedSheetsPage';
+import { InvoicesPage } from '../invoices/InvoicesPage';
+import { EmptyPage } from './EmptyPage';
+import { Users } from 'lucide-react';
 import { AccountantChangesPage } from '../sheets/AccountantChangesPage';
 
 /** The page for each route. Pages not built yet say what they will hold. */
@@ -29,6 +32,16 @@ export function Page({ route }: { readonly route: RouteId }) {
       return <ReportsPage />;
     case 'rules':
       return <RulesPage />;
+    case 'invoices':
+      return <InvoicesPage />;
+    case 'contacts':
+      return (
+        <EmptyPage
+          title="Contacts"
+          icon={Users}
+          message="Your customers and suppliers, each with what they owe and everything about them."
+        />
+      );
     case 'shared-sheets':
       return <SharedSheetsPage />;
     case 'accountant-changes':

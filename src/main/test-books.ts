@@ -45,6 +45,10 @@ export const importDeps = {
   google: testGoogle(),
   clipboard: { writeText: () => undefined },
   checkSheets: () => Promise.resolve({ added: 0, problem: 'not-connected' as const }),
+  invoiceFiles: {
+    choose: () => Promise.resolve(null),
+    read: () => Promise.resolve(err('unreadable-file' as const)),
+  },
   sheetPanel: {
     open: () => Promise.resolve('failed' as const),
     move: () => undefined,

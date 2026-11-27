@@ -3,13 +3,22 @@
 
 import { z } from 'zod';
 import type { CalendarDate } from '@shared/dates';
-import { TAX_TREATMENTS, ACCOUNT_TYPES, type AccountType, type TaxTreatment } from '@shared/kinds';
+import {
+  ACCOUNT_TYPES,
+  ENTRY_SOURCE_KINDS,
+  TAX_TREATMENTS,
+  type AccountType,
+  type EntrySourceKind,
+  type TaxTreatment,
+} from '@shared/kinds';
 import type { Cents } from '@shared/money';
 import type { Db } from './database';
 import { calendarDateColumn, centsColumn } from './row-types';
 
 export interface ReportLine {
   readonly entryId: string;
+  /** Where the entry came from: an invoice's GST counts when it is paid on the cash basis. */
+  readonly sourceKind: EntrySourceKind;
   readonly date: CalendarDate;
   readonly memo: string;
   readonly payee: string | null;
@@ -24,6 +33,7 @@ export interface ReportLine {
 
 const rowSchema = z.object({
   entry_id: z.string().regex(/^ent_/),
+  source_kind: z.enum(ENTRY_SOURCE_KINDS),
   entry_date: calendarDateColumn,
   memo: z.string(),
   payee: z.string().nullable(),
@@ -34,7 +44,7 @@ const rowSchema = z.object({
   gst_cents: centsColumn,
 });
 
-const SELECT = `SELECT e.id AS entry_id, e.entry_date, e.memo,
+const SELECT = `SELECT e.id AS entry_id, e.source_kind, e.entry_date, e.memo,
     (SELECT c.name FROM journal_line p JOIN contact c ON c.id = p.payee_id
       WHERE p.entry_id = e.id AND p.payee_id IS NOT NULL ORDER BY p.position LIMIT 1) AS payee,
     a.name AS account_name, a.type AS account_type, t.treatment, l.amount_cents, l.gst_cents
@@ -47,6 +57,7 @@ function toLine(row: unknown): ReportLine {
   const r = rowSchema.parse(row);
   return {
     entryId: r.entry_id,
+    sourceKind: r.source_kind,
     date: r.entry_date,
     memo: r.memo,
     payee: r.payee,

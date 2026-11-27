@@ -33,6 +33,7 @@ describe('every page', () => {
           'to-review',
           'rules',
           'reports',
+          'invoices',
           'shared-sheets',
           'accountant-changes',
         ].includes(r.id),

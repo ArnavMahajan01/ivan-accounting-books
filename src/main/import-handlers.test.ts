@@ -52,6 +52,7 @@ function setup() {
     clipboard: importDeps.clipboard,
     checkSheets: importDeps.checkSheets,
     sheetPanel: importDeps.sheetPanel,
+    invoiceFiles: importDeps.invoiceFiles,
     onImport,
   });
   return { handlers, onImport };

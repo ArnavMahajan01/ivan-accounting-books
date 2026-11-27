@@ -25,7 +25,8 @@ describe('the Mac menu', () => {
     const items = submenu(build(false), 'View').filter((i) => i.id?.startsWith('page-'));
     const pages = PAGES.filter((p) => p.id !== 'help' && p.id !== 'settings');
     expect(items.map((i) => [i.label, i.accelerator])).toEqual([
-      ...pages.map((p, index) => [p.label, `Cmd+${String(index + 1)}`]),
+      // The first nine have a number key; the pages after them are in the menu without one.
+      ...pages.map((p, index) => [p.label, index < 9 ? `Cmd+${String(index + 1)}` : undefined]),
       ['Settings', 'Cmd+,'],
     ]);
   });

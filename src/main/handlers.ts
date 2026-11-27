@@ -60,6 +60,11 @@ import { getReport, getReportLines } from '@services/reports';
 import type { ReportExports } from './report-exports';
 import type { GoogleAccess } from './google-setup';
 import type { SheetPanel } from './sheet-panel';
+import type { InvoiceFile, InvoiceFileRefusal } from './invoice-files';
+import { commitInvoiceFile, previewInvoiceFile } from '@services/invoice-import';
+import { invoicesView } from '@services/invoices-view';
+import { newId } from '@shared/ids';
+import type { InvoiceCommitOutcome, InvoicePreviewOutcome } from '@shared/invoices';
 import { setSheetPanelOn, sheetPanelOn } from '@services/sheet-panel-setting';
 import type { ChangesCheck, ConnectProblem, ShareOutcome, ShareRefusal } from '@shared/sheets';
 import {
@@ -150,6 +155,11 @@ export interface HandlerDeps {
   readonly google: GoogleAccess;
   /** The Mac's clipboard, for Copy on the Ready formulas (spec 113). */
   readonly clipboard: { writeText(text: string): void };
+  /** Choosing and reading an invoice exchange file (spec 126). */
+  readonly invoiceFiles: {
+    choose(): Promise<string | null>;
+    read(path: string): Promise<Result<InvoiceFile, InvoiceFileRefusal>>;
+  };
   /** Reads the sheets for the accountant's changes now (spec 116). */
   readonly checkSheets: () => Promise<ChangesCheck>;
   /** The real Google Sheet in a panel inside the window (spec 118). */
@@ -208,7 +218,19 @@ export function createHandlers({
   clipboard,
   checkSheets,
   sheetPanel,
+  invoiceFiles,
 }: HandlerDeps): BridgeHandlers {
+  // Invoice files read and checked but not yet added: the text stays in main, never the screens.
+  const invoicePreviews = new Map<string, InvoiceFile>();
+  const previewInvoices = (file: InvoiceFile): Result<InvoicePreviewOutcome, BridgeError> =>
+    open((store): Result<InvoicePreviewOutcome, BridgeError> => {
+      const preview = previewInvoiceFile({ db: store.db }, file.text, file.fileName);
+      if (!preview.ok) return ok({ kind: 'refused' as const, ...preview.error });
+      const previewId = newId('pre', random);
+      invoicePreviews.clear();
+      invoicePreviews.set(previewId, file);
+      return ok({ kind: 'preview' as const, previewId, preview: preview.value });
+    });
   /** The books and Google, for the sharing calls. */
   const sharing = async (): Promise<Result<SharingDeps, BridgeError>> => {
     const store = books.store();
@@ -567,6 +589,44 @@ export function createHandlers({
     },
     'sheets.readyFormulas': () =>
       ok(readyFormulas(clock.today()).map(({ name, what, formula }) => ({ name, what, formula }))),
+    'invoices.list': () => open((store) => ok(invoicesView({ db: store.db, clock }))),
+    'invoices.chooseAndPreview': async () => {
+      const path = await invoiceFiles.choose();
+      if (path === null) return ok({ kind: 'cancelled' as const });
+      const file = await invoiceFiles.read(path);
+      if (!file.ok) {
+        return ok({
+          kind: 'refused' as const,
+          field: 'file',
+          problem:
+            file.error === 'too-large'
+              ? 'is too large for an invoice file'
+              : file.error === 'empty'
+                ? 'is empty'
+                : 'could not be read',
+        });
+      }
+      return previewInvoices(file.value);
+    },
+    'invoices.commit': ({ previewId }) =>
+      open((store): Result<InvoiceCommitOutcome, BridgeError> => {
+        const file = invoicePreviews.get(previewId);
+        if (file === undefined) return ok({ kind: 'refused', reason: 'no-such-preview' });
+        invoicePreviews.delete(previewId);
+        const saved = commitInvoiceFile({ db: store.db, clock, random }, file.text);
+        if (!saved.ok) {
+          return ok({
+            kind: 'refused',
+            reason:
+              saved.error === 'not-set-up'
+                ? 'not-set-up'
+                : saved.error === 'nothing-new'
+                  ? 'nothing-new'
+                  : 'no-such-preview',
+          });
+        }
+        return ok({ kind: 'added', ...saved.value });
+      }),
     'changes.check': async () => ok(await checkSheets()),
     'changes.list': () => open((store) => ok(changesView({ db: store.db, clock, random }))),
     'changes.count': () => open((store) => ok({ count: waitingCount({ db: store.db }) })),

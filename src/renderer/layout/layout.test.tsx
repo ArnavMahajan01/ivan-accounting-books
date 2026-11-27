@@ -29,6 +29,8 @@ describe('routes', () => {
       'Accounts',
       'Reports',
       'Rules',
+      'Invoices',
+      'Contacts',
       'Shared sheets',
       'Accountant changes',
       'Settings',
@@ -53,7 +55,7 @@ describe('Sidebar', () => {
       />,
     );
     const nav = screen.getByRole('navigation', { name: 'Main' });
-    expect(nav.querySelectorAll('a')).toHaveLength(11);
+    expect(nav.querySelectorAll('a')).toHaveLength(13);
     expect(screen.getByRole('link', { name: 'Bank' }).getAttribute('aria-current')).toBe('page');
     expect(screen.getByRole('link', { name: 'Bank' }).getAttribute('href')).toBe('#/bank');
     expect(screen.getByRole('link', { name: /To review/ }).textContent).toContain('37');

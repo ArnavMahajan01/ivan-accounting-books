@@ -9,7 +9,7 @@
       "version": 1,
       "status": "issued",
       "issueDate": "2026-11-08",
-      "dueDate": "2026-11-22",
+      "dueDate": "2026-12-06",
       "customer": {
         "name": "Harbourview Developments",
         "email": "accounts@harbourview.example.com",
@@ -38,7 +38,7 @@
       "version": 1,
       "status": "issued",
       "issueDate": "2026-11-09",
-      "dueDate": "2026-11-23",
+      "dueDate": "2026-12-09",
       "customer": {
         "name": "Ellis Bathrooms",
         "email": null,
@@ -75,7 +75,7 @@
       "version": 1,
       "status": "issued",
       "issueDate": "2026-11-12",
-      "dueDate": "2026-11-26",
+      "dueDate": "2026-12-12",
       "customer": {
         "name": "Smith Renovations",
         "email": "office@smithreno.example.com",

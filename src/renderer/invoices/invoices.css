@@ -1,0 +1,47 @@
+/* Invoices from the Admin Dashboard (folder 10). */
+.invoices {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.invoices__bands {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-3);
+  margin: 0;
+}
+
+.invoices__band {
+  padding: var(--space-3) var(--space-4);
+}
+
+.invoices__band dt {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-label);
+}
+
+.invoices__band dd {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  margin: var(--space-1) 0 0;
+  font-size: var(--font-size-summary);
+  font-variant-numeric: tabular-nums;
+}
+
+.invoices__band dd span {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-label);
+}
+
+.invoice-status--overdue {
+  color: var(--color-error);
+  font-weight: var(--font-weight-medium);
+}
+
+.invoice-import__summary {
+  margin: 0 0 var(--space-3);
+  padding-inline-start: var(--space-4);
+  font-size: var(--font-size-label);
+}

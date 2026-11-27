@@ -6,7 +6,7 @@
 import { listBankAccounts } from '@data/bank-account-repository';
 import { getBusiness, setLockDate } from '@data/business-repository';
 import { lastReconciledDate } from '@data/reconcile-repository';
-import { linesWithTaxCode } from '@data/report-queries';
+import { basLines } from './bas-lines';
 import { listWaitingLines } from '@data/review-repository';
 import { basFigures } from '@domain/bas';
 import { isLocked } from '@domain/journal';
@@ -32,7 +32,7 @@ export function getQuarterClose(
   const inPeriod = (date: CalendarDate) =>
     compareDates(date, period.start) >= 0 && compareDates(date, period.end) <= 0;
   const bas = basFigures(
-    linesWithTaxCode(ctx.db, period.start, period.end).flatMap((l) =>
+    basLines(ctx, period.start, period.end).flatMap((l) =>
       l.treatment === null
         ? []
         : [{ accountType: l.accountType, treatment: l.treatment, amount: l.amount, gst: l.gst }],

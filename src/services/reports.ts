@@ -4,7 +4,8 @@
 import { listAccounts } from '@data/account-repository';
 import { sumLinesByAccount } from '@data/balance-queries';
 import { getBusiness } from '@data/business-repository';
-import { accountLines, linesWithTaxCode, type ReportLine } from '@data/report-queries';
+import { accountLines, type ReportLine } from '@data/report-queries';
+import { basLines } from './bas-lines';
 import { basContributions } from '@domain/bas-labels';
 import { basFigures } from '@domain/bas';
 import { isLocked } from '@domain/journal';
@@ -158,7 +159,7 @@ export function getReport(
   }
 
   if (request.report === 'bas') {
-    const lines = linesWithTaxCode(ctx.db, base.from, base.to).flatMap((l) =>
+    const lines = basLines(ctx, base.from, base.to).flatMap((l) =>
       l.treatment === null
         ? []
         : [{ accountType: l.accountType, treatment: l.treatment, amount: l.amount, gst: l.gst }],
@@ -166,8 +167,8 @@ export function getReport(
     const built = buildBasWorksheet(basFigures(lines), base);
     const basis =
       business.gstBasis === 'cash'
-        ? 'Cash basis, simpler BAS.'
-        : 'Accrual basis, simpler BAS. Invoices and bills arrive in a later version; until then the same lines are counted.';
+        ? 'Cash basis, simpler BAS. Invoices count when they are paid.'
+        : 'Accrual basis, simpler BAS. Invoices count on their own dates; bills arrive in a later version.';
     return ok({
       title,
       periodText: withDates(base),
@@ -239,7 +240,7 @@ export function getReportLines(ctx: TodayContext, drill: Drill): DrillView {
       accountId: drill.accountId,
     };
   }
-  const shown = linesWithTaxCode(ctx.db, drill.from, drill.to).flatMap((l) => {
+  const shown = basLines(ctx, drill.from, drill.to).flatMap((l) => {
     if (l.treatment === null) return [];
     const part = basContributions({
       accountType: l.accountType,

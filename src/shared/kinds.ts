@@ -54,6 +54,8 @@ export const AUDIT_KINDS = [
   'contact.remove',
   'contact.change',
   'contact.merge',
+  'invoice.add',
+  'invoice.replace',
   'rule.add',
   'rule.change',
   'rule.remove',
@@ -74,7 +76,7 @@ export type AuditKind = (typeof AUDIT_KINDS)[number];
  * The accounts the app posts to by itself (`account_role`): where GST goes, and where one side of a
  * transfer waits for the other. Code finds them by role, never by code or name.
  */
-export const ACCOUNT_ROLES = ['gst', 'transfers'] as const;
+export const ACCOUNT_ROLES = ['gst', 'transfers', 'receivables', 'sales'] as const;
 export type AccountRole = (typeof ACCOUNT_ROLES)[number];
 
 /** Where a journal entry came from. A later spec that adds a source adds its kind here and in the table's CHECK. */
@@ -124,6 +126,8 @@ export const ID_KINDS = [
   'lay',
   'shl',
   'chg',
+  'inv',
+  'inl',
 ] as const;
 export type IdKind = (typeof ID_KINDS)[number];
 

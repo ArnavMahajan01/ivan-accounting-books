@@ -39,7 +39,13 @@ export const CHART_TEMPLATE: readonly TemplateAccount[] = [
     defaultTax: 'N-T',
     role: 'transfers',
   },
-  { code: '1100', name: 'Accounts receivable', type: 'asset', defaultTax: 'N-T' },
+  {
+    code: '1100',
+    name: 'Accounts receivable',
+    type: 'asset',
+    defaultTax: 'N-T',
+    role: 'receivables',
+  },
   { code: '1200', name: 'Materials on hand', type: 'asset', defaultTax: 'N-T' },
   { code: '1300', name: 'Prepayments', type: 'asset', defaultTax: 'N-T' },
   { code: '1400', name: 'Plant and equipment', type: 'asset', defaultTax: 'GST' },
@@ -56,7 +62,7 @@ export const CHART_TEMPLATE: readonly TemplateAccount[] = [
   { code: '3100', name: 'Retained earnings', type: 'equity', defaultTax: 'N-T' },
   { code: '3200', name: 'Owner drawings', type: 'equity', defaultTax: 'N-T' },
 
-  { code: '4000', name: 'Sales', type: 'income', defaultTax: 'GST' },
+  { code: '4000', name: 'Sales', type: 'income', defaultTax: 'GST', role: 'sales' },
   { code: '4100', name: 'Other income', type: 'income', defaultTax: 'GST' },
   { code: '4200', name: 'Interest income', type: 'income', defaultTax: 'INP' },
 

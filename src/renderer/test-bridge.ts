@@ -9,6 +9,7 @@ import type { CalendarDate, Timestamp } from '@shared/dates';
 import { asCents } from '@shared/money';
 import { ok } from '@shared/result';
 import type { AccountantChangesView, PublishPreview, SharedPeopleView } from '@shared/sheets';
+import type { InvoicePreview, InvoiceRowView, InvoicesView } from '@shared/invoices';
 import type {
   AccountsView,
   BankAccountRow,
@@ -689,6 +690,94 @@ const BAS_SHEET = {
   request: { kind: 'report' as const, request: plainRequest('bas') },
 };
 
+const invoiceRow = (
+  number: string,
+  customer: string,
+  total: number,
+  gst: number,
+  status: InvoiceRowView['status'],
+  owing = total,
+): InvoiceRowView => ({
+  id: `inv_${number.toLowerCase().replace(/\W/g, '')}`,
+  kind: 'invoice',
+  number,
+  version: 1,
+  contactId: 'con_x',
+  customer,
+  issueDate: date('2026-11-10'),
+  dueDate: date('2026-11-24'),
+  total: asCents(total),
+  gst: asCents(gst),
+  owing: asCents(owing),
+  status,
+  hasPdf: false,
+});
+
+export const INVOICES: InvoicesView = {
+  rows: [
+    invoiceRow('INV-1044', 'K Patel', 231000, 21000, { kind: 'unpaid', due: date('2026-11-26') }),
+    invoiceRow(
+      'INV-1042',
+      'Smith Renovations',
+      495000,
+      45000,
+      { kind: 'paid', on: date('2026-11-15') },
+      0,
+    ),
+    invoiceRow('INV-1039', 'Coastal Body Corporate', 660000, 60000, { kind: 'overdue', days: 22 }),
+  ],
+  unpaid: { cents: asCents(231000), count: 1 },
+  overdue: { cents: asCents(660000), count: 1 },
+  paidLast30: { cents: asCents(495000), count: 1 },
+};
+
+export const INVOICE_PREVIEW: InvoicePreview = {
+  fileName: 'admin-dashboard-invoices-2026-11-22.json',
+  added: [
+    {
+      kind: 'invoice',
+      number: 'INV-1043',
+      version: 1,
+      customer: 'Smith Renovations',
+      newCustomer: false,
+      issueDate: date('2026-11-10'),
+      dueDate: date('2026-11-24'),
+      total: asCents(165000),
+      gst: asCents(15000),
+    },
+    {
+      kind: 'invoice',
+      number: 'INV-1044',
+      version: 1,
+      customer: 'K Patel',
+      newCustomer: true,
+      issueDate: date('2026-11-12'),
+      dueDate: date('2026-11-26'),
+      total: asCents(231000),
+      gst: asCents(21000),
+    },
+  ],
+  already: 1,
+  replaced: [
+    {
+      kind: 'invoice',
+      number: 'INV-1041',
+      version: 2,
+      customer: 'Foster Fitouts',
+      newCustomer: false,
+      issueDate: date('2026-11-01'),
+      dueDate: date('2026-11-15'),
+      total: asCents(330000),
+      gst: asCents(30000),
+      wasTotal: asCents(308000),
+    },
+  ],
+  refused: [],
+  quotes: 1,
+  total: asCents(396000),
+  gst: asCents(36000),
+};
+
 export const CHANGES: AccountantChangesView = {
   waiting: [
     {
@@ -934,6 +1023,15 @@ export function installBridge(overrides: Partial<BridgeApi> = {}): BridgeApi {
     'sheetPanel.open': vi.fn(() => Promise.resolve(ok({ result: 'failed' as const }))),
     'sheetPanel.move': vi.fn(() => Promise.resolve(ok({ moved: true as const }))),
     'sheetPanel.close': vi.fn(() => Promise.resolve(ok({ closed: true as const }))),
+    'invoices.list': vi.fn(() => Promise.resolve(ok(INVOICES))),
+    'invoices.chooseAndPreview': vi.fn(() =>
+      Promise.resolve(
+        ok({ kind: 'preview' as const, previewId: 'pre_inv', preview: INVOICE_PREVIEW }),
+      ),
+    ),
+    'invoices.commit': vi.fn(() =>
+      Promise.resolve(ok({ kind: 'added' as const, added: 3, replaced: 1 })),
+    ),
     'changes.check': vi.fn(() => Promise.resolve(ok({ added: 0, problem: null }))),
     'changes.list': vi.fn(() => Promise.resolve(ok(CHANGES))),
     'changes.count': vi.fn(() => Promise.resolve(ok({ count: CHANGES.waiting.length }))),

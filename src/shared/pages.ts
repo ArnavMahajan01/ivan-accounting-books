@@ -1,6 +1,5 @@
 // The app's pages, in sidebar order (context/ui-context.md, "Layout"). Listed once, here, because
 // the Mac menu in the main process and the sidebar in the screens must agree on them.
-// Invoices and Contacts (folder 10) join when their folder is built.
 
 export const PAGES = [
   { id: 'home', label: 'Home' },
@@ -10,6 +9,8 @@ export const PAGES = [
   { id: 'accounts', label: 'Accounts' },
   { id: 'reports', label: 'Reports' },
   { id: 'rules', label: 'Rules' },
+  { id: 'invoices', label: 'Invoices' },
+  { id: 'contacts', label: 'Contacts' },
   { id: 'shared-sheets', label: 'Shared sheets' },
   { id: 'accountant-changes', label: 'Accountant changes' },
   { id: 'settings', label: 'Settings' },

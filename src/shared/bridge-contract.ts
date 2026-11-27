@@ -4,6 +4,7 @@
 
 import { z } from 'zod';
 import type { ReportRequest, ReportView } from './reports';
+import type { InvoiceCommitOutcome, InvoicePreviewOutcome, InvoicesView } from './invoices';
 import {
   publishRequestSchema,
   type ConnectProblem,
@@ -355,6 +356,9 @@ export const bridgeContract = {
   'sheetPanel.open': { input: z.object({ linkId: idText('shl'), bounds: boundsSchema }).strict() },
   'sheetPanel.move': { input: z.object({ bounds: boundsSchema }).strict() },
   'sheetPanel.close': { input: noInput },
+  'invoices.list': { input: noInput },
+  'invoices.chooseAndPreview': { input: noInput },
+  'invoices.commit': { input: z.object({ previewId: idText('pre') }).strict() },
   'changes.check': { input: noInput },
   'changes.list': { input: noInput },
   'changes.count': { input: noInput },
@@ -470,6 +474,9 @@ export interface BridgeResults {
   'sheetPanel.open': { readonly result: 'opened' | 'failed' | 'off' };
   'sheetPanel.move': { readonly moved: true };
   'sheetPanel.close': { readonly closed: true };
+  'invoices.list': InvoicesView;
+  'invoices.chooseAndPreview': InvoicePreviewOutcome;
+  'invoices.commit': InvoiceCommitOutcome;
   'changes.check': ChangesCheck;
   'changes.list': AccountantChangesView;
   /** Waiting changes: the count beside Accountant changes in the sidebar. */
