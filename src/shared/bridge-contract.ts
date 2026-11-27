@@ -259,6 +259,29 @@ export const bridgeContract = {
       })
       .strict(),
   },
+  /** Matches a deposit to invoices it pays, with anything left over to an account (spec 129). */
+  'review.matchInvoices': {
+    input: z
+      .object({
+        lineId: idText('stl'),
+        invoices: z
+          .array(
+            z
+              .object({
+                number: z.string().min(1).max(40),
+                amount: z.number().int().positive().max(Number.MAX_SAFE_INTEGER),
+              })
+              .strict(),
+          )
+          .min(1)
+          .max(50),
+        leftover: z
+          .object({ accountId: idText('acc'), taxCodeId: idText('tax').nullable() })
+          .strict()
+          .nullable(),
+      })
+      .strict(),
+  },
   /** Takes back the last post: the lines it named. */
   'review.undo': {
     input: z.object({ lineIds: z.array(idText('stl')).min(1).max(REVIEW_BATCH_MAX) }).strict(),
@@ -421,6 +444,7 @@ export interface BridgeResults {
   'review.list': ReviewView;
   'review.post': PostOutcome;
   'review.split': PostOutcome;
+  'review.matchInvoices': PostOutcome;
   'review.undo': UndoPostOutcome;
   'review.savePayee': SavePayeeOutcome;
   /** Whether the save was taken back. False when it had already gone. */

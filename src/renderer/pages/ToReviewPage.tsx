@@ -26,7 +26,9 @@ import { ErrorMessage } from '../components/ErrorMessage';
 import { Table, type TableColumn } from '../components/Table';
 import { plural } from '../import/import-text';
 import { PageToolbar } from '../layout/PageToolbar';
+import { formatCents } from '@shared/money';
 import { SplitSheet, type SplitPartInput } from '../review/SplitSheet';
+import { InvoiceSplitSheet } from '../invoices/InvoiceSplitSheet';
 import { TransferSheet } from '../review/TransferSheet';
 import {
   REASON_TEXT,
@@ -105,7 +107,10 @@ export function ToReviewPage() {
   const [notice, setNotice] = useState<Notice | null>(null);
   const [busy, setBusy] = useState(false);
   const [offer, setOffer] = useState<{ lineId: string; words: string } | null>(null);
-  const [sheet, setSheet] = useState<{ kind: 'split' | 'transfer'; lineId: string } | null>(null);
+  const [sheet, setSheet] = useState<{
+    kind: 'split' | 'transfer' | 'invoices';
+    lineId: string;
+  } | null>(null);
   const accountInputs = useRef(new Map<string, HTMLInputElement>());
 
   const input = useMemo(
@@ -294,6 +299,36 @@ export function ToReviewPage() {
     }
   };
 
+  // A deposit paying invoices from the Admin Dashboard (spec 129).
+  const saveInvoices = async (
+    line: ReviewLineView,
+    invoices: readonly { number: string; amount: number }[],
+    leftover: { accountId: string; taxCodeId: string | null } | null,
+  ) => {
+    try {
+      const result = await bridge()['review.matchInvoices']({
+        lineId: line.id,
+        invoices: invoices.map((i) => ({ ...i })),
+        leftover,
+      });
+      if (!result.ok) return COULD_NOT;
+      if (result.value.failed.length > 0) return outcomeText(result.value);
+      setSheet(null);
+      report(result.value);
+      return null;
+    } catch {
+      return COULD_NOT;
+    }
+  };
+
+  /** The suggested invoice, when this deposit pays all or part of it. */
+  const invoiceFor = (line: ReviewLineView) => {
+    const first = line.invoices[0];
+    return first !== undefined && draftOf(line).mode === 'auto' && line.amount <= first.owing
+      ? first
+      : null;
+  };
+
   const saveTransfer = async (line: ReviewLineView, otherBankAccountId: string) => {
     try {
       const result = await bridge()['review.post']({
@@ -390,18 +425,33 @@ export function ToReviewPage() {
             key: 'post',
             header: '',
             fit: true,
-            cell: (line) => (
-              <Button
-                size="small"
-                disabled={busy}
-                aria-label={`Post ${line.description}`}
-                onClick={() => {
-                  postRow(line);
-                }}
-              >
-                {followsFound(line, draftOf(line)) === 'match' ? 'Match' : 'Post'}
-              </Button>
-            ),
+            cell: (line) => {
+              const invoice = invoiceFor(line);
+              return (
+                <Button
+                  size="small"
+                  disabled={busy}
+                  aria-label={
+                    invoice === null
+                      ? `Post ${line.description}`
+                      : `Match ${line.description} to ${invoice.number}`
+                  }
+                  onClick={() => {
+                    if (invoice === null) postRow(line);
+                    else
+                      void saveInvoices(
+                        line,
+                        [{ number: invoice.number, amount: line.amount }],
+                        null,
+                      );
+                  }}
+                >
+                  {invoice !== null || followsFound(line, draftOf(line)) === 'match'
+                    ? 'Match'
+                    : 'Post'}
+                </Button>
+              );
+            },
           },
         ];
 
@@ -422,6 +472,34 @@ export function ToReviewPage() {
         Choose an account instead
       </button>
     );
+    const invoice = line.invoices[0];
+    if (invoice !== undefined && draft.mode === 'auto') {
+      return (
+        <span className="review__account-cell">
+          <span className="review__found">
+            <span className="review__tag">Invoice</span> {invoice.number} · {invoice.customer}
+          </span>
+          <span className="review__why">
+            {invoice.because === 'number'
+              ? 'its number is in the description'
+              : 'owes exactly this amount'}
+            {invoice.owing === line.amount ? '' : `, ${formatCents(invoice.owing)} owed`}
+          </span>
+          <span>
+            <button
+              type="button"
+              className="review__link"
+              onClick={() => {
+                setSheet({ kind: 'invoices', lineId: line.id });
+              }}
+            >
+              Split across invoices…
+            </button>
+          </span>
+          {useAccount}
+        </span>
+      );
+    }
     if (found === 'match' && line.match !== null) {
       return (
         <span className="review__account-cell">
@@ -841,6 +919,16 @@ export function ToReviewPage() {
             setSheet(null);
           }}
           onSave={(parts) => saveSplit(sheetLine, parts)}
+        />
+      )}
+      {sheet !== null && sheetLine !== undefined && view !== null && sheet.kind === 'invoices' && (
+        <InvoiceSplitSheet
+          line={sheetLine}
+          view={view}
+          onCancel={() => {
+            setSheet(null);
+          }}
+          onSave={(invoices, leftover) => saveInvoices(sheetLine, invoices, leftover)}
         />
       )}
       {sheet !== null && sheetLine !== undefined && view !== null && sheet.kind === 'transfer' && (

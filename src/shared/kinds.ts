@@ -56,6 +56,7 @@ export const AUDIT_KINDS = [
   'contact.merge',
   'invoice.add',
   'invoice.replace',
+  'invoice.payment',
   'rule.add',
   'rule.change',
   'rule.remove',
@@ -128,6 +129,7 @@ export const ID_KINDS = [
   'chg',
   'inv',
   'inl',
+  'ipy',
 ] as const;
 export type IdKind = (typeof ID_KINDS)[number];
 

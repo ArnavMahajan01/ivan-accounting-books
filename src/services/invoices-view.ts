@@ -29,7 +29,7 @@ export function invoicesView(ctx: TodayContext, contactId: string | null = null)
   const today = ctx.clock.today();
   const all = listCurrentInvoices(ctx.db);
   const names = new Map(listContacts(ctx.db).map((c) => [c.id as string, c.name]));
-  const payments = paymentsByInvoice();
+  const payments = paymentsByInvoice(ctx);
   const credits = new Map<string, Cents>();
   for (const c of all) {
     if (c.kind === 'credit-note' && c.creditFor !== null) {

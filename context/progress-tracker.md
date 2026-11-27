@@ -39,6 +39,7 @@ Update this file whenever the current phase, the active spec or the implementati
 | W02 | [Wireframe Design Context](feature-specs/W-wireframes/W02-wireframe-design-context.md) | Written from the context files. No screenshots were supplied, so there are none to check |
 | W08 | [Wireframe: Invoices and Bills](feature-specs/W-wireframes/W08-wireframe-invoices-and-bills.md), if question 1 says so | W |
 | 029 | [Demo 1: The App Opens](feature-specs/02-demo-1-the-app-opens/029-demo-1.md), skipped while the ledger core and Demo 2 were built | 02 |
+| 129 | [Match a Deposit to Invoices](feature-specs/10-demo-8-contacts-and-invoices/129-match-payment.md) | Migration 0017, Match and Split across invoices in To review, part and over payments, undo, cash-basis GST when paid | Done | 2026-11-28 |
 | 128 | [Balances and Overdue](feature-specs/10-demo-8-contacts-and-invoices/128-customer-balances.md) | Owed after credits and payments, statuses in words, bands, Home's overdue job | Done | 2026-11-28 |
 | 127 | [Linked Folder](feature-specs/10-demo-8-contacts-and-invoices/127-linked-folder.md) | Settings card, the folder checked on open and every five minutes, Add to books, PDF; a double-version bug fixed | Done | 2026-11-28 |
 | 126 | [Import Invoices](feature-specs/10-demo-8-contacts-and-invoices/126-invoice-import.md) | Migration 0016, posting through the posting service, versions, credit notes, the Invoices page; cash-basis BAS leaves unpaid invoices out | Done | 2026-11-28 |

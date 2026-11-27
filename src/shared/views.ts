@@ -2,6 +2,7 @@
 // shapes of the results of the bridge functions, written down once here so both sides agree. They
 // hold only what a screen needs to show, never a database row.
 
+import type { InvoiceSuggestion } from './invoices';
 import type { CalendarDate, Timestamp } from './dates';
 import type { AccountType, BooksProblem, EntrySourceKind, TaxTreatment } from './kinds';
 import type { Cents } from './money';
@@ -396,6 +397,8 @@ export interface ReviewLineView {
     /** The entry's payee, or its memo. */
     readonly text: string;
   } | null;
+  /** Invoices this deposit may pay (spec 129). Empty for money out. */
+  readonly invoices: readonly InvoiceSuggestion[];
   /** The other side of a transfer, in another of his accounts (spec 073). */
   readonly transfer: {
     readonly lineId: string;

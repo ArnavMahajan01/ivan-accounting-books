@@ -8,6 +8,7 @@ import { invoiceEntryIds } from '@data/invoice-repository';
 import { linesWithTaxCode, type ReportLine } from '@data/report-queries';
 import type { CalendarDate } from '@shared/dates';
 import type { ReadContext } from './context';
+import { paymentBasLines } from './invoice-payments';
 
 export function basLines(ctx: ReadContext, from: CalendarDate, to: CalendarDate): ReportLine[] {
   const lines = linesWithTaxCode(ctx.db, from, to);
@@ -15,5 +16,5 @@ export function basLines(ctx: ReadContext, from: CalendarDate, to: CalendarDate)
   if (!cash) return lines;
   // Only invoices posted to accounts receivable wait: a sale paid straight into the bank is cash.
   const onCredit = invoiceEntryIds(ctx.db);
-  return lines.filter((l) => !onCredit.has(l.entryId));
+  return [...lines.filter((l) => !onCredit.has(l.entryId)), ...paymentBasLines(ctx, from, to)];
 }

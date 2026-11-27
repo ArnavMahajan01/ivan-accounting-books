@@ -6,6 +6,7 @@
 // Every line linked to a removed entry goes back to To review (both sides of a paired transfer),
 // and a line paired with one that goes back loses its pair, so it waits for its other side again.
 
+import { deletePaymentsForEntry } from '@data/invoice-payment-repository';
 import { getBusiness } from '@data/business-repository';
 import { getJournalEntry } from '@data/journal-queries';
 import { reconciledLineIds } from '@data/reconcile-repository';
@@ -65,6 +66,8 @@ export function undoPost(
     for (const entry of entries.values()) {
       const madeByPosting = entry.sourceKind === 'bank-line' && back.has(entry.sourceId ?? '');
       if (!madeByPosting) continue;
+      // A deposit matched to invoices (spec 129): the invoices are owed again.
+      deletePaymentsForEntry(ctx.db, entry.id);
       const removed = removeEntry(ctx, entry.id);
       // The lock and the entry were checked above, inside this transaction, so this cannot fail.
       if (!removed.ok) throw new Error(`Undo could not remove ${entry.id}: ${removed.error.code}`);

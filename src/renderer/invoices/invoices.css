@@ -72,3 +72,38 @@
   align-items: center;
   gap: var(--space-2);
 }
+
+.invoice-split {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-label);
+}
+
+.invoice-split th,
+.invoice-split td {
+  padding: var(--space-1) var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+  text-align: start;
+  font-weight: var(--font-weight-regular);
+}
+
+.invoice-split thead th {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-caption);
+}
+
+.invoice-split .invoice-split__n {
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+
+.invoice-split__amount {
+  width: 9em;
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+
+.invoice-split__left {
+  margin: var(--space-3) 0;
+  font-size: var(--font-size-label);
+}

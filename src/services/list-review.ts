@@ -7,6 +7,7 @@
 //   suggestion: an account from how similar lines were posted before (074).
 // From/To comes from the words saved for a contact (071), or else from the suggestion.
 
+import { suggestInvoices } from './invoice-payments';
 import { listAccounts } from '@data/account-repository';
 import { accountForRole } from '@data/account-role-repository';
 import { listBankAccounts } from '@data/bank-account-repository';
@@ -148,6 +149,7 @@ export function getReviewView(ctx: ReadContext, filters: ReviewFilters = {}): Re
                           : null,
                     },
             },
+      invoices: suggestInvoices(ctx, line.description, line.amount),
       match:
         entry === null
           ? null

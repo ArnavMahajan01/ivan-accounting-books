@@ -90,3 +90,11 @@ export type FolderCheck =
     }
   /** The folder is gone or cannot be read. */
   | { readonly kind: 'unreadable'; readonly folderName: string };
+
+/** An invoice a deposit may pay (spec 129): its number is in the description, or it owes exactly that. */
+export interface InvoiceSuggestion {
+  readonly number: string;
+  readonly customer: string;
+  readonly owing: Cents;
+  readonly because: 'number' | 'amount';
+}

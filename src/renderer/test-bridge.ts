@@ -379,6 +379,7 @@ export function reviewLine(over: Partial<ReviewLineView> = {}): ReviewLineView {
     payee: null,
     suggestion: null,
     match: null,
+    invoices: [],
     transfer: null,
     ...over,
   };
@@ -899,6 +900,9 @@ export function installBridge(overrides: Partial<BridgeApi> = {}): BridgeApi {
     ),
     'review.split': vi.fn((input: { lineId: string }) =>
       Promise.resolve(ok({ posted: [input.lineId], alsoPosted: [], failed: [] })),
+    ),
+    'review.matchInvoices': vi.fn(() =>
+      Promise.resolve(ok({ posted: ['stl_deposit'], alsoPosted: [], failed: [] })),
     ),
     'review.undo': vi.fn((input: { lineIds: readonly string[] }) =>
       Promise.resolve(ok({ kind: 'undone' as const, lines: input.lineIds.length })),

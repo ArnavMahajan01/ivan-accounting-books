@@ -69,6 +69,8 @@ import {
   setInvoiceFolder,
 } from '@services/invoice-folder';
 import { getInvoice } from '@data/invoice-repository';
+import { matchDeposit } from '@services/invoice-payments';
+import type { PostFailure, PostOutcome } from '@shared/views';
 import { basename, join } from 'node:path';
 import { newId } from '@shared/ids';
 import type { InvoiceCommitOutcome, InvoicePreviewOutcome } from '@shared/invoices';
@@ -357,6 +359,25 @@ export function createHandlers({
             ? { posted: [lineId], alsoPosted: [], failed: [] }
             : { posted: [], alsoPosted: [], failed: [{ lineId, reason: posted.error }] },
         );
+      }),
+    'review.matchInvoices': ({ lineId, invoices, leftover }) =>
+      open((store): Result<PostOutcome, BridgeError> => {
+        const matched = matchDeposit(
+          { db: store.db, clock, random },
+          {
+            lineId,
+            invoices: invoices.map((i) => ({ ...i, amount: asCents(i.amount) })),
+            leftover,
+          },
+        );
+        if (matched.ok) return ok({ posted: [lineId], alsoPosted: [], failed: [] });
+        const reason: PostFailure =
+          matched.error === 'more-than-owed' || matched.error === 'no-invoice'
+            ? 'no-longer-matches'
+            : matched.error === 'not-a-deposit' || matched.error === 'does-not-add-up'
+              ? 'invalid'
+              : matched.error;
+        return ok({ posted: [], alsoPosted: [], failed: [{ lineId, reason }] });
       }),
     'review.undo': ({ lineIds }) =>
       open((store) => {
