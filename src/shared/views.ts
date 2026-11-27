@@ -28,6 +28,7 @@ export const NEXT_STEP_IDS = [
   'back-up',
   'bas-due',
   'accountant-changes',
+  'invoices-overdue',
 ] as const;
 export type NextStepId = (typeof NEXT_STEP_IDS)[number];
 
@@ -56,7 +57,14 @@ export type NextStep =
       /** The quarter has ended, so the worksheet can be opened. */
       readonly ready: boolean;
     }
-  | { readonly id: 'accountant-changes'; readonly state: 'todo' | 'done'; readonly count: number };
+  | { readonly id: 'accountant-changes'; readonly state: 'todo' | 'done'; readonly count: number }
+  /** Invoices from the Admin Dashboard past their due date and not paid (spec 128). */
+  | {
+      readonly id: 'invoices-overdue';
+      readonly state: 'todo';
+      readonly count: number;
+      readonly cents: Cents;
+    };
 
 export interface HomeSummary {
   /** No entries yet: Home shows the getting-started list instead of numbers. */

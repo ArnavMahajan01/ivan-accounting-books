@@ -26,6 +26,7 @@ const base: NextStepInputs = {
   daysSinceBackup: 9,
   basPeriod: { label: 'Oct–Dec 2026', dueDate: d('2027-02-28'), ended: false },
   accountantChangesWaiting: 2,
+  overdueInvoices: { count: 0, cents: asCents(0) },
 };
 
 describe('nextSteps', () => {
@@ -126,5 +127,19 @@ describe('nextSteps', () => {
 
   it('counts an empty list as up to date', () => {
     expect(isUpToDate([])).toBe(true);
+  });
+});
+
+describe('overdue invoices (spec 128)', () => {
+  it('is a job while an invoice is overdue, and not shown at all otherwise', () => {
+    const only = {
+      ...base,
+      available: new Set<NextStepId>(['invoices-overdue']),
+      overdueInvoices: { count: 1, cents: asCents(660000) },
+    };
+    expect(nextSteps(only)).toEqual([
+      { id: 'invoices-overdue', state: 'todo', count: 1, cents: 660000 },
+    ]);
+    expect(nextSteps({ ...only, overdueInvoices: { count: 0, cents: asCents(0) } })).toEqual([]);
   });
 });

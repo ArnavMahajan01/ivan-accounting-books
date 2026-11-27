@@ -30,6 +30,8 @@ export interface NextStepInputs {
     readonly ended: boolean;
   } | null;
   readonly accountantChangesWaiting: number;
+  /** Invoices past their due date and not paid, and what they add up to (spec 128). */
+  readonly overdueInvoices: { readonly count: number; readonly cents: Cents };
 }
 
 /** A backup older than this many days is a job. */
@@ -72,6 +74,10 @@ export function nextSteps(input: NextStepInputs): NextStep[] {
       state: input.accountantChangesWaiting > 0 ? 'todo' : 'done',
       count: input.accountantChangesWaiting,
     });
+  }
+  // Shown only while something is overdue, so a business with no invoices sees no extra row.
+  if (has('invoices-overdue') && input.overdueInvoices.count > 0) {
+    steps.push({ id: 'invoices-overdue', state: 'todo', ...input.overdueInvoices });
   }
   return steps;
 }

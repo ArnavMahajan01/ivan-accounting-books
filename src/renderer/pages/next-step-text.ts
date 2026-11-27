@@ -67,6 +67,12 @@ export function describeStep(step: NextStep): StepText {
             detail: 'They wait for you to accept or reject them.',
             action: { label: 'Review changes', route: 'accountant-changes' },
           };
+    case 'invoices-overdue':
+      return {
+        title: `${plural(step.count, 'invoice', 'invoices')} overdue`,
+        detail: `${formatCents(step.cents)} is past its due date and not paid yet.`,
+        action: { label: 'See invoices', route: 'invoices' },
+      };
     default:
       return assertNever(step);
   }

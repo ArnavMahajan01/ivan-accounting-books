@@ -9,6 +9,7 @@ import { getBusiness } from '@data/business-repository';
 import { countJournalEntries } from '@data/journal-queries';
 import { summariseLinesToReview } from '@data/statement-repository';
 import { isUpToDate, nextSteps, type NextStepId } from '@domain/next-steps';
+import { invoicesView } from './invoices-view';
 import { basPeriodOf, financialYearOf } from '@domain/periods';
 import { compareDates } from '@shared/dates';
 import { addCents, asCents, negateCents, ZERO_CENTS } from '@shared/money';
@@ -20,7 +21,10 @@ import type { TodayContext } from './context';
  * The jobs the app can do today. Home shows only these. Each folder that builds a feature adds its
  * job here: review (folder 06), reconcile (07), BAS (08), accountant changes (09), back up (11).
  */
-export const AVAILABLE_NEXT_STEPS: ReadonlySet<NextStepId> = new Set<NextStepId>(['review-lines']);
+export const AVAILABLE_NEXT_STEPS: ReadonlySet<NextStepId> = new Set<NextStepId>([
+  'review-lines',
+  'invoices-overdue',
+]);
 
 export function getHomeSummary(ctx: TodayContext): HomeSummary {
   const today = ctx.clock.today();
@@ -69,6 +73,7 @@ export function getHomeSummary(ctx: TodayContext): HomeSummary {
     daysSinceBackup: null,
     basPeriod: null,
     accountantChangesWaiting: 0,
+    overdueInvoices: invoicesView(ctx).overdue,
   });
 
   return {
