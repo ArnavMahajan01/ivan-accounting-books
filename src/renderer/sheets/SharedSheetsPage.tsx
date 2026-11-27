@@ -4,7 +4,7 @@
 // the workbooks published but not shared. Who can see what is asked of Drive each time it opens.
 
 import { ExternalLink, Share2, SquareFunction } from 'lucide-react';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import type { ShareRole } from '@shared/kinds';
 import type { PublishedSheet, SharedPeopleView } from '@shared/sheets';
 import { bridge } from '../bridge';
@@ -20,6 +20,7 @@ import { routeHref } from '../routes';
 import { useGoogleState } from './google-state';
 import { PublishSheet } from './PublishSheet';
 import { ReadyFormulasSheet } from './ReadyFormulasSheet';
+import { SheetPanelView } from './SheetPanelView';
 import { ROLE_WORDS, SHARE_PROBLEMS, ShareSheet } from './ShareSheet';
 import './sheets.css';
 
@@ -46,6 +47,16 @@ export function SharedSheetsPage() {
   const [confirming, setConfirming] = useState<Confirming | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [problem, setProblem] = useState<string | null>(null);
+  // The real sheet inside the app, when he turned that on in Settings (spec 118).
+  const [panelOn, setPanelOn] = useState(false);
+  const [viewing, setViewing] = useState<{ linkId: string; title: string } | null>(null);
+
+  useEffect(() => {
+    const api = bridge();
+    void api['sheetPanel.getSetting']({}).then((result) => {
+      if (result.ok) setPanelOn(result.value.on);
+    });
+  }, []);
 
   const view = state.status === 'ready' ? state.value : null;
 
@@ -104,6 +115,18 @@ export function SharedSheetsPage() {
       Share…
     </Button>
   );
+
+  if (viewing !== null) {
+    return (
+      <SheetPanelView
+        linkId={viewing.linkId}
+        title={viewing.title}
+        onBack={() => {
+          setViewing(null);
+        }}
+      />
+    );
+  }
 
   return (
     <div className="shared">
@@ -191,6 +214,17 @@ export function SharedSheetsPage() {
                       </option>
                     ))}
                   </select>
+                  {panelOn && (
+                    <Button
+                      size="small"
+                      aria-label={`Open ${s.title} here`}
+                      onClick={() => {
+                        setViewing({ linkId: s.linkId, title: s.title });
+                      }}
+                    >
+                      Open here
+                    </Button>
+                  )}
                   <Button
                     size="small"
                     icon={ExternalLink}
@@ -236,10 +270,22 @@ export function SharedSheetsPage() {
                   <span className="shared__when">
                     {s.missing ? 'no longer in your Google Drive' : published(s.publishedAt)}
                   </span>
+                  {!s.missing && panelOn && (
+                    <Button
+                      size="small"
+                      aria-label={`Open ${s.title} here`}
+                      onClick={() => {
+                        setViewing({ linkId: s.linkId, title: s.title });
+                      }}
+                    >
+                      Open here
+                    </Button>
+                  )}
                   {!s.missing && (
                     <Button
                       size="small"
                       icon={ExternalLink}
+                      aria-label={`Open ${s.title} in Google Sheets`}
                       onClick={() => {
                         open(s.linkId);
                       }}

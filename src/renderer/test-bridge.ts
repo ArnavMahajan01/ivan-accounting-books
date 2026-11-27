@@ -927,6 +927,13 @@ export function installBridge(overrides: Partial<BridgeApi> = {}): BridgeApi {
       ),
     ),
     'app.copyText': vi.fn(() => Promise.resolve(ok({ copied: true }))),
+    'sheetPanel.getSetting': vi.fn(() => Promise.resolve(ok({ on: false }))),
+    'sheetPanel.setSetting': vi.fn((input: { on: boolean }) =>
+      Promise.resolve(ok({ on: input.on })),
+    ),
+    'sheetPanel.open': vi.fn(() => Promise.resolve(ok({ result: 'failed' as const }))),
+    'sheetPanel.move': vi.fn(() => Promise.resolve(ok({ moved: true as const }))),
+    'sheetPanel.close': vi.fn(() => Promise.resolve(ok({ closed: true as const }))),
     'changes.check': vi.fn(() => Promise.resolve(ok({ added: 0, problem: null }))),
     'changes.list': vi.fn(() => Promise.resolve(ok(CHANGES))),
     'changes.count': vi.fn(() => Promise.resolve(ok({ count: CHANGES.waiting.length }))),

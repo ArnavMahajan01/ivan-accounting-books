@@ -56,6 +56,12 @@ describe('publishing (specs 110, 112)', () => {
     expect(screen.getByRole('status').textContent).toContain('Published to a new workbook');
     await userEvent.click(screen.getByRole('button', { name: 'Open in Google Sheets' }));
     expect(api['sheets.open']).toHaveBeenCalledWith({ linkId: 'shl_pl' });
+    // Side by side (spec 119): opens it again in the browser and says how the Mac tiles windows.
+    await userEvent.click(screen.getByRole('button', { name: 'Open side by side' }));
+    expect(api['sheets.open']).toHaveBeenCalledTimes(2);
+    expect(screen.getByRole('dialog').textContent).toContain(
+      'choose Move & Resize, then Left & Right',
+    );
   });
 
   it('cannot publish while Google is not connected, and says where to connect', async () => {

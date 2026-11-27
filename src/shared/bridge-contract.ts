@@ -58,6 +58,15 @@ import {
 } from './views';
 
 const noInput = z.object({}).strict();
+/** Where the sheet panel sits in the window, in window points (spec 118). */
+const boundsSchema = z
+  .object({
+    x: z.number().int().min(0).max(20000),
+    y: z.number().int().min(0).max(20000),
+    width: z.number().int().min(1).max(20000),
+    height: z.number().int().min(1).max(20000),
+  })
+  .strict();
 const dateText = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
 const idText = (prefix: string) => z.string().regex(new RegExp(`^${prefix}_[0-9a-z]{1,40}$`));
 
@@ -341,6 +350,11 @@ export const bridgeContract = {
   },
   'sheets.unshareAll': { input: z.object({ email: z.string().min(3).max(254) }).strict() },
   'sheets.readyFormulas': { input: noInput },
+  'sheetPanel.getSetting': { input: noInput },
+  'sheetPanel.setSetting': { input: z.object({ on: z.boolean() }).strict() },
+  'sheetPanel.open': { input: z.object({ linkId: idText('shl'), bounds: boundsSchema }).strict() },
+  'sheetPanel.move': { input: z.object({ bounds: boundsSchema }).strict() },
+  'sheetPanel.close': { input: noInput },
   'changes.check': { input: noInput },
   'changes.list': { input: noInput },
   'changes.count': { input: noInput },
@@ -450,6 +464,12 @@ export interface BridgeResults {
     | { readonly kind: 'done'; readonly stopped: number }
     | { readonly kind: 'refused'; readonly reason: ShareRefusal };
   'sheets.readyFormulas': readonly ReadyFormulaView[];
+  'sheetPanel.getSetting': { readonly on: boolean };
+  'sheetPanel.setSetting': { readonly on: boolean };
+  /** `off`: the setting is off. `failed`: Google's page did not load; show the fallback. */
+  'sheetPanel.open': { readonly result: 'opened' | 'failed' | 'off' };
+  'sheetPanel.move': { readonly moved: true };
+  'sheetPanel.close': { readonly closed: true };
   'changes.check': ChangesCheck;
   'changes.list': AccountantChangesView;
   /** Waiting changes: the count beside Accountant changes in the sidebar. */

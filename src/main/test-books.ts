@@ -45,4 +45,10 @@ export const importDeps = {
   google: testGoogle(),
   clipboard: { writeText: () => undefined },
   checkSheets: () => Promise.resolve({ added: 0, problem: 'not-connected' as const }),
+  sheetPanel: {
+    open: () => Promise.resolve('failed' as const),
+    move: () => undefined,
+    close: () => undefined,
+    clearSession: () => Promise.resolve(),
+  },
 };

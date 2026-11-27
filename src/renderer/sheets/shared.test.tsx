@@ -139,3 +139,47 @@ describe('ready formulas (spec 113)', () => {
     expect(screen.getByRole('dialog').textContent).toContain('Copied "Change from last quarter"');
   });
 });
+
+describe('the Google Sheet inside the app (spec 118)', () => {
+  it('offers Open here only when turned on, and shows the fallback when Google refuses', async () => {
+    vi.stubGlobal(
+      'ResizeObserver',
+      class {
+        observe() {
+          return undefined;
+        }
+        disconnect() {
+          return undefined;
+        }
+      },
+    );
+    const api = installBridge({
+      'google.getStatus': connected,
+      'sheetPanel.getSetting': vi.fn(() => Promise.resolve(ok({ on: true }))),
+    });
+    await show();
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Open Transactions · Oct–Dec 2026 here' }),
+    );
+    await settle();
+    expect(api['sheetPanel.open']).toHaveBeenCalledWith(
+      expect.objectContaining({ linkId: 'shl_tx' }),
+    );
+    expect(screen.getByRole('status').textContent).toContain(
+      'The sheet could not open inside the app',
+    );
+    await userEvent.click(
+      screen.getAllByRole('button', { name: 'Open in Chrome' })[1] ?? document.body,
+    );
+    expect(api['sheets.open']).toHaveBeenCalledWith({ linkId: 'shl_tx' });
+    await userEvent.click(screen.getByRole('button', { name: 'Shared sheets' }));
+    expect(api['sheetPanel.close']).toHaveBeenCalled();
+    vi.unstubAllGlobals();
+  });
+
+  it('has no Open here while it is turned off', async () => {
+    installBridge({ 'google.getStatus': connected });
+    await show();
+    expect(screen.queryByRole('button', { name: /here$/ })).toBeNull();
+  });
+});

@@ -383,3 +383,54 @@
   font-size: var(--font-size-label);
   font-weight: var(--font-weight-medium);
 }
+
+/* The Google Sheet inside the app (spec 118): the main process draws the sheet over the area. */
+.sheet-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  height: calc(100vh - var(--space-7));
+}
+
+.sheet-panel__bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.sheet-panel__title {
+  flex: 1;
+  margin: 0;
+  font-size: var(--font-size-section);
+  font-weight: var(--font-weight-semibold);
+}
+
+.sheet-panel__area {
+  flex: 1;
+  min-height: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+}
+
+.sheet-panel__note {
+  margin: var(--space-4);
+  color: var(--color-text-secondary);
+}
+
+.sheet-panel__fallback {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-2);
+  max-width: 28rem;
+  margin: var(--space-7) auto;
+  text-align: center;
+}
+
+.sheet-panel__fallback p {
+  margin: 0;
+}
+
+.sheet-panel__fallback-title {
+  font-weight: var(--font-weight-semibold);
+}

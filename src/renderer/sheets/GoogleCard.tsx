@@ -2,7 +2,7 @@
 // not, in one line, with the one button that changes it. Connecting opens his web browser.
 
 import { Link2 } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { ConnectProblem } from '@shared/sheets';
 import { bridge } from '../bridge';
 import { Button } from '../components/Button';
@@ -27,6 +27,21 @@ export function GoogleCard() {
   const [waiting, setWaiting] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [confirming, setConfirming] = useState(false);
+  const [panelOn, setPanelOn] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const api = bridge();
+    void api['sheetPanel.getSetting']({}).then((result) => {
+      if (result.ok) setPanelOn(result.value.on);
+    });
+  }, []);
+
+  // Ticked at once; put back if it could not be saved.
+  const choosePanel = async (on: boolean) => {
+    setPanelOn(on);
+    const result = await bridge()['sheetPanel.setSetting']({ on });
+    setPanelOn(result.ok ? result.value.on : !on);
+  };
 
   const connect = async () => {
     setWaiting(true);
@@ -117,6 +132,19 @@ export function GoogleCard() {
           </Button>
         )}
       </div>
+      {panelOn !== null && status?.kind !== 'not-set-up' && (
+        <label className="settings-card__check">
+          <input
+            type="checkbox"
+            checked={panelOn}
+            onChange={(e) => void choosePanel(e.target.checked)}
+          />
+          <span>
+            Open sheets inside the app. If Google does not allow it there, the app says so and opens
+            Chrome instead.
+          </span>
+        </label>
+      )}
       {confirming && (
         <ConfirmDialog
           title="Disconnect Google?"

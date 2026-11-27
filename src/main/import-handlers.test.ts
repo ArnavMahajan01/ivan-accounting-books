@@ -51,6 +51,7 @@ function setup() {
     google: importDeps.google,
     clipboard: importDeps.clipboard,
     checkSheets: importDeps.checkSheets,
+    sheetPanel: importDeps.sheetPanel,
     onImport,
   });
   return { handlers, onImport };

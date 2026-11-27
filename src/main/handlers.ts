@@ -59,6 +59,8 @@ import {
 import { getReport, getReportLines } from '@services/reports';
 import type { ReportExports } from './report-exports';
 import type { GoogleAccess } from './google-setup';
+import type { SheetPanel } from './sheet-panel';
+import { setSheetPanelOn, sheetPanelOn } from '@services/sheet-panel-setting';
 import type { ChangesCheck, ConnectProblem, ShareOutcome, ShareRefusal } from '@shared/sheets';
 import {
   acceptChange,
@@ -150,6 +152,8 @@ export interface HandlerDeps {
   readonly clipboard: { writeText(text: string): void };
   /** Reads the sheets for the accountant's changes now (spec 116). */
   readonly checkSheets: () => Promise<ChangesCheck>;
+  /** The real Google Sheet in a panel inside the window (spec 118). */
+  readonly sheetPanel: Pick<SheetPanel, 'open' | 'move' | 'close' | 'clearSession'>;
   readonly books: BooksAccess;
   readonly clock: Clock;
   readonly random: RandomSource;
@@ -203,6 +207,7 @@ export function createHandlers({
   google,
   clipboard,
   checkSheets,
+  sheetPanel,
 }: HandlerDeps): BridgeHandlers {
   /** The books and Google, for the sharing calls. */
   const sharing = async (): Promise<Result<SharingDeps, BridgeError>> => {
@@ -477,7 +482,35 @@ export function createHandlers({
           : { kind: 'failed' as const, reason: connectProblem(connected.error) },
       );
     },
-    'google.disconnect': async () => ok({ outcome: await google.connection.disconnect() }),
+    'google.disconnect': async () => {
+      const outcome = await google.connection.disconnect();
+      // The panel's own Google sign-in goes too (spec 118).
+      await sheetPanel.clearSession();
+      return ok({ outcome });
+    },
+    'sheetPanel.getSetting': () => open((store) => ok({ on: sheetPanelOn({ db: store.db }) })),
+    'sheetPanel.setSetting': ({ on }) =>
+      open((store) => {
+        setSheetPanelOn({ db: store.db }, on);
+        if (!on) sheetPanel.close();
+        return ok({ on });
+      }),
+    'sheetPanel.open': async ({ linkId, bounds }) => {
+      const store = books.store();
+      if (!store.ok) return err(INTERNAL);
+      if (!sheetPanelOn({ db: store.value.db })) return ok({ result: 'off' as const });
+      const link = getSheetLink(store.value.db, linkId);
+      if (link === null) return ok({ result: 'failed' as const });
+      return ok({ result: await sheetPanel.open(sheetUrl(link.fileId), bounds) });
+    },
+    'sheetPanel.move': ({ bounds }) => {
+      sheetPanel.move(bounds);
+      return ok({ moved: true as const });
+    },
+    'sheetPanel.close': () => {
+      sheetPanel.close();
+      return ok({ closed: true as const });
+    },
     'sheets.publish': async ({ request, asNew }) => {
       const store = books.store();
       if (!store.ok) return err(INTERNAL);

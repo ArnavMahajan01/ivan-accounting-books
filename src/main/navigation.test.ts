@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { isAppUrl } from './navigation';
+import { isAppUrl, isGooglePageUrl } from './navigation';
 
 describe('isAppUrl', () => {
   it('allows only app://bundle in a built app', () => {
@@ -25,5 +25,21 @@ describe('isAppUrl', () => {
     expect(isAppUrl('https://localhost:5173/', dev)).toBe(false);
     expect(isAppUrl('http://localhost.evil.com:5173/', dev)).toBe(false);
     expect(isAppUrl('app://bundle/index.html', dev)).toBe(false);
+  });
+});
+
+describe('the sheet panel may go only to Google’s own pages (spec 118)', () => {
+  it('allows the sheet, Google sign-in and their files, over https', () => {
+    expect(isGooglePageUrl('https://docs.google.com/spreadsheets/d/abc/edit')).toBe(true);
+    expect(isGooglePageUrl('https://accounts.google.com/v3/signin')).toBe(true);
+    expect(isGooglePageUrl('https://ssl.gstatic.com/x.js')).toBe(true);
+  });
+
+  it('refuses anything else, and look-alikes', () => {
+    expect(isGooglePageUrl('http://docs.google.com/')).toBe(false);
+    expect(isGooglePageUrl('https://docs.google.com.evil.example/')).toBe(false);
+    expect(isGooglePageUrl('https://evilgoogle.com/')).toBe(false);
+    expect(isGooglePageUrl('app://bundle/index.html')).toBe(false);
+    expect(isGooglePageUrl('javascript:alert(1)')).toBe(false);
   });
 });

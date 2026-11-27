@@ -42,9 +42,10 @@ import {
   SELF_CHECK_FILE,
   type SelfCheckReport,
 } from './self-check';
-import { isAppUrl } from './navigation';
+import { isAppUrl, isGooglePageUrl } from './navigation';
 import { createGoogleAccess } from './google-setup';
 import { createSheetCheck } from './sheet-check';
+import { createSheetPanel } from './sheet-panel';
 import { loadEnv } from '@shared/env';
 
 // The name decides the data folder and the instance lock, so it is set before anything else.
@@ -90,6 +91,7 @@ const preloadPath = join(import.meta.dirname, '../preload/index.cjs');
 const packagedCsp = contentSecurityPolicy({ development: false });
 
 let mainWindow: BrowserWindow | null = null;
+const sheetPanel = createSheetPanel(() => mainWindow);
 
 /** Opens a books file and applies any new migrations. */
 function openBooksAt(path: string): Result<Store, OpenError> {
@@ -133,11 +135,14 @@ function denyAllPermissions(): void {
 
 function lockDownContents(): void {
   app.on('web-contents-created', (_event, contents) => {
+    // The sheet panel alone may also go to Google's own pages (spec 118).
+    const allowed = (url: string) =>
+      sheetPanel.isPanel(contents) ? isGooglePageUrl(url) : isAppUrl(url, devServerUrl);
     contents.on('will-navigate', (event, url) => {
-      if (!isAppUrl(url, devServerUrl)) event.preventDefault();
+      if (!allowed(url)) event.preventDefault();
     });
     contents.on('will-redirect', (event, url) => {
-      if (!isAppUrl(url, devServerUrl)) event.preventDefault();
+      if (!allowed(url)) event.preventDefault();
     });
     contents.on('will-frame-navigate', (event) => {
       if (!event.isMainFrame) event.preventDefault();
@@ -305,6 +310,7 @@ if (refusedFlags.length > 0) {
         google,
         clipboard,
         checkSheets: () => sheetCheck.run(),
+        sheetPanel,
         app,
         books,
         clock: systemClock,

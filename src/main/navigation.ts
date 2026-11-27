@@ -17,3 +17,18 @@ export function isAppUrl(candidate: string, devServerUrl: string | null): boolea
   }
   return url.protocol === `${APP_SCHEME}:` && url.host === APP_HOST;
 }
+
+/** Google's own pages: the sheet, its sign-in, and the files they load. https only. */
+export function isGooglePageUrl(candidate: string): boolean {
+  let url: URL;
+  try {
+    url = new URL(candidate);
+  } catch {
+    return false;
+  }
+  if (url.protocol !== 'https:') return false;
+  const host = url.hostname;
+  return ['google.com', 'gstatic.com', 'googleusercontent.com'].some(
+    (domain) => host === domain || host.endsWith(`.${domain}`),
+  );
+}

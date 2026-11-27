@@ -29,6 +29,7 @@ function forBridge(request: PublishRequest) {
     : { kind: 'transactions' as const, period: { ...request.period } };
 }
 import { SheetGrid } from './SheetGrid';
+import { SIDE_BY_SIDE_HOW, SideBySide } from './SideBySide';
 import './sheets.css';
 
 const REFUSED: Record<PublishRefusal, string> = {
@@ -70,6 +71,7 @@ export function PublishSheet({
   const [problem, setProblem] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [outcome, setOutcome] = useState<PublishOutcome | null>(null);
+  const [sideBySide, setSideBySide] = useState(false);
 
   useEffect(() => {
     let current = true;
@@ -112,6 +114,12 @@ export function PublishSheet({
         done !== null ? (
           <>
             <Button onClick={onClose}>Done</Button>
+            <SideBySide
+              linkId={done.linkId}
+              onOpen={() => {
+                setSideBySide(true);
+              }}
+            />
             <Button
               variant="main"
               icon={ExternalLink}
@@ -182,6 +190,7 @@ export function PublishSheet({
           )}
         </div>
       )}
+      {sideBySide && <p className="publish__line publish__line--note">{SIDE_BY_SIDE_HOW}</p>}
       {outcome?.kind === 'missing' && (
         <p role="status" className="publish__line">
           This workbook is no longer in your Google Drive. It may have been deleted. Publish it as a
