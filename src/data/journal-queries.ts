@@ -97,3 +97,14 @@ export function countUnbalancedEntries(db: Db): number {
     .get() as { n: number };
   return row.n;
 }
+
+/** The entries with a line naming the contact as payee, oldest first (spec 124). */
+export function entryIdsWithPayee(db: Db, contactId: string): string[] {
+  return db
+    .prepare(
+      `SELECT DISTINCT e.id FROM journal_entry e JOIN journal_line l ON l.entry_id = e.id
+       WHERE l.payee_id = ? ORDER BY e.entry_date, e.rowid`,
+    )
+    .all(contactId)
+    .map((row) => z.object({ id: z.string() }).parse(row).id);
+}

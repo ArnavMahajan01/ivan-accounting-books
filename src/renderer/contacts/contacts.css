@@ -149,3 +149,48 @@
   color: var(--color-brand);
   font-size: var(--font-size-label);
 }
+
+/* Contacts that look the same (spec 124; W08b, Option 5). */
+.contact-pairs {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+}
+
+.contact-pairs__heading {
+  margin: 0;
+  font-weight: var(--font-weight-semibold);
+}
+
+.contact-pairs__list {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.contact-pairs__list li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-3);
+}
+
+.contact-pairs__reason {
+  margin-inline-start: var(--space-2);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-label);
+}
+
+.contact-pairs__actions {
+  display: inline-flex;
+  gap: var(--space-2);
+}
+
+.contact-pairs__choice {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}

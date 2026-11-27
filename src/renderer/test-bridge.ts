@@ -9,7 +9,7 @@ import type { CalendarDate, Timestamp } from '@shared/dates';
 import { asCents } from '@shared/money';
 import { ok } from '@shared/result';
 import type { AccountantChangesView, PublishPreview, SharedPeopleView } from '@shared/sheets';
-import type { ContactPageView, ContactsView } from '@shared/contacts';
+import type { ContactPageView, ContactPairView, ContactsView } from '@shared/contacts';
 import type { InvoicePreview, InvoiceRowView, InvoicesView } from '@shared/invoices';
 import type {
   AccountsView,
@@ -772,6 +772,14 @@ export const CONTACTS: ContactsView = {
   ],
 };
 
+export const CONTACT_PAIRS: readonly ContactPairView[] = [
+  {
+    first: { id: 'con_bunnings', name: 'Bunnings' },
+    second: { id: 'con_bunningswarehouse', name: 'Bunnings Warehouse' },
+    reason: 'same-bank-words',
+  },
+];
+
 export const CONTACT_PAGE: ContactPageView = {
   contact: {
     id: 'con_smithrenovations',
@@ -1129,6 +1137,9 @@ export function installBridge(overrides: Partial<BridgeApi> = {}): BridgeApi {
     'contacts.list': vi.fn(() => Promise.resolve(ok(CONTACTS))),
     'contacts.get': vi.fn(() => Promise.resolve(ok(CONTACT_PAGE))),
     'contacts.add': vi.fn(() => Promise.resolve(ok({ kind: 'saved' as const, id: 'con_new' }))),
+    'contacts.pairs': vi.fn(() => Promise.resolve(ok(CONTACT_PAIRS))),
+    'contacts.merge': vi.fn(() => Promise.resolve(ok({ kind: 'merged' as const, moved: 3 }))),
+    'contacts.keepBoth': vi.fn(() => Promise.resolve(ok({ kind: 'kept' as const }))),
     'contacts.edit': vi.fn(() =>
       Promise.resolve(ok({ kind: 'saved' as const, id: 'con_smithrenovations' })),
     ),

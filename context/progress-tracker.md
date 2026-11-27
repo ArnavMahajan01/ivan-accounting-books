@@ -39,6 +39,7 @@ Update this file whenever the current phase, the active spec or the implementati
 | W02 | [Wireframe Design Context](feature-specs/W-wireframes/W02-wireframe-design-context.md) | Written from the context files. No screenshots were supplied, so there are none to check |
 | W08 | [Wireframe: Invoices and Bills](feature-specs/W-wireframes/W08-wireframe-invoices-and-bills.md), if question 1 says so | W |
 | 029 | [Demo 1: The App Opens](feature-specs/02-demo-1-the-app-opens/029-demo-1.md), skipped while the ledger core and Demo 2 were built | 02 |
+| 124 | [Merge Duplicate Contacts](feature-specs/10-demo-8-contacts-and-invoices/124-merge-contacts.md) | Pairs by ABN, bank words or similar names; Merge through the posting service, Keep both (migration 0018); locked transactions refuse | Done | 2026-11-28 |
 | 123 | [Contacts List and Contact Page](feature-specs/10-demo-8-contacts-and-invoices/123-contacts-screen.md) | Customers and Suppliers, search, Added from; contact page with owes, invoiced, paid and four tabs; summary panel from Invoices | Done | 2026-11-28 |
 | 129 | [Match a Deposit to Invoices](feature-specs/10-demo-8-contacts-and-invoices/129-match-payment.md) | Migration 0017, Match and Split across invoices in To review, part and over payments, undo, cash-basis GST when paid | Done | 2026-11-28 |
 | 128 | [Balances and Overdue](feature-specs/10-demo-8-contacts-and-invoices/128-customer-balances.md) | Owed after credits and payments, statuses in words, bands, Home's overdue job | Done | 2026-11-28 |
@@ -197,6 +198,7 @@ Things found during work that are not part of the current spec. Each has an owne
 
 | Item | Found in | Due before | Status |
 |---|---|---|---|
+| Merging refuses to merge away a contact with transactions in a locked quarter (a locked entry cannot change, invariant 4); keeping that one's name works. Decide whether that is right for the client | 124 | Demo 8 | Open, for the author |
 | A contact's summary opens from a customer's name on the Invoices page only. The spec says "anywhere": Transactions' payee and To review's From/To are row clicks or fields today. Decide where else it should open | 123 | Demo 8 | Open, for the author |
 | Transactions labels an imported invoice's entry (`sourceKind` invoice, posted to accounts receivable) "Invoice payment", the label the sample's cash receipts use. Imported invoices should read "Invoice" | 126 | Demo 8 | Open |
 | Home's "GST owing" reads the GST account, so on the cash basis it counts an unpaid invoice's GST from the invoice date, while the BAS counts it when paid. Decide whether Home should show the BAS figure | 126 | Demo 8 | Open, for the author |

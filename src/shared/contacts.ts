@@ -77,3 +77,18 @@ export type ContactSaveOutcome =
       readonly kind: 'refused';
       readonly reason: 'empty-name' | 'name-in-use' | 'bad-email' | 'bad-abn' | 'not-found';
     };
+
+/** Why two contacts look the same (spec 124), strongest first. */
+export type ContactPairReason = 'same-abn' | 'same-bank-words' | 'similar-names';
+
+/** Two contacts that look like one, offered for merging. */
+export interface ContactPairView {
+  readonly first: { readonly id: string; readonly name: string };
+  readonly second: { readonly id: string; readonly name: string };
+  readonly reason: ContactPairReason;
+}
+
+export type ContactMergeOutcome =
+  | { readonly kind: 'merged'; readonly moved: number }
+  | { readonly kind: 'kept' }
+  | { readonly kind: 'refused'; readonly reason: 'not-found' | 'same-contact' | 'locked' };

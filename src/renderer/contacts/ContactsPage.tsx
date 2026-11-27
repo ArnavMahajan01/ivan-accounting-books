@@ -5,7 +5,7 @@
 
 import { Plus, Search, Users } from 'lucide-react';
 import { useMemo, useState } from 'react';
-import type { ContactListRow, ContactsView } from '@shared/contacts';
+import type { ContactListRow, ContactPairView, ContactsView } from '@shared/contacts';
 import { bridge } from '../bridge';
 import { Amount } from '../components/Amount';
 import { Button } from '../components/Button';
@@ -18,15 +18,18 @@ import { PageToolbar } from '../layout/PageToolbar';
 import { useBridgeQuery } from '../pages/use-bridge';
 import { useHash } from '../use-route';
 import { addedText, contactHref, contactIdFromHash } from './contact-text';
+import { ContactPairs } from './ContactPairs';
 import { ContactScreen } from './ContactScreen';
 import { ContactSheet } from './ContactSheet';
 import '../invoices/invoices.css';
 import '../review/review.css';
+import '../rules/rules.css';
 import './contacts.css';
 
 type Show = 'customers' | 'suppliers';
 
 const loadContacts = () => bridge()['contacts.list']({});
+const loadPairs = () => bridge()['contacts.pairs']({});
 
 const nameColumn: TableColumn<ContactListRow> = {
   key: 'name',
@@ -105,6 +108,8 @@ function ContactsList() {
   const [show, setShow] = useState<Show>('customers');
   const [search, setSearch] = useState('');
   const [adding, setAdding] = useState(false);
+  const [notice, setNotice] = useState<string | null>(null);
+  const pairs = useBridgeQuery<readonly ContactPairView[]>(loadPairs, String(version)).state;
   const view = state.status === 'ready' ? state.value : null;
 
   const counts = useMemo(
@@ -138,6 +143,20 @@ function ContactsList() {
           </Button>
         }
       />
+      {notice !== null && (
+        <p className="contact__notice" role="status">
+          {notice}
+        </p>
+      )}
+      {pairs.status === 'ready' && (
+        <ContactPairs
+          pairs={pairs.value}
+          onChanged={(text) => {
+            setNotice(text);
+            setVersion((v) => v + 1);
+          }}
+        />
+      )}
       {state.status === 'loading' && <p aria-busy="true">Reading your contacts…</p>}
       {state.status === 'failed' && <ErrorMessage message="Your contacts could not be read." />}
       {view !== null && view.rows.length === 0 && (

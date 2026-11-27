@@ -65,6 +65,7 @@ import { commitInvoiceFile, previewInvoiceFile } from '@services/invoice-import'
 import { invoicesView } from '@services/invoices-view';
 import { contactPage, contactsView } from '@services/contacts-view';
 import { addContactByHand, editContact } from '@services/contacts';
+import { contactPairs, keepBoth, mergeContacts } from '@services/merge-contacts';
 import {
   linkedInvoiceFolder,
   mergeExchangeFiles,
@@ -640,6 +641,21 @@ export function createHandlers({
       open((store) => {
         const edited = editContact({ db: store.db, clock, random }, id, input);
         return ok(edited.ok ? { kind: 'saved', id } : { kind: 'refused', reason: edited.error });
+      }),
+    'contacts.pairs': () => open((store) => ok(contactPairs({ db: store.db }))),
+    'contacts.merge': ({ keepId, mergeId }) =>
+      open((store) => {
+        const merged = mergeContacts({ db: store.db, clock, random }, keepId, mergeId);
+        return ok(
+          merged.ok
+            ? { kind: 'merged', moved: merged.value.moved }
+            : { kind: 'refused', reason: merged.error },
+        );
+      }),
+    'contacts.keepBoth': ({ firstId, secondId }) =>
+      open((store) => {
+        const kept = keepBoth({ db: store.db, clock, random }, firstId, secondId);
+        return ok(kept.ok ? { kind: 'kept' } : { kind: 'refused', reason: kept.error });
       }),
     'invoices.chooseAndPreview': async () => {
       const path = await invoiceFiles.choose();

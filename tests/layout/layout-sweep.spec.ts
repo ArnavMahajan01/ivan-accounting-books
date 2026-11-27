@@ -112,6 +112,12 @@ test.beforeAll(async () => {
   await page.getByRole('button', { name: 'Import file' }).click();
   await page.locator('[role="dialog"] .button--main').click();
   await page.getByRole('dialog').waitFor({ state: 'detached' });
+  // A near copy of a sample supplier, so Contacts offers a pair to merge (spec 124).
+  await go(page, '#/contacts');
+  await page.getByRole('button', { name: 'New contact' }).click();
+  await page.getByRole('dialog').getByRole('textbox', { name: 'Name' }).fill('Timberlink Supplies');
+  await page.getByRole('dialog').getByRole('button', { name: 'Save' }).click();
+  await page.getByRole('dialog').waitFor({ state: 'detached' });
   // The sweep's own Import file, on the Bank page, opens the bank file again.
   await app.evaluate(
     ({ dialog }, path) => {
@@ -187,7 +193,13 @@ test('no page, sheet or panel breaks at any window size', async () => {
     await page.keyboard.press('Escape');
     await page.getByRole('dialog').waitFor({ state: 'detached' });
 
-    // Folder 10: a contact's page, and a customer's summary beside the invoices.
+    // Folder 10: merging a pair, a contact's page, and a customer's summary beside the invoices.
+    await go(page, '#/contacts');
+    await page.getByRole('button', { name: /^Merge Timberlink/ }).click();
+    await page.getByRole('dialog').waitFor();
+    problems.push(...(await problemsOn(page, 'merge-sheet', size)));
+    await page.keyboard.press('Escape');
+    await page.getByRole('dialog').waitFor({ state: 'detached' });
     await go(page, '#/contacts');
     await page.getByRole('link', { name: 'Smith Renovations' }).click();
     await page.locator('h1', { hasText: 'Smith Renovations' }).waitFor();

@@ -25,7 +25,13 @@ import {
   type ShareRefusal,
 } from './sheets';
 import { reportRequestSchema } from './report-request-schema';
-import type { ContactPageView, ContactSaveOutcome, ContactsView } from './contacts';
+import type {
+  ContactMergeOutcome,
+  ContactPageView,
+  ContactPairView,
+  ContactSaveOutcome,
+  ContactsView,
+} from './contacts';
 import {
   ACCOUNT_TYPES,
   CONTACT_KINDS,
@@ -415,6 +421,13 @@ export const bridgeContract = {
   'contacts.get': { input: z.object({ id: idText('con') }).strict() },
   'contacts.add': { input: contactInputSchema },
   'contacts.edit': { input: contactInputSchema.extend({ id: idText('con') }).strict() },
+  'contacts.pairs': { input: noInput },
+  'contacts.merge': {
+    input: z.object({ keepId: idText('con'), mergeId: idText('con') }).strict(),
+  },
+  'contacts.keepBoth': {
+    input: z.object({ firstId: idText('con'), secondId: idText('con') }).strict(),
+  },
   'changes.check': { input: noInput },
   'changes.list': { input: noInput },
   'changes.count': { input: noInput },
@@ -545,6 +558,9 @@ export interface BridgeResults {
   'contacts.get': ContactPageView | null;
   'contacts.add': ContactSaveOutcome;
   'contacts.edit': ContactSaveOutcome;
+  'contacts.pairs': readonly ContactPairView[];
+  'contacts.merge': ContactMergeOutcome;
+  'contacts.keepBoth': ContactMergeOutcome;
   'changes.check': ChangesCheck;
   'changes.list': AccountantChangesView;
   /** Waiting changes: the count beside Accountant changes in the sidebar. */

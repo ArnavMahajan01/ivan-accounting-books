@@ -102,3 +102,36 @@ export function updateContact(db: Db, contact: Contact): void {
     contact.id,
   );
 }
+
+/** The pairs he chose to keep apart (spec 124), each as its two ids in order. */
+export function listKeptPairs(db: Db): [string, string][] {
+  return db
+    .prepare('SELECT first_id, second_id FROM contact_pair_kept')
+    .all()
+    .map((row) => {
+      const r = z.object({ first_id: z.string(), second_id: z.string() }).parse(row);
+      return [r.first_id, r.second_id];
+    });
+}
+
+export function keepPair(db: Db, a: string, b: string, at: string): void {
+  const [first, second] = a < b ? [a, b] : [b, a];
+  db.prepare(
+    'INSERT OR IGNORE INTO contact_pair_kept (first_id, second_id, created_at) VALUES (?, ?, ?)',
+  ).run(first, second, at);
+}
+
+/**
+ * Points everything outside the journal from one contact to another, then removes the first: its
+ * saved bank words, bank rules and invoices (spec 124). The journal's lines are moved through the
+ * posting service first, so none name it any more.
+ */
+export function moveContactAndRemove(db: Db, fromId: string, toId: string): void {
+  db.prepare(`DELETE FROM contact_pair_kept WHERE first_id = @from OR second_id = @from`).run({
+    from: fromId,
+  });
+  db.prepare('UPDATE contact_match SET contact_id = ? WHERE contact_id = ?').run(toId, fromId);
+  db.prepare('UPDATE rule SET payee_id = ? WHERE payee_id = ?').run(toId, fromId);
+  db.prepare('UPDATE invoice SET contact_id = ? WHERE contact_id = ?').run(toId, fromId);
+  db.prepare('DELETE FROM contact WHERE id = ?').run(fromId);
+}

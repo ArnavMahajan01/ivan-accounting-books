@@ -91,6 +91,68 @@ describe('the contacts list (spec 123)', () => {
   });
 });
 
+describe('tidying duplicates (spec 124)', () => {
+  it('offers a pair with why, and merges it after asking which name to keep', async () => {
+    const api = installBridge();
+    await show();
+    const pairs = screen.getByRole('region', { name: 'Contacts that look the same' });
+    expect(pairs.textContent).toContain('1 pair looks like the same contact.');
+    expect(pairs.textContent).toContain('“Bunnings” and “Bunnings Warehouse”same bank description');
+    await userEvent.click(
+      within(pairs).getByRole('button', { name: 'Merge Bunnings and Bunnings Warehouse' }),
+    );
+    const sheet = screen.getByRole('dialog', { name: 'Merge Bunnings and Bunnings Warehouse' });
+    expect(api['contacts.merge']).not.toHaveBeenCalled();
+    await userEvent.click(within(sheet).getByRole('radio', { name: 'Bunnings Warehouse' }));
+    expect(sheet.textContent).toContain(
+      'saved bank description of Bunnings moves to Bunnings Warehouse',
+    );
+    await userEvent.click(within(sheet).getByRole('button', { name: 'Merge' }));
+    await settle();
+    expect(api['contacts.merge']).toHaveBeenCalledWith({
+      keepId: 'con_bunningswarehouse',
+      mergeId: 'con_bunnings',
+    });
+    expect(screen.getByRole('status').textContent).toBe(
+      'Merged Bunnings into Bunnings Warehouse. 3 transactions moved.',
+    );
+    expect(api['contacts.list']).toHaveBeenCalledTimes(2);
+  });
+
+  it('keeps both, and says why a merge was refused', async () => {
+    const api = installBridge({
+      'contacts.merge': vi.fn(() =>
+        Promise.resolve(ok({ kind: 'refused' as const, reason: 'locked' as const })),
+      ),
+    });
+    await show();
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Keep Bunnings and Bunnings Warehouse apart' }),
+    );
+    await settle();
+    expect(api['contacts.keepBoth']).toHaveBeenCalledWith({
+      firstId: 'con_bunnings',
+      secondId: 'con_bunningswarehouse',
+    });
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Merge Bunnings and Bunnings Warehouse' }),
+    );
+    await userEvent.click(
+      within(screen.getByRole('dialog')).getByRole('button', { name: 'Merge' }),
+    );
+    await settle();
+    expect(screen.getByRole('status').textContent).toContain(
+      'Bunnings Warehouse has transactions in a locked quarter',
+    );
+  });
+
+  it('shows nothing when no pairs look the same', async () => {
+    installBridge({ 'contacts.pairs': vi.fn(() => Promise.resolve(ok([]))) });
+    await show();
+    expect(screen.queryByRole('region', { name: 'Contacts that look the same' })).toBeNull();
+  });
+});
+
 describe('a contact’s page (spec 123)', () => {
   beforeEach(() => {
     window.location.hash = '#/contacts/con_smithrenovations';
