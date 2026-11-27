@@ -8,7 +8,7 @@ import type { Rule } from '@shared/rule-types';
 import type { CalendarDate, Timestamp } from '@shared/dates';
 import { asCents } from '@shared/money';
 import { ok } from '@shared/result';
-import type { PublishPreview, SharedPeopleView } from '@shared/sheets';
+import type { AccountantChangesView, PublishPreview, SharedPeopleView } from '@shared/sheets';
 import type {
   AccountsView,
   BankAccountRow,
@@ -689,6 +689,65 @@ const BAS_SHEET = {
   request: { kind: 'report' as const, request: plainRequest('bas') },
 };
 
+export const CHANGES: AccountantChangesView = {
+  waiting: [
+    {
+      id: 'chg_one',
+      linkId: 'shl_tx',
+      sheetTitle: 'Transactions · Oct–Dec 2026',
+      line: { date: date('2026-10-15'), description: 'BUNNINGS 4532', amount: asCents(-38910) },
+      sheetRow: 18,
+      field: 'account',
+      was: 'Materials and supplies',
+      now: 'Tools and small equipment',
+      by: 'accountant@example.com',
+      seenAt: '2026-11-20T01:00:00.000Z',
+      status: 'waiting',
+      decidedAt: null,
+      effect: [
+        { account: 'Materials and supplies', cents: asCents(-35373) },
+        { account: 'Tools and small equipment', cents: asCents(35373) },
+      ],
+      blocked: null,
+    },
+    {
+      id: 'chg_two',
+      linkId: 'shl_tx',
+      sheetTitle: 'Transactions · Oct–Dec 2026',
+      line: { date: date('2026-10-30'), description: 'ATM WITHDRAWAL', amount: asCents(-20000) },
+      sheetRow: 33,
+      field: 'account',
+      was: 'Office supplies',
+      now: 'Drawings',
+      by: 'accountant@example.com',
+      seenAt: '2026-11-20T01:00:00.000Z',
+      status: 'waiting',
+      decidedAt: null,
+      effect: null,
+      blocked: 'not-recognised',
+    },
+  ],
+  done: [
+    {
+      id: 'chg_old',
+      linkId: 'shl_tx',
+      sheetTitle: 'Transactions · Oct–Dec 2026',
+      line: { date: date('2026-10-12'), description: 'TELSTRA BUSINESS', amount: asCents(-15950) },
+      sheetRow: 9,
+      field: 'gst',
+      was: 'FRE',
+      now: 'GST',
+      by: 'accountant@example.com',
+      seenAt: '2026-11-12T01:00:00.000Z',
+      status: 'accepted',
+      decidedAt: '2026-11-12T02:00:00.000Z',
+      effect: null,
+      blocked: null,
+    },
+  ],
+  lockDate: null,
+};
+
 export const PEOPLE: SharedPeopleView = {
   sheets: [PL_SHEET, TX_SHEET, BAS_SHEET],
   people: [
@@ -868,6 +927,11 @@ export function installBridge(overrides: Partial<BridgeApi> = {}): BridgeApi {
       ),
     ),
     'app.copyText': vi.fn(() => Promise.resolve(ok({ copied: true }))),
+    'changes.check': vi.fn(() => Promise.resolve(ok({ added: 0, problem: null }))),
+    'changes.list': vi.fn(() => Promise.resolve(ok(CHANGES))),
+    'changes.count': vi.fn(() => Promise.resolve(ok({ count: CHANGES.waiting.length }))),
+    'changes.accept': vi.fn(() => Promise.resolve(ok({ kind: 'done' as const }))),
+    'changes.reject': vi.fn(() => Promise.resolve(ok({ kind: 'done' as const }))),
     'sheets.preview': vi.fn(() =>
       Promise.resolve(ok({ kind: 'preview' as const, preview: PREVIEW })),
     ),

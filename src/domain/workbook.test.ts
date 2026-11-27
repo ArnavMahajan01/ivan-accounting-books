@@ -1,6 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import { asCents } from '@shared/money';
-import { a1Range, columnLetters, planWorkbook, type AppTab, type SheetCell } from './workbook';
+import {
+  a1Range,
+  blockA1,
+  columnLetters,
+  planWorkbook,
+  type AppTab,
+  type SheetCell,
+} from './workbook';
 
 const text = (t: string): SheetCell => ({ kind: 'text', text: t });
 const amount = (c: number): SheetCell => ({ kind: 'amount', cents: asCents(c) });
@@ -140,5 +147,6 @@ describe('cell formats and ranges', () => {
       'ZZ',
     ]);
     expect(a1Range("Sam's tab", 2, 5, 1)).toBe("'Sam''s tab'!A2:B5");
+    expect(blockA1('Transactions', 4, 5, 7, 89)).toBe("'Transactions'!E6:H90");
   });
 });

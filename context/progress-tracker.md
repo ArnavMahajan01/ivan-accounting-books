@@ -38,6 +38,8 @@ Update this file whenever the current phase, the active spec or the implementati
 | W02 | [Wireframe Design Context](feature-specs/W-wireframes/W02-wireframe-design-context.md) | Written from the context files. No screenshots were supplied, so there are none to check |
 | W08 | [Wireframe: Invoices and Bills](feature-specs/W-wireframes/W08-wireframe-invoices-and-bills.md), if question 1 says so | W |
 | 029 | [Demo 1: The App Opens](feature-specs/02-demo-1-the-app-opens/029-demo-1.md), skipped while the ledger core and Demo 2 were built | 02 |
+| 117 | [Accountant Changes Screen](feature-specs/09-demo-7-google-sheets/117-changes-screen.md) | Was and now, what accepting does, Accept through the posting service, Reject, Done | Done | 2026-11-27 |
+| 116 | [Read Back Changes](feature-specs/09-demo-7-google-sheets/116-read-back.md) | Migration 0014, the two-minute check, proposals, sidebar count | Implemented, real-Google check waits for 106 | 2026-11-27 |
 | 115 | [Shared Sheets by Person](feature-specs/09-demo-7-google-sheets/115-shared-screen.md) | People with their sheets and roles, change and stop, Only you | Implemented, real-Google check waits for 106 | 2026-11-27 |
 | 114 | [Share a Workbook](feature-specs/09-demo-7-google-sheets/114-share-workbook.md) | Email and role, Check before sharing, one named person only | Implemented, real-Google check waits for 106 | 2026-11-27 |
 | 113 | [Ready Formulas](feature-specs/09-demo-7-google-sheets/113-ready-formulas.md) | Six formulas as data, the tab in every workbook, Copy in the app; BAS due dates | Implemented, real-sheet results wait for 106 | 2026-11-27 |

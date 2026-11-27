@@ -50,6 +50,7 @@ function setup() {
     exports: importDeps.exports,
     google: importDeps.google,
     clipboard: importDeps.clipboard,
+    checkSheets: importDeps.checkSheets,
     onImport,
   });
   return { handlers, onImport };

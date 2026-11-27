@@ -1,7 +1,5 @@
-import { UserCheck } from 'lucide-react';
 import { assertNever } from '@shared/kinds';
 import type { RouteId } from '../routes';
-import { EmptyPage } from './EmptyPage';
 import { AccountsPage } from './AccountsPage';
 import { BankPage } from './BankPage';
 import { HelpPage } from './HelpPage';
@@ -12,6 +10,7 @@ import { RulesPage } from './RulesPage';
 import { ToReviewPage } from './ToReviewPage';
 import { TransactionsPage } from './TransactionsPage';
 import { SharedSheetsPage } from '../sheets/SharedSheetsPage';
+import { AccountantChangesPage } from '../sheets/AccountantChangesPage';
 
 /** The page for each route. Pages not built yet say what they will hold. */
 export function Page({ route }: { readonly route: RouteId }) {
@@ -33,13 +32,7 @@ export function Page({ route }: { readonly route: RouteId }) {
     case 'shared-sheets':
       return <SharedSheetsPage />;
     case 'accountant-changes':
-      return (
-        <EmptyPage
-          title="Accountant changes"
-          icon={UserCheck}
-          message="No changes waiting. Changes your accountant makes in a shared sheet wait here for you to accept or reject."
-        />
-      );
+      return <AccountantChangesPage />;
     case 'settings':
       return <SettingsPage />;
     case 'help':

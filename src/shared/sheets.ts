@@ -2,7 +2,9 @@
 
 import { z } from 'zod';
 import { reportRequestSchema } from './report-request-schema';
+import type { CalendarDate } from './dates';
 import type { ShareRole } from './kinds';
+import type { Cents } from './money';
 import { PERIOD_CHOICES, type ReportPeriod, type ReportRequest } from './reports';
 
 /** What a workbook can hold: one of the reports, or the transaction list for a period. */
@@ -159,4 +161,57 @@ export interface ReadyFormulaView {
   readonly name: string;
   readonly what: string;
   readonly formula: string;
+}
+
+/** Why an accountant's change cannot be accepted, in the words the screen uses. */
+export type ChangeBlock =
+  /** The account or GST code he typed is not one in the books. */
+  | 'not-recognised'
+  /** The line is in a period that is locked. */
+  | 'locked'
+  /** The line went to more than one account, or none: change it in Transactions instead. */
+  | 'not-simple'
+  /** The line is no longer in the books. */
+  | 'gone';
+
+/** One of the accountant's edits, as the Accountant changes page shows it (spec 117). */
+export interface ChangeView {
+  readonly id: string;
+  readonly linkId: string;
+  readonly sheetTitle: string;
+  /** The bank line it is on; null when the entry is gone. */
+  readonly line: {
+    readonly date: CalendarDate;
+    readonly description: string;
+    readonly amount: Cents;
+  } | null;
+  readonly sheetRow: number;
+  readonly field: 'account' | 'gst' | 'note';
+  readonly was: string;
+  readonly now: string;
+  readonly by: string | null;
+  readonly seenAt: string;
+  readonly status: 'waiting' | 'accepted' | 'rejected' | 'withdrawn';
+  readonly decidedAt: string | null;
+  /** What accepting would do to each account, worked out and not applied. Null when blocked. */
+  readonly effect: readonly { readonly account: string; readonly cents: Cents }[] | null;
+  readonly blocked: ChangeBlock | null;
+}
+
+export interface AccountantChangesView {
+  readonly waiting: readonly ChangeView[];
+  /** Accepted and rejected, newest first. */
+  readonly done: readonly ChangeView[];
+  /** The lock date, to say why a locked line cannot change. */
+  readonly lockDate: CalendarDate | null;
+}
+
+export type ChangeDecision =
+  | { readonly kind: 'done' }
+  | { readonly kind: 'refused'; readonly reason: ChangeBlock | 'not-waiting' };
+
+/** The result of checking the sheets for the accountant's changes. */
+export interface ChangesCheck {
+  readonly added: number;
+  readonly problem: 'not-connected' | 'needs-sign-in' | 'offline' | 'failed' | null;
 }

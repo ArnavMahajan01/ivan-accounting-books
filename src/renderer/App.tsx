@@ -1,6 +1,6 @@
 import { BooksStateProvider, useBooksState } from './books-state';
 import { ImportProvider } from './import/ImportProvider';
-import { GoogleStateProvider } from './sheets/google-state';
+import { GoogleStateProvider, useGoogleState } from './sheets/google-state';
 import { AppLayout } from './layout/AppLayout';
 import { StartChoice } from './layout/StartChoice';
 import { Page } from './pages/pages';
@@ -10,6 +10,7 @@ import './layout/StartChoice.css';
 function Shell() {
   const [route] = useRoute();
   const { state, status, version, reviewCount } = useBooksState();
+  const { changesWaiting } = useGoogleState();
   // Until the books say which they are, nothing is drawn, so the first-launch choice never flashes.
   if (status === 'loading') return <div className="app-loading" aria-busy="true" />;
   if (state?.needsStartChoice === true) return <StartChoice />;
@@ -17,7 +18,7 @@ function Shell() {
     <AppLayout
       title={state?.businessName ?? 'Accounting Books'}
       current={route}
-      counts={{ 'to-review': reviewCount }}
+      counts={{ 'to-review': reviewCount, 'accountant-changes': changesWaiting }}
     >
       {/* A new version remounts the page, so loading or clearing sample data refreshes it. */}
       <Page key={version} route={route} />

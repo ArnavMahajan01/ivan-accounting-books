@@ -44,4 +44,5 @@ export const importDeps = {
   exports: { save: () => Promise.resolve('cancelled' as const) } satisfies ReportExports,
   google: testGoogle(),
   clipboard: { writeText: () => undefined },
+  checkSheets: () => Promise.resolve({ added: 0, problem: 'not-connected' as const }),
 };

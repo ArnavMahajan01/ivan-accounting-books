@@ -9,6 +9,9 @@ import {
   type ConnectProblem,
   type GoogleStatus,
   type PublishOutcome,
+  type AccountantChangesView,
+  type ChangeDecision,
+  type ChangesCheck,
   type PublishPreview,
   type ReadyFormulaView,
   type SharedPeopleView,
@@ -338,6 +341,11 @@ export const bridgeContract = {
   },
   'sheets.unshareAll': { input: z.object({ email: z.string().min(3).max(254) }).strict() },
   'sheets.readyFormulas': { input: noInput },
+  'changes.check': { input: noInput },
+  'changes.list': { input: noInput },
+  'changes.count': { input: noInput },
+  'changes.accept': { input: z.object({ id: idText('chg') }).strict() },
+  'changes.reject': { input: z.object({ id: idText('chg') }).strict() },
   /** Puts text on the Mac's clipboard: the screens may not reach it themselves. */
   'app.copyText': { input: z.object({ text: z.string().min(1).max(2000) }).strict() },
 } as const;
@@ -442,6 +450,12 @@ export interface BridgeResults {
     | { readonly kind: 'done'; readonly stopped: number }
     | { readonly kind: 'refused'; readonly reason: ShareRefusal };
   'sheets.readyFormulas': readonly ReadyFormulaView[];
+  'changes.check': ChangesCheck;
+  'changes.list': AccountantChangesView;
+  /** Waiting changes: the count beside Accountant changes in the sidebar. */
+  'changes.count': { readonly count: number };
+  'changes.accept': ChangeDecision;
+  'changes.reject': ChangeDecision;
   'app.copyText': { readonly copied: boolean };
 }
 

@@ -59,7 +59,13 @@ import {
 import { getReport, getReportLines } from '@services/reports';
 import type { ReportExports } from './report-exports';
 import type { GoogleAccess } from './google-setup';
-import type { ConnectProblem, ShareOutcome, ShareRefusal } from '@shared/sheets';
+import type { ChangesCheck, ConnectProblem, ShareOutcome, ShareRefusal } from '@shared/sheets';
+import {
+  acceptChange,
+  changesView,
+  rejectChange,
+  waitingCount,
+} from '@services/accountant-changes';
 import { readyFormulas } from '@domain/ready-formulas';
 import {
   changeRole,
@@ -142,6 +148,8 @@ export interface HandlerDeps {
   readonly google: GoogleAccess;
   /** The Mac's clipboard, for Copy on the Ready formulas (spec 113). */
   readonly clipboard: { writeText(text: string): void };
+  /** Reads the sheets for the accountant's changes now (spec 116). */
+  readonly checkSheets: () => Promise<ChangesCheck>;
   readonly books: BooksAccess;
   readonly clock: Clock;
   readonly random: RandomSource;
@@ -194,6 +202,7 @@ export function createHandlers({
   onImport,
   google,
   clipboard,
+  checkSheets,
 }: HandlerDeps): BridgeHandlers {
   /** The books and Google, for the sharing calls. */
   const sharing = async (): Promise<Result<SharingDeps, BridgeError>> => {
@@ -525,6 +534,23 @@ export function createHandlers({
     },
     'sheets.readyFormulas': () =>
       ok(readyFormulas(clock.today()).map(({ name, what, formula }) => ({ name, what, formula }))),
+    'changes.check': async () => ok(await checkSheets()),
+    'changes.list': () => open((store) => ok(changesView({ db: store.db, clock, random }))),
+    'changes.count': () => open((store) => ok({ count: waitingCount({ db: store.db }) })),
+    'changes.accept': ({ id }) =>
+      open((store) => {
+        const done = acceptChange({ db: store.db, clock, random }, id);
+        return ok(
+          done.ok ? { kind: 'done' as const } : { kind: 'refused' as const, reason: done.error },
+        );
+      }),
+    'changes.reject': ({ id }) =>
+      open((store) => {
+        const done = rejectChange({ db: store.db, clock, random }, id);
+        return ok(
+          done.ok ? { kind: 'done' as const } : { kind: 'refused' as const, reason: done.error },
+        );
+      }),
     'app.copyText': ({ text }) => {
       clipboard.writeText(text);
       return ok({ copied: true });

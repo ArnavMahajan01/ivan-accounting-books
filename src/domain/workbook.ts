@@ -182,6 +182,17 @@ export function a1Range(title: string, columns: number, rows: number, fromRow = 
   return `${quoted}!A${String(fromRow + 1)}:${columnLetters(columns - 1)}${String(Math.max(rows, fromRow + 1))}`;
 }
 
+/** A block of cells, such as `'Transactions'!E6:H90`. Columns and rows are 0-based. */
+export function blockA1(
+  title: string,
+  fromColumn: number,
+  fromRow: number,
+  toColumn: number,
+  toRow: number,
+): string {
+  return `'${title.replace(/'/g, "''")}'!${columnLetters(fromColumn)}${String(fromRow + 1)}:${columnLetters(toColumn)}${String(toRow + 1)}`;
+}
+
 /** One cell, such as `'Ready formulas'!C3`. Column and row are 0-based. */
 export function cellA1(title: string, column: number, row: number): string {
   return `'${title.replace(/'/g, "''")}'!${columnLetters(column)}${String(row + 1)}`;

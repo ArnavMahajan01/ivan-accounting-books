@@ -44,6 +44,7 @@ import {
 } from './self-check';
 import { isAppUrl } from './navigation';
 import { createGoogleAccess } from './google-setup';
+import { createSheetCheck } from './sheet-check';
 import { loadEnv } from '@shared/env';
 
 // The name decides the data folder and the instance lock, so it is set before anything else.
@@ -287,11 +288,23 @@ if (refusedFlags.length > 0) {
         log.info('google.status', { kind: status.kind });
       },
     });
+    const sheetCheck = createSheetCheck({
+      books,
+      google,
+      clock: systemClock,
+      random: systemRandom,
+      log,
+    });
+    sheetCheck.start();
+    app.on('will-quit', () => {
+      sheetCheck.stop();
+    });
     registerBridge(
       ipcMain,
       createHandlers({
         google,
         clipboard,
+        checkSheets: () => sheetCheck.run(),
         app,
         books,
         clock: systemClock,
