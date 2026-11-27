@@ -53,14 +53,10 @@
   width: 320px;
 }
 
-@media (max-width: 1499px) {
-  .report-page__body > .side-panel {
-    position: absolute;
-    inset-block-start: 0;
-    inset-inline-end: 0;
-    z-index: 2;
-    box-shadow: var(--shadow-raised);
-  }
+/* Beside the report at every width, never over it: the point of the panel is to watch the
+   figures change. A wide report scrolls sideways inside its own surface instead. */
+.report-page__body > .side-panel {
+  flex-shrink: 0;
 }
 
 .report-page__check,

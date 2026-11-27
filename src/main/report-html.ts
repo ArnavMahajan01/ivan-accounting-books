@@ -48,7 +48,7 @@ tr.grand td { border-top: 2px solid #000; font-weight: 700; }
 `;
 
 export function reportHtml(view: ReportView, business: string): string {
-  const head = `<tr><th>Account</th>${view.columns.map((c) => `<th class="n">${escapeHtml(c.label)}</th>`).join('')}</tr>`;
+  const head = `<tr><th>${escapeHtml(view.rowHeading)}</th>${view.columns.map((c) => `<th class="n">${escapeHtml(c.label)}</th>`).join('')}</tr>`;
   const body = view.rows
     .map((row) => {
       const label = `${row.code === null ? '' : `${escapeHtml(row.code)} `}${escapeHtml(row.label)}`;

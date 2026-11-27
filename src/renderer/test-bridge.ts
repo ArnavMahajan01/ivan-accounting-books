@@ -553,6 +553,7 @@ const money = (cents: number, accountId: string | null = null): ReportCell => ({
 export const PROFIT_AND_LOSS: ReportView = {
   title: 'Profit and loss',
   periodText: 'Oct–Dec 2026, 01/10/2026 to 21/11/2026',
+  rowHeading: 'Account',
   from: date('2026-10-01'),
   to: date('2026-11-21'),
   columns: [{ key: 'p0', label: 'Oct–Dec 2026' }],

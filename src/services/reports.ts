@@ -101,6 +101,7 @@ export function getReport(
     return ok({
       title,
       periodText: `As at ${formatDateAU(asAt)}`,
+      rowHeading: 'Account',
       from: null,
       to: asAt,
       columns: built.columns,
@@ -133,6 +134,7 @@ export function getReport(
     return ok({
       title,
       periodText: `As at ${formatDateAU(base.to)}`,
+      rowHeading: 'Account',
       from: null,
       to: base.to,
       columns: built.columns,
@@ -169,6 +171,7 @@ export function getReport(
     return ok({
       title,
       periodText: withDates(base),
+      rowHeading: 'BAS label',
       from: base.from,
       to: base.to,
       columns: built.columns,
@@ -202,6 +205,7 @@ export function getReport(
   return ok({
     title,
     periodText: withDates(base),
+    rowHeading: 'Account',
     from: base.from,
     to: base.to,
     columns: withOwn.columns,

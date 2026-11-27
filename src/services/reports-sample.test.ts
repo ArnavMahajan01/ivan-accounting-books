@@ -103,6 +103,8 @@ describe('the BAS worksheet (spec 094)', () => {
   it('Jul–Sep: the GST to pay is the sample BAS payment', () => {
     const bas = report(plainRequest('bas'));
     expect(bas.periodText).toBe('Jul–Sep 2026, 01/07/2026 to 30/09/2026');
+    // Its rows are BAS labels, not accounts, and the heading over them says so.
+    expect(bas.rowHeading).toBe('BAS label');
     expect(figure(bas, 'net')).toBe(SAMPLE_FIGURES.basPaymentJulToSep);
     expect(bas.note).toContain('The app does not lodge anything with the ATO.');
     // 1A less 1B is the GST to pay, to the cent.

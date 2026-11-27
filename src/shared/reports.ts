@@ -156,6 +156,8 @@ export interface ReportView {
   readonly title: string;
   /** In words: "Oct–Dec 2026", "As at 30/09/2026". */
   readonly periodText: string;
+  /** The heading over the rows' names: "Account", or "BAS label" on the BAS worksheet. */
+  readonly rowHeading: string;
   readonly from: CalendarDate | null;
   readonly to: CalendarDate;
   readonly columns: readonly ReportColumn[];

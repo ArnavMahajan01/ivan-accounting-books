@@ -45,7 +45,7 @@ export function reportCsv(view: ReportView, business: string): string {
     [csvText(view.title)],
     [csvText(view.periodText)],
     [],
-    ['Code', 'Account', ...view.columns.map((c) => csvText(c.label))],
+    ['Code', csvText(view.rowHeading), ...view.columns.map((c) => csvText(c.label))],
   ];
   const body = view.rows.map((row) => [
     csvText(row.code ?? ''),

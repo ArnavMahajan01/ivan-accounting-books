@@ -7,6 +7,7 @@ import { escapeHtml, reportHtml } from './report-html';
 const view: ReportView = {
   title: 'Profit and loss',
   periodText: 'Oct–Dec 2026',
+  rowHeading: 'Account',
   from: '2026-10-01' as CalendarDate,
   to: '2026-12-31' as CalendarDate,
   columns: [{ key: 'p0', label: 'Oct–Dec 2026' }],

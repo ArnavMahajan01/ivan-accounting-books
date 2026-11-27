@@ -343,6 +343,7 @@ describe('CSV export (spec 098)', () => {
     const view: ReportView = {
       title: 'Profit and loss',
       periodText: 'Oct–Dec 2026',
+      rowHeading: 'Account',
       from: d('2026-10-01'),
       to: d('2026-12-31'),
       columns: [{ key: 'p0', label: 'Oct–Dec 2026' }],

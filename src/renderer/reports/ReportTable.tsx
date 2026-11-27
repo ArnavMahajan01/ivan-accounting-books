@@ -23,7 +23,7 @@ export function ReportTable({
       <table className="report" aria-label={view.title}>
         <thead>
           <tr>
-            <th scope="col">Account</th>
+            <th scope="col">{view.rowHeading}</th>
             {view.columns.map((c) => (
               <th key={c.key} scope="col" className="report__n">
                 {c.label}

@@ -9,7 +9,9 @@ import type { BankAccountRow, ReconcileView } from '@shared/views';
 import { bridge } from '../bridge';
 import { Amount } from '../components/Amount';
 import { Button } from '../components/Button';
+import { DateCell } from '../components/DateCell';
 import { Sheet } from '../components/Sheet';
+import { Table, type TableColumn } from '../components/Table';
 import { plural } from '../import/import-text';
 import { routeHref } from '../routes';
 
@@ -19,6 +21,21 @@ const REFUSED = {
     'This account is already reconciled to that day or later. Choose a later statement.',
   difference: 'The books do not agree with the statement yet.',
 } as const;
+
+/** The waiting lines listed; the sheet says how many more there are. */
+const SHOWN = 20;
+
+const WAITING_COLUMNS: readonly TableColumn<ReconcileView['waiting'][number]>[] = [
+  { key: 'date', header: 'Date', fit: true, cell: (l) => <DateCell date={l.date} /> },
+  { key: 'description', header: 'Description', cell: (l) => l.description },
+  {
+    key: 'amount',
+    header: 'Amount',
+    align: 'end',
+    fit: true,
+    cell: (l) => <Amount cents={l.amount} />,
+  },
+];
 
 /** "18642.35" for the box. */
 const forBox = (cents: number) => formatCents(asCents(cents)).replace(/[$,]/g, '');
@@ -160,14 +177,20 @@ export function ReconcileSheet({
             </p>
             {check.waiting.length > 0 && (
               <>
-                <ul className="reconcile__lines">
-                  {check.waiting.slice(0, 20).map((l) => (
-                    <li key={l.id}>
-                      <span>{formatDateAU(l.date)}</span> <span>{l.description}</span>{' '}
-                      <Amount cents={l.amount} />
-                    </li>
-                  ))}
-                </ul>
+                <div className="reconcile__lines">
+                  <Table
+                    label="Lines not posted yet"
+                    columns={WAITING_COLUMNS}
+                    rows={check.waiting.slice(0, SHOWN)}
+                    rowKey={(l) => l.id}
+                  />
+                </div>
+                {check.waiting.length > SHOWN && (
+                  <p className="transfer__note">
+                    And {plural(check.waiting.length - SHOWN, 'more line', 'more lines')}, all in To
+                    review.
+                  </p>
+                )}
                 <a href={routeHref('to-review')} className="bank__link" onClick={onClose}>
                   Post them in To review
                 </a>
