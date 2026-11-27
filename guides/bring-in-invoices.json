@@ -1,0 +1,81 @@
+{
+  "id": "bring-in-invoices",
+  "title": "Bring in invoices from the Admin Dashboard",
+  "group": "Invoices and contacts",
+  "summary": "How to add the invoices and credit notes you issue in the Admin Dashboard to your books, by linking its folder once or importing a file.",
+  "sections": [
+    {
+      "heading": "Ways to do this",
+      "paragraphs": [
+        "Link the folder once, and new invoices wait on the Invoices page for one click. This is the easiest way.",
+        "Or import a file the Admin Dashboard wrote, when you want to bring one in yourself."
+      ]
+    },
+    {
+      "heading": "Link the Admin Dashboard's folder",
+      "steps": [
+        {
+          "text": "Click Settings in the sidebar, and find the Admin Dashboard card.",
+          "image": {
+            "file": "admin-dashboard-card.png",
+            "description": "The Admin Dashboard card in Settings: Shared folder: invoices, a note that both apps stay on this Mac, and the buttons Change folder and Stop linking."
+          }
+        },
+        {
+          "text": "Click Choose folder…, and choose the folder the Admin Dashboard writes its invoices to."
+        },
+        {
+          "text": "Open Invoices. When new invoices have arrived, a message says how many, such as \"2 new invoices arrived from the Admin Dashboard\". Click Add to books."
+        },
+        {
+          "text": "Read the preview, then click the Import button. Nothing is added before you click it."
+        }
+      ]
+    },
+    {
+      "heading": "Import a file",
+      "steps": [
+        {
+          "text": "On the Invoices page, click Import file, and choose the file."
+        },
+        {
+          "text": "The preview says how many invoices are new, which are already in your books, which are a newer version of one you have, and any quotes, which are never added.",
+          "image": {
+            "file": "invoice-import.png",
+            "description": "The Import invoices sheet: 4 new invoices, total $17,380.00 including $1,580.00 GST, 1 quote not imported, and the four invoices with Coastal Body Corporate marked new contact. Cancel and Import 4 invoices are below."
+          }
+        },
+        {
+          "text": "Click the Import button, such as Import 4 invoices. Each invoice is added to your books, and a customer you did not have yet is saved as a contact."
+        }
+      ]
+    },
+    {
+      "heading": "What you see afterwards",
+      "steps": [
+        {
+          "text": "The Invoices page shows what is Unpaid, Overdue and Paid in the last 30 days, and where each invoice is up to in words, such as Unpaid · due 12/12/2026 or Overdue · 30 days.",
+          "image": {
+            "file": "invoices-page.png",
+            "description": "The Invoices page: Unpaid $10,780.00 3 invoices, Overdue $6,600.00 1 invoice, Paid last 30 days, then each invoice with its date, customer, total, GST and status."
+          }
+        },
+        {
+          "text": "Home's to-do list says when an invoice is overdue."
+        },
+        {
+          "text": "On the cash basis, an invoice's GST goes into your BAS in the quarter it is paid, not when you issue it."
+        }
+      ]
+    },
+    {
+      "heading": "If something goes wrong",
+      "paragraphs": [
+        "The file could not be brought in: it was not written by the Admin Dashboard, or it has a mistake. The message names the part that is wrong.",
+        "An invoice is not added because its date is in a locked quarter: a closed quarter cannot change. Issue a credit note or a new invoice in the Admin Dashboard instead.",
+        "The linked folder cannot be read: it was moved or renamed. Choose it again in Settings.",
+        "Importing the same file again adds nothing twice."
+      ]
+    }
+  ]
+}

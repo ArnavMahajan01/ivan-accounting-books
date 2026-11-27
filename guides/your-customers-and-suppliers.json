@@ -1,0 +1,96 @@
+{
+  "id": "your-customers-and-suppliers",
+  "title": "Your customers and suppliers",
+  "group": "Invoices and contacts",
+  "summary": "Where to see what a customer owes, everything about one contact, and how to tidy up contacts that are the same.",
+  "sections": [
+    {
+      "heading": "How contacts are saved",
+      "paragraphs": [
+        "You do not need to type your customers and suppliers in. A contact is saved the first time a name is typed in From/To in To review, or arrives on an invoice from the Admin Dashboard.",
+        "In QuickBooks these were the Customers and Suppliers lists."
+      ]
+    },
+    {
+      "heading": "See your contacts",
+      "steps": [
+        {
+          "text": "Click Contacts in the sidebar.",
+          "image": {
+            "file": "contacts-list.png",
+            "description": "The Contacts page with Customers chosen. Each customer shows Owes you, the oldest unpaid invoice in words, such as Overdue · 30 days, and Added, such as from an invoice, 28/11/2026."
+          }
+        },
+        {
+          "text": "Click Customers or Suppliers. Customers show what they owe you and their oldest unpaid invoice. Suppliers show what you paid them this financial year and their latest bank line."
+        },
+        {
+          "text": "Type in Search to find a name."
+        },
+        {
+          "text": "\"Added\" says where each contact came from: from an invoice, saved from a bank line, or added by hand."
+        }
+      ]
+    },
+    {
+      "heading": "Everything about one contact",
+      "steps": [
+        {
+          "text": "Click a contact's name. Their page opens.",
+          "image": {
+            "file": "contact-page.png",
+            "description": "The page for Smith Renovations: Owes you $3,960.00, 1 invoice, due 12/12/2026; Invoiced this financial year; Paid this financial year; then the tabs Invoices, Payments, Bank lines and Details."
+          }
+        },
+        {
+          "text": "The three figures at the top are what they owe you now, what you invoiced them this financial year, and what they paid this financial year."
+        },
+        {
+          "text": "Click Invoices, Payments, Bank lines or Details to see each. Click PDF beside an invoice to open it."
+        },
+        {
+          "text": "To change a name, email, phone, ABN or notes, click Edit details, make the change and click Save."
+        },
+        {
+          "text": "On the Invoices page, click a customer's name to see a short summary beside the list. Click Open full page for everything."
+        }
+      ]
+    },
+    {
+      "heading": "Add a contact by hand",
+      "steps": [
+        {
+          "text": "On the Contacts page, click New contact."
+        },
+        {
+          "text": "Type the name, choose whether they are a customer or a supplier, and add any details you have. Then click Save."
+        }
+      ]
+    },
+    {
+      "heading": "Tidy up contacts that are the same",
+      "paragraphs": [
+        "Because contacts are saved by themselves, the same business can end up saved twice, such as \"Timberlink\" and \"Timberlink Supplies\". The Contacts page offers these pairs, and says why they look the same."
+      ],
+      "steps": [
+        {
+          "text": "At the top of the Contacts page, find the pair, and click Merge. If they really are two businesses, click Keep both, and the pair is not offered again.",
+          "image": {
+            "file": "merge-contacts.png",
+            "description": "1 pair looks like the same contact: Timberlink and Timberlink Supplies, similar names, with the buttons Merge and Keep both."
+          }
+        },
+        {
+          "text": "Check that they are the same business before you merge. Choose the name to keep, then click Merge. Every transaction, invoice, rule and saved bank description moves to that contact, and the change is kept in each transaction's history."
+        }
+      ]
+    },
+    {
+      "heading": "If something goes wrong",
+      "paragraphs": [
+        "A merge says the contact has transactions in a locked quarter: a closed quarter cannot change. Merge the other way round, keeping the name of the one with the locked transactions.",
+        "A contact is not saved: another contact already has that name, or the ABN or email is not right. The message says which."
+      ]
+    }
+  ]
+}

@@ -9,7 +9,6 @@
       "paragraphs": [
         "This app keeps your business books on your own Mac. It takes the place of QuickBooks Online.",
         "You bring in your bank statement files, give each line an account and a GST code, and then look at your reports. When you want your accountant to see something, you share it as a Google Sheet.",
-        "Some pages are still empty while the app is being built. They say \"Coming in a later version.\"",
         "If you see \"Sample data\" next to a page title, the figures are invented, for a made-up business."
       ]
     },
@@ -19,6 +18,7 @@
         "The sidebar on the left lists every page. The page you are on is highlighted.",
         "Home shows your numbers and what to do next. Accounts lists your chart of accounts, with what each account holds. Transactions lists everything you have posted, and shows what each one did to your books. To review holds your imported bank lines until you give each one an account and post it. Bank lists your bank accounts, and is where you bring in a statement file from Westpac.",
         "Reports holds your profit and loss, balance sheet and BAS worksheet. Shared sheets shows what you have published to Google Sheets, and who can see it. Accountant changes holds edits your accountant makes in a shared sheet, until you accept or reject them.",
+        "Rules posts lines that come up again and again by themselves. Invoices holds the invoices you issue in the Admin Dashboard, and what is still owed on each. Contacts lists your customers and suppliers, each with everything about them.",
         "To learn to read Home, Accounts and Transactions, open the guide Reading your books in Help. To bring in a bank file, open the guide Bring in a Westpac statement.",
         "Settings and Help are at the bottom of the sidebar."
       ],
@@ -55,8 +55,7 @@
     {
       "heading": "If something goes wrong",
       "paragraphs": [
-        "If a message says \"The books could not be opened\", close the app and open it again. If the message stays, do not delete or move anything. Ask for help first.",
-        "If a page you expect is empty, check that it does not say \"Coming in a later version.\" Those pages are not built yet."
+        "If a message says \"The books could not be opened\", close the app and open it again. If the message stays, do not delete or move anything. Ask for help first."
       ]
     }
   ]

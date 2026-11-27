@@ -1,0 +1,58 @@
+{
+  "id": "match-a-customer-payment",
+  "title": "Match a customer's payment",
+  "group": "Invoices and contacts",
+  "summary": "How to mark an invoice paid when the customer's money arrives in your bank, including part payments and one deposit for several invoices.",
+  "sections": [
+    {
+      "heading": "Match a deposit to its invoice",
+      "steps": [
+        {
+          "text": "Bring in your bank file, and open To review."
+        },
+        {
+          "text": "A deposit that pays an invoice shows Invoice and the invoice, such as INV-1061 · Harbourview Developments, and why: its number is in the description, or it is the amount owed.",
+          "image": {
+            "file": "match-invoice.png",
+            "description": "A deposit in To review, DEPOSIT HARBOURVIEW DEVELOPMENTS INV 1061, $4,180.00, showing Invoice, INV-1061 · Harbourview Developments, its number is in the description, Split across invoices, Choose an account instead, and the button Match."
+          }
+        },
+        {
+          "text": "Check it is the right invoice, then click Match. The deposit is posted, and the invoice shows Paid with the date the money arrived."
+        },
+        {
+          "text": "If it is not an invoice payment, click Choose an account instead, and post it as usual."
+        }
+      ]
+    },
+    {
+      "heading": "Part payments and several invoices",
+      "steps": [
+        {
+          "text": "Click Split across invoices under the deposit. Every invoice still owing is listed.",
+          "image": {
+            "file": "split-invoices.png",
+            "description": "The sheet Split $2,640.00 across invoices: INV-1063, INV-1062 and INV-1064 with what each owes and a Paying now box. $2,640.00 is typed for INV-1062, and Left to split says $0.00 with a tick."
+          }
+        },
+        {
+          "text": "Type what the deposit pays on each invoice in Paying now. A part payment leaves the rest of that invoice owing."
+        },
+        {
+          "text": "If the customer paid more than they owe, choose an account in The rest goes to."
+        },
+        {
+          "text": "When Left to split says $0.00 with a tick, click Save split."
+        }
+      ]
+    },
+    {
+      "heading": "If something goes wrong",
+      "paragraphs": [
+        "You matched the wrong invoice: click Undo in the message at the top, or press Command and Z. The invoice is owed again, and the deposit waits in To review.",
+        "Save split stays grey: the amounts do not add up to the deposit, or one is more than that invoice owes. Left to split says what is wrong.",
+        "No invoice is suggested: the invoice may not be in your books yet. Bring it in from the Admin Dashboard first, then come back to the deposit."
+      ]
+    }
+  ]
+}
