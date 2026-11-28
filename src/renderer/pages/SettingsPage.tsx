@@ -3,6 +3,7 @@ import type { AppInfo, DataStatus } from '@shared/bridge-contract';
 import { PageToolbar } from '../layout/PageToolbar';
 import { GoogleCard } from '../sheets/GoogleCard';
 import { AdminDashboardCard } from '../invoices/AdminDashboardCard';
+import { BusinessCard } from '../settings/BusinessCard';
 import { DeveloperCard } from './DeveloperCard';
 import { COMING_LATER } from './EmptyPage';
 import { describeData, loadDataStatus, loadInfo } from './data-status';
@@ -13,7 +14,6 @@ import './SettingsPage.css';
 // two things that can quietly go wrong. Google works from folder 09.
 const LATER_CARDS = [
   { title: 'Backups', detail: 'Encrypted copies of your books, and restoring from one.' },
-  { title: 'Business', detail: 'Business name, ABN, GST basis, BAS frequency and financial year.' },
   { title: 'Bank accounts', detail: 'Your Westpac accounts.' },
   { title: 'Appearance', detail: 'Light, dark, or following your Mac.' },
 ] as const;
@@ -33,6 +33,7 @@ export function SettingsPage() {
           </section>
         ))}
         <GoogleCard />
+        <BusinessCard />
         <AdminDashboardCard />
         {LATER_CARDS.slice(1).map((card) => (
           <section key={card.title} className="page-surface settings-card" aria-label={card.title}>

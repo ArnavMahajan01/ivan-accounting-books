@@ -66,6 +66,7 @@ import { invoicesView } from '@services/invoices-view';
 import { contactPage, contactsView } from '@services/contacts-view';
 import { addContactByHand, editContact } from '@services/contacts';
 import { contactPairs, keepBoth, mergeContacts } from '@services/merge-contacts';
+import { businessView, changeBusinessSettings, toBusinessView } from '@services/business-settings';
 import {
   linkedInvoiceFolder,
   mergeExchangeFiles,
@@ -641,6 +642,16 @@ export function createHandlers({
       open((store) => {
         const edited = editContact({ db: store.db, clock, random }, id, input);
         return ok(edited.ok ? { kind: 'saved', id } : { kind: 'refused', reason: edited.error });
+      }),
+    'business.get': () => open((store) => ok(businessView({ db: store.db }))),
+    'business.change': (input) =>
+      open((store) => {
+        const changed = changeBusinessSettings({ db: store.db, clock, random }, input);
+        return ok(
+          changed.ok
+            ? { kind: 'saved', business: toBusinessView(changed.value) }
+            : { kind: 'refused', reason: changed.error },
+        );
       }),
     'contacts.pairs': () => open((store) => ok(contactPairs({ db: store.db }))),
     'contacts.merge': ({ keepId, mergeId }) =>

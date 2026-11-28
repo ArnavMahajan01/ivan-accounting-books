@@ -44,7 +44,7 @@ A good spec:
 2. Create `F<NN>-<kebab-name>.md` with this line under the title: `> Status: future idea, not scheduled. Do not implement until moved into a numbered phase.`
 3. Add `## Decide before scheduling` for its open questions.
 4. Add it to "Future Ideas" in `context/feature-specs/README.md`, and a line in the tracker's "Session Notes".
-5. Scale-version features (licensing, many clients, other banks) always go here (`CLAUDE.md` hard rule 4).
+5. Scale-version features (licensing, many clients) always go here (`CLAUDE.md` hard rule 4). Other banks were scheduled on 2026-11-28 (`decisions/any-bank.md`).
 
 ## Schedule a future idea
 

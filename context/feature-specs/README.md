@@ -325,6 +325,12 @@ Settings with status cards, the rest of Help from the Admin Dashboard pattern, b
 | 137 | [Backup Schedule and Reminders](11-demo-9-settings-help-backup/137-backup-schedule.md) |
 | 138 | [Restore From a Backup](11-demo-9-settings-help-backup/138-restore.md) |
 | 139 | [Full Data Export](11-demo-9-settings-help-backup/139-full-export.md) |
+| 139a | [Any Bank: Words and File Types](11-demo-9-settings-help-backup/139a-any-bank-words.md) |
+| 139b | [OFX From Any Bank](11-demo-9-settings-help-backup/139b-ofx-any-bank.md) |
+| 139c | [CSV Reader With a Column Map](11-demo-9-settings-help-backup/139c-csv-column-map.md) |
+| 139d | [Saved Column Maps and CSV Import](11-demo-9-settings-help-backup/139d-saved-column-maps.md) |
+| 139e | ["Match Your Bank's Columns" Screen](11-demo-9-settings-help-backup/139e-map-columns-screen.md) |
+| 139f | [guide-import-from-any-bank](11-demo-9-settings-help-backup/139f-guide-any-bank.md) |
 | 140 | [guide-backups-and-settings](11-demo-9-settings-help-backup/140-guide-settings.md) |
 | 141 | [Demo 9: Settings, Help and Backups](11-demo-9-settings-help-backup/141-demo-9.md) |
 

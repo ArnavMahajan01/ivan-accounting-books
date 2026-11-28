@@ -139,7 +139,7 @@ Rules across models:
 
 ## Importing A Bank File
 
-Built at specs 055 to 066 (2026-11-24). OFX only for now: the Westpac CSV reader (spec 059) waits for the header row (client question 16).
+Built at specs 055 to 066 (2026-11-24). OFX only for now: the Westpac CSV reader (spec 059) waits for the header row (client question 16). From 2026-11-28 files from any bank are in scope (`decisions/any-bank.md`): the OFX reader is checked against other banks' dialects (139b), and CSV is read by one pure reader with a column map (`src/import/csv.ts`, `column-map.ts`, 139c), saved per bank account (139d) and confirmed by the client on a screen (139e). A CSV file has no account number, so its account is chosen, not matched.
 
 1. The screen asks the main process to choose a file (the Mac's file chooser, `bank.chooseAndPreview`) or passes the path of a file dropped on the window (`bank.previewFile`, the path from the preload's `pathForFile`). The screens never read the file. The main process checks it is a plain file and under the size limit (5 million characters), then reads it (`src/main/statement-files.ts`).
 2. The parser in `src/import/` turns the text into statement lines, or a list of lines it could not read, each with a reason. It detects the format from the content, never from the file name. The account comes from the last four digits of the account number in the file, and must match exactly one active bank account.
@@ -184,7 +184,7 @@ Built at specs 055 to 066 (2026-11-24). OFX only for now: the Westpac CSV reader
 ## Outside Services
 
 - **Google Drive and Sheets:** an OAuth client of the desktop type, in a Google Cloud project owned by the client's Workspace and marked Internal. Sign-in opens the system browser, with PKCE, a random state and a one-time loopback redirect. The scope asked for is `drive.file`, which reaches only files the app created. Both points are to be confirmed at spec 106. Tokens stay in the main process. The app never deletes a file in Drive. It never shares with anyone except an email the client typed and confirmed.
-- **Westpac:** none. The client downloads files himself. The app never logs in to a bank.
+- **Banks (Westpac and any other):** none. The client downloads files himself. The app never logs in to a bank.
 
 ## Secrets And Configuration
 

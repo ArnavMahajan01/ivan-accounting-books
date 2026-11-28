@@ -57,3 +57,11 @@ export function insertBusiness(db: Db, business: Business): void {
 export function setLockDate(db: Db, lockDate: string, at: string): void {
   db.prepare('UPDATE business SET lock_date = ?, updated_at = ? WHERE id = 1').run(lockDate, at);
 }
+
+/** Changes the business's details and GST settings (spec 132). The lock date is never changed here. */
+export function updateBusiness(db: Db, business: Business): void {
+  db.prepare(
+    `UPDATE business SET name = ?, abn = ?, gst_basis = ?, bas_frequency = ?, updated_at = ?
+     WHERE id = 1`,
+  ).run(business.name, business.abn, business.gstBasis, business.basFrequency, business.updatedAt);
+}

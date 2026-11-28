@@ -34,6 +34,7 @@ export type BasFrequency = (typeof BAS_FREQUENCIES)[number];
  */
 export const AUDIT_KINDS = [
   'business.setup',
+  'business.change',
   'account.add',
   'account.rename',
   'account.change-code',

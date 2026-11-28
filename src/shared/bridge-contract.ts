@@ -32,9 +32,12 @@ import type {
   ContactSaveOutcome,
   ContactsView,
 } from './contacts';
+import type { BusinessChangeOutcome, BusinessView } from './settings';
 import {
   ACCOUNT_TYPES,
+  BAS_FREQUENCIES,
   CONTACT_KINDS,
+  GST_BASES,
   SHARE_ROLES,
   type BooksProblem,
   type StoreProblem,
@@ -421,6 +424,17 @@ export const bridgeContract = {
   'contacts.get': { input: z.object({ id: idText('con') }).strict() },
   'contacts.add': { input: contactInputSchema },
   'contacts.edit': { input: contactInputSchema.extend({ id: idText('con') }).strict() },
+  'business.get': { input: noInput },
+  'business.change': {
+    input: z
+      .object({
+        name: z.string().max(200),
+        abn: z.string().max(20),
+        gstBasis: z.enum(GST_BASES),
+        basFrequency: z.enum(BAS_FREQUENCIES),
+      })
+      .strict(),
+  },
   'contacts.pairs': { input: noInput },
   'contacts.merge': {
     input: z.object({ keepId: idText('con'), mergeId: idText('con') }).strict(),
@@ -559,6 +573,9 @@ export interface BridgeResults {
   'contacts.add': ContactSaveOutcome;
   'contacts.edit': ContactSaveOutcome;
   'contacts.pairs': readonly ContactPairView[];
+  /** Null before the books are set up. */
+  'business.get': BusinessView | null;
+  'business.change': BusinessChangeOutcome;
   'contacts.merge': ContactMergeOutcome;
   'contacts.keepBoth': ContactMergeOutcome;
   'changes.check': ChangesCheck;

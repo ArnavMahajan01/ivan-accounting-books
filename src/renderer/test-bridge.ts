@@ -9,6 +9,7 @@ import type { CalendarDate, Timestamp } from '@shared/dates';
 import { asCents } from '@shared/money';
 import { ok } from '@shared/result';
 import type { AccountantChangesView, PublishPreview, SharedPeopleView } from '@shared/sheets';
+import type { BusinessView } from '@shared/settings';
 import type { ContactPageView, ContactPairView, ContactsView } from '@shared/contacts';
 import type { InvoicePreview, InvoiceRowView, InvoicesView } from '@shared/invoices';
 import type {
@@ -772,6 +773,14 @@ export const CONTACTS: ContactsView = {
   ],
 };
 
+export const BUSINESS: BusinessView = {
+  name: 'Harbour Lane Joinery Pty Ltd',
+  abn: '51824753556',
+  gstBasis: 'cash',
+  basFrequency: 'quarterly',
+  lockDate: null,
+};
+
 export const CONTACT_PAIRS: readonly ContactPairView[] = [
   {
     first: { id: 'con_bunnings', name: 'Bunnings' },
@@ -1137,6 +1146,10 @@ export function installBridge(overrides: Partial<BridgeApi> = {}): BridgeApi {
     'contacts.list': vi.fn(() => Promise.resolve(ok(CONTACTS))),
     'contacts.get': vi.fn(() => Promise.resolve(ok(CONTACT_PAGE))),
     'contacts.add': vi.fn(() => Promise.resolve(ok({ kind: 'saved' as const, id: 'con_new' }))),
+    'business.get': vi.fn(() => Promise.resolve(ok(BUSINESS))),
+    'business.change': vi.fn(() =>
+      Promise.resolve(ok({ kind: 'saved' as const, business: BUSINESS })),
+    ),
     'contacts.pairs': vi.fn(() => Promise.resolve(ok(CONTACT_PAIRS))),
     'contacts.merge': vi.fn(() => Promise.resolve(ok({ kind: 'merged' as const, moved: 3 }))),
     'contacts.keepBoth': vi.fn(() => Promise.resolve(ok({ kind: 'kept' as const }))),

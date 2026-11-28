@@ -27,7 +27,7 @@ The idea the design rests on: **the app's local file is the truth, and Google Sh
 3. **One user.** Only the client uses the app. No accounts, logins, roles or teams inside it. The accountant's access is Google Drive sharing, controlled from the app.
 4. **No live bank connection in this version.** Bank data comes from files the client downloads from Westpac (decided by the author on 2026-11-21).
 5. **No lodging with the ATO, no payroll, no payment processing.** The app prepares figures. The accountant or another product does the lodging and the pay runs.
-6. **One client now.** Nothing from the scale version (licensing, purchase history, other banks, other clients) is built or shown.
+6. **One client now.** Nothing from the scale version (licensing, purchase history, other clients) is built or shown. Statement files from any bank were moved into this version by the author on 2026-11-28 (`decisions/any-bank.md`).
 7. **Free by default.** Anything paid (an Apple Developer account, an Open Banking provider) is the author's decision, recorded first.
 
 ## Core User Flow
@@ -68,7 +68,7 @@ Rewritten on 2026-11-22: the client sees the app grow in small demos, with inven
 
 ### Bank statements
 
-- Import Westpac OFX files, and Westpac CSV files once their layout is confirmed (client question 16).
+- Import OFX files from any bank (Westpac first), and CSV files from any bank by matching their columns once per bank account (specs 139a to 139f; Westpac's preset once client question 16 is answered).
 - A preview before anything is saved: new, duplicate and unreadable lines, and a closing balance check.
 - Importing the same or an overlapping file never creates duplicates.
 - One or more bank accounts, each linked to an account in the chart of accounts.
@@ -125,7 +125,7 @@ Things someone will be tempted to add:
 - Lodging the BAS or anything else with the ATO. Single Touch Payroll. Running payroll.
 - Taking card or online payments for invoices (future idea F06).
 - Receipt capture by photo (future idea F05).
-- Other banks, other clients, licensing, purchase history, a Windows version (future ideas F02 to F04).
+- Other clients, licensing, purchase history, a Windows version (future ideas F02 and F04). Other banks' statement files moved into this version on 2026-11-28 (F03, specs 139a to 139f).
 - Multi-currency, inventory, projects and budgets, unless client question 1 says he uses them.
 
 ## Future Direction (not scheduled)
@@ -134,7 +134,7 @@ Recorded in `context/feature-specs/future-ideas/`. None of this changes the curr
 
 - F01: live bank transactions through an accredited Open Banking provider.
 - F02: the scale version, with independent installs for other clients, licence keys, and purchase history through a third-party tool.
-- F03: statement importers for other banks.
+- F03: statement importers for other banks. Scheduled 2026-11-28 as specs 139a to 139f.
 - F04: a Windows build.
 - F05: receipt capture.
 - F06: online invoice payments.
