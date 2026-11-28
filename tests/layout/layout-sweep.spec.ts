@@ -210,6 +210,13 @@ test('no page, sheet or panel breaks at any window size', async () => {
     problems.push(...(await problemsOn(page, 'contact-panel', size)));
     await page.keyboard.press('Escape');
 
+    // Folder 11: a page's own guide at the side (spec 135).
+    await go(page, '#/to-review');
+    await page.getByRole('button', { name: 'Help for this page' }).click();
+    await page.locator('.page-help .side-panel').waitFor();
+    problems.push(...(await problemsOn(page, 'page-help', size)));
+    await page.keyboard.press('Escape');
+
     // Folder 11: the business and new bank account sheets in Settings.
     await go(page, '#/settings');
     await page.getByRole('button', { name: 'Change…' }).click();

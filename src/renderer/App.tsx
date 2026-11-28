@@ -3,6 +3,7 @@ import { bridge } from './bridge';
 import { applyAppearance } from './settings/AppearanceCard';
 import { HelpPrefsProvider } from './guides/help-prefs';
 import { KeepOnScreenProvider } from './guides/KeepOnScreen';
+import { PageHelpProvider } from './guides/PageHelp';
 import { BooksStateProvider, useBooksState } from './books-state';
 import { ImportProvider } from './import/ImportProvider';
 import { GoogleStateProvider, useGoogleState } from './sheets/google-state';
@@ -45,7 +46,9 @@ export function App() {
         <ImportProvider>
           <HelpPrefsProvider>
             <KeepOnScreenProvider>
-              <Shell />
+              <PageHelpProvider>
+                <Shell />
+              </PageHelpProvider>
             </KeepOnScreenProvider>
           </HelpPrefsProvider>
         </ImportProvider>

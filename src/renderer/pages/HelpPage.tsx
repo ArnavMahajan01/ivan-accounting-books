@@ -17,7 +17,8 @@ import { useHelpPrefs } from '../guides/help-prefs';
 import { deleteTag, setGuideTags, tagName, tagsOf, toggleStar } from '../guides/help-prefs-logic';
 import { EmptyState } from '../components/EmptyState';
 import { groupGuides } from '../guides/group-guides';
-import { GUIDES, guideImageUrl } from '../guides/load-guides';
+import { GUIDES } from '../guides/load-guides';
+import { GuideBody } from '../guides/GuideBody';
 import { searchGuides } from '../guides/search';
 import { PageToolbar } from '../layout/PageToolbar';
 import { guideHref, guideIdFromHash, routeHref } from '../routes';
@@ -363,35 +364,7 @@ function GuideReader({ guide }: { readonly guide: Guide }) {
         {tags.length > 0 && (
           <p className="help-guide__tags">{tags.map((t) => `#${t}`).join(' ')}</p>
         )}
-        {guide.sections.map((section, sectionIndex) => (
-          <section key={sectionIndex} className="help-reader__section">
-            <h2 className="help-reader__heading">{section.heading}</h2>
-            {section.paragraphs.map((text, index) => (
-              <p key={index} className="help-reader__text">
-                {text}
-              </p>
-            ))}
-            {section.steps.length > 0 && (
-              <ol className="help-reader__steps">
-                {section.steps.map((step, index) => {
-                  const url = step.image === undefined ? undefined : guideImageUrl(step.image.file);
-                  return (
-                    <li key={index}>
-                      {step.text}
-                      {step.image !== undefined && url !== undefined && (
-                        <img
-                          src={url}
-                          alt={step.image.description}
-                          className="help-reader__image"
-                        />
-                      )}
-                    </li>
-                  );
-                })}
-              </ol>
-            )}
-          </section>
-        ))}
+        <GuideBody guide={guide} />
       </article>
     </>
   );

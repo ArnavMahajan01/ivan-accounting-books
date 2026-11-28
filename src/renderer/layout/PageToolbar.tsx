@@ -1,5 +1,11 @@
+import { CircleHelp } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { useBooksState } from '../books-state';
+import { Button } from '../components/Button';
+import { usePageHelp } from '../guides/PageHelp';
+import { guideForPage } from '../guides/page-guides';
+import { useHash } from '../use-route';
+import { routeFromHash } from '../routes';
 import { SampleDataLabel } from '../components/SampleDataLabel';
 import './PageToolbar.css';
 
@@ -15,6 +21,9 @@ export interface PageToolbarProps {
 
 export function PageToolbar({ title, status, actions, mainAction }: PageToolbarProps) {
   const { state } = useBooksState();
+  const hash = useHash();
+  const guide = guideForPage(routeFromHash(hash), hash);
+  const { open } = usePageHelp();
   return (
     <header className="page-toolbar">
       <div className="page-toolbar__start">
@@ -24,6 +33,17 @@ export function PageToolbar({ title, status, actions, mainAction }: PageToolbarP
         {status}
       </div>
       <div className="page-toolbar__actions">
+        {guide !== null && (
+          <Button
+            icon={CircleHelp}
+            aria-label="Help for this page"
+            onClick={() => {
+              open(guide);
+            }}
+          >
+            Help
+          </Button>
+        )}
         {actions}
         {mainAction}
       </div>
