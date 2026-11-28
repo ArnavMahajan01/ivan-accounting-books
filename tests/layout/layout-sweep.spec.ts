@@ -210,6 +210,19 @@ test('no page, sheet or panel breaks at any window size', async () => {
     problems.push(...(await problemsOn(page, 'contact-panel', size)));
     await page.keyboard.press('Escape');
 
+    // Folder 11: the business and new bank account sheets in Settings.
+    await go(page, '#/settings');
+    await page.getByRole('button', { name: 'Change…' }).click();
+    await page.getByRole('dialog').waitFor();
+    problems.push(...(await problemsOn(page, 'business-sheet', size)));
+    await page.keyboard.press('Escape');
+    await page.getByRole('dialog').waitFor({ state: 'detached' });
+    await page.getByRole('button', { name: 'Add bank account…' }).click();
+    await page.getByRole('dialog').waitFor();
+    problems.push(...(await problemsOn(page, 'add-bank-sheet', size)));
+    await page.keyboard.press('Escape');
+    await page.getByRole('dialog').waitFor({ state: 'detached' });
+
     // Folder 07: the rule panel, a new account, and reconciling.
     await go(page, '#/rules');
     await page.getByRole('button', { name: 'Edit Phone and internet' }).click();

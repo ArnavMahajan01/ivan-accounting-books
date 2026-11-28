@@ -1,3 +1,6 @@
+import { useEffect } from 'react';
+import { bridge } from './bridge';
+import { applyAppearance } from './settings/AppearanceCard';
 import { BooksStateProvider, useBooksState } from './books-state';
 import { ImportProvider } from './import/ImportProvider';
 import { GoogleStateProvider, useGoogleState } from './sheets/google-state';
@@ -27,6 +30,13 @@ function Shell() {
 }
 
 export function App() {
+  // The appearance chosen in Settings, on every launch (spec 133).
+  useEffect(() => {
+    const api = bridge();
+    void api['appearance.get']({}).then((result) => {
+      if (result.ok) applyAppearance(result.value.appearance);
+    });
+  }, []);
   return (
     <BooksStateProvider>
       <GoogleStateProvider>

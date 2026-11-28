@@ -19,3 +19,30 @@ export type BusinessChangeOutcome =
       readonly kind: 'refused';
       readonly reason: 'not-set-up' | 'empty-name' | 'bad-abn' | 'unchanged';
     };
+
+/** The bank accounts card (spec 133). */
+export interface BankAccountsSettings {
+  readonly accounts: readonly {
+    readonly id: string;
+    readonly name: string;
+    readonly bank: string;
+    readonly lastFour: string;
+    readonly active: boolean;
+    /** The account in the chart that holds its balance. */
+    readonly ledger: { readonly code: string; readonly name: string };
+  }[];
+  /** Asset accounts in use that no bank account is linked to yet: what a new one can hold. */
+  readonly freeLedgers: readonly {
+    readonly id: string;
+    readonly code: string;
+    readonly name: string;
+  }[];
+}
+
+export type BankAccountOutcome =
+  | { readonly kind: 'saved'; readonly id: string }
+  | { readonly kind: 'refused'; readonly reason: string };
+
+/** Light, dark, or the same as the Mac (spec 133). */
+export const APPEARANCES = ['system', 'light', 'dark'] as const;
+export type Appearance = (typeof APPEARANCES)[number];

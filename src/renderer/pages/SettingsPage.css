@@ -71,3 +71,49 @@
   align-items: center;
   gap: var(--space-2);
 }
+
+.settings-banks {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.settings-banks li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.settings-banks__actions {
+  display: inline-flex;
+  gap: var(--space-2);
+}
+
+.settings-appearance {
+  margin-top: var(--space-2);
+}
+
+.settings-attention {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  border-inline-start: 3px solid var(--color-warning);
+}
+
+.settings-attention p {
+  margin: 0;
+}
+
+.settings-slot {
+  display: grid;
+}
+
+.settings-slot--attention > .settings-card {
+  border-color: var(--color-warning);
+}

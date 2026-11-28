@@ -32,7 +32,14 @@ import type {
   ContactSaveOutcome,
   ContactsView,
 } from './contacts';
-import type { BusinessChangeOutcome, BusinessView } from './settings';
+import {
+  APPEARANCES,
+  type Appearance,
+  type BankAccountOutcome,
+  type BankAccountsSettings,
+  type BusinessChangeOutcome,
+  type BusinessView,
+} from './settings';
 import {
   ACCOUNT_TYPES,
   BAS_FREQUENCIES,
@@ -435,6 +442,25 @@ export const bridgeContract = {
       })
       .strict(),
   },
+  'bankAccounts.settings': { input: noInput },
+  'bankAccounts.add': {
+    input: z
+      .object({
+        name: z.string().max(120),
+        bank: z.string().max(80),
+        lastFour: z.string().max(4),
+        ledgerAccountId: idText('acc'),
+      })
+      .strict(),
+  },
+  'bankAccounts.rename': {
+    input: z.object({ id: idText('bnk'), name: z.string().max(120) }).strict(),
+  },
+  'bankAccounts.stop': { input: z.object({ id: idText('bnk') }).strict() },
+  'appearance.get': { input: noInput },
+  'appearance.set': { input: z.object({ appearance: z.enum(APPEARANCES) }).strict() },
+  /** Shows the books' folder in Finder. The path itself never reaches the screens. */
+  'app.showBooksFolder': { input: noInput },
   'contacts.pairs': { input: noInput },
   'contacts.merge': {
     input: z.object({ keepId: idText('con'), mergeId: idText('con') }).strict(),
@@ -573,6 +599,13 @@ export interface BridgeResults {
   'contacts.add': ContactSaveOutcome;
   'contacts.edit': ContactSaveOutcome;
   'contacts.pairs': readonly ContactPairView[];
+  'bankAccounts.settings': BankAccountsSettings;
+  'bankAccounts.add': BankAccountOutcome;
+  'bankAccounts.rename': BankAccountOutcome;
+  'bankAccounts.stop': BankAccountOutcome;
+  'appearance.get': { readonly appearance: Appearance };
+  'appearance.set': { readonly appearance: Appearance };
+  'app.showBooksFolder': { readonly shown: boolean };
   /** Null before the books are set up. */
   'business.get': BusinessView | null;
   'business.change': BusinessChangeOutcome;

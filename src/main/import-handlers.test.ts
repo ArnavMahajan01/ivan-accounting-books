@@ -53,6 +53,7 @@ function setup() {
     checkSheets: importDeps.checkSheets,
     sheetPanel: importDeps.sheetPanel,
     invoiceFiles: importDeps.invoiceFiles,
+    system: importDeps.system,
     onImport,
   });
   return { handlers, onImport };

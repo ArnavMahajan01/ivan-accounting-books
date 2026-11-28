@@ -7,6 +7,7 @@ import {
   dialog,
   ipcMain,
   Menu,
+  nativeTheme,
   net,
   protocol,
   screen,
@@ -27,6 +28,7 @@ import { SAMPLE_DATA_SWITCH } from './build-flags';
 import { createBooksSession } from './books-session';
 import { contentSecurityPolicy } from './csp';
 import { createHandlers } from './handlers';
+import { loadAppearance, saveAppearance } from './appearance';
 import { systemClock } from './clock';
 import { systemRandom } from './random';
 import { readStatementFile } from './statement-files';
@@ -254,6 +256,7 @@ if (refusedFlags.length > 0) {
     );
     denyAllPermissions();
     serveAppFiles();
+    nativeTheme.themeSource = loadAppearance(app.getPath('userData'));
     // The real books, or the sample books if they were loaded last time (spec 047).
     const books = createBooksSession({
       dir: app.getPath('userData'),
@@ -345,6 +348,18 @@ if (refusedFlags.length > 0) {
         },
         app,
         books,
+        system: {
+          appearance: () => loadAppearance(app.getPath('userData')),
+          setAppearance: (choice) => {
+            saveAppearance(app.getPath('userData'), choice);
+            nativeTheme.themeSource = choice;
+          },
+          // Finder shows the folder; the path itself never goes to the screens.
+          showBooksFolder: () => {
+            void shell.openPath(app.getPath('userData'));
+            return true;
+          },
+        },
         clock: systemClock,
         random: systemRandom,
         files: {

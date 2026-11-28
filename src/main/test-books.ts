@@ -37,6 +37,11 @@ export function staticBooks(store: Result<Store, OpenError>): BooksAccess {
 /** Handler dependencies for tests that do not import files: nothing is chosen and nothing reads. */
 export const importDeps = {
   random: seededRandom(7),
+  system: {
+    appearance: () => 'system' as const,
+    setAppearance: () => undefined,
+    showBooksFolder: () => true,
+  },
   files: {
     choose: () => Promise.resolve(null),
     read: () => Promise.resolve(err('unreadable-file' as const)),

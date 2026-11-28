@@ -9,7 +9,7 @@ import type { CalendarDate, Timestamp } from '@shared/dates';
 import { asCents } from '@shared/money';
 import { ok } from '@shared/result';
 import type { AccountantChangesView, PublishPreview, SharedPeopleView } from '@shared/sheets';
-import type { BusinessView } from '@shared/settings';
+import type { BankAccountsSettings, BusinessView } from '@shared/settings';
 import type { ContactPageView, ContactPairView, ContactsView } from '@shared/contacts';
 import type { InvoicePreview, InvoiceRowView, InvoicesView } from '@shared/invoices';
 import type {
@@ -773,6 +773,20 @@ export const CONTACTS: ContactsView = {
   ],
 };
 
+export const BANK_SETTINGS: BankAccountsSettings = {
+  accounts: [
+    {
+      id: 'bnk_one',
+      name: 'Business One',
+      bank: 'Westpac',
+      lastFour: '4821',
+      active: true,
+      ledger: { code: '1000', name: 'Business cheque account' },
+    },
+  ],
+  freeLedgers: [{ id: 'acc_savings', code: '1010', name: 'Business savings account' }],
+};
+
 export const BUSINESS: BusinessView = {
   name: 'Harbour Lane Joinery Pty Ltd',
   abn: '51824753556',
@@ -1150,6 +1164,19 @@ export function installBridge(overrides: Partial<BridgeApi> = {}): BridgeApi {
     'business.change': vi.fn(() =>
       Promise.resolve(ok({ kind: 'saved' as const, business: BUSINESS })),
     ),
+    'bankAccounts.settings': vi.fn(() => Promise.resolve(ok(BANK_SETTINGS))),
+    'bankAccounts.add': vi.fn(() => Promise.resolve(ok({ kind: 'saved' as const, id: 'bnk_new' }))),
+    'bankAccounts.rename': vi.fn(() =>
+      Promise.resolve(ok({ kind: 'saved' as const, id: 'bnk_one' })),
+    ),
+    'bankAccounts.stop': vi.fn(() =>
+      Promise.resolve(ok({ kind: 'saved' as const, id: 'bnk_one' })),
+    ),
+    'appearance.get': vi.fn(() => Promise.resolve(ok({ appearance: 'system' as const }))),
+    'appearance.set': vi.fn((input: { appearance: 'system' | 'light' | 'dark' }) =>
+      Promise.resolve(ok({ appearance: input.appearance })),
+    ),
+    'app.showBooksFolder': vi.fn(() => Promise.resolve(ok({ shown: true }))),
     'contacts.pairs': vi.fn(() => Promise.resolve(ok(CONTACT_PAIRS))),
     'contacts.merge': vi.fn(() => Promise.resolve(ok({ kind: 'merged' as const, moved: 3 }))),
     'contacts.keepBoth': vi.fn(() => Promise.resolve(ok({ kind: 'kept' as const }))),

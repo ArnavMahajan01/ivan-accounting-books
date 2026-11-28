@@ -67,6 +67,10 @@ import { contactPage, contactsView } from '@services/contacts-view';
 import { addContactByHand, editContact } from '@services/contacts';
 import { contactPairs, keepBoth, mergeContacts } from '@services/merge-contacts';
 import { businessView, changeBusinessSettings, toBusinessView } from '@services/business-settings';
+import { bankAccountsSettings } from '@services/bank-accounts-settings';
+import { addBankAccount } from '@services/add-bank-account';
+import { deactivateBankAccount, renameBankAccount } from '@services/manage-bank-accounts';
+import type { Appearance } from '@shared/settings';
 import {
   linkedInvoiceFolder,
   mergeExchangeFiles,
@@ -183,6 +187,12 @@ export interface HandlerDeps {
   /** The real Google Sheet in a panel inside the window (spec 118). */
   readonly sheetPanel: Pick<SheetPanel, 'open' | 'move' | 'close' | 'clearSession'>;
   readonly books: BooksAccess;
+  /** Choices about this Mac, kept outside the books, and Finder (spec 133). */
+  readonly system: {
+    appearance(): Appearance;
+    setAppearance(appearance: Appearance): void;
+    showBooksFolder(): boolean;
+  };
   readonly clock: Clock;
   readonly random: RandomSource;
   readonly files: StatementFiles;
@@ -237,6 +247,7 @@ export function createHandlers({
   checkSheets,
   sheetPanel,
   invoiceFiles,
+  system,
 }: HandlerDeps): BridgeHandlers {
   // Invoice files read and checked but not yet added: the text stays in main, never the screens.
   const invoicePreviews = new Map<string, InvoiceFile>();
@@ -653,6 +664,32 @@ export function createHandlers({
             : { kind: 'refused', reason: changed.error },
         );
       }),
+    'bankAccounts.settings': () => open((store) => ok(bankAccountsSettings({ db: store.db }))),
+    'bankAccounts.add': (input) =>
+      open((store) => {
+        const added = addBankAccount({ db: store.db, clock, random }, input);
+        return ok(
+          added.ok
+            ? { kind: 'saved', id: added.value.id }
+            : { kind: 'refused', reason: added.error },
+        );
+      }),
+    'bankAccounts.rename': ({ id, name }) =>
+      open((store) => {
+        const renamed = renameBankAccount({ db: store.db, clock, random }, id, name);
+        return ok(renamed.ok ? { kind: 'saved', id } : { kind: 'refused', reason: renamed.error });
+      }),
+    'bankAccounts.stop': ({ id }) =>
+      open((store) => {
+        const stopped = deactivateBankAccount({ db: store.db, clock, random }, id);
+        return ok(stopped.ok ? { kind: 'saved', id } : { kind: 'refused', reason: stopped.error });
+      }),
+    'appearance.get': () => Promise.resolve(ok({ appearance: system.appearance() })),
+    'appearance.set': ({ appearance }) => {
+      system.setAppearance(appearance);
+      return Promise.resolve(ok({ appearance }));
+    },
+    'app.showBooksFolder': () => Promise.resolve(ok({ shown: system.showBooksFolder() })),
     'contacts.pairs': () => open((store) => ok(contactPairs({ db: store.db }))),
     'contacts.merge': ({ keepId, mergeId }) =>
       open((store) => {
