@@ -150,6 +150,8 @@ describe('Home after an import', () => {
     expect(home.linesToReview).toEqual({ count: 11, oldest: '2026-11-02' });
     expect(home.nextSteps).toEqual([
       { id: 'review-lines', state: 'todo', count: 11, oldest: '2026-11-02' },
+      // Spec 137: these books have never been backed up.
+      { id: 'back-up', state: 'todo', daysSince: null },
     ]);
     expect(home.upToDate).toBe(false);
   });

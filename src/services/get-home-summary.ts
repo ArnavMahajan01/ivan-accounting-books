@@ -15,14 +15,18 @@ import { compareDates } from '@shared/dates';
 import { addCents, asCents, negateCents, ZERO_CENTS } from '@shared/money';
 import type { HomeSummary } from '@shared/views';
 import { checkBooks } from './check-books';
+import { lastBackupAt } from './backup-record';
 import type { TodayContext } from './context';
 
 /**
  * The jobs the app can do today. Home shows only these. Each folder that builds a feature adds its
  * job here: review (folder 06), reconcile (07), BAS (08), accountant changes (09), back up (11).
  */
+const DAY_MS = 24 * 60 * 60 * 1000;
+
 export const AVAILABLE_NEXT_STEPS: ReadonlySet<NextStepId> = new Set<NextStepId>([
   'review-lines',
+  'back-up',
   'invoices-overdue',
 ]);
 
@@ -70,7 +74,12 @@ export function getHomeSummary(ctx: TodayContext): HomeSummary {
     linesToReview: toReview.count,
     oldestLineToReview: toReview.oldest,
     unreconciled: [],
-    daysSinceBackup: null,
+    daysSinceBackup: (() => {
+      const last = lastBackupAt(ctx);
+      return last === null
+        ? null
+        : Math.max(0, Math.floor((Date.parse(ctx.clock.now()) - Date.parse(last)) / DAY_MS));
+    })(),
     basPeriod: null,
     accountantChangesWaiting: 0,
     overdueInvoices: invoicesView(ctx).overdue,

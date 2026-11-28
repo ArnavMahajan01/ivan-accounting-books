@@ -4,7 +4,14 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { ok } from '@shared/result';
 import { BooksStateProvider } from '../books-state';
 import { SettingsPage } from '../pages/SettingsPage';
-import { BANK_SETTINGS, installBridge, settle } from '../test-bridge';
+import {
+  BACKUP_STATUS,
+  BANK_SETTINGS,
+  installBridge,
+  RECOVERY_KEY,
+  SAMPLE_STATE,
+  settle,
+} from '../test-bridge';
 import { attentionSentence } from '../pages/SettingsPage';
 
 afterEach(cleanup);
@@ -129,5 +136,99 @@ describe('Settings, status cards (spec 133)', () => {
     await show();
     await userEvent.click(screen.getByRole('button', { name: 'Show in Finder' }));
     expect(api['app.showBooksFolder']).toHaveBeenCalled();
+  });
+});
+
+describe('Settings, Backups (specs 136 to 138)', () => {
+  it('says backups are off, and turning on shows the recovery key to write down', async () => {
+    const api = installBridge({
+      'backup.status': vi.fn(() =>
+        Promise.resolve(
+          ok({ folderName: 'Backup', daily: false, lastBackupAt: null, keyReady: false }),
+        ),
+      ),
+    });
+    await show();
+    expect(screen.getAllByRole('status')[0]?.textContent).toContain('Backups are off');
+    const card = screen.getByRole('region', { name: 'Backups' });
+    expect(card.textContent).toContain('There is no backup yet.');
+    await userEvent.click(within(card).getByRole('button', { name: 'Turn on backups' }));
+    await settle();
+    expect(api['backup.turnOn']).toHaveBeenCalled();
+    const sheet = screen.getByRole('alertdialog', { name: 'Write down your recovery key' });
+    expect(within(sheet).getByLabelText('Recovery key').textContent).toBe(RECOVERY_KEY);
+    const done = within(sheet).getByRole('button', { name: 'Done' });
+    expect((done as HTMLButtonElement).disabled).toBe(true);
+    await userEvent.click(
+      within(sheet).getByRole('checkbox', { name: 'I have written down the recovery key' }),
+    );
+    expect((done as HTMLButtonElement).disabled).toBe(false);
+  });
+
+  it('backs up now, and shows when the last backup was', async () => {
+    const api = installBridge();
+    await show();
+    const card = screen.getByRole('region', { name: 'Backups' });
+    expect(card.textContent).toContain('On · To: Backup · Encrypted');
+    expect(card.textContent).toContain('Last backup:');
+    await userEvent.click(within(card).getByRole('button', { name: 'Back up now' }));
+    await settle();
+    expect(api['backup.now']).toHaveBeenCalled();
+    expect(within(card).getByText('Backed up.')).toBeTruthy();
+  });
+
+  it('restores only after the warning, then says what it did', async () => {
+    const api = installBridge();
+    await show();
+    await userEvent.click(screen.getByRole('button', { name: 'Restore from a backup…' }));
+    await settle();
+    const sheet = screen.getByRole('alertdialog', { name: 'Restore from a backup?' });
+    expect(sheet.textContent).toContain(
+      'Anything entered after that backup was made will be gone.',
+    );
+    expect(api['backup.restore']).not.toHaveBeenCalled();
+    await userEvent.click(within(sheet).getByRole('button', { name: 'Restore and replace' }));
+    await settle();
+    expect(api['backup.restore']).toHaveBeenCalledWith({
+      name: 'Accounting Books 2026-11-21 0914.abbackup',
+      recoveryKey: null,
+    });
+    expect(screen.getByText(/Restored\. Your books are as they were at that backup/)).toBeTruthy();
+  });
+
+  it('asks for the recovery key when this Mac cannot open the backup', async () => {
+    const api = installBridge({
+      'backup.restore': vi.fn(() =>
+        Promise.resolve(
+          ok({
+            outcome: { kind: 'refused' as const, reason: 'needs-recovery-key' as const },
+            state: SAMPLE_STATE,
+          }),
+        ),
+      ),
+    });
+    await show();
+    await userEvent.click(screen.getByRole('button', { name: 'Restore from a backup…' }));
+    await settle();
+    await userEvent.click(screen.getByRole('button', { name: 'Restore and replace' }));
+    await settle();
+    expect(screen.getByRole('alert').textContent).toContain('Type your recovery key');
+    await userEvent.type(screen.getByRole('textbox', { name: 'Recovery key' }), RECOVERY_KEY);
+    await userEvent.click(screen.getByRole('button', { name: 'Restore and replace' }));
+    expect(api['backup.restore']).toHaveBeenLastCalledWith(
+      expect.objectContaining({ recoveryKey: RECOVERY_KEY }),
+    );
+  });
+
+  it('needs attention when the last backup is more than a week old', async () => {
+    installBridge({
+      'backup.status': vi.fn(() =>
+        Promise.resolve(ok({ ...BACKUP_STATUS, lastBackupAt: '2020-01-01T00:00:00.000Z' })),
+      ),
+    });
+    await show();
+    expect(screen.getAllByRole('status')[0]?.textContent).toMatch(
+      /The last backup was \d+ days ago/,
+    );
   });
 });

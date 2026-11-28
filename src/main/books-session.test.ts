@@ -248,3 +248,46 @@ describe('the first-launch choice', () => {
     expect(books.startOwnBooks()).toEqual({ ok: false, error: 'wrong-mode' });
   });
 });
+
+describe('restoring a backup (spec 138)', () => {
+  it('puts the checked file in place, keeping the books it replaced beside it', () => {
+    const s = session();
+    const current = s.store();
+    if (!current.ok) throw new Error('not open');
+    setAppMeta(current.value.db, 'marker', 'before');
+    const other = openBooks(join(dir, 'candidate.db'));
+    if (!other.ok) throw new Error('candidate');
+    setAppMeta(other.value.db, 'marker', 'restored');
+    other.value.close();
+    expect(s.replaceBooks(join(dir, 'candidate.db')).ok).toBe(true);
+    const after = s.store();
+    if (!after.ok) throw new Error('not open');
+    expect(
+      (
+        after.value.db.prepare("SELECT value FROM app_meta WHERE key = 'marker'").get() as {
+          value: string;
+        }
+      ).value,
+    ).toBe('restored');
+    expect(existsSync(join(dir, 'books-before-restore.db'))).toBe(true);
+    expect(existsSync(join(dir, 'candidate.db'))).toBe(false);
+  });
+
+  it('puts the old books back when the new file will not open', () => {
+    const s = session();
+    const current = s.store();
+    if (!current.ok) throw new Error('not open');
+    setAppMeta(current.value.db, 'marker', 'before');
+    writeFileSync(join(dir, 'broken.db'), 'not a database at all');
+    expect(s.replaceBooks(join(dir, 'broken.db'))).toEqual({ ok: false, error: 'failed' });
+    const after = s.store();
+    if (!after.ok) throw new Error('not open');
+    expect(
+      (
+        after.value.db.prepare("SELECT value FROM app_meta WHERE key = 'marker'").get() as {
+          value: string;
+        }
+      ).value,
+    ).toBe('before');
+  });
+});

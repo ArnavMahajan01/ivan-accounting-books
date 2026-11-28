@@ -1,18 +1,18 @@
 import { CircleAlert, Info } from 'lucide-react';
 import { useCallback, useState, type ReactNode } from 'react';
 import type { AppInfo, DataStatus } from '@shared/bridge-contract';
-import type { BankAccountsSettings, BusinessView } from '@shared/settings';
+import type { BackupStatus, BankAccountsSettings, BusinessView } from '@shared/settings';
 import { bridge } from '../bridge';
 import { Button } from '../components/Button';
 import { PageToolbar } from '../layout/PageToolbar';
 import { AdminDashboardCard } from '../invoices/AdminDashboardCard';
 import { AppearanceCard } from '../settings/AppearanceCard';
+import { BackupsCard, daysSince } from '../settings/BackupsCard';
 import { BankAccountsCard } from '../settings/BankAccountsCard';
 import { BusinessCard } from '../settings/BusinessCard';
 import { GoogleCard } from '../sheets/GoogleCard';
 import { useGoogleState } from '../sheets/google-state';
 import { DeveloperCard } from './DeveloperCard';
-import { COMING_LATER } from './EmptyPage';
 import { describeData, loadDataStatus, loadInfo } from './data-status';
 import { useBridge, useBridgeQuery } from './use-bridge';
 import './SettingsPage.css';
@@ -23,6 +23,9 @@ import './SettingsPage.css';
 
 const loadBanks = () => bridge()['bankAccounts.settings']({});
 const loadBusiness = () => bridge()['business.get']({});
+const loadBackups = () => bridge()['backup.status']({});
+/** A backup older than this many days needs attention, as on Home. */
+const BACKUP_DAYS = 7;
 
 /** "Google is not connected, and no bank accounts are set up." */
 export function attentionSentence(problems: readonly string[]): string {
@@ -74,23 +77,23 @@ function AboutCard() {
   );
 }
 
-function BackupsCard() {
-  return (
-    <section className="page-surface settings-card" aria-label="Backups">
-      <h2 className="settings-card__title">Backups</h2>
-      <p className="settings-card__line settings-card__line--secondary">
-        Encrypted copies of your books, and restoring from one.
-      </p>
-      <p className="settings-card__later">{COMING_LATER}</p>
-    </section>
-  );
-}
-
 export function SettingsPage() {
   const { status: google } = useGoogleState();
   const [version, setVersion] = useState(0);
   const banks = useBridgeQuery<BankAccountsSettings>(loadBanks, `b${String(version)}`).state;
   const business = useBridgeQuery<BusinessView | null>(loadBusiness, `s${String(version)}`).state;
+  const backups = useBridgeQuery<BackupStatus>(loadBackups, `k${String(version)}`).state;
+  const backupView = backups.status === 'ready' ? backups.value : null;
+  const backupDays =
+    backupView?.lastBackupAt == null ? null : daysSince(backupView.lastBackupAt, new Date());
+  const backupProblem =
+    backupView === null
+      ? null
+      : !backupView.daily || backupView.folderName === null
+        ? 'backups are off'
+        : backupDays !== null && backupDays > BACKUP_DAYS
+          ? `the last backup was ${String(backupDays)} days ago`
+          : null;
   const changed = useCallback(() => {
     setVersion((v) => v + 1);
   }, []);
@@ -110,7 +113,11 @@ export function SettingsPage() {
     business.status === 'ready' && business.value === null ? 'the business is not set up' : null;
 
   const cards: { id: string; problem: string | null; node: ReactNode }[] = [
-    { id: 'backups', problem: null, node: <BackupsCard /> },
+    {
+      id: 'backups',
+      problem: backupProblem,
+      node: <BackupsCard status={backupView} onChanged={changed} />,
+    },
     { id: 'google', problem: googleProblem, node: <GoogleCard /> },
     { id: 'business', problem: businessProblem, node: <BusinessCard /> },
     {

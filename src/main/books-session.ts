@@ -19,6 +19,7 @@ import { buildSampleBooks } from '@services/sample/build-sample-books';
 export const SAMPLE_FOLDER = 'sample';
 const BUILDING_FILE = 'building.db';
 const OWN_BOOKS = 'own';
+export const BEFORE_RESTORE_FILE = 'books-before-restore.db';
 
 export type SessionError =
   /** The build that goes to the client has no sample data. */
@@ -33,6 +34,12 @@ export interface BooksSession {
   clearSample(): Result<void, SessionError>;
   /** "Start my own books" on first launch: remembered, so the choice is not offered again. */
   startOwnBooks(): Result<void, SessionError>;
+  /**
+   * Restoring a backup (spec 138): puts a checked books file in place of the books in use. The
+   * books it replaces are kept beside it as `books-before-restore.db` until the next restore, and
+   * put back if the new file does not open.
+   */
+  replaceBooks(checkedPath: string): Result<void, SessionError>;
   close(): void;
 }
 
@@ -151,6 +158,28 @@ export function createBooksSession(deps: BooksSessionDeps): BooksSession {
       if (mode !== 'real' || !current.ok) return err('wrong-mode');
       setAppMeta(current.value.db, START_CHOICE_KEY, OWN_BOOKS);
       return ok(undefined);
+    },
+
+    replaceBooks(checkedPath) {
+      const target = mode === 'sample' ? samplePath : realPath;
+      const kept = join(mode === 'sample' ? sampleDir : deps.dir, BEFORE_RESTORE_FILE);
+      closeCurrent();
+      for (const suffix of ['-wal', '-shm']) rmSync(`${target}${suffix}`, { force: true });
+      rmSync(kept, { force: true });
+      if (existsSync(target)) renameSync(target, kept);
+      renameSync(checkedPath, target);
+      const opened = deps.openBooks(target);
+      if (opened.ok) {
+        current = opened;
+        deps.log.info('books.restored', { mode });
+        return ok(undefined);
+      }
+      // The new file would not open: the books he had go back, unchanged.
+      rmSync(target, { force: true });
+      if (existsSync(kept)) renameSync(kept, target);
+      current = deps.openBooks(target);
+      deps.log.error('books.restore-failed', { code: opened.error.code });
+      return err('failed');
     },
 
     close: closeCurrent,

@@ -53,7 +53,7 @@ Recorded so the source is clear. Each is `Likely` until the client confirms it.
 | # | Question | Assumption until answered | Affects | Status |
 |---|---|---|---|---|
 | 12 | Which Mac and macOS version does he use? Is FileVault on? | An Apple silicon Mac on a current macOS, with FileVault on | Spec 013, spec 136, `decisions/local-data-storage.md` | Open |
-| 13 | Where should backups go: his Google Drive, an external drive, or both? | An encrypted copy in his Google Drive, plus an optional local folder | Spec 136 | Open |
+| 13 | Where should backups go: his Google Drive, an external drive, or both? | An encrypted copy in his Google Drive, plus an optional local folder. Built (2026-11-28) as one folder he chooses: an external drive, or the Google Drive folder that Google Drive for desktop syncs, so no Google upload code is needed. Ask whether that suits him, or whether the app should upload to Drive itself | Spec 136 | Open |
 | 14 | Who owns the Apple Developer account used to sign the app, and the Google Cloud project? | The Google Cloud project is in the client's Workspace, with the author given a limited role. The Apple Developer account is the author's, since the scale version needs it too. The author decides | Specs 106, 143 | Open |
 | 15 | What should the app be called? Is there a logo? | Working title "Accounting Books", with no logo | Spec 020, packaging | Open |
 | 16 | Could he download one Westpac CSV and OFX file, and send the author only the header row of the CSV, with no transactions? | Build against OFX first, which is a standard format. Build the CSV parser only after the header row arrives | Specs 058, 059 | Open |

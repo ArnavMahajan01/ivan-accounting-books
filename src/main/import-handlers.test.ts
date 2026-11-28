@@ -54,6 +54,7 @@ function setup() {
     sheetPanel: importDeps.sheetPanel,
     invoiceFiles: importDeps.invoiceFiles,
     system: importDeps.system,
+    backups: importDeps.backups,
     onImport,
   });
   return { handlers, onImport };

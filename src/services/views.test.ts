@@ -5,6 +5,7 @@ import type { EntryLineInput } from '@domain/journal';
 import { parseCalendarDate, type CalendarDate } from '@shared/dates';
 import { asCents } from '@shared/money';
 import { listAccountsWithBalances } from './list-accounts';
+import { recordBackup } from './backup-record';
 import { getHomeSummary } from './get-home-summary';
 import { getTransaction } from './get-transaction';
 import { getTrialBalance } from './get-trial-balance';
@@ -51,15 +52,40 @@ describe('getHomeSummary on the sample books', () => {
     expect(home.profit).toEqual({ amount: 4245350, yearLabel: 'FY 2026–27', from: '2026-07-01' });
   });
 
-  it('matches the sample figures list, and has one job, done, and no warnings', () => {
+  it('matches the sample figures list, and has its jobs, and no warnings', () => {
     const home = getHomeSummary(ctx);
     expect(home.bank.balance).toBe(SAMPLE_FIGURES.bankBalance);
     expect(home.gst.owing).toBe(SAMPLE_FIGURES.gstOwingOctToDec);
     expect(home.profit.amount).toBe(SAMPLE_FIGURES.profit);
-    // No bank line has been imported, so the one job there is, reviewing them, is ticked off.
-    expect(home.nextSteps).toEqual([{ id: 'review-lines', state: 'done', count: 0, oldest: null }]);
-    expect(home.upToDate).toBe(true);
+    // No bank line has been imported, so reviewing them is ticked off; the books have never been
+    // backed up, so that job is still to do (spec 137).
+    expect(home.nextSteps).toEqual([
+      { id: 'review-lines', state: 'done', count: 0, oldest: null },
+      { id: 'back-up', state: 'todo', daysSince: null },
+    ]);
+    expect(home.upToDate).toBe(false);
     expect(home.warnings).toEqual([]);
+  });
+
+  it('ticks off backing up after a recent backup, and asks again after a week (spec 137)', () => {
+    recordBackup(ctx, ctx.clock.now());
+    expect(getHomeSummary(ctx).nextSteps).toContainEqual({
+      id: 'back-up',
+      state: 'done',
+      daysSince: 0,
+    });
+    const later = {
+      ...ctx,
+      clock: {
+        today: () => day('2026-12-02'),
+        now: () => '2026-12-02T01:00:00.000Z' as ReturnType<typeof ctx.clock.now>,
+      },
+    };
+    expect(getHomeSummary(later).nextSteps).toContainEqual({
+      id: 'back-up',
+      state: 'todo',
+      daysSince: 9,
+    });
   });
 
   it('shows a warning when the books do not balance', () => {

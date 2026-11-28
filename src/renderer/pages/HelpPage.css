@@ -126,6 +126,7 @@
 
 /* Stars and tags (spec 134). */
 .help-filters {
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-2);

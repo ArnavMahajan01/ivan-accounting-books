@@ -55,3 +55,47 @@ export interface HelpPrefs {
 
 export const MAX_TAGS = 30;
 export const MAX_TAG_LENGTH = 30;
+
+/** The Backups card (specs 136, 137). Only the folder's name reaches the screens, never its path. */
+export interface BackupStatus {
+  readonly folderName: string | null;
+  readonly daily: boolean;
+  readonly lastBackupAt: string | null;
+  /** A backup key exists in the Keychain on this Mac. */
+  readonly keyReady: boolean;
+}
+
+export type BackupNowOutcome =
+  | { readonly kind: 'done'; readonly fileName: string; readonly at: string }
+  | {
+      readonly kind: 'refused';
+      readonly reason: 'no-folder' | 'no-key' | 'no-keychain' | 'books-closed' | 'not-written';
+    };
+
+export type TurnOnOutcome =
+  | { readonly kind: 'on'; readonly recoveryKey: string }
+  | { readonly kind: 'refused'; readonly reason: 'no-folder' | 'no-keychain' };
+
+export interface BackupRow {
+  readonly name: string;
+  readonly createdAt: string;
+  readonly entries: number;
+  readonly bytes: number;
+}
+
+export type RestoreOutcome =
+  | { readonly kind: 'restored'; readonly entries: number }
+  | {
+      readonly kind: 'refused';
+      readonly reason:
+        | 'needs-recovery-key'
+        | 'bad-recovery-key'
+        | 'wrong-key'
+        | 'not-a-backup'
+        | 'damaged'
+        | 'other-mode'
+        | 'unreadable'
+        | 'checks-failed'
+        | 'no-folder'
+        | 'failed';
+    };

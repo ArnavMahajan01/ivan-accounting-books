@@ -37,10 +37,15 @@ import {
   APPEARANCES,
   type Appearance,
   type BankAccountOutcome,
+  type BackupNowOutcome,
+  type BackupRow,
+  type BackupStatus,
   type BankAccountsSettings,
   type BusinessChangeOutcome,
   type BusinessView,
   type HelpPrefs,
+  type RestoreOutcome,
+  type TurnOnOutcome,
   MAX_TAG_LENGTH,
   MAX_TAGS,
 } from './settings';
@@ -461,6 +466,22 @@ export const bridgeContract = {
     input: z.object({ id: idText('bnk'), name: z.string().max(120) }).strict(),
   },
   'bankAccounts.stop': { input: z.object({ id: idText('bnk') }).strict() },
+  'backup.status': { input: noInput },
+  /** Opens the folder chooser; only the folder's name comes back. */
+  'backup.chooseFolder': { input: noInput },
+  'backup.turnOn': { input: noInput },
+  'backup.recoveryKey': { input: noInput },
+  'backup.setDaily': { input: z.object({ on: z.boolean() }).strict() },
+  'backup.now': { input: noInput },
+  'backup.list': { input: noInput },
+  'backup.restore': {
+    input: z
+      .object({
+        name: z.string().min(1).max(200),
+        recoveryKey: z.string().max(100).nullable(),
+      })
+      .strict(),
+  },
   'help.prefs': { input: noInput },
   'help.savePrefs': {
     input: z
@@ -625,6 +646,16 @@ export interface BridgeResults {
   'bankAccounts.add': BankAccountOutcome;
   'bankAccounts.rename': BankAccountOutcome;
   'bankAccounts.stop': BankAccountOutcome;
+  'backup.status': BackupStatus;
+  'backup.chooseFolder': { readonly folderName: string | null };
+  'backup.turnOn': TurnOnOutcome;
+  /** Null when there is no key on this Mac yet. */
+  'backup.recoveryKey': { readonly recoveryKey: string | null };
+  'backup.setDaily': { readonly daily: boolean };
+  'backup.now': BackupNowOutcome;
+  'backup.list': readonly BackupRow[];
+  /** With the books' new state, so the screens refresh after a restore. */
+  'backup.restore': { readonly outcome: RestoreOutcome; readonly state: BooksState };
   'help.prefs': HelpPrefs;
   'help.savePrefs': HelpPrefs;
   'appearance.get': { readonly appearance: Appearance };

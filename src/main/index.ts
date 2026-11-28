@@ -8,6 +8,7 @@ import {
   ipcMain,
   Menu,
   nativeTheme,
+  safeStorage,
   net,
   protocol,
   screen,
@@ -29,6 +30,7 @@ import { createBooksSession } from './books-session';
 import { contentSecurityPolicy } from './csp';
 import { createHandlers } from './handlers';
 import { loadAppearance, saveAppearance } from './appearance';
+import { createBackupManager, localStampOf } from './backup-manager';
 import { loadHelpPrefs, saveHelpPrefs } from './help-prefs';
 import { systemClock } from './clock';
 import { systemRandom } from './random';
@@ -310,6 +312,38 @@ if (refusedFlags.length > 0) {
     app.on('will-quit', () => {
       sheetCheck.stop();
     });
+    // Backups (specs 136 to 138): the key is kept with the Keychain, like the Google sign-in.
+    const backups = createBackupManager({
+      dataDir: app.getPath('userData'),
+      books,
+      cipher: {
+        isAvailable: () => safeStorage.isAsyncEncryptionAvailable(),
+        encrypt: (text) => safeStorage.encryptStringAsync(text),
+        decrypt: async (data) => (await safeStorage.decryptStringAsync(data)).result,
+      },
+      clock: systemClock,
+      appVersion: app.getVersion(),
+      log,
+      localStamp: () => localStampOf(new Date()),
+      chooseFolder: async () => {
+        const options = {
+          title: 'Choose where to keep backups: an external drive, or your Google Drive folder',
+          properties: ['openDirectory' as const, 'createDirectory' as const],
+        };
+        const result =
+          mainWindow === null
+            ? await dialog.showOpenDialog(options)
+            : await dialog.showOpenDialog(mainWindow, options);
+        return result.canceled ? null : (result.filePaths[0] ?? null);
+      },
+      openBooks: openBooksAt,
+    });
+    // The daily backup: checked soon after opening, then every hour while the app is open.
+    const backupTimer = setInterval(() => void backups.runIfDue(), 60 * 60 * 1000);
+    setTimeout(() => void backups.runIfDue(), 60 * 1000);
+    app.on('will-quit', () => {
+      clearInterval(backupTimer);
+    });
     registerBridge(
       ipcMain,
       createHandlers({
@@ -392,8 +426,10 @@ if (refusedFlags.length > 0) {
         },
         exports: createReportExports(() => mainWindow),
         // Counts only: what a file holds is never logged.
+        backups,
         onImport: (event, counts) => {
           log.info(`import.${event}`, counts);
+          if (event === 'imported') void backups.afterImport();
         },
       }),
       (url) => isAppUrl(url, devServerUrl),

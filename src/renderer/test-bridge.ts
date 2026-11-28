@@ -9,7 +9,13 @@ import type { CalendarDate, Timestamp } from '@shared/dates';
 import { asCents } from '@shared/money';
 import { ok } from '@shared/result';
 import type { AccountantChangesView, PublishPreview, SharedPeopleView } from '@shared/sheets';
-import type { BankAccountsSettings, BusinessView, HelpPrefs } from '@shared/settings';
+import type {
+  BackupRow,
+  BackupStatus,
+  BankAccountsSettings,
+  BusinessView,
+  HelpPrefs,
+} from '@shared/settings';
 import type { ContactPageView, ContactPairView, ContactsView } from '@shared/contacts';
 import type { InvoicePreview, InvoiceRowView, InvoicesView } from '@shared/invoices';
 import type {
@@ -773,6 +779,30 @@ export const CONTACTS: ContactsView = {
   ],
 };
 
+export const RECOVERY_KEY = 'ABCD-EFGH-JKMN-PQRS-TVWX-YZ01-2345-6789-ABCD-EFGH-JKMN-PQRS-TVWX';
+
+export const BACKUP_STATUS: BackupStatus = {
+  folderName: 'Backup',
+  daily: true,
+  lastBackupAt: '2026-11-20T22:14:00.000Z',
+  keyReady: true,
+};
+
+export const BACKUPS: readonly BackupRow[] = [
+  {
+    name: 'Accounting Books 2026-11-21 0914.abbackup',
+    createdAt: '2026-11-20T22:14:00.000Z',
+    entries: 94,
+    bytes: 120_000,
+  },
+  {
+    name: 'Accounting Books 2026-11-12 0914.abbackup',
+    createdAt: '2026-11-11T22:14:00.000Z',
+    entries: 80,
+    bytes: 110_000,
+  },
+];
+
 export const BANK_SETTINGS: BankAccountsSettings = {
   accounts: [
     {
@@ -1176,6 +1206,28 @@ export function installBridge(overrides: Partial<BridgeApi> = {}): BridgeApi {
     'appearance.set': vi.fn((input: { appearance: 'system' | 'light' | 'dark' }) =>
       Promise.resolve(ok({ appearance: input.appearance })),
     ),
+    'backup.status': vi.fn(() => Promise.resolve(ok(BACKUP_STATUS))),
+    'backup.chooseFolder': vi.fn(() => Promise.resolve(ok({ folderName: 'Backup' }))),
+    'backup.turnOn': vi.fn(() =>
+      Promise.resolve(ok({ kind: 'on' as const, recoveryKey: RECOVERY_KEY })),
+    ),
+    'backup.recoveryKey': vi.fn(() => Promise.resolve(ok({ recoveryKey: RECOVERY_KEY }))),
+    'backup.setDaily': vi.fn((input: { on: boolean }) => Promise.resolve(ok({ daily: input.on }))),
+    'backup.now': vi.fn(() =>
+      Promise.resolve(
+        ok({
+          kind: 'done' as const,
+          fileName: 'Accounting Books 2026-11-23 0914.abbackup',
+          at: '2026-11-22T22:14:00.000Z',
+        }),
+      ),
+    ),
+    'backup.list': vi.fn(() => Promise.resolve(ok(BACKUPS))),
+    'backup.restore': vi.fn(() =>
+      Promise.resolve(
+        ok({ outcome: { kind: 'restored' as const, entries: 94 }, state: SAMPLE_STATE }),
+      ),
+    ),
     'help.prefs': vi.fn(() => Promise.resolve(ok({ starred: [], tags: [] }))),
     'help.savePrefs': vi.fn((prefs: HelpPrefs) => Promise.resolve(ok(prefs))),
     'app.showBooksFolder': vi.fn(() => Promise.resolve(ok({ shown: true }))),
@@ -1198,7 +1250,9 @@ export function installBridge(overrides: Partial<BridgeApi> = {}): BridgeApi {
   };
   // Every function is a spy, so a test can look at its calls whether it replaced it or not.
   const spied = Object.fromEntries(
-    Object.entries(api).map(([name, fn]) => [name, vi.isMockFunction(fn) ? fn : vi.fn(fn)]),
+    Object.entries(api as unknown as Record<string, (...args: unknown[]) => unknown>).map(
+      ([name, fn]) => [name, vi.isMockFunction(fn) ? fn : vi.fn(fn)],
+    ),
   ) as unknown as BridgeApi;
   Object.defineProperty(window, 'bridge', { configurable: true, value: spied });
   return spied;

@@ -71,6 +71,7 @@ import { bankAccountsSettings } from '@services/bank-accounts-settings';
 import { addBankAccount } from '@services/add-bank-account';
 import { deactivateBankAccount, renameBankAccount } from '@services/manage-bank-accounts';
 import type { Appearance, HelpPrefs } from '@shared/settings';
+import type { BackupManager } from './backup-manager';
 import {
   linkedInvoiceFolder,
   mergeExchangeFiles,
@@ -187,6 +188,18 @@ export interface HandlerDeps {
   /** The real Google Sheet in a panel inside the window (spec 118). */
   readonly sheetPanel: Pick<SheetPanel, 'open' | 'move' | 'close' | 'clearSession'>;
   readonly books: BooksAccess;
+  /** Backups and restoring (specs 136 to 138). */
+  readonly backups: Pick<
+    BackupManager,
+    | 'status'
+    | 'chooseFolder'
+    | 'turnOn'
+    | 'recoveryKey'
+    | 'setDaily'
+    | 'backupNow'
+    | 'list'
+    | 'restore'
+  >;
   /** Choices about this Mac, kept outside the books, and Finder (spec 133). */
   readonly system: {
     appearance(): Appearance;
@@ -250,6 +263,7 @@ export function createHandlers({
   sheetPanel,
   invoiceFiles,
   system,
+  backups,
 }: HandlerDeps): BridgeHandlers {
   // Invoice files read and checked but not yet added: the text stays in main, never the screens.
   const invoicePreviews = new Map<string, InvoiceFile>();
@@ -686,6 +700,18 @@ export function createHandlers({
         const stopped = deactivateBankAccount({ db: store.db, clock, random }, id);
         return ok(stopped.ok ? { kind: 'saved', id } : { kind: 'refused', reason: stopped.error });
       }),
+    'backup.status': async () => ok(await backups.status()),
+    'backup.chooseFolder': async () => ok(await backups.chooseFolder()),
+    'backup.turnOn': async () => ok(await backups.turnOn()),
+    'backup.recoveryKey': async () => ok({ recoveryKey: await backups.recoveryKey() }),
+    'backup.setDaily': ({ on }) => Promise.resolve(ok({ daily: backups.setDaily(on) })),
+    'backup.now': async () => ok(await backups.backupNow()),
+    'backup.list': () => Promise.resolve(ok(backups.list())),
+    'backup.restore': async ({ name, recoveryKey }) => {
+      const outcome = await backups.restore(name, recoveryKey);
+      if (outcome.kind === 'restored') previews.clear();
+      return ok({ outcome, state: books.state() });
+    },
     'help.prefs': () => Promise.resolve(ok(system.helpPrefs())),
     'help.savePrefs': (prefs) => {
       system.saveHelpPrefs(prefs);

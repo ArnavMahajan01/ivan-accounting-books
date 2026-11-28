@@ -36,6 +36,17 @@ export function staticBooks(store: Result<Store, OpenError>): BooksAccess {
 
 /** Handler dependencies for tests that do not import files: nothing is chosen and nothing reads. */
 export const importDeps = {
+  backups: {
+    status: () =>
+      Promise.resolve({ folderName: null, daily: false, lastBackupAt: null, keyReady: false }),
+    chooseFolder: () => Promise.resolve({ folderName: null }),
+    turnOn: () => Promise.resolve({ kind: 'refused' as const, reason: 'no-folder' as const }),
+    recoveryKey: () => Promise.resolve(null),
+    setDaily: (on: boolean) => on,
+    backupNow: () => Promise.resolve({ kind: 'refused' as const, reason: 'no-folder' as const }),
+    list: () => [],
+    restore: () => Promise.resolve({ kind: 'refused' as const, reason: 'no-folder' as const }),
+  },
   random: seededRandom(7),
   system: {
     appearance: () => 'system' as const,

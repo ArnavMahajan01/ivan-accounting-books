@@ -42,6 +42,8 @@
 }
 
 .review__show {
+  /* Holds its visually hidden legend, so it never sits against the window and stretches it. */
+  position: relative;
   display: inline-flex;
   margin: 0;
   padding: 0;

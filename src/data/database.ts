@@ -107,3 +107,11 @@ export function openStore(
   }
   return ok({ db, schemaVersion: migrated.value.schemaVersion, close: () => db.close() });
 }
+
+/**
+ * A consistent copy of the open books into a new file, with SQLite's own backup, which is safe
+ * while the books are in use (spec 136). The folder must exist; the file must not.
+ */
+export async function copyDatabaseTo(db: Db, path: string): Promise<void> {
+  await db.backup(path);
+}
