@@ -22,6 +22,8 @@ export interface BooksStateValue {
   readonly version: number;
   /** Use the state a bridge call returned (after loading, clearing or choosing). */
   readonly apply: (next: BooksState) => void;
+  /** Asks for the state again without starting the pages again, such as after a new name. */
+  readonly refreshState: () => void;
   /** Imported lines waiting for review: the count on the sidebar's To review. */
   readonly reviewCount: number;
   /** Asks again, after an import or a review changed it. */
@@ -33,6 +35,7 @@ const NOT_LOADED: BooksStateValue = {
   status: 'ready',
   version: 0,
   apply: () => undefined,
+  refreshState: () => undefined,
   reviewCount: 0,
   refreshReviewCount: () => undefined,
 };
@@ -74,9 +77,16 @@ export function BooksStateProvider({ children }: { readonly children: ReactNode 
     setVersion((v) => v + 1);
   }, []);
 
+  const refreshState = useCallback(() => {
+    const api = bridge();
+    void api['app.getBooksState']({}).then((result) => {
+      if (result.ok) setState(result.value);
+    });
+  }, []);
+
   const value = useMemo(
-    () => ({ state, status, version, apply, reviewCount, refreshReviewCount }),
-    [state, status, version, apply, reviewCount, refreshReviewCount],
+    () => ({ state, status, version, apply, refreshState, reviewCount, refreshReviewCount }),
+    [state, status, version, apply, refreshState, reviewCount, refreshReviewCount],
   );
   return <BooksStateContext.Provider value={value}>{children}</BooksStateContext.Provider>;
 }

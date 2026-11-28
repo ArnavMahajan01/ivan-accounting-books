@@ -7,6 +7,7 @@ import { useCallback, useState } from 'react';
 import type { BasFrequency, GstBasis } from '@shared/kinds';
 import type { BusinessChangeOutcome, BusinessView } from '@shared/settings';
 import { bridge } from '../bridge';
+import { useBooksState } from '../books-state';
 import { Button } from '../components/Button';
 import { Sheet } from '../components/Sheet';
 import { formatAbn } from '../contacts/contact-text';
@@ -149,6 +150,7 @@ function BusinessSheet({
 const loadBusiness = () => bridge()['business.get']({});
 
 export function BusinessCard() {
+  const { refreshState } = useBooksState();
   const [version, setVersion] = useState(0);
   const { state } = useBridgeQuery<BusinessView | null>(loadBusiness, String(version));
   const [editing, setEditing] = useState(false);
@@ -205,6 +207,8 @@ export function BusinessCard() {
             setEditing(false);
             setSaved(true);
             setVersion((v) => v + 1);
+            // The sidebar shows the business name.
+            refreshState();
           }}
         />
       )}

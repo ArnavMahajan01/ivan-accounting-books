@@ -48,6 +48,8 @@ describe('Settings, Business (spec 132)', () => {
       expect.objectContaining({ basFrequency: 'monthly', abn: '51 824 753 556' }),
     );
     expect(screen.getByText('Saved.')).toBeTruthy();
+    // The sidebar's business name is asked for again.
+    expect(api['app.getBooksState']).toHaveBeenCalledTimes(2);
   });
 
   it('says why it was not saved', async () => {
