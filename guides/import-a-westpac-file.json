@@ -86,7 +86,7 @@
     {
       "heading": "If something goes wrong",
       "paragraphs": [
-        "It says \"This file is for an account ending ...\", which is not one of your bank accounts. Check you chose the right account in Westpac. The sheet gives the last four digits of the account the file is for.",
+        "It says \"This file is for an account ending ...\", which is not one of your bank accounts. Check you chose the right account in Westpac. The sheet gives the last four digits of the account the file is for. If it is one of yours, add it in Settings, Bank accounts, with those four digits.",
         "It says \"This does not look like a Westpac statement file.\" The app reads OFX files only for now. Go back to Westpac and choose OFX as the file format.",
         "It says \"This file has more than one account in it.\" Download the statement again with only one account selected.",
         "It says \"1 line could not be read.\" The rest of the file is fine and will import. The sheet says which line, and why. The closing balance line shows the difference, which is that line, and it will not match until that line is in.",

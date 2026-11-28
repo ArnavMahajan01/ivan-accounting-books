@@ -41,7 +41,8 @@
       "heading": "Where your books are kept",
       "paragraphs": [
         "Your books are one file on this Mac. They are in the Library folder, inside Application Support, in a folder with the name of this app. Nothing is sent anywhere unless you ask for it, such as sharing a report with your accountant.",
-        "The About card in Settings shows the version of the app and whether your books opened without problems."
+        "The About card in Settings shows the version of the app and whether your books opened without problems.",
+        "To keep a copy of your books off this Mac, open the guide Back up and restore your books."
       ],
       "steps": [
         {

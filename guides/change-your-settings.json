@@ -1,0 +1,76 @@
+{
+  "id": "change-your-settings",
+  "title": "Change your settings",
+  "group": "Settings and backups",
+  "summary": "How to change the business details, GST basis and BAS frequency, your bank accounts, and how the app looks.",
+  "sections": [
+    {
+      "heading": "What Settings shows",
+      "paragraphs": [
+        "Settings is a set of cards. Each says in one line whether all is well. Anything that needs attention is listed at the top, and its card comes first."
+      ],
+      "steps": [
+        {
+          "text": "Click Settings in the sidebar.",
+          "image": {
+            "file": "settings-page.png",
+            "description": "The Settings page with its cards: Backups, Google, Business, Bank accounts, Admin Dashboard, Appearance and About."
+          }
+        }
+      ]
+    },
+    {
+      "heading": "Business, GST and BAS",
+      "steps": [
+        {
+          "text": "In the Business card, click Change…"
+        },
+        {
+          "text": "Change the business name or ABN. The ABN is checked, so a typing mistake is caught."
+        },
+        {
+          "text": "Choose Cash or Accrual for GST, and Quarterly or Monthly for the BAS. Check with your accountant first: reports and the BAS worksheet for periods not yet locked are then worked out the new way. Locked periods do not change.",
+          "image": {
+            "file": "business-sheet.png",
+            "description": "The Business sheet: business name, ABN, GST basis Cash or Accrual, BAS frequency Quarterly or Monthly with Monthly chosen, the fixed financial year 1 July to 30 June, and a warning that open periods will be worked out the new way."
+          }
+        },
+        {
+          "text": "Click Save. The financial year always runs 1 July to 30 June."
+        }
+      ]
+    },
+    {
+      "heading": "Bank accounts",
+      "steps": [
+        {
+          "text": "Before you import a statement file for an account, add it here. Click Add bank account…"
+        },
+        {
+          "text": "Type a name, the bank, and the last four digits of the account number. Only those four digits are kept, and a statement file is matched to its account by them."
+        },
+        {
+          "text": "Choose the account in your chart that holds its balance, such as Business cheque account, and click Add."
+        },
+        {
+          "text": "Rename changes the name. Stop using keeps its transactions but stops new files for it from importing; it asks first."
+        }
+      ]
+    },
+    {
+      "heading": "Appearance",
+      "steps": [
+        {
+          "text": "In the Appearance card, choose Same as Mac, Light or Dark. The app changes at once."
+        }
+      ]
+    },
+    {
+      "heading": "If something goes wrong",
+      "paragraphs": [
+        "A statement file says the account is not one of your bank accounts: add it in Bank accounts, with the same last four digits.",
+        "The ABN is refused: check its 11 digits against your ABN registration."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "id": "back-up-and-restore",
+  "title": "Back up and restore your books",
+  "group": "Settings and backups",
+  "summary": "How to keep an encrypted copy of your books off this Mac, and how to put your books back from one.",
+  "sections": [
+    {
+      "heading": "Turn on backups",
+      "paragraphs": [
+        "Your books are one file on this Mac. A backup is an encrypted copy of it, kept somewhere else, so a lost or broken Mac does not lose your books."
+      ],
+      "steps": [
+        {
+          "text": "Click Settings in the sidebar, and find the Backups card."
+        },
+        {
+          "text": "Click Choose folder…, and choose a folder on an external drive, or your Google Drive folder if Google Drive for desktop is on this Mac. A copy there is kept off this Mac."
+        },
+        {
+          "text": "Click Turn on backups. A recovery key appears: 13 groups of four letters and digits.",
+          "image": {
+            "file": "recovery-key.png",
+            "description": "The sheet Write down your recovery key: a sentence on why it matters, an invented key in groups of four, a tick box I have written down the recovery key, and Done."
+          }
+        },
+        {
+          "text": "Write the recovery key on paper and keep it somewhere safe, away from the backups. Without it, a backup cannot be opened on another Mac. Tick I have written down the recovery key, then click Done."
+        }
+      ]
+    },
+    {
+      "heading": "Back up",
+      "steps": [
+        {
+          "text": "Backups happen by themselves once a day while the app is open, and after each bank file you import."
+        },
+        {
+          "text": "To back up now, click Back up now. The card says Backed up, and when the last backup was.",
+          "image": {
+            "file": "backups-card.png",
+            "description": "The Backups card: On, To: the chosen folder, Encrypted, the date and time of the last backup, a ticked box Back up automatically every day and after each import, and the buttons Back up now, Change folder, Restore from a backup and Show recovery key."
+          }
+        },
+        {
+          "text": "Home shows Back up your books when there has been no backup for more than a week."
+        }
+      ]
+    },
+    {
+      "heading": "Restore from a backup",
+      "paragraphs": [
+        "Restoring replaces the books on this Mac with a backup. Anything entered after that backup was made is gone, so check the date before you restore."
+      ],
+      "steps": [
+        {
+          "text": "In the Backups card, click Restore from a backup…"
+        },
+        {
+          "text": "Choose the backup by its date and time. Each shows how many transactions it holds.",
+          "image": {
+            "file": "restore-sheet.png",
+            "description": "The sheet Restore from a backup: one backup with its date, time and number of transactions, the warning that it replaces the books on this Mac and anything entered after it will be gone, and the buttons Cancel and Restore and replace."
+          }
+        },
+        {
+          "text": "Click Restore and replace. The backup is checked first; only if it passes are your books replaced. The card then says Restored."
+        },
+        {
+          "text": "If the backup was made on another Mac, a Recovery key box appears. Type your recovery key and click Restore and replace again."
+        }
+      ]
+    },
+    {
+      "heading": "If something goes wrong",
+      "paragraphs": [
+        "The backup folder cannot be found: connect the drive, or click Change folder… and choose it again.",
+        "This Mac's Keychain could not keep the backup key: backups stay off. Restart the Mac and try again.",
+        "A backup is damaged or does not pass the check: nothing is changed. Choose an earlier backup.",
+        "You restored the wrong backup: restore a later one. The books you replaced are also kept on this Mac until your next restore; ask for help to get them back."
+      ]
+    }
+  ]
+}

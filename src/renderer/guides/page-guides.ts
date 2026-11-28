@@ -15,7 +15,7 @@ export const PAGE_GUIDES: Record<Exclude<PageId, 'help'>, string> = {
   contacts: 'your-customers-and-suppliers',
   'shared-sheets': 'share-with-your-accountant',
   'accountant-changes': 'accept-accountant-changes',
-  settings: 'getting-started',
+  settings: 'change-your-settings',
 };
 
 /** Report pages with a guide of their own, by the start of their address. */

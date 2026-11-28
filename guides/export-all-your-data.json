@@ -1,0 +1,40 @@
+{
+  "id": "export-all-your-data",
+  "title": "Export all your data",
+  "group": "Settings and backups",
+  "summary": "How to get everything in your books out as spreadsheet files, so you are never locked in.",
+  "sections": [
+    {
+      "heading": "Export",
+      "steps": [
+        {
+          "text": "Click Settings in the sidebar, and find the About card."
+        },
+        {
+          "text": "Click Export all data…, and choose where to put it. A new folder is made there, named with today's date and time."
+        },
+        {
+          "text": "The card says how many files were written. Open the folder in Finder, and open any file in Numbers, Excel or Google Sheets.",
+          "image": {
+            "file": "export-done.png",
+            "description": "The About card: the version, the books status, a sentence that the books are one file on this Mac, the message Exported 7 files to the folder, and the buttons Show in Finder and Export all data."
+          }
+        }
+      ]
+    },
+    {
+      "heading": "What is in it",
+      "paragraphs": [
+        "accounts.csv is your chart of accounts. entries.csv is every transaction, one row per line, with debit, credit and GST. bank-accounts.csv, contacts.csv, invoices.csv and rules.csv hold the rest. README.txt explains each file.",
+        "Adding up debit less credit for each account in entries.csv gives the same balances as the trial balance.",
+        "The export is not a backup: it cannot be restored into the app. Use Back up for that."
+      ]
+    },
+    {
+      "heading": "If something goes wrong",
+      "paragraphs": [
+        "Nothing happens after choosing a folder: check you can save files there, such as on a drive that is not locked."
+      ]
+    }
+  ]
+}
