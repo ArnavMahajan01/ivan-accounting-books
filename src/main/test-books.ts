@@ -52,6 +52,7 @@ export const importDeps = {
     appearance: () => 'system' as const,
     setAppearance: () => undefined,
     showBooksFolder: () => true,
+    saveExport: () => Promise.resolve(null),
     helpPrefs: () => ({ starred: [], tags: [] }),
     saveHelpPrefs: () => undefined,
   },

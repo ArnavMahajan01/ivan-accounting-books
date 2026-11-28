@@ -15,7 +15,7 @@ import {
   session,
   shell,
 } from 'electron';
-import { readdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { bundledMigrations, openStore, type OpenError, type Store } from '@data/database';
@@ -392,6 +392,26 @@ if (refusedFlags.length > 0) {
           helpPrefs: () => loadHelpPrefs(app.getPath('userData')),
           saveHelpPrefs: (prefs) => {
             saveHelpPrefs(app.getPath('userData'), prefs);
+          },
+          saveExport: async (files) => {
+            const options = {
+              title: 'Choose where to put the export of all your data',
+              properties: ['openDirectory' as const, 'createDirectory' as const],
+            };
+            const chosen =
+              mainWindow === null
+                ? await dialog.showOpenDialog(options)
+                : await dialog.showOpenDialog(mainWindow, options);
+            const parent = chosen.canceled ? null : (chosen.filePaths[0] ?? null);
+            if (parent === null) return null;
+            const name = `Accounting Books export ${localStampOf(new Date())}`;
+            const folder = join(parent, name);
+            mkdirSync(folder);
+            for (const file of files) {
+              writeFileSync(join(folder, file.name), file.text, { mode: 0o600 });
+            }
+            log.info('export.all', { files: files.length });
+            return name;
           },
           // Finder shows the folder; the path itself never goes to the screens.
           showBooksFolder: () => {

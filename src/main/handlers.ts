@@ -72,6 +72,7 @@ import { addBankAccount } from '@services/add-bank-account';
 import { deactivateBankAccount, renameBankAccount } from '@services/manage-bank-accounts';
 import type { Appearance, HelpPrefs } from '@shared/settings';
 import type { BackupManager } from './backup-manager';
+import { fullExport, type ExportFile } from '@services/full-export';
 import {
   linkedInvoiceFolder,
   mergeExchangeFiles,
@@ -207,6 +208,8 @@ export interface HandlerDeps {
     helpPrefs(): HelpPrefs;
     saveHelpPrefs(prefs: HelpPrefs): void;
     showBooksFolder(): boolean;
+    /** Asks where, makes a dated folder there, and writes the files. Null when cancelled. */
+    saveExport(files: readonly ExportFile[]): Promise<string | null>;
   };
   readonly clock: Clock;
   readonly random: RandomSource;
@@ -721,6 +724,12 @@ export function createHandlers({
     'appearance.set': ({ appearance }) => {
       system.setAppearance(appearance);
       return Promise.resolve(ok({ appearance }));
+    },
+    'export.all': async () => {
+      const files = open((store) => ok(fullExport({ db: store.db })));
+      if (!files.ok) return files;
+      const folderName = await system.saveExport(files.value);
+      return ok({ folderName, files: folderName === null ? 0 : files.value.length });
     },
     'app.showBooksFolder': () => Promise.resolve(ok({ shown: system.showBooksFolder() })),
     'contacts.pairs': () => open((store) => ok(contactPairs({ db: store.db }))),

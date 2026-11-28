@@ -108,3 +108,66 @@ export function entryIdsWithPayee(db: Db, contactId: string): string[] {
     .all(contactId)
     .map((row) => z.object({ id: z.string() }).parse(row).id);
 }
+
+/** One journal line with what the full export needs (spec 139), every entry, oldest first. */
+export interface ExportLine {
+  readonly entryId: string;
+  readonly date: string;
+  readonly entryMemo: string;
+  readonly sourceKind: string;
+  readonly position: number;
+  readonly accountCode: string;
+  readonly accountName: string;
+  readonly amount: number;
+  readonly gst: number;
+  readonly taxCode: string | null;
+  readonly payee: string | null;
+  readonly memo: string;
+}
+
+export function allLinesForExport(db: Db): ExportLine[] {
+  return db
+    .prepare(
+      `SELECT e.id AS entry_id, e.entry_date, e.memo AS entry_memo, e.source_kind, l.position,
+              a.code, a.name, l.amount_cents, l.gst_cents, t.short_code, c.name AS payee, l.memo
+       FROM journal_line l
+       JOIN journal_entry e ON e.id = l.entry_id
+       JOIN account a ON a.id = l.account_id
+       LEFT JOIN tax_code t ON t.id = l.tax_code_id
+       LEFT JOIN contact c ON c.id = l.payee_id
+       ORDER BY e.entry_date, e.rowid, l.position`,
+    )
+    .all()
+    .map((row) => {
+      const r = z
+        .object({
+          entry_id: z.string(),
+          entry_date: z.string(),
+          entry_memo: z.string(),
+          source_kind: z.string(),
+          position: z.number().int(),
+          code: z.string(),
+          name: z.string(),
+          amount_cents: z.number().int(),
+          gst_cents: z.number().int(),
+          short_code: z.string().nullable(),
+          payee: z.string().nullable(),
+          memo: z.string(),
+        })
+        .parse(row);
+      return {
+        entryId: r.entry_id,
+        date: r.entry_date,
+        entryMemo: r.entry_memo,
+        sourceKind: r.source_kind,
+        position: r.position,
+        accountCode: r.code,
+        accountName: r.name,
+        amount: r.amount_cents,
+        gst: r.gst_cents,
+        taxCode: r.short_code,
+        payee: r.payee,
+        memo: r.memo,
+      };
+    });
+}

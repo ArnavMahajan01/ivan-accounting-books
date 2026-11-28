@@ -232,3 +232,16 @@ describe('Settings, Backups (specs 136 to 138)', () => {
     );
   });
 });
+
+describe('Export all data (spec 139)', () => {
+  it('writes the files and says where', async () => {
+    const api = installBridge();
+    await show();
+    await userEvent.click(screen.getByRole('button', { name: 'Export all data…' }));
+    await settle();
+    expect(api['export.all']).toHaveBeenCalled();
+    expect(
+      screen.getByText('Exported 7 files to the folder "Accounting Books export 2026-11-28 1530".'),
+    ).toBeTruthy();
+  });
+});

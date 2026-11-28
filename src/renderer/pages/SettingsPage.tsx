@@ -38,6 +38,16 @@ export function attentionSentence(problems: readonly string[]): string {
 }
 
 function AboutCard() {
+  const [exported, setExported] = useState<string | null>(null);
+  const exportAll = async () => {
+    const result = await bridge()['export.all']({});
+    if (!result.ok) setExported('The data could not be exported.');
+    else if (result.value.folderName !== null) {
+      setExported(
+        `Exported ${String(result.value.files)} files to the folder "${result.value.folderName}".`,
+      );
+    }
+  };
   const info = useBridge<AppInfo>(loadInfo);
   const data = useBridge<DataStatus>(loadDataStatus);
   return (
@@ -68,10 +78,17 @@ function AboutCard() {
         <p role="alert">Could not read the books status ({data.error.code}).</p>
       )}
       <p className="settings-card__line settings-card__line--secondary">
-        Your books are one file in the Library folder on this Mac.
+        Your books are one file in the Library folder on this Mac. Export all data writes everything
+        as spreadsheet files you can open anywhere.
       </p>
+      {exported !== null && (
+        <p className="settings-card__line" role="status">
+          {exported}
+        </p>
+      )}
       <div className="settings-card__actions">
         <Button onClick={() => void bridge()['app.showBooksFolder']({})}>Show in Finder</Button>
+        <Button onClick={() => void exportAll()}>Export all data…</Button>
       </div>
     </section>
   );

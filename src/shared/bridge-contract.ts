@@ -502,6 +502,8 @@ export const bridgeContract = {
   },
   'appearance.get': { input: noInput },
   'appearance.set': { input: z.object({ appearance: z.enum(APPEARANCES) }).strict() },
+  /** Asks for a folder, then writes every part of the books there as CSV (spec 139). */
+  'export.all': { input: noInput },
   /** Shows the books' folder in Finder. The path itself never reaches the screens. */
   'app.showBooksFolder': { input: noInput },
   'contacts.pairs': { input: noInput },
@@ -661,6 +663,8 @@ export interface BridgeResults {
   'appearance.get': { readonly appearance: Appearance };
   'appearance.set': { readonly appearance: Appearance };
   'app.showBooksFolder': { readonly shown: boolean };
+  /** The new folder's name, never its path; null when he cancelled. */
+  'export.all': { readonly folderName: string | null; readonly files: number };
   /** Null before the books are set up. */
   'business.get': BusinessView | null;
   'business.change': BusinessChangeOutcome;

@@ -1230,6 +1230,9 @@ export function installBridge(overrides: Partial<BridgeApi> = {}): BridgeApi {
     ),
     'help.prefs': vi.fn(() => Promise.resolve(ok({ starred: [], tags: [] }))),
     'help.savePrefs': vi.fn((prefs: HelpPrefs) => Promise.resolve(ok(prefs))),
+    'export.all': vi.fn(() =>
+      Promise.resolve(ok({ folderName: 'Accounting Books export 2026-11-28 1530', files: 7 })),
+    ),
     'app.showBooksFolder': vi.fn(() => Promise.resolve(ok({ shown: true }))),
     'contacts.pairs': vi.fn(() => Promise.resolve(ok(CONTACT_PAIRS))),
     'contacts.merge': vi.fn(() => Promise.resolve(ok({ kind: 'merged' as const, moved: 3 }))),
