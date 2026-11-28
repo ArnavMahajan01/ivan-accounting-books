@@ -25,6 +25,7 @@ import {
   type ShareRefusal,
 } from './sheets';
 import { reportRequestSchema } from './report-request-schema';
+import { GUIDE_ID } from './guide';
 import type {
   ContactMergeOutcome,
   ContactPageView,
@@ -39,6 +40,9 @@ import {
   type BankAccountsSettings,
   type BusinessChangeOutcome,
   type BusinessView,
+  type HelpPrefs,
+  MAX_TAG_LENGTH,
+  MAX_TAGS,
 } from './settings';
 import {
   ACCOUNT_TYPES,
@@ -457,6 +461,24 @@ export const bridgeContract = {
     input: z.object({ id: idText('bnk'), name: z.string().max(120) }).strict(),
   },
   'bankAccounts.stop': { input: z.object({ id: idText('bnk') }).strict() },
+  'help.prefs': { input: noInput },
+  'help.savePrefs': {
+    input: z
+      .object({
+        starred: z.array(z.string().regex(GUIDE_ID).max(80)).max(200),
+        tags: z
+          .array(
+            z
+              .object({
+                name: z.string().trim().min(1).max(MAX_TAG_LENGTH),
+                guides: z.array(z.string().regex(GUIDE_ID).max(80)).max(200),
+              })
+              .strict(),
+          )
+          .max(MAX_TAGS),
+      })
+      .strict(),
+  },
   'appearance.get': { input: noInput },
   'appearance.set': { input: z.object({ appearance: z.enum(APPEARANCES) }).strict() },
   /** Shows the books' folder in Finder. The path itself never reaches the screens. */
@@ -603,6 +625,8 @@ export interface BridgeResults {
   'bankAccounts.add': BankAccountOutcome;
   'bankAccounts.rename': BankAccountOutcome;
   'bankAccounts.stop': BankAccountOutcome;
+  'help.prefs': HelpPrefs;
+  'help.savePrefs': HelpPrefs;
   'appearance.get': { readonly appearance: Appearance };
   'appearance.set': { readonly appearance: Appearance };
   'app.showBooksFolder': { readonly shown: boolean };

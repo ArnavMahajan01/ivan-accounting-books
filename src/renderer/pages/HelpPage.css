@@ -123,3 +123,128 @@
   border: 1px solid var(--color-border);
   border-radius: var(--radius-control);
 }
+
+/* Stars and tags (spec 134). */
+.help-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: var(--space-3) 0 0;
+  padding: 0;
+  border: 0;
+}
+
+.help-filter {
+  position: relative;
+  display: inline-flex;
+}
+
+.help-filter input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+}
+
+.help-filter span {
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-label);
+}
+
+.help-filter input:checked + span {
+  border-color: var(--color-brand);
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-semibold);
+}
+
+.help-filter input:focus-visible + span {
+  outline: var(--size-focus-ring) solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+.help-guide-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
+.help-guide-row .help-guide {
+  flex: 1;
+  min-width: 0;
+}
+
+.help-star {
+  display: inline-flex;
+  margin-top: var(--space-2);
+  padding: var(--space-1);
+  border: 0;
+  border-radius: var(--radius-control);
+  background: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.help-star svg {
+  width: var(--size-icon-inline);
+  height: var(--size-icon-inline);
+}
+
+.help-star--on {
+  color: var(--color-warning);
+}
+
+.help-star--on svg {
+  fill: currentColor;
+}
+
+.help-star:focus-visible {
+  outline: var(--size-focus-ring) solid var(--color-focus-ring);
+}
+
+.help-guide__tags {
+  display: block;
+  margin: var(--space-1) 0 0;
+  color: var(--color-brand);
+  font-size: var(--font-size-caption);
+}
+
+.help-tags-list {
+  display: grid;
+  gap: var(--space-2);
+  min-width: 320px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.help-tags-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.help-tag-sheet {
+  display: grid;
+  gap: var(--space-2);
+  min-width: 360px;
+}
+
+.help-tag-choice {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.help-tag-new {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.help-tag-new__input {
+  flex: 1;
+}

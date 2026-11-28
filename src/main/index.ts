@@ -29,6 +29,7 @@ import { createBooksSession } from './books-session';
 import { contentSecurityPolicy } from './csp';
 import { createHandlers } from './handlers';
 import { loadAppearance, saveAppearance } from './appearance';
+import { loadHelpPrefs, saveHelpPrefs } from './help-prefs';
 import { systemClock } from './clock';
 import { systemRandom } from './random';
 import { readStatementFile } from './statement-files';
@@ -353,6 +354,10 @@ if (refusedFlags.length > 0) {
           setAppearance: (choice) => {
             saveAppearance(app.getPath('userData'), choice);
             nativeTheme.themeSource = choice;
+          },
+          helpPrefs: () => loadHelpPrefs(app.getPath('userData')),
+          saveHelpPrefs: (prefs) => {
+            saveHelpPrefs(app.getPath('userData'), prefs);
           },
           // Finder shows the folder; the path itself never goes to the screens.
           showBooksFolder: () => {

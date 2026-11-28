@@ -87,7 +87,7 @@ Created at spec 001 (`context/rules/code-rules.md`, "Scripts"). Update this tabl
 | Test (all) | `npm test` | Yes |
 | Test while editing | `npm run test:watch` | Yes |
 | End-to-end test of the packaged app | `npm run test:e2e` | Yes: packages first, then Playwright (`tests/e2e/`) |
-| Check every page at four window sizes | `npm run test:layout` | Yes: builds, then opens each page, sheet and panel at 1100 to 1700 wide and fails if a column, heading, button or text breaks. Screenshots go to `test-results/layout/` |
+| Check every page at four window sizes | `npm run test:layout` | Yes: builds, then opens each page, sheet and panel at 1100 to 1700 wide and fails if a column, heading, button or text breaks. Screenshots go to `test-results/layout/`. Also runs the built-app test of Help's stars, tags and Keep on screen |
 | Typecheck | `npm run typecheck` | Yes |
 | Lint | `npm run lint` | Yes |
 | Format, or check formatting | `npm run format`, `npm run format:check` | Yes. Markdown, `context/` and `wireframe/` are not reformatted |

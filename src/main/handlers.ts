@@ -70,7 +70,7 @@ import { businessView, changeBusinessSettings, toBusinessView } from '@services/
 import { bankAccountsSettings } from '@services/bank-accounts-settings';
 import { addBankAccount } from '@services/add-bank-account';
 import { deactivateBankAccount, renameBankAccount } from '@services/manage-bank-accounts';
-import type { Appearance } from '@shared/settings';
+import type { Appearance, HelpPrefs } from '@shared/settings';
 import {
   linkedInvoiceFolder,
   mergeExchangeFiles,
@@ -191,6 +191,8 @@ export interface HandlerDeps {
   readonly system: {
     appearance(): Appearance;
     setAppearance(appearance: Appearance): void;
+    helpPrefs(): HelpPrefs;
+    saveHelpPrefs(prefs: HelpPrefs): void;
     showBooksFolder(): boolean;
   };
   readonly clock: Clock;
@@ -684,6 +686,11 @@ export function createHandlers({
         const stopped = deactivateBankAccount({ db: store.db, clock, random }, id);
         return ok(stopped.ok ? { kind: 'saved', id } : { kind: 'refused', reason: stopped.error });
       }),
+    'help.prefs': () => Promise.resolve(ok(system.helpPrefs())),
+    'help.savePrefs': (prefs) => {
+      system.saveHelpPrefs(prefs);
+      return Promise.resolve(ok(prefs));
+    },
     'appearance.get': () => Promise.resolve(ok({ appearance: system.appearance() })),
     'appearance.set': ({ appearance }) => {
       system.setAppearance(appearance);

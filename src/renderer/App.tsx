@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { bridge } from './bridge';
 import { applyAppearance } from './settings/AppearanceCard';
+import { HelpPrefsProvider } from './guides/help-prefs';
+import { KeepOnScreenProvider } from './guides/KeepOnScreen';
 import { BooksStateProvider, useBooksState } from './books-state';
 import { ImportProvider } from './import/ImportProvider';
 import { GoogleStateProvider, useGoogleState } from './sheets/google-state';
@@ -41,7 +43,11 @@ export function App() {
     <BooksStateProvider>
       <GoogleStateProvider>
         <ImportProvider>
-          <Shell />
+          <HelpPrefsProvider>
+            <KeepOnScreenProvider>
+              <Shell />
+            </KeepOnScreenProvider>
+          </HelpPrefsProvider>
         </ImportProvider>
       </GoogleStateProvider>
     </BooksStateProvider>

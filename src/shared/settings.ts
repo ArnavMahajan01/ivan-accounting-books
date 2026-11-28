@@ -46,3 +46,12 @@ export type BankAccountOutcome =
 /** Light, dark, or the same as the Mac (spec 133). */
 export const APPEARANCES = ['system', 'light', 'dark'] as const;
 export type Appearance = (typeof APPEARANCES)[number];
+
+/** His Help choices on this Mac (spec 134): starred guides and his own tags. */
+export interface HelpPrefs {
+  readonly starred: readonly string[];
+  readonly tags: readonly { readonly name: string; readonly guides: readonly string[] }[];
+}
+
+export const MAX_TAGS = 30;
+export const MAX_TAG_LENGTH = 30;
